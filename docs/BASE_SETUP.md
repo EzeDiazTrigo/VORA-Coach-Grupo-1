@@ -68,13 +68,25 @@ Fuente: la página «Sistema de diseño» del PDF de Figma.
 - **Nombre:** `TP3ParcialGrupo1Theme` pasó a `AppTheme`.
 - El frame de Figma es de 390 px de ancho, con márgenes de 20 px.
 
+### 10. Componentes y Acceso
+- **Componentes (`ui/components/`)**: `AppButton` (estilos principal, lima y contorno; `isLoading`, `trailingIcon`, `isCompact`), `AppCard` (tarjeta y panel verde), `AppTextField`, `PasswordTextField` y `AppScaffold`. Son sin estado, reciben `modifier` y toman todo del tema, y cada uno tiene su `@Preview`.
+- **`Strings` y `AuthStrings`**: textos compartidos y de Acceso. Los textos de diseño se mantienen como en Figma (inglés); los mensajes de error y de modo demostración van en español.
+- **Íconos extendidos**: `material-icons-extended` aporta el ojo de contraseña, el candado y el sobre.
+- **Acceso**: `LoginScreen` y `RegisterScreen` (sin estado) con `LoginRoute` y `RegisterRoute`. Los `Route` reciben lambdas de navegación y no un `NavController`, así se conectan a las rutas sin tocar las pantallas.
+- **Autenticación de demostración**: `AuthRepository` con `DemoAuthRepository` (acepta credenciales válidas tras una espera simulada), enlazado con `@Binds` en `AuthModule`. Se reemplaza por una implementación real sin tocar los `ViewModel`.
+- **Validación**: funciones puras (`validateEmail`, `validatePassword`, `validateFullName`) con tests, más tests de `LoginViewModel` con un repositorio falso.
+- **Provisorio**: el logo y los botones de Apple y Google usan marcadores hasta contar con los recursos exportados de Figma.
+
 ## Cómo se verificó
 - Después de cada cambio de dependencias: `./gradlew :app:assembleDebug` verde.
-- Tras agregar Room: también `:app:testDebugUnitTest` verde.
+- Tras agregar Room y las pantallas de Acceso: también `:app:testDebugUnitTest` verde (10 tests).
+- Los componentes y las pantallas de Acceso se revisaron en el emulador Pixel_9.
 - Se confirmó que `BuildConfig.BASE_URL` se genera y que existen las clases `Hilt_*`.
 
 ## Entorno
 - No hay `local.properties` versionado (está en `.gitignore`). Para compilar desde terminal: `ANDROID_HOME=~/Android/Sdk sh gradlew :app:assembleDebug` (`gradlew` no tiene bit de ejecución en este checkout).
 
 ## Pendiente
-- Componentes de formularios: `AppScaffold`, `AppButton(isLoading)`, `AppTextField`, `PasswordTextField`, `AppCard` con previews, y `Strings` común.
+- Pantallas de Inicio (Dashboard y Notificaciones) y de Perfil.
+- Conectar las lambdas de Acceso a las rutas de navegación.
+- Reemplazar los marcadores por los recursos exportados de Figma.
