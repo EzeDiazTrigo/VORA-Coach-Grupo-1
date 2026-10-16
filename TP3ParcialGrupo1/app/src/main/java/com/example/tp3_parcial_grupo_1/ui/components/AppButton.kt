@@ -35,6 +35,7 @@ fun AppButton(
     style: AppButtonStyle = AppButtonStyle.Primary,
     enabled: Boolean = true,
     isLoading: Boolean = false,
+    leadingIcon: ImageVector? = null,
     trailingIcon: ImageVector? = null,
     isCompact: Boolean = false
 ) {
@@ -51,6 +52,9 @@ fun AppButton(
                     strokeWidth = 2.dp,
                     color = LocalContentColorOrDefault(style)
                 )
+            }
+            if (leadingIcon != null) {
+                Icon(leadingIcon, contentDescription = null, modifier = Modifier.size(18.dp))
             }
             Text(text, style = MaterialTheme.typography.labelLarge, maxLines = 1)
             if (trailingIcon != null) {
