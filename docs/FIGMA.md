@@ -86,6 +86,29 @@ Los nombres siguen las capas de Figma (`home`, `more-horizontal`, `x-circle`…)
 | Recurso | Uso |
 |---|---|
 | `drawable-nodpi/img_avatar_demo.png` | Avatar del perfil de demostración (Home, Profile) |
+| `drawable-nodpi/img_meal_demo.jpg` | Foto del plato (Nutrition / 05 · Food Analysis, 06 · Photo Analysis). Las etiquetas «Grilled Chicken (~180g)» / «Basmati Rice (~150g)» van superpuestas en Compose |
+| `drawable-nodpi/img_exercise_demo.jpg` | Imagen del ejercicio (Workout / 06 · Exercise Details, «Seated Cable Row») |
+
+Las fotos se redujeron a 1050 px de ancho (350 dp × 3) en JPEG 85 % para no inflar el APK.
+
+### Tipografía
+
+**Manrope** en toda la app (frame Tipografía `2004:1512`), pesos Regular 400, Medium 500, SemiBold 600 y Bold 700, en `res/font/manrope_{regular,medium,semibold,bold}.ttf` (estáticos de Google Fonts; licencia SIL OFL 1.1 en [MANROPE_OFL.txt](MANROPE_OFL.txt)).
+
+Jerarquía observada en Figma (para `Type.kt`, A):
+
+| Uso | Tamaño · peso |
+|---|---|
+| Cifra destacada | 24 px · SemiBold (también hay cifras de 32) |
+| Título de pantalla | 20 px · Bold (titulares de 22, 26 y 28 en algunas pantallas) |
+| Título de tarjeta | 18 px · SemiBold |
+| Acción principal | 14 px · SemiBold |
+| Acción contextual | 13 px · SemiBold |
+| Cuerpo | 13 px · Regular, interlineado auto (algunos 13/18) |
+| Etiqueta (`TODAY`, mayúsculas) | 10 px · SemiBold |
+| Tiempo (`2 hours ago`) | 11 px · Regular |
+
+Escala habitual: 10, 11, 12, 13, 14, 15, 16, 18, 20 y 24 px (1 px de Figma = 1 dp/sp).
 
 ### Lo que se dibuja en Compose (no es recurso)
 
@@ -94,8 +117,7 @@ Los nombres siguen las capas de Figma (`home`, `more-horizontal`, `x-circle`…)
 
 ### Pendiente
 
-- Foto de comida (`Nutrition / 06 · Photo Analysis`, `meal-photo-container`) y área de demostración de ejercicio (`Workout / 06`, `demo-area`): no se pudieron exportar porque se agotó la cuota del conector de Figma. Exportar a mano (PNG ×2) a `drawable-nodpi/img_meal_demo.png` e `img_exercise_demo.png`.
-- Fuente: confirmar la familia en el frame Tipografía (`2004:1512`); a simple vista es **Inter**. Si se confirma, agregar los `.ttf` en `res/font/` (A, con el tema).
+- Íconos de Acceso: se dejan con el tamaño exportado de Figma (recortados al dibujo); darles `Modifier.size(...)` igual al del diseño.
 - Íconos sin nombre en Figma (`icon-frame`, 65 instancias en Workout/Nutrition/Progress): cada dueño de área los mapea a un ícono Lucide de la lista o pide que se agregue.
 
 ## Componentes repetidos (para `ui/components`)
