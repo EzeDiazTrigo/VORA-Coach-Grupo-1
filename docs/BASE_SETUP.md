@@ -50,6 +50,24 @@ Registro de lo que se hizo en la rama `feature/project-base` y por qué. Cada pu
 
 **Por qué**: sin él Retrofit falla en el dispositivo. No se agregó ningún permiso de micrófono ni cámara, porque la app todavía no los usa.
 
+### 9. Tema desde Figma (Capa 2) — `Add shape tokens`, `Add spacing tokens`, `Add Manrope font resource`, `Add Manrope typography`, `Add VORA color scheme and AppTheme`
+Fuente: la página «Sistema de diseño» del PDF de Figma.
+
+| Token | Valores | Archivo |
+|---|---|---|
+| Colores | verde `#123D35` (primary), menta `#65D6B0` (secondary), lima `#C9E86A` (tertiary), fondo `#F7F8F5`, superficie `#FFFFFF`, borde `#E4E9E6` (outlineVariant), texto `#17211F` / `#68736F` / `#9AA39F`, error `#D95D5D`, éxito `#27AE60`, menta translúcida `#65D6B01F` | `Color.kt` |
+| Tipografía | Manrope 400/500/600/700; escala 10–32 px (cuerpo 13 y 15, acciones 14, títulos 18/20/22/24) | `Type.kt`, `res/font/manrope.ttf` |
+| Radios | 8, 12, 16, 20, 24 y píldora 100 | `Shape.kt` |
+| Espaciado | 4, 6, 8, 12, 16, 20 (margen de pantalla), 24, 32, 40 | `Spacing.kt` |
+
+**Por qué**
+- **Solo tema claro, sin dynamic color:** Figma no define dark mode; el dynamic color pisaría la identidad verde y rompería la fidelidad con el diseño.
+- **`ExtendedColors`:** éxito, texto tenue y menta translúcida no existen en Material 3; se exponen con `MaterialTheme.extendedColors` para que las pantallas no usen literales.
+- **`MaterialTheme.spacing`:** las pantallas usan tokens y no dp sueltos.
+- **Fuente:** se usó la Manrope variable oficial de Google Fonts (licencia OFL). Es provisoria hasta contar con los `.ttf` exportados de Figma; si se reemplaza `manrope.ttf` sin tocar `Type.kt` más que los pesos. En Android < 8 (minSdk 24) la fuente variable no aplica el peso, por lo que se ve en peso regular.
+- **Nombre:** `TP3ParcialGrupo1Theme` pasó a `AppTheme`.
+- El frame de Figma es de 390 px de ancho, con márgenes de 20 px.
+
 ## Cómo se verificó
 - Después de cada cambio de dependencias: `./gradlew :app:assembleDebug` verde.
 - Tras agregar Room: también `:app:testDebugUnitTest` verde.
