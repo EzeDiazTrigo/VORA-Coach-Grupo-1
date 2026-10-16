@@ -52,7 +52,7 @@ fun TP3ParcialGrupo1Theme(
 
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = Typography,
+        typography = AppTypography,
         content = content
     )
 }
