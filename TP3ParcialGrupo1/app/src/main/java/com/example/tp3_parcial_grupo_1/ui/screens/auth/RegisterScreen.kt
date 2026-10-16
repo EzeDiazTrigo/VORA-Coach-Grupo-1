@@ -153,7 +153,6 @@ fun RegisterScreen(
                     text = AuthStrings.SignUp,
                     onClick = onSignUpClick,
                     style = AppButtonStyle.Accent,
-                    isLoading = uiState.isLoading,
                     trailingIcon = Icons.AutoMirrored.Outlined.ArrowForward
                 )
                 Text(
