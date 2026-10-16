@@ -40,23 +40,13 @@ Registro de lo que se hizo en la rama `feature/project-base` y por qué. Cada pu
 
 **Por qué**: Se usa para las entidades, DAOs y `AppDatabase`. `coroutines-test` es para testear los ViewModels y repositorios.
 
-### 7. `Add BASE_URL build config field`
-- `BuildConfig.BASE_URL = "https://tp3.martinrivas.ar/"` y `buildFeatures.buildConfig = true`.
-
-**Por qué**: la URL debe ser configurable (servidor local `http://10.0.2.2:8000/` para pruebas y para la demo si el mock cae) sin tocar código de red.
-
-### 8. `Add internet permission`
-- `<uses-permission android:name="android.permission.INTERNET" />`.
-
-**Por qué**: sin él Retrofit falla en el dispositivo. No se agregó ningún permiso de micrófono ni cámara, porque la app todavía no los usa.
-
-### 9. Tema desde Figma (Capa 2) — `Add shape tokens`, `Add spacing tokens`, `Add Manrope font resource`, `Add Manrope typography`, `Add VORA color scheme and AppTheme`
+### 7. Tema desde Figma — `Add shape tokens`, `Add spacing tokens`, `Add Manrope typography`, `Add VORA color scheme and AppTheme`
 Fuente: la página «Sistema de diseño» del PDF de Figma.
 
 | Token | Valores | Archivo |
 |---|---|---|
 | Colores | verde `#123D35` (primary), menta `#65D6B0` (secondary), lima `#C9E86A` (tertiary), fondo `#F7F8F5`, superficie `#FFFFFF`, borde `#E4E9E6` (outlineVariant), texto `#17211F` / `#68736F` / `#9AA39F`, error `#D95D5D`, éxito `#27AE60`, menta translúcida `#65D6B01F` | `Color.kt` |
-| Tipografía | Manrope 400/500/600/700; escala 10–32 px (cuerpo 13 y 15, acciones 14, títulos 18/20/22/24) | `Type.kt`, `res/font/manrope.ttf` |
+| Tipografía | Manrope 400/500/600/700; escala 10–32 px (cuerpo 13 y 15, acciones 14, títulos 18/20/22/24) | `Type.kt` |
 | Radios | 8, 12, 16, 20, 24 y píldora 100 | `Shape.kt` |
 | Espaciado | 4, 6, 8, 12, 16, 20 (margen de pantalla), 24, 32, 40 | `Spacing.kt` |
 
@@ -64,11 +54,11 @@ Fuente: la página «Sistema de diseño» del PDF de Figma.
 - **Solo tema claro, sin dynamic color:** Figma no define dark mode; el dynamic color pisaría la identidad verde y rompería la fidelidad con el diseño.
 - **`ExtendedColors`:** éxito, texto tenue y menta translúcida no existen en Material 3; se exponen con `MaterialTheme.extendedColors` para que las pantallas no usen literales.
 - **`MaterialTheme.spacing`:** las pantallas usan tokens y no dp sueltos.
-- **Fuente:** se usó la Manrope variable oficial de Google Fonts (licencia OFL). Es provisoria hasta contar con los `.ttf` exportados de Figma; si se reemplaza `manrope.ttf` sin tocar `Type.kt` más que los pesos. En Android < 8 (minSdk 24) la fuente variable no aplica el peso, por lo que se ve en peso regular.
+- **Fuente:** la escala usa `AppFontFamily` (fuente del sistema por ahora). Manrope se aplica cuando se agregue el `.ttf` exportado de Figma a `res/font/`, cambiando solo esa línea de `Type.kt`.
 - **Nombre:** `TP3ParcialGrupo1Theme` pasó a `AppTheme`.
 - El frame de Figma es de 390 px de ancho, con márgenes de 20 px.
 
-### 10. Componentes y Acceso
+### 8. Componentes y Acceso
 - **Componentes (`ui/components/`)**: `AppButton` (estilos principal, lima y contorno; `isLoading`, `trailingIcon`, `isCompact`), `AppCard` (tarjeta y panel verde), `AppTextField`, `PasswordTextField` y `AppScaffold`. Son sin estado, reciben `modifier` y toman todo del tema, y cada uno tiene su `@Preview`.
 - **`Strings` y `AuthStrings`**: textos compartidos y de Acceso. Los textos de diseño se mantienen como en Figma (inglés); los mensajes de error y de modo demostración van en español.
 - **Íconos extendidos**: `material-icons-extended` aporta el ojo de contraseña, el candado y el sobre.
@@ -81,7 +71,7 @@ Fuente: la página «Sistema de diseño» del PDF de Figma.
 - Después de cada cambio de dependencias: `./gradlew :app:assembleDebug` verde.
 - Tras agregar Room y las pantallas de Acceso: también `:app:testDebugUnitTest` verde (10 tests).
 - Los componentes y las pantallas de Acceso se revisaron en el emulador Pixel_9.
-- Se confirmó que `BuildConfig.BASE_URL` se genera y que existen las clases `Hilt_*`.
+- Se confirmó que existen las clases `Hilt_*`.
 
 ## Entorno
 - No hay `local.properties` versionado (está en `.gitignore`). Para compilar desde terminal: `ANDROID_HOME=~/Android/Sdk sh gradlew :app:assembleDebug` (`gradlew` no tiene bit de ejecución en este checkout).
@@ -89,4 +79,4 @@ Fuente: la página «Sistema de diseño» del PDF de Figma.
 ## Pendiente
 - Pantallas de Inicio (Dashboard y Notificaciones) y de Perfil.
 - Conectar las lambdas de Acceso a las rutas de navegación.
-- Reemplazar los marcadores por los recursos exportados de Figma.
+- Reemplazar los marcadores por los recursos exportados de Figma, incluida la fuente Manrope.

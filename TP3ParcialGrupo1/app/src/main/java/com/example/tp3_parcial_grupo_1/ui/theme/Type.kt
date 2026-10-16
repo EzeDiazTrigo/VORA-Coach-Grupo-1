@@ -2,30 +2,15 @@ package com.example.tp3_parcial_grupo_1.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.ExperimentalTextApi
-import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontVariation
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import com.example.tp3_parcial_grupo_1.R
 
-@OptIn(ExperimentalTextApi::class)
-private fun manropeFont(weight: FontWeight) = Font(
-    resId = R.font.manrope,
-    weight = weight,
-    variationSettings = FontVariation.Settings(FontVariation.weight(weight.weight))
-)
-
-val Manrope = FontFamily(
-    manropeFont(FontWeight.Normal),
-    manropeFont(FontWeight.Medium),
-    manropeFont(FontWeight.SemiBold),
-    manropeFont(FontWeight.Bold)
-)
+// Se reemplaza por Manrope cuando se incorpore la fuente exportada de Figma (res/font).
+val AppFontFamily: FontFamily = FontFamily.Default
 
 private fun style(size: Int, weight: FontWeight, lineHeight: Int? = null) = TextStyle(
-    fontFamily = Manrope,
+    fontFamily = AppFontFamily,
     fontWeight = weight,
     fontSize = size.sp,
     lineHeight = (lineHeight ?: (size * 1.4).toInt()).sp
