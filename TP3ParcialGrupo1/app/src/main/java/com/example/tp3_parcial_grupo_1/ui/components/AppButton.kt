@@ -2,12 +2,14 @@ package com.example.tp3_parcial_grupo_1.ui.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -16,6 +18,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
@@ -31,7 +34,9 @@ fun AppButton(
     modifier: Modifier = Modifier,
     style: AppButtonStyle = AppButtonStyle.Primary,
     enabled: Boolean = true,
-    isLoading: Boolean = false
+    isLoading: Boolean = false,
+    trailingIcon: ImageVector? = null,
+    isCompact: Boolean = false
 ) {
     val colors = MaterialTheme.colorScheme
     val onClickSafe = { if (!isLoading) onClick() }
@@ -47,9 +52,13 @@ fun AppButton(
                     color = LocalContentColorOrDefault(style)
                 )
             }
-            Text(text, style = MaterialTheme.typography.labelLarge)
+            Text(text, style = MaterialTheme.typography.labelLarge, maxLines = 1)
+            if (trailingIcon != null) {
+                Icon(trailingIcon, contentDescription = null, modifier = Modifier.size(18.dp))
+            }
         }
     }
+    val contentPadding = if (isCompact) PaddingValues(horizontal = 8.dp) else ButtonDefaults.ContentPadding
     val buttonModifier = modifier
         .fillMaxWidth()
         .heightIn(min = 52.dp)
@@ -59,6 +68,7 @@ fun AppButton(
             modifier = buttonModifier,
             enabled = enabled,
             shape = PillShape,
+            contentPadding = contentPadding,
             border = BorderStroke(1.dp, colors.outlineVariant),
             colors = ButtonDefaults.outlinedButtonColors(contentColor = colors.primary),
             content = { content() }
@@ -68,6 +78,7 @@ fun AppButton(
             modifier = buttonModifier,
             enabled = enabled,
             shape = PillShape,
+            contentPadding = contentPadding,
             colors = if (style == AppButtonStyle.Accent) {
                 ButtonDefaults.buttonColors(containerColor = colors.tertiary, contentColor = colors.onTertiary)
             } else {
