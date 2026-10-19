@@ -1,7 +1,6 @@
 package com.example.tp3_parcial_grupo_1.ui.screens.profile
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,9 +14,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Info
-import androidx.compose.material.icons.outlined.KeyboardArrowDown
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
@@ -26,9 +22,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
@@ -38,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.tp3_parcial_grupo_1.ui.components.AppButton
+import com.example.tp3_parcial_grupo_1.ui.components.AppDropdownField
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
 import com.example.tp3_parcial_grupo_1.ui.components.AppTextField
 import com.example.tp3_parcial_grupo_1.ui.strings.ProfileStrings
@@ -198,29 +193,13 @@ private fun UnitLabel(unit: String) {
 
 @Composable
 private fun GenderField(selected: String, onSelected: (String) -> Unit) {
-    var expanded by remember { mutableStateOf(false) }
     Column(verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xs)) {
-        Box {
-            AppTextField(
-                value = selected,
-                onValueChange = {},
-                label = ProfileStrings.Gender,
-                trailingIcon = { Icon(Icons.Outlined.KeyboardArrowDown, contentDescription = null) }
-            )
-            // Captura el toque para abrir el menú en lugar de editar el texto.
-            Box(Modifier.matchParentSize().clickable { expanded = true })
-            DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-                ProfileStrings.GenderOptions.forEach { option ->
-                    DropdownMenuItem(
-                        text = { Text(option) },
-                        onClick = {
-                            onSelected(option)
-                            expanded = false
-                        }
-                    )
-                }
-            }
-        }
+        AppDropdownField(
+            label = ProfileStrings.Gender,
+            selected = selected,
+            options = ProfileStrings.GenderOptions,
+            onSelected = onSelected
+        )
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xs)
