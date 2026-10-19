@@ -1,17 +1,23 @@
 package com.example.tp3_parcial_grupo_1.data.demo
 
-import com.example.tp3_parcial_grupo_1.ui.screens.profile.ProfileUiState
+import com.example.tp3_parcial_grupo_1.model.UserProfile
+import com.example.tp3_parcial_grupo_1.ui.screens.profile.toUiState
 
 // Datos de demostración: no provienen de ningún servidor.
 object ProfileDemoData {
-    val dashboard = ProfileUiState(
-        fullName = "Alex Morgan",
-        initials = "AM",
+    val profile = UserProfile(
+        firstName = "Alex",
+        lastName = "Morgan",
+        dateOfBirth = "14 March 1995",
+        heightCm = 178,
+        weightKg = 76,
+        gender = "Prefer not to say",
         tagline = "Building strength & improving fitness",
         goal = "Improve fitness",
         experience = "Intermediate",
-        training = "4 days/week",
-        preferredWorkout = "Strength training",
-        isDataSynced = true
+        trainingDaysPerWeek = 4,
+        preferredWorkout = "Strength training"
     )
+
+    val dashboard = profile.toUiState()
 }

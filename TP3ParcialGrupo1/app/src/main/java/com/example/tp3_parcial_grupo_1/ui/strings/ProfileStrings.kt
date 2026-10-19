@@ -22,4 +22,29 @@ object ProfileStrings {
     const val Synced = "Synced"
     const val Account = "Account"
     const val AccountSubtitle = "Subscription, notifications & privacy"
+
+    const val EditProfileTitle = "Edit Profile"
+    const val ChangePhoto = "Change photo"
+    const val FirstName = "First Name"
+    const val LastName = "Last Name"
+    const val DateOfBirth = "Date of Birth"
+    const val Height = "Height"
+    const val Weight = "Weight"
+    const val Gender = "Gender"
+    const val GenderHint = "Used to personalise your recommendations."
+    const val SaveChanges = "Save changes"
+    const val EditProfileFooter = "Your information is used to personalise your VORA experience."
+    const val UnitCm = "cm"
+    const val UnitKg = "kg"
+
+    val GenderOptions = listOf("Female", "Male", "Non-binary", "Prefer not to say")
+
+    const val FirstNameRequired = "Ingresá tu nombre."
+    const val LastNameRequired = "Ingresá tu apellido."
+    const val DateOfBirthRequired = "Ingresá tu fecha de nacimiento."
+    const val DateOfBirthInvalid = "Usá el formato 14 March 1995."
+    const val HeightInvalid = "La altura debe estar entre 100 y 250 cm."
+    const val WeightInvalid = "El peso debe estar entre 30 y 300 kg."
+
+    fun daysPerWeek(days: Int) = "$days days/week"
 }
