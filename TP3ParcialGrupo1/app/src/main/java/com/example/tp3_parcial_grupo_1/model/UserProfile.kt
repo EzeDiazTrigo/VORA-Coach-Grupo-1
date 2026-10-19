@@ -8,10 +8,11 @@ data class UserProfile(
     val weightKg: Int,
     val gender: String,
     val tagline: String,
-    val goal: String,
+    val goal: PrimaryGoal,
     val experience: String,
     val trainingDaysPerWeek: Int,
-    val preferredWorkout: String
+    val preferredWorkout: WorkoutPreference,
+    val coachingStyle: CoachingStyle
 ) {
     val fullName: String get() = "$firstName $lastName".trim()
     val initials: String get() = "${firstName.firstOrNull() ?: ""}${lastName.firstOrNull() ?: ""}".uppercase()

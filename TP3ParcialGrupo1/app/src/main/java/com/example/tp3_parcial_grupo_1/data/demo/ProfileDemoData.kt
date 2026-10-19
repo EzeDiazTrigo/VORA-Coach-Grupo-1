@@ -1,6 +1,9 @@
 package com.example.tp3_parcial_grupo_1.data.demo
 
+import com.example.tp3_parcial_grupo_1.model.CoachingStyle
+import com.example.tp3_parcial_grupo_1.model.PrimaryGoal
 import com.example.tp3_parcial_grupo_1.model.UserProfile
+import com.example.tp3_parcial_grupo_1.model.WorkoutPreference
 import com.example.tp3_parcial_grupo_1.ui.screens.profile.toUiState
 
 // Datos de demostración: no provienen de ningún servidor.
@@ -13,10 +16,11 @@ object ProfileDemoData {
         weightKg = 76,
         gender = "Prefer not to say",
         tagline = "Building strength & improving fitness",
-        goal = "Improve fitness",
+        goal = PrimaryGoal.ImproveFitness,
         experience = "Intermediate",
         trainingDaysPerWeek = 4,
-        preferredWorkout = "Strength training"
+        preferredWorkout = WorkoutPreference.Strength,
+        coachingStyle = CoachingStyle.Balanced
     )
 
     val dashboard = profile.toUiState()

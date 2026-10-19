@@ -2,6 +2,8 @@ package com.example.tp3_parcial_grupo_1.ui.screens.profile
 
 import com.example.tp3_parcial_grupo_1.model.UserProfile
 import com.example.tp3_parcial_grupo_1.ui.strings.ProfileStrings
+import com.example.tp3_parcial_grupo_1.ui.strings.summaryLabel
+import com.example.tp3_parcial_grupo_1.ui.strings.title
 
 data class ProfileUiState(
     val fullName: String,
@@ -19,10 +21,10 @@ fun UserProfile.toUiState(isDataSynced: Boolean = true, message: String? = null)
     fullName = fullName,
     initials = initials,
     tagline = tagline,
-    goal = goal,
+    goal = goal.title(),
     experience = experience,
     training = ProfileStrings.daysPerWeek(trainingDaysPerWeek),
-    preferredWorkout = preferredWorkout,
+    preferredWorkout = preferredWorkout.summaryLabel(),
     isDataSynced = isDataSynced,
     message = message
 )

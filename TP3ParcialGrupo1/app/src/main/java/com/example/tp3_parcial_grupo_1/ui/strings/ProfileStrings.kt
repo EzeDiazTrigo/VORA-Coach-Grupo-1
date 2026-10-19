@@ -46,5 +46,16 @@ object ProfileStrings {
     const val HeightInvalid = "La altura debe estar entre 100 y 250 cm."
     const val WeightInvalid = "El peso debe estar entre 30 y 300 kg."
 
+    const val GoalsTitle = "Goals & Preferences"
+    const val GoalsHeading = "Your goals"
+    const val GoalsIntro = "Tell VORA what you're working towards. Your coaching adapts around this."
+    const val PrimaryGoalLabel = "Primary Goal"
+    const val PrimaryGoalPrompt = "What's your main goal?"
+    const val TrainingFrequencyLabel = "Training Frequency"
+    const val WorkoutPreferenceLabel = "Workout Preference"
+    const val CoachingStyleLabel = "Coaching Style"
+    const val CoachingStylePrompt = "How should Vora Coach you?"
+    const val SavePreferences = "Save preferences"
+
     fun daysPerWeek(days: Int) = "$days days/week"
 }
