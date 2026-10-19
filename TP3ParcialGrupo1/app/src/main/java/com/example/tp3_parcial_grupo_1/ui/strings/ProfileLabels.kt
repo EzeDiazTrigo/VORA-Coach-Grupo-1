@@ -1,6 +1,8 @@
 package com.example.tp3_parcial_grupo_1.ui.strings
 
 import com.example.tp3_parcial_grupo_1.model.CoachingStyle
+import com.example.tp3_parcial_grupo_1.model.DietaryPreference
+import com.example.tp3_parcial_grupo_1.model.NutritionPriority
 import com.example.tp3_parcial_grupo_1.model.PrimaryGoal
 import com.example.tp3_parcial_grupo_1.model.WorkoutPreference
 
@@ -47,3 +49,16 @@ fun CoachingStyle.description(): String = when (this) {
 val TrainingDaysOptions = listOf(3, 4, 5, 6)
 
 fun trainingDaysLabel(days: Int): String = if (days >= 6) "6+ days" else "$days days"
+
+fun DietaryPreference.title(): String = when (this) {
+    DietaryPreference.Everything -> "Everything"
+    DietaryPreference.Vegetarian -> "Vegetarian"
+    DietaryPreference.Vegan -> "Vegan"
+    DietaryPreference.Pescatarian -> "Pescatarian"
+    DietaryPreference.Other -> "Other"
+}
+
+fun NutritionPriority.title(): String = when (this) {
+    NutritionPriority.HitProteinTargets -> "Hit protein targets"
+    NutritionPriority.EatMoreConsistently -> "Eat more consistently"
+}
