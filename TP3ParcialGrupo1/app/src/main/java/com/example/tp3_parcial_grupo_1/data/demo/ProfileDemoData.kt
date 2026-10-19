@@ -5,7 +5,9 @@ import com.example.tp3_parcial_grupo_1.model.DietaryPreference
 import com.example.tp3_parcial_grupo_1.model.NutritionPreferences
 import com.example.tp3_parcial_grupo_1.model.NutritionPriority
 import com.example.tp3_parcial_grupo_1.model.PrimaryGoal
+import com.example.tp3_parcial_grupo_1.model.ResponseStyle
 import com.example.tp3_parcial_grupo_1.model.UserProfile
+import com.example.tp3_parcial_grupo_1.model.VoiceSettings
 import com.example.tp3_parcial_grupo_1.model.WorkoutPreference
 import com.example.tp3_parcial_grupo_1.ui.screens.profile.toUiState
 
@@ -34,6 +36,16 @@ object ProfileDemoData {
         preferredBreakfast = "Quick & high protein",
         preferredDinner = "Balanced plate",
         priority = NutritionPriority.HitProteinTargets
+    )
+
+    val voiceSettings = VoiceSettings(
+        voiceName = "VORA Voice 01",
+        speakResponses = true,
+        autoPlayCoaching = false,
+        allowInterruptions = true,
+        responseStyle = ResponseStyle.Balanced,
+        voiceFeedback = true,
+        hapticFeedback = true
     )
 
     val dashboard = profile.toUiState()

@@ -4,6 +4,7 @@ import com.example.tp3_parcial_grupo_1.model.CoachingStyle
 import com.example.tp3_parcial_grupo_1.model.DietaryPreference
 import com.example.tp3_parcial_grupo_1.model.NutritionPriority
 import com.example.tp3_parcial_grupo_1.model.PrimaryGoal
+import com.example.tp3_parcial_grupo_1.model.ResponseStyle
 import com.example.tp3_parcial_grupo_1.model.WorkoutPreference
 
 // Textos de cada opción del perfil, tal como aparecen en el diseño de Figma.
@@ -61,4 +62,16 @@ fun DietaryPreference.title(): String = when (this) {
 fun NutritionPriority.title(): String = when (this) {
     NutritionPriority.HitProteinTargets -> "Hit protein targets"
     NutritionPriority.EatMoreConsistently -> "Eat more consistently"
+}
+
+fun ResponseStyle.title(): String = when (this) {
+    ResponseStyle.Concise -> "Concise"
+    ResponseStyle.Balanced -> "Balanced"
+    ResponseStyle.Detailed -> "Detailed"
+}
+
+fun ResponseStyle.description(): String = when (this) {
+    ResponseStyle.Concise -> "Quick answers"
+    ResponseStyle.Balanced -> "Useful detail without overwhelming"
+    ResponseStyle.Detailed -> "More explanation and context"
 }

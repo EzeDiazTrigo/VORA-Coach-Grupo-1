@@ -3,6 +3,7 @@ package com.example.tp3_parcial_grupo_1.data.repository
 import com.example.tp3_parcial_grupo_1.data.demo.ProfileDemoData
 import com.example.tp3_parcial_grupo_1.model.NutritionPreferences
 import com.example.tp3_parcial_grupo_1.model.UserProfile
+import com.example.tp3_parcial_grupo_1.model.VoiceSettings
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -24,4 +25,9 @@ class ProfileRepository @Inject constructor() {
 
     fun updateNutritionPreferences(transform: (NutritionPreferences) -> NutritionPreferences) =
         _nutritionPreferences.update(transform)
+
+    private val _voiceSettings = MutableStateFlow(ProfileDemoData.voiceSettings)
+    val voiceSettings: StateFlow<VoiceSettings> = _voiceSettings.asStateFlow()
+
+    fun updateVoiceSettings(transform: (VoiceSettings) -> VoiceSettings) = _voiceSettings.update(transform)
 }

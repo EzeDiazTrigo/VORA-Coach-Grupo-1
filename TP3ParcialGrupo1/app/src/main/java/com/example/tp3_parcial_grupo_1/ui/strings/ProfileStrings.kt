@@ -78,5 +78,21 @@ object ProfileStrings {
     val BreakfastOptions = listOf("Quick & high protein", "Light & fresh", "Hearty & filling", "I usually skip it")
     val DinnerOptions = listOf("Light & early", "Balanced plate", "High protein", "Hearty & filling")
 
+    const val VoiceTitle = "Voice & AI Settings"
+    const val VoiceIntro = "Choose how VORA communicates and coaches you."
+    const val ActiveVoiceLabel = "Active Voice"
+    const val Preview = "Preview"
+    const val SpeakingBehaviourLabel = "Speaking Behaviour"
+    const val SpeakResponsesAloud = "Speak responses aloud"
+    const val AutoPlayCoaching = "Auto-play coaching"
+    const val AllowInterruptions = "Allow interruptions"
+    const val AllowInterruptionsHint = "Interrupt VORA anytime while it's speaking."
+    const val ResponseStyleLabel = "Response Style"
+    const val VoiceFeedback = "Voice feedback"
+    const val HapticFeedback = "Haptic feedback"
+    const val ControlTitle = "Your control matters"
+    const val ControlBody = "Manage microphone permissions and connected data from Settings."
+    const val PrivacyAndPermissions = "Privacy & permissions"
+
     fun daysPerWeek(days: Int) = "$days days/week"
 }
