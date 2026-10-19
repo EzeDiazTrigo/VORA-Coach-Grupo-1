@@ -16,6 +16,7 @@ object ProfileDemoData {
     val profile = UserProfile(
         firstName = "Alex",
         lastName = "Morgan",
+        email = "alex@morgan.com",
         dateOfBirth = "14 March 1995",
         heightCm = 178,
         weightKg = 76,
