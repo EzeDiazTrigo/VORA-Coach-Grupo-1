@@ -1,0 +1,28 @@
+package com.example.tp3_parcial_grupo_1.ui.strings
+
+object NutritionStrings {
+    val title = "Nutrition"
+    val caloriesConsumed = "CALORIES CONSUMED"
+    val goal = "Goal"
+    val protein = "Protein"
+    val carbs = "Carbs"
+    val fat = "Fat"
+    val todaysMeals = "Today’s Meals"
+    val viewHistory = "View History"
+    val add = "+ Add"
+    val tellVoraTitle = "Tell Vora what you ate"
+    val tellVoraSubtitle = "Vora will automatically estimate the portions, ingredients, and log the nutrition details."
+    val voice = "Voice"
+    val photo = "Photo"
+    val search = "Search"
+    val addFoodTitle = "Add Food"
+    val talkToVora = "Talk to VORA"
+    val talkToVoraDesc = "\"I had grilled chicken breast with basmati rice.\""
+    val startVoiceLogging = "Start Voice Logging"
+    val snapAPhoto = "Snap a Photo"
+    val snapAPhotoDesc = "Vora estimates sizes and nutrition info."
+    val searchDatabase = "Search Database"
+    val searchDatabaseDesc = "Search millions of global & local food items."
+    val logManually = "Log Manually"
+    val logManuallyDesc = "Input weight, calories and macros yourself."
+}
