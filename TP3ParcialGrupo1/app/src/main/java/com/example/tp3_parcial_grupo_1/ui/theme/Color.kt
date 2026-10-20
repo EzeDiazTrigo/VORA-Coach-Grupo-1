@@ -1,11 +1,60 @@
 package com.example.tp3_parcial_grupo_1.ui.theme
 
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.lightColorScheme
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
+// Paleta observada en el sistema de diseño de Figma.
+private val Green = Color(0xFF123D35)
+private val Mint = Color(0xFF65D6B0)
+private val Lime = Color(0xFFC9E86A)
+private val Surface = Color(0xFFFFFFFF)
+private val Background = Color(0xFFF7F8F5)
+private val Border = Color(0xFFE4E9E6)
+private val TextPrimary = Color(0xFF17211F)
+private val TextSecondary = Color(0xFF68736F)
+private val TextSubtle = Color(0xFF9AA39F)
+private val Attention = Color(0xFFD95D5D)
+private val Success = Color(0xFF27AE60)
+private val MintSoft = Color(0x1F65D6B0)
 
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
+val AppColorScheme = lightColorScheme(
+    primary = Green,
+    onPrimary = Surface,
+    primaryContainer = Green,
+    onPrimaryContainer = Surface,
+    secondary = Mint,
+    onSecondary = Green,
+    secondaryContainer = MintSoft,
+    onSecondaryContainer = Green,
+    tertiary = Lime,
+    onTertiary = Green,
+    background = Background,
+    onBackground = TextPrimary,
+    surface = Surface,
+    onSurface = TextPrimary,
+    surfaceVariant = Surface,
+    onSurfaceVariant = TextSecondary,
+    outline = TextSubtle,
+    outlineVariant = Border,
+    error = Attention,
+    onError = Surface
+)
+
+// Colores del diseño sin equivalente en Material 3.
+data class ExtendedColors(
+    val textSubtle: Color = TextSubtle,
+    val success: Color = Success,
+    val mintSoft: Color = MintSoft,
+    val mint: Color = Mint
+)
+
+val LocalExtendedColors = staticCompositionLocalOf { ExtendedColors() }
+
+val MaterialTheme.extendedColors: ExtendedColors
+    @Composable
+    @ReadOnlyComposable
+    get() = LocalExtendedColors.current
