@@ -6,29 +6,28 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
-// Set of Material typography styles to start with
-val Typography = Typography(
-    bodyLarge = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Normal,
-        fontSize = 16.sp,
-        lineHeight = 24.sp,
-        letterSpacing = 0.5.sp
-    )
-    /* Other default text styles to override
-    titleLarge = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Normal,
-        fontSize = 22.sp,
-        lineHeight = 28.sp,
-        letterSpacing = 0.sp
-    ),
-    labelSmall = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Medium,
-        fontSize = 11.sp,
-        lineHeight = 16.sp,
-        letterSpacing = 0.5.sp
-    )
-    */
+// Se reemplaza por Manrope cuando se incorpore la fuente exportada de Figma (res/font).
+val AppFontFamily: FontFamily = FontFamily.Default
+
+private fun style(size: Int, weight: FontWeight, lineHeight: Int? = null) = TextStyle(
+    fontFamily = AppFontFamily,
+    fontWeight = weight,
+    fontSize = size.sp,
+    lineHeight = (lineHeight ?: (size * 1.4).toInt()).sp
+)
+
+val AppTypography = Typography(
+    displaySmall = style(32, FontWeight.SemiBold),
+    headlineLarge = style(28, FontWeight.SemiBold),
+    headlineMedium = style(24, FontWeight.SemiBold),
+    headlineSmall = style(22, FontWeight.SemiBold),
+    titleLarge = style(20, FontWeight.Bold),
+    titleMedium = style(18, FontWeight.SemiBold),
+    titleSmall = style(16, FontWeight.SemiBold),
+    bodyLarge = style(15, FontWeight.Normal),
+    bodyMedium = style(13, FontWeight.Normal, lineHeight = 18),
+    bodySmall = style(11, FontWeight.Normal),
+    labelLarge = style(14, FontWeight.SemiBold),
+    labelMedium = style(13, FontWeight.SemiBold),
+    labelSmall = style(11, FontWeight.SemiBold)
 )
