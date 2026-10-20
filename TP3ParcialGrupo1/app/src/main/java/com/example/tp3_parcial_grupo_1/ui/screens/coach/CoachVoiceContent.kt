@@ -83,7 +83,7 @@ internal fun CoachListeningContent(
         DarkCard {
             Text(CoachStrings.LiveTranscript, style = MaterialTheme.typography.labelSmall, color = colors.secondary)
             Text(
-                text = CoachStrings.quoted(state.transcript + "…"),
+                text = CoachStrings.quoted(state.transcript.trimEnd('.') + "…"),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Medium,
                 color = colors.onPrimary,
@@ -154,14 +154,7 @@ internal fun CoachReplyContent(
                 StatusPill(text = CoachStrings.Speaking, dark = true)
             }
         },
-        bottom = {
-            AppButton(
-                text = CoachStrings.TapToInterrupt,
-                onClick = onInterrupt,
-                style = AppButtonStyle.Accent,
-                modifier = Modifier.padding(horizontal = MaterialTheme.spacing.xl)
-            )
-        }
+        bottom = null
     ) {
         Spacer(Modifier.height(MaterialTheme.spacing.xxl))
         VoraOrb(size = 140.dp, glowAlpha = 0.4f, showRipple = true)
@@ -193,6 +186,10 @@ internal fun CoachReplyContent(
             )
             PlaybackButton(R.drawable.ic_stop_circle, CoachStrings.Stop, onStop)
         }
+        // En Figma el botón va debajo de los controles, no anclado al borde inferior.
+        Spacer(Modifier.height(MaterialTheme.spacing.lg))
+        AppButton(text = CoachStrings.TapToInterrupt, onClick = onInterrupt, style = AppButtonStyle.Accent)
+        Spacer(Modifier.height(MaterialTheme.spacing.xl))
     }
 }
 
@@ -246,11 +243,11 @@ private fun PlaybackButton(
     }
 }
 
-// Estructura común de las pantallas oscuras: encabezado, contenido desplazable y controles abajo.
+// Estructura común de las pantallas oscuras: encabezado, contenido desplazable y controles abajo (opcionales).
 @Composable
 private fun DarkLayout(
     header: @Composable () -> Unit,
-    bottom: @Composable ColumnScope.() -> Unit,
+    bottom: (@Composable ColumnScope.() -> Unit)?,
     content: @Composable ColumnScope.() -> Unit
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
@@ -263,14 +260,16 @@ private fun DarkLayout(
             horizontalAlignment = Alignment.CenterHorizontally,
             content = content
         )
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = MaterialTheme.spacing.lg, bottom = MaterialTheme.spacing.xl),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm),
-            content = bottom
-        )
+        if (bottom != null) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = MaterialTheme.spacing.lg, bottom = MaterialTheme.spacing.xl),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm),
+                content = bottom
+            )
+        }
     }
 }
 
