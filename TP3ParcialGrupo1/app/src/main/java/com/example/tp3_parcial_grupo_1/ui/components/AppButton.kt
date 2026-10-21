@@ -18,6 +18,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -35,11 +36,12 @@ fun AppButton(
     style: AppButtonStyle = AppButtonStyle.Primary,
     enabled: Boolean = true,
     isLoading: Boolean = false,
+    leadingIcon: Painter? = null,
     trailingIcon: ImageVector? = null,
     isCompact: Boolean = false
 ) {
     val colors = MaterialTheme.colorScheme
-    val onClickSafe = { if (!isLoading) onClick() }
+    val isEnabled = enabled && !isLoading
     val content: @Composable () -> Unit = {
         Row(
             horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm),
@@ -49,8 +51,11 @@ fun AppButton(
                 CircularProgressIndicator(
                     modifier = Modifier.size(18.dp),
                     strokeWidth = 2.dp,
-                    color = LocalContentColorOrDefault(style)
+                    color = contentColorFor(style)
                 )
+            }
+            if (leadingIcon != null) {
+                Icon(leadingIcon, contentDescription = null, modifier = Modifier.size(18.dp))
             }
             Text(text, style = MaterialTheme.typography.labelLarge, maxLines = 1)
             if (trailingIcon != null) {
@@ -64,9 +69,9 @@ fun AppButton(
         .heightIn(min = 52.dp)
     when (style) {
         AppButtonStyle.Outlined -> OutlinedButton(
-            onClick = onClickSafe,
+            onClick = onClick,
             modifier = buttonModifier,
-            enabled = enabled,
+            enabled = isEnabled,
             shape = PillShape,
             contentPadding = contentPadding,
             border = BorderStroke(1.dp, colors.outlineVariant),
@@ -74,9 +79,9 @@ fun AppButton(
             content = { content() }
         )
         else -> Button(
-            onClick = onClickSafe,
+            onClick = onClick,
             modifier = buttonModifier,
-            enabled = enabled,
+            enabled = isEnabled,
             shape = PillShape,
             contentPadding = contentPadding,
             colors = if (style == AppButtonStyle.Accent) {
@@ -90,7 +95,7 @@ fun AppButton(
 }
 
 @Composable
-private fun LocalContentColorOrDefault(style: AppButtonStyle) = when (style) {
+private fun contentColorFor(style: AppButtonStyle) = when (style) {
     AppButtonStyle.Primary -> MaterialTheme.colorScheme.onPrimary
     AppButtonStyle.Accent -> MaterialTheme.colorScheme.onTertiary
     AppButtonStyle.Outlined -> MaterialTheme.colorScheme.primary

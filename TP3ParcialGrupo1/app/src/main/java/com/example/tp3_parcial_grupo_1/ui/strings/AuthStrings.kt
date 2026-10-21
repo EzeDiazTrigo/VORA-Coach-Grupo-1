@@ -1,0 +1,36 @@
+package com.example.tp3_parcial_grupo_1.ui.strings
+
+// Textos de Acceso. Todos en el idioma del diseño de Figma.
+object AuthStrings {
+    const val Tagline = "ADAPTIVE INTELLIGENCE"
+    const val FullName = "Full Name"
+    const val FullNamePlaceholder = "Alex Morgan"
+    const val Email = "Email Address"
+    const val EmailPlaceholder = "alex.morgan@email.com"
+    const val Password = "Password"
+    const val PasswordPlaceholder = "At least 8 characters"
+    const val ForgotPassword = "Forgot your password?"
+    const val PasswordHelp = "Password help?"
+    const val SecureCharacters = "8+ secure characters"
+    const val SignIn = "Sign In"
+    const val SignUp = "Sign Up"
+    const val OrContinueWith = "Or continue with"
+    const val OrSignUpWith = "Or sign up with"
+    const val Apple = "Apple"
+    const val Google = "Google"
+    const val Biometric = "Biometric"
+    const val BiometricSignIn = "End-to-end encrypted biometric sign-in"
+    const val NoAccount = "Don't have an account? "
+    const val NoAccountLink = "Sign up here"
+    const val HasAccount = "Already have an account? "
+    const val HasAccountLink = "Sign In"
+    const val AccountIssues = "Having account issues? "
+    const val AccountIssuesLink = "Recover"
+    const val EnterDemoMode = "Enter demo mode"
+
+    const val EmailRequired = "Enter your email."
+    const val EmailInvalid = "Enter a valid email address."
+    const val PasswordRequired = "Enter your password."
+    const val PasswordTooShort = "Password must be at least 8 characters."
+    const val NameRequired = "Enter your full name."
+}
