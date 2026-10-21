@@ -37,14 +37,21 @@ Fuente: la página «Sistema de diseño» del PDF de Figma.
 - **Nombre:** `TP3ParcialGrupo1Theme` pasó a `AppTheme`.
 - El frame de Figma es de 390 px de ancho, con márgenes de 20 px.
 
+### 4. Componentes de formularios y `Strings`
+- **Componentes (`ui/components/`)**: `AppButton` (estilos principal, lima y contorno; `isLoading`, `trailingIcon`, `isCompact`), `AppCard` (tarjeta y panel verde), `AppTextField`, `PasswordTextField` y `AppScaffold`. Son sin estado, reciben `modifier` y toman todo del tema; cada uno tiene su `@Preview`.
+- **`Strings`**: textos compartidos (volver, reintentar, error genérico, modo demostración).
+- **Íconos extendidos**: `material-icons-extended` aporta el ojo de contraseña, el candado y el sobre.
+
+**Por qué**: las pantallas se arman componiendo estos elementos en lugar de repetir campos y botones, y así mantienen la fidelidad con Figma desde un solo lugar.
+
 ## Cómo se verificó
 - `./gradlew :app:assembleDebug` y `:app:testDebugUnitTest` verdes.
 - Se confirmó que existen las clases `Hilt_*`.
-- El tema se revisó en el emulador Pixel_9 con `ThemeShowcase`.
+- El tema y los componentes se revisaron en el emulador Pixel_9.
 
 ## Entorno
 - No hay `local.properties` versionado (está en `.gitignore`). Para compilar desde terminal: `ANDROID_HOME=~/Android/Sdk sh gradlew :app:assembleDebug` (`gradlew` no tiene bit de ejecución en este checkout).
 
 ## Pendiente
-- Componentes de formularios y `Strings` común.
+- Pantallas de Acceso, Inicio y Perfil.
 - Fuente Manrope: se incorpora cuando se exporte el `.ttf` de Figma a `res/font/` (hoy `AppFontFamily` usa la del sistema).
