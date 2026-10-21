@@ -20,7 +20,43 @@ object ProgressStrings {
     const val View = "View"
     const val ActiveGoal = "ACTIVE GOAL"
 
+    const val MoreOptions = "More options"
+
+    const val WorkoutProgressTitle = "Workout progress"
+    const val TrainingVolume = "Training Volume"
+    const val PersonalBest = "PERSONAL BEST"
+    const val ExerciseProgress = "EXERCISE PROGRESS"
+
+    const val NutritionProgressTitle = "Nutrition progress"
+    const val MacroCalories = "Calories"
+    const val MacroProtein = "Protein"
+    const val MacroCarbs = "Carbs"
+    const val MacroFat = "Fat"
+    const val Hit = "HIT"
+    const val Miss = "MISS"
+    const val NutritionAnalysis = "Nutrition Analysis"
+    const val FoodHabits = "FOOD HABITS & PATTERNS"
+
+    const val HealthTrendsTitle = "Health trends"
+    const val HealthTrendsSubtitle = "See how your daily habits are changing."
+    const val WeeklyStepsTrend = "Weekly Steps Trend"
+    const val HabitSignals = "HABIT SIGNALS"
+    const val Improving = "Improving"
+    const val Consistent = "Consistent"
+
+    const val WeeklyReviewTitle = "Your weekly review"
+    const val WeeklyReviewSubtitle = "Here's what changed this week."
+    const val WhatWentWell = "WHAT WENT WELL"
+    const val WhatToImprove = "WHAT TO IMPROVE"
+    const val GetDinnerIdeas = "Get dinner ideas"
+    const val NextWeekRecommendations = "NEXT WEEK'S RECOMMENDATIONS"
+    const val ViewNextWeekPlan = "View next week's plan"
+    const val AskVora = "Ask VORA"
+    const val Done = "Done"
+
     fun percent(value: Int) = "$value%"
     fun quoted(text: String) = "\"$text\""
     fun complete(percent: Int) = "$percent% complete"
+    fun stepsGoal(goal: String) = "Goal: $goal"
+    fun dailyTarget(macro: String, target: String) = "DAILY AVG ${macro.uppercase()} TARGET ($target)"
 }
