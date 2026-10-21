@@ -1,32 +1,32 @@
 package com.example.tp3_parcial_grupo_1.data.remote.dto
 
+import com.google.gson.annotations.SerializedName
 import com.example.tp3_parcial_grupo_1.model.Workout
 
 data class WorkoutDto(
+    @SerializedName("id")
     val id: String,
+    @SerializedName("name")
     val name: String,
+    @SerializedName("level")
     val level: String,
+    @SerializedName("durationMinutes")
     val durationMinutes: Int,
-    val exerciseCount: Int,
-    val description: String? = null,
-    val exercises: List<ExerciseDto> = emptyList()
-)
-
-data class WorkoutListResponseDto(
-    val data: List<WorkoutDto>
-)
-
-data class WorkoutDetailResponseDto(
-    val data: WorkoutDto
-)
-
-fun WorkoutDto.toDomain(): Workout =
-    Workout(
-        id = id,
-        name = name,
-        level = level,
-        durationMinutes = durationMinutes,
-        exerciseCount = exerciseCount,
-        description = description,
-        exercises = exercises.map(ExerciseDto::toDomain)
-    )
+    @SerializedName("description")
+    val description: String?,
+    @SerializedName("exercises")
+    val exercises: List<ExerciseDto>?
+) {
+    fun toDomain(): Workout {
+        val exercisesDomain = exercises.orEmpty().map(ExerciseDto::toDomain)
+        return Workout(
+            id = id,
+            name = name,
+            level = level,
+            durationMinutes = durationMinutes,
+            exerciseCount = exercisesDomain.size,
+            description = description,
+            exercises = exercisesDomain
+        )
+    }
+}

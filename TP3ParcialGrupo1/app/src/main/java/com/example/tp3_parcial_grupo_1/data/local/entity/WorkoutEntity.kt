@@ -1,6 +1,5 @@
 package com.example.tp3_parcial_grupo_1.data.local.entity
 
-import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -12,6 +11,5 @@ data class WorkoutEntity(
     val level: String,
     val durationMinutes: Int,
     val exerciseCount: Int,
-    val description: String? = null,
-    // Nota: Las relaciones 1:N con ExerciseEntity se gestionarán en la DAO
+    val description: String? = null
 )
