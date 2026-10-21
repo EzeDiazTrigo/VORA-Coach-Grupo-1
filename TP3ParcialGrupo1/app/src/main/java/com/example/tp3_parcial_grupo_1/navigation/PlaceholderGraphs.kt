@@ -37,35 +37,6 @@ private fun NavBackStackEntry.argumentSummary(arguments: List<NamedNavArgument>)
 
 private fun NavBackStackEntry.workoutId(): String = savedStateHandle.get<String>(NavArg.WorkoutId).orEmpty()
 
-fun NavGraphBuilder.authPlaceholderGraph(navController: NavController) {
-    navigation(startDestination = AppDestination.Login.route, route = AppDestination.AuthGraph.route) {
-        placeholder(AppDestination.Login, "Login - 01 — SignIn") {
-            listOf(
-                PlaceholderAction("Sign In") { navController.navigateToHomeAfterAuth() },
-                PlaceholderAction("Sign up here") { navController.navigate(AppDestination.Register.route) }
-            )
-        }
-        placeholder(AppDestination.Register, "Login - 02 — SignUp") {
-            listOf(
-                PlaceholderAction("Sign Up") { navController.navigateToHomeAfterAuth() },
-                PlaceholderAction("Sign In") { navController.popBackStack() }
-            )
-        }
-    }
-}
-
-fun NavGraphBuilder.homePlaceholderGraph(navController: NavController) {
-    navigation(startDestination = AppDestination.Home.route, route = AppDestination.HomeGraph.route) {
-        placeholder(AppDestination.Home, "Home / 01 — Dashboard") {
-            listOf(
-                PlaceholderAction("Notifications") { navController.navigate(AppDestination.Notifications.route) },
-                PlaceholderAction("Start voice session") { navController.navigate(AppDestination.Coach.route) }
-            )
-        }
-        placeholder(AppDestination.Notifications, "Home / 02 — Notifications")
-    }
-}
-
 fun NavGraphBuilder.coachPlaceholderGraph() {
     placeholder(AppDestination.Coach, "Voice / 01 — Idle")
 }

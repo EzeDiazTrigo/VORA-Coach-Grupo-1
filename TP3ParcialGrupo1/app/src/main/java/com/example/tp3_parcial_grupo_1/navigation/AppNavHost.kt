@@ -45,8 +45,8 @@ fun AppNavHost(
             startDestination = AppDestination.AuthGraph.route,
             modifier = Modifier.padding(innerPadding)
         ) {
-            authPlaceholderGraph(navController)
-            homePlaceholderGraph(navController)
+            authGraph(navController)
+            homeGraph(navController)
             coachPlaceholderGraph()
             workoutPlaceholderGraph(navController)
             nutritionPlaceholderGraph(navController)
