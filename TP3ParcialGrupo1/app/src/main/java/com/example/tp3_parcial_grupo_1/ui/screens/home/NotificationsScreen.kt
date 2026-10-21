@@ -1,5 +1,6 @@
 package com.example.tp3_parcial_grupo_1.ui.screens.home
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -12,11 +13,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.AutoAwesome
-import androidx.compose.material.icons.outlined.FitnessCenter
-import androidx.compose.material.icons.outlined.LocalFireDepartment
-import androidx.compose.material.icons.outlined.Restaurant
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -25,11 +21,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.tp3_parcial_grupo_1.R
 import com.example.tp3_parcial_grupo_1.data.demo.HomeDemoData
 import com.example.tp3_parcial_grupo_1.ui.components.AppCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
@@ -39,6 +36,7 @@ import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 
 @Composable
 fun NotificationsRoute(
+    onNotificationOpen: (NotificationType) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: NotificationsViewModel = hiltViewModel()
 ) {
@@ -46,7 +44,10 @@ fun NotificationsRoute(
     NotificationsScreen(
         uiState = uiState,
         onMarkAllAsReadClick = viewModel::onMarkAllAsReadClick,
-        onNotificationClick = viewModel::onNotificationClick,
+        onNotificationClick = { item ->
+            viewModel.onNotificationClick(item.id)
+            onNotificationOpen(item.type)
+        },
         modifier = modifier
     )
 }
@@ -55,7 +56,7 @@ fun NotificationsRoute(
 fun NotificationsScreen(
     uiState: NotificationsUiState,
     onMarkAllAsReadClick: () -> Unit,
-    onNotificationClick: (Int) -> Unit,
+    onNotificationClick: (NotificationItem) -> Unit,
     modifier: Modifier = Modifier
 ) {
     AppScaffold(modifier = modifier.fillMaxSize()) { padding ->
@@ -90,7 +91,7 @@ fun NotificationsScreen(
                         )
                     }
                     items(items, key = { it.id }) { item ->
-                        NotificationCard(item, onClick = { onNotificationClick(item.id) })
+                        NotificationCard(item, onClick = { onNotificationClick(item) })
                     }
                 }
             }
@@ -103,7 +104,7 @@ private fun NotificationCard(item: NotificationItem, onClick: () -> Unit) {
     AppCard(onClick = onClick) {
         Row(horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.lg)) {
             Icon(
-                imageVector = item.type.icon(),
+                painter = painterResource(item.type.iconRes()),
                 contentDescription = null,
                 modifier = Modifier.size(20.dp),
                 tint = MaterialTheme.colorScheme.primary
@@ -134,11 +135,12 @@ private fun NotificationCard(item: NotificationItem, onClick: () -> Unit) {
     }
 }
 
-private fun NotificationType.icon(): ImageVector = when (this) {
-    NotificationType.Coach -> Icons.Outlined.AutoAwesome
-    NotificationType.Workout -> Icons.Outlined.FitnessCenter
-    NotificationType.Nutrition -> Icons.Outlined.Restaurant
-    NotificationType.Milestone -> Icons.Outlined.LocalFireDepartment
+@DrawableRes
+private fun NotificationType.iconRes(): Int = when (this) {
+    NotificationType.Coach -> R.drawable.ic_sparkles
+    NotificationType.Workout -> R.drawable.ic_dumbbell
+    NotificationType.Nutrition -> R.drawable.ic_apple
+    NotificationType.Milestone -> R.drawable.ic_flame
 }
 
 @Preview(showBackground = true, widthDp = 390, heightDp = 800)

@@ -11,7 +11,6 @@ import com.example.tp3_parcial_grupo_1.ui.screens.home.RecommendedWorkout
 object HomeDemoData {
     val dashboard = HomeUiState(
         userName = "Alex Morgan",
-        initials = "AM",
         tip = "You're on track. A protein-rich dinner would help you reach your daily target.",
         calories = MacroProgress(current = 1420, goal = 2100),
         protein = MacroProgress(current = 104, goal = 140),

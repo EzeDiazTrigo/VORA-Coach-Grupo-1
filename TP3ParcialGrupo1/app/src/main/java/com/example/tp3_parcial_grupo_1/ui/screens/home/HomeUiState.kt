@@ -14,7 +14,6 @@ data class RecommendedWorkout(
 
 data class HomeUiState(
     val userName: String,
-    val initials: String,
     val tip: String,
     val calories: MacroProgress,
     val protein: MacroProgress,

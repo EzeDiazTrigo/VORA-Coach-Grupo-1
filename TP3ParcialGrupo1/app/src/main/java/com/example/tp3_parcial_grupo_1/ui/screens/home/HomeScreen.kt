@@ -1,10 +1,10 @@
 package com.example.tp3_parcial_grupo_1.ui.screens.home
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
@@ -19,17 +19,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.AutoAwesome
-import androidx.compose.material.icons.outlined.CalendarToday
-import androidx.compose.material.icons.outlined.Mic
-import androidx.compose.material.icons.outlined.Notifications
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -39,19 +32,26 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import java.util.Locale
+import com.example.tp3_parcial_grupo_1.R
 import com.example.tp3_parcial_grupo_1.data.demo.HomeDemoData
 import com.example.tp3_parcial_grupo_1.ui.components.AppButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppCardStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
+import com.example.tp3_parcial_grupo_1.ui.components.GoalValueText
+import com.example.tp3_parcial_grupo_1.ui.components.MacroProgressBar
+import com.example.tp3_parcial_grupo_1.ui.components.ProgressRing
 import com.example.tp3_parcial_grupo_1.ui.strings.HomeStrings
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
 import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
@@ -124,13 +124,12 @@ private fun HomeHeader(uiState: HomeUiState, onNotificationsClick: () -> Unit) {
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md)
     ) {
-        // Marcador del avatar; se reemplaza por la foto exportada de Figma.
-        Box(
-            modifier = Modifier.size(48.dp).background(MaterialTheme.extendedColors.mintSoft, CircleShape),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(uiState.initials, style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.primary)
-        }
+        Image(
+            painter = painterResource(R.drawable.img_avatar_demo),
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.size(48.dp).clip(CircleShape)
+        )
         Column(modifier = Modifier.weight(1f)) {
             Text(HomeStrings.Greeting, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
             Text(uiState.userName, style = MaterialTheme.typography.titleMedium)
@@ -140,7 +139,7 @@ private fun HomeHeader(uiState: HomeUiState, onNotificationsClick: () -> Unit) {
             colors = IconButtonDefaults.iconButtonColors(containerColor = MaterialTheme.colorScheme.surface),
             modifier = Modifier.border(1.dp, MaterialTheme.colorScheme.outlineVariant, CircleShape)
         ) {
-            Icon(Icons.Outlined.Notifications, contentDescription = HomeStrings.NotificationsButton)
+            Icon(painterResource(R.drawable.ic_bell), contentDescription = HomeStrings.NotificationsButton)
         }
     }
 }
@@ -169,7 +168,7 @@ private fun CoachPanel(onStartVoiceClick: () -> Unit, onStartWorkoutClick: () ->
             text = HomeStrings.StartVoiceSession,
             onClick = onStartVoiceClick,
             style = AppButtonStyle.Accent,
-            leadingIcon = Icons.Outlined.Mic
+            leadingIcon = painterResource(R.drawable.ic_mic)
         )
         Row(horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm)) {
             PanelChip(HomeStrings.StartMyWorkout, onStartWorkoutClick)
@@ -201,7 +200,7 @@ private fun TipCard(tip: String) {
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md)
     ) {
-        Icon(Icons.Outlined.AutoAwesome, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
+        Icon(painterResource(R.drawable.ic_sparkles), contentDescription = null, tint = MaterialTheme.colorScheme.primary)
         Text(tip, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.primary)
     }
 }
@@ -218,14 +217,7 @@ private fun OverviewRow(uiState: HomeUiState) {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm)
             ) {
-                Box(contentAlignment = Alignment.Center) {
-                    CircularProgressIndicator(
-                        progress = { uiState.dailyGoal },
-                        modifier = Modifier.size(72.dp),
-                        strokeWidth = 6.dp,
-                        color = MaterialTheme.colorScheme.primary,
-                        trackColor = MaterialTheme.colorScheme.outlineVariant
-                    )
+                ProgressRing(progress = uiState.dailyGoal) {
                     Text("${(uiState.dailyGoal * 100).toInt()}%", style = MaterialTheme.typography.labelLarge)
                 }
                 Text(HomeStrings.DailyGoal, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
@@ -238,33 +230,26 @@ private fun OverviewRow(uiState: HomeUiState) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(HomeStrings.Nutrition, style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                Text(
-                    "${format(uiState.calories.current)} / ${format(uiState.calories.goal)} kcal",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                GoalValueText(
+                    current = format(uiState.calories.current),
+                    goal = "${format(uiState.calories.goal)} kcal"
                 )
             }
-            MacroRow(HomeStrings.Protein, uiState.protein, MaterialTheme.colorScheme.primary)
-            MacroRow(HomeStrings.Carbs, uiState.carbs, MaterialTheme.extendedColors.mint)
+            MacroProgressBar(
+                name = HomeStrings.Protein,
+                current = "${uiState.protein.current}g",
+                goal = "${uiState.protein.goal}g",
+                progress = uiState.protein.fraction,
+                color = MaterialTheme.colorScheme.primary
+            )
+            MacroProgressBar(
+                name = HomeStrings.Carbs,
+                current = "${uiState.carbs.current}g",
+                goal = "${uiState.carbs.goal}g",
+                progress = uiState.carbs.fraction,
+                color = MaterialTheme.extendedColors.mint
+            )
         }
-    }
-}
-
-@Composable
-private fun MacroRow(name: String, macro: MacroProgress, color: Color) {
-    Column(verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xxs)) {
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-            Text(name, style = MaterialTheme.typography.bodyMedium)
-            Text("${macro.current}g / ${macro.goal}g", style = MaterialTheme.typography.bodyMedium)
-        }
-        LinearProgressIndicator(
-            progress = { macro.fraction },
-            modifier = Modifier.fillMaxWidth().height(4.dp),
-            color = color,
-            trackColor = MaterialTheme.colorScheme.outlineVariant,
-            gapSize = 0.dp,
-            drawStopIndicator = {}
-        )
     }
 }
 
@@ -298,7 +283,7 @@ private fun WorkoutCard(workout: RecommendedWorkout, onStartWorkoutClick: () -> 
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm)) {
-                Icon(Icons.Outlined.CalendarToday, contentDescription = null, modifier = Modifier.size(16.dp), tint = MaterialTheme.colorScheme.primary)
+                Icon(painterResource(R.drawable.ic_calendar), contentDescription = null, modifier = Modifier.size(16.dp), tint = MaterialTheme.colorScheme.primary)
                 Text(HomeStrings.RecommendedWorkout, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
             Text(HomeStrings.Today, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
