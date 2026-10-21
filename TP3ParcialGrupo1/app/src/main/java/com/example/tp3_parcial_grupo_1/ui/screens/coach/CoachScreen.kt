@@ -12,6 +12,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -185,6 +186,7 @@ internal fun CoachHeader(
     onBack: () -> Unit,
     dark: Boolean,
     modifier: Modifier = Modifier,
+    showOnlineDot: Boolean = false,
     trailing: @Composable RowScope.() -> Unit = {}
 ) {
     val colors = MaterialTheme.colorScheme
@@ -217,9 +219,16 @@ internal fun CoachHeader(
             text = title,
             style = MaterialTheme.typography.titleSmall,
             fontWeight = FontWeight.Medium,
-            color = contentColor,
-            modifier = Modifier.weight(1f)
+            color = contentColor
         )
+        if (showOnlineDot) {
+            Box(
+                modifier = Modifier
+                    .size(6.dp)
+                    .background(colors.secondary, CircleShape)
+            )
+        }
+        Spacer(Modifier.weight(1f))
         trailing()
     }
 }

@@ -73,7 +73,7 @@ internal fun CoachConversationContent(state: CoachUiState.Conversation, actions:
     Column(modifier = Modifier.fillMaxSize()) {
         Surface(color = MaterialTheme.colorScheme.surface) {
             Column {
-                CoachHeader(title = CoachStrings.Title, onBack = actions.onBack, dark = false) {
+                CoachHeader(title = CoachStrings.Title, onBack = actions.onBack, dark = false, showOnlineDot = true) {
                     VoraOrb(size = MiniOrbSize, glowAlpha = 0.25f, icon = null)
                 }
                 HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
