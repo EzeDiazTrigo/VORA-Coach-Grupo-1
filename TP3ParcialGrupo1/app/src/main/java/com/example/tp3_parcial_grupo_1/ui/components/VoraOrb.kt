@@ -57,7 +57,8 @@ fun VoraOrb(
     variant: OrbVariant = OrbVariant.Active,
     glowAlpha: Float = 0.25f,
     showRipple: Boolean = false,
-    @DrawableRes icon: Int = R.drawable.ic_vora_waveform
+    @DrawableRes icon: Int? = R.drawable.ic_vora_waveform,
+    iconFraction: Float = IconSize
 ) {
     val colors = MaterialTheme.colorScheme
     val extended = MaterialTheme.extendedColors
@@ -123,12 +124,14 @@ fun VoraOrb(
                 radius = coreRadius
             )
         }
-        Icon(
-            painter = painterResource(icon),
-            contentDescription = null,
-            tint = colors.onPrimary,
-            modifier = Modifier.size(size * IconSize)
-        )
+        if (icon != null) {
+            Icon(
+                painter = painterResource(icon),
+                contentDescription = null,
+                tint = colors.onPrimary,
+                modifier = Modifier.size(size * iconFraction)
+            )
+        }
     }
 }
 
@@ -149,7 +152,7 @@ private fun VoraOrbPreview() {
             ) {
                 VoraOrb(size = 140.dp, glowAlpha = 0.45f, showRipple = true)
             }
-            VoraOrb(size = 120.dp, variant = OrbVariant.Muted, glowAlpha = 0.1f, icon = R.drawable.ic_repeat_1)
+            VoraOrb(size = 120.dp, variant = OrbVariant.Muted, glowAlpha = 0.1f, icon = R.drawable.ic_vora_retry, iconFraction = 0.28f)
         }
     }
 }

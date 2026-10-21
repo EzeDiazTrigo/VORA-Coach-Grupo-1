@@ -38,17 +38,10 @@ import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 
 // Figma: Voice / 01 · Idle
 @Composable
-internal fun CoachIdleContent(
-    state: CoachUiState.Idle,
-    onBack: () -> Unit,
-    onMicClick: () -> Unit,
-    onSuggestionClick: (String) -> Unit,
-    onLastConversationClick: () -> Unit,
-    onTypeInstead: () -> Unit
-) {
+internal fun CoachIdleContent(state: CoachUiState.Idle, actions: CoachActions) {
     val spacing = MaterialTheme.spacing
     Column(modifier = Modifier.fillMaxSize()) {
-        CoachHeader(title = CoachStrings.Title, onBack = onBack, dark = false) {
+        CoachHeader(title = CoachStrings.Title, onBack = actions.onBack, dark = false) {
             StatusPill(text = CoachStrings.Online, dark = false)
         }
         Column(
@@ -75,14 +68,14 @@ internal fun CoachIdleContent(
                 textAlign = TextAlign.Center
             )
             Spacer(Modifier.height(spacing.xxl))
-            SuggestedQuestions(questions = state.suggestions, onClick = onSuggestionClick)
+            SuggestedQuestions(questions = state.suggestions, onClick = actions.onSuggestionClick)
             state.lastConversation?.let {
                 Spacer(Modifier.height(spacing.xxl))
-                LastConversationCard(conversation = it, onClick = onLastConversationClick)
+                LastConversationCard(conversation = it, onClick = actions.onTypeInstead)
             }
             Spacer(Modifier.height(spacing.xl))
         }
-        MicControl(onMicClick = onMicClick, onTypeInstead = onTypeInstead)
+        MicControl(onMicClick = actions.onMicClick, onTypeInstead = actions.onTypeInstead)
     }
 }
 

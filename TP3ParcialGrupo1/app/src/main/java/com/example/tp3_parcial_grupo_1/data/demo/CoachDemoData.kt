@@ -10,6 +10,16 @@ data class CoachExchange(
 
 data class LastConversation(val text: String, val timeAgo: String)
 
+enum class CoachAuthor { User, Vora }
+
+data class CoachMessage(
+    val id: Long,
+    val author: CoachAuthor,
+    val text: String,
+    val time: String,
+    val audioSeconds: Int? = null
+)
+
 object CoachDemoData {
     val lunch = CoachExchange(
         question = "Almorcé pollo, arroz y algunas verduras.",
@@ -45,6 +55,10 @@ object CoachDemoData {
         )
     )
 
+    // Respuesta para preguntas escritas que no están en la demo.
+    const val GenericReply =
+        "Estoy en modo demostración, así que respondo con ejemplos. Probá con alguna de las preguntas sugeridas."
+
     val suggestedQuestions: List<String> = suggestions.map { it.question }
 
     val lastConversation = LastConversation(
@@ -52,6 +66,28 @@ object CoachDemoData {
         timeAgo = "hace 2 horas"
     )
 
+    const val ConversationDate = "HOY A LAS 12:40"
+
+    // La conversación de ejemplo del frame «Voice / 05 · Conversation».
+    val conversation = listOf(
+        CoachMessage(1, CoachAuthor.User, "¿Qué ceno hoy?", "12:41"),
+        CoachMessage(
+            2, CoachAuthor.Vora,
+            "Hoy te faltan 36 g de proteína. Te recomiendo pechuga grillada con verduras de estación asadas y una porción de yogur griego.",
+            "12:41",
+            audioSeconds = 14
+        ),
+        CoachMessage(3, CoachAuthor.User, "¿Me lo pasás a vegetariano?", "12:42"),
+        CoachMessage(
+            4, CoachAuthor.Vora,
+            "Claro. Probá con tofu grillado, verduras asadas, quinoa y yogur griego.",
+            "12:43"
+        )
+    )
+
     fun exchangeFor(question: String): CoachExchange =
-        suggestions.firstOrNull { it.question == question } ?: lunch
+        suggestions.firstOrNull { it.question.equals(question.trim(), ignoreCase = true) } ?: lunch
+
+    fun replyFor(question: String): String =
+        suggestions.firstOrNull { it.question.equals(question.trim(), ignoreCase = true) }?.reply ?: GenericReply
 }

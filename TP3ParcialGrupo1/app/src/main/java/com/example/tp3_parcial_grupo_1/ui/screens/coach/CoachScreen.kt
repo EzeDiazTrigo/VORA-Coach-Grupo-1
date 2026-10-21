@@ -50,6 +50,27 @@ import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 import kotlinx.coroutines.launch
 
+// Eventos de la pantalla del Asistente; agrupados para no pasar 17 lambdas sueltas.
+data class CoachActions(
+    val onBack: () -> Unit = {},
+    val onMicClick: () -> Unit = {},
+    val onSuggestionClick: (String) -> Unit = {},
+    val onTypeInstead: () -> Unit = {},
+    val onFinishListening: () -> Unit = {},
+    val onCancel: () -> Unit = {},
+    val onTogglePause: () -> Unit = {},
+    val onReplay: () -> Unit = {},
+    val onStop: () -> Unit = {},
+    val onInterrupt: () -> Unit = {},
+    val onDraftChange: (String) -> Unit = {},
+    val onSend: () -> Unit = {},
+    val onListenToMessage: (Long) -> Unit = {},
+    val onRetry: () -> Unit = {},
+    val onDismissError: () -> Unit = {},
+    // Acciones sin servicio real («+», «Permitir acceso»): informan el modo demostración.
+    val onDemoAction: () -> Unit = {}
+)
+
 @Composable
 fun CoachRoute(
     onBack: () -> Unit,
@@ -62,18 +83,35 @@ fun CoachRoute(
     BackHandler(enabled = uiState !is CoachUiState.Idle) { viewModel.onBack() }
     LightStatusBarIcons(enabled = uiState.isDark)
 
+    val actions = remember(viewModel) {
+        CoachActions(
+            onBack = { if (!viewModel.onBack()) onBack() },
+            onMicClick = viewModel::onMicClick,
+            onSuggestionClick = viewModel::onSuggestionClick,
+            onTypeInstead = viewModel::onTypeInstead,
+            onFinishListening = viewModel::onFinishListening,
+            onCancel = viewModel::onCancel,
+            onTogglePause = viewModel::onTogglePause,
+            onReplay = viewModel::onReplay,
+            onStop = viewModel::onStop,
+            onInterrupt = viewModel::onInterrupt,
+            onDraftChange = viewModel::onDraftChange,
+            onSend = viewModel::onSend,
+            onListenToMessage = viewModel::onListenToMessage,
+            onRetry = viewModel::onRetry,
+            onDismissError = viewModel::onDismissError,
+            onDemoAction = {
+                scope.launch {
+                    snackbarHostState.currentSnackbarData?.dismiss()
+                    snackbarHostState.showSnackbar(Strings.DemoMode)
+                }
+            }
+        )
+    }
+
     CoachScreen(
         uiState = uiState,
-        onBack = { if (!viewModel.onBack()) onBack() },
-        onMicClick = viewModel::onMicClick,
-        onSuggestionClick = viewModel::onSuggestionClick,
-        onTypeInstead = { scope.launch { snackbarHostState.showSnackbar(Strings.DemoMode) } },
-        onFinishListening = viewModel::onFinishListening,
-        onCancel = viewModel::onCancel,
-        onTogglePause = viewModel::onTogglePause,
-        onReplay = viewModel::onReplay,
-        onStop = viewModel::onStop,
-        onInterrupt = viewModel::onInterrupt,
+        actions = actions,
         snackbarHost = { SnackbarHost(snackbarHostState) }
     )
 }
@@ -81,16 +119,7 @@ fun CoachRoute(
 @Composable
 fun CoachScreen(
     uiState: CoachUiState,
-    onBack: () -> Unit,
-    onMicClick: () -> Unit,
-    onSuggestionClick: (String) -> Unit,
-    onTypeInstead: () -> Unit,
-    onFinishListening: () -> Unit,
-    onCancel: () -> Unit,
-    onTogglePause: () -> Unit,
-    onReplay: () -> Unit,
-    onStop: () -> Unit,
-    onInterrupt: () -> Unit,
+    actions: CoachActions,
     modifier: Modifier = Modifier,
     snackbarHost: @Composable () -> Unit = {}
 ) {
@@ -112,33 +141,12 @@ fun CoachScreen(
         ) { state ->
             Box(modifier = Modifier.safeDrawingPadding()) {
                 when (state) {
-                    is CoachUiState.Idle -> CoachIdleContent(
-                        state = state,
-                        onBack = onBack,
-                        onMicClick = onMicClick,
-                        onSuggestionClick = onSuggestionClick,
-                        onLastConversationClick = onTypeInstead,
-                        onTypeInstead = onTypeInstead
-                    )
-                    is CoachUiState.Listening -> CoachListeningContent(
-                        state = state,
-                        onBack = onBack,
-                        onFinishListening = onFinishListening,
-                        onCancel = onCancel
-                    )
-                    is CoachUiState.Processing -> CoachProcessingContent(
-                        state = state,
-                        onBack = onBack,
-                        onCancel = onCancel
-                    )
-                    is CoachUiState.Reply -> CoachReplyContent(
-                        state = state,
-                        onBack = onBack,
-                        onTogglePause = onTogglePause,
-                        onReplay = onReplay,
-                        onStop = onStop,
-                        onInterrupt = onInterrupt
-                    )
+                    is CoachUiState.Idle -> CoachIdleContent(state, actions)
+                    is CoachUiState.Listening -> CoachListeningContent(state, actions)
+                    is CoachUiState.Processing -> CoachProcessingContent(state, actions)
+                    is CoachUiState.Reply -> CoachReplyContent(state, actions)
+                    is CoachUiState.Conversation -> CoachConversationContent(state, actions)
+                    CoachUiState.MicError -> CoachMicErrorContent(actions)
                 }
             }
         }
@@ -151,7 +159,8 @@ fun CoachScreen(
 }
 
 // Escuchando, Procesando y Respuesta usan el fondo verde oscuro de Figma.
-private val CoachUiState.isDark: Boolean get() = this !is CoachUiState.Idle
+private val CoachUiState.isDark: Boolean
+    get() = this is CoachUiState.Listening || this is CoachUiState.Processing || this is CoachUiState.Reply
 
 @Composable
 private fun LightStatusBarIcons(enabled: Boolean) {
@@ -249,12 +258,7 @@ internal fun LiveIndicator(text: String) {
 @Composable
 private fun PreviewScreen(state: CoachUiState) {
     AppTheme {
-        CoachScreen(
-            uiState = state,
-            onBack = {}, onMicClick = {}, onSuggestionClick = {}, onTypeInstead = {},
-            onFinishListening = {}, onCancel = {}, onTogglePause = {}, onReplay = {},
-            onStop = {}, onInterrupt = {}
-        )
+        CoachScreen(uiState = state, actions = CoachActions())
     }
 }
 
@@ -287,3 +291,13 @@ private fun CoachReplyPreview() = PreviewScreen(
 private fun CoachIdleSmallPreview() = PreviewScreen(
     CoachUiState.Idle(CoachDemoData.suggestedQuestions, CoachDemoData.lastConversation)
 )
+
+@Preview(name = "Conversación", widthDp = 390, heightDp = 844)
+@Composable
+private fun CoachConversationPreview() = PreviewScreen(
+    CoachUiState.Conversation(CoachDemoData.conversation, draft = "", isVoraTyping = false)
+)
+
+@Preview(name = "Error de micrófono", widthDp = 390, heightDp = 844)
+@Composable
+private fun CoachMicErrorPreview() = PreviewScreen(CoachUiState.MicError)
