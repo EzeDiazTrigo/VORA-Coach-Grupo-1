@@ -18,6 +18,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -35,6 +36,7 @@ fun AppButton(
     style: AppButtonStyle = AppButtonStyle.Primary,
     enabled: Boolean = true,
     isLoading: Boolean = false,
+    leadingIcon: Painter? = null,
     trailingIcon: ImageVector? = null,
     isCompact: Boolean = false
 ) {
@@ -51,6 +53,9 @@ fun AppButton(
                     strokeWidth = 2.dp,
                     color = contentColorFor(style)
                 )
+            }
+            if (leadingIcon != null) {
+                Icon(leadingIcon, contentDescription = null, modifier = Modifier.size(18.dp))
             }
             Text(text, style = MaterialTheme.typography.labelLarge, maxLines = 1)
             if (trailingIcon != null) {

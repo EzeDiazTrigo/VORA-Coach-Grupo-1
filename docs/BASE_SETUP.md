@@ -51,6 +51,12 @@ Fuente: la página «Sistema de diseño» del PDF de Figma.
 - **Textos**: `AuthStrings` mantiene los textos del diseño de Figma; los mensajes de error van en español.
 - **Provisorio**: el logo y los botones de Apple y Google usan marcadores hasta contar con los recursos exportados de Figma.
 
+### 6. Inicio
+- **Dashboard** (`HomeScreen`) y **Notificaciones** (`NotificationsScreen`), sin estado y con `@Preview`, con sus `Route` y `ViewModel`. Los `Route` reciben lambdas de navegación (campana, sesión de voz, entrenamiento, registrar comida) y no un `NavController`.
+- **Datos de demostración**: `data/demo/HomeDemoData.kt`, identificados como demostración. Las notificaciones se pueden marcar como leídas (una o todas).
+- **Barra inferior**: no se incluye aquí; se agrega cuando exista el componente compartido.
+- **Provisorio**: el avatar usa las iniciales hasta contar con la foto exportada de Figma.
+
 ## Cómo se verificó
 - `./gradlew :app:assembleDebug` y `:app:testDebugUnitTest` verdes.
 - Se confirmó que existen las clases `Hilt_*`.
@@ -61,5 +67,5 @@ Fuente: la página «Sistema de diseño» del PDF de Figma.
 
 ## Pendiente
 - Conectar las lambdas de Acceso a las rutas de navegación.
-- Pantallas de Inicio y Perfil.
+- Pantallas de Perfil.
 - Fuente Manrope: se incorpora cuando se exporte el `.ttf` de Figma a `res/font/` (hoy `AppFontFamily` usa la del sistema).
