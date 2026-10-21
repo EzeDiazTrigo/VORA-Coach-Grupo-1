@@ -18,6 +18,12 @@ class MealRepository @Inject constructor(
         }
     }
 
+    fun observeAllMeals(): Flow<List<Meal>> {
+        return mealDao.observeAll().map { entities ->
+            entities.map { it.toDomain() }
+        }
+    }
+
     suspend fun getMealById(id: Long): Meal? {
         return mealDao.getById(id)?.toDomain()
     }

@@ -6,6 +6,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -27,14 +28,14 @@ fun ManualLogScreen(
     onBackClick: () -> Unit,
     onSaveMeal: (Meal) -> Unit
 ) {
-    var name by remember { mutableStateOf("") }
-    var date by remember { mutableStateOf(SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())) }
-    var calories by remember { mutableStateOf("") }
-    var protein by remember { mutableStateOf("") }
-    var carbs by remember { mutableStateOf("") }
-    var fat by remember { mutableStateOf("") }
-    var selectedType by remember { mutableStateOf(MealType.LUNCH) }
-    var errorMessage by remember { mutableStateOf<String?>(null) }
+    var name by rememberSaveable { mutableStateOf("") }
+    var date by rememberSaveable { mutableStateOf(SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())) }
+    var calories by rememberSaveable { mutableStateOf("") }
+    var protein by rememberSaveable { mutableStateOf("") }
+    var carbs by rememberSaveable { mutableStateOf("") }
+    var fat by rememberSaveable { mutableStateOf("") }
+    var selectedType by rememberSaveable { mutableStateOf(MealType.LUNCH) }
+    var errorMessage by rememberSaveable { mutableStateOf<String?>(null) }
 
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background
