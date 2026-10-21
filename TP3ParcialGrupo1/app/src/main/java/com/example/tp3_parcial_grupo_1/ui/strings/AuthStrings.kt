@@ -1,6 +1,6 @@
 package com.example.tp3_parcial_grupo_1.ui.strings
 
-// Textos de Acceso. Se mantienen los del diseño de Figma.
+// Textos de Acceso. Todos en el idioma del diseño de Figma.
 object AuthStrings {
     const val Tagline = "ADAPTIVE INTELLIGENCE"
     const val FullName = "Full Name"
@@ -26,11 +26,11 @@ object AuthStrings {
     const val HasAccountLink = "Sign In"
     const val AccountIssues = "Having account issues? "
     const val AccountIssuesLink = "Recover"
-    const val EnterDemoMode = "Entrar en modo demostración"
+    const val EnterDemoMode = "Enter demo mode"
 
-    const val EmailRequired = "Ingresá tu email."
-    const val EmailInvalid = "El email no es válido."
-    const val PasswordRequired = "Ingresá tu contraseña."
-    const val PasswordTooShort = "La contraseña debe tener al menos 8 caracteres."
-    const val NameRequired = "Ingresá tu nombre."
+    const val EmailRequired = "Enter your email."
+    const val EmailInvalid = "Enter a valid email address."
+    const val PasswordRequired = "Enter your password."
+    const val PasswordTooShort = "Password must be at least 8 characters."
+    const val NameRequired = "Enter your full name."
 }

@@ -40,7 +40,7 @@ fun AppButton(
     isCompact: Boolean = false
 ) {
     val colors = MaterialTheme.colorScheme
-    val onClickSafe = { if (!isLoading) onClick() }
+    val isEnabled = enabled && !isLoading
     val content: @Composable () -> Unit = {
         Row(
             horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm),
@@ -50,7 +50,7 @@ fun AppButton(
                 CircularProgressIndicator(
                     modifier = Modifier.size(18.dp),
                     strokeWidth = 2.dp,
-                    color = LocalContentColorOrDefault(style)
+                    color = contentColorFor(style)
                 )
             }
             if (leadingIcon != null) {
@@ -68,9 +68,9 @@ fun AppButton(
         .heightIn(min = 52.dp)
     when (style) {
         AppButtonStyle.Outlined -> OutlinedButton(
-            onClick = onClickSafe,
+            onClick = onClick,
             modifier = buttonModifier,
-            enabled = enabled,
+            enabled = isEnabled,
             shape = PillShape,
             contentPadding = contentPadding,
             border = BorderStroke(1.dp, colors.outlineVariant),
@@ -78,9 +78,9 @@ fun AppButton(
             content = { content() }
         )
         else -> Button(
-            onClick = onClickSafe,
+            onClick = onClick,
             modifier = buttonModifier,
-            enabled = enabled,
+            enabled = isEnabled,
             shape = PillShape,
             contentPadding = contentPadding,
             colors = if (style == AppButtonStyle.Accent) {
@@ -94,7 +94,7 @@ fun AppButton(
 }
 
 @Composable
-private fun LocalContentColorOrDefault(style: AppButtonStyle) = when (style) {
+private fun contentColorFor(style: AppButtonStyle) = when (style) {
     AppButtonStyle.Primary -> MaterialTheme.colorScheme.onPrimary
     AppButtonStyle.Accent -> MaterialTheme.colorScheme.onTertiary
     AppButtonStyle.Outlined -> MaterialTheme.colorScheme.primary
