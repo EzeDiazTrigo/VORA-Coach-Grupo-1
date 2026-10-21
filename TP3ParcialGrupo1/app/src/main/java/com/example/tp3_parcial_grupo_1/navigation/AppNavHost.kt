@@ -1,6 +1,7 @@
 package com.example.tp3_parcial_grupo_1.navigation
 
 import androidx.annotation.DrawableRes
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
@@ -43,7 +44,9 @@ fun AppNavHost(
         NavHost(
             navController = navController,
             startDestination = AppDestination.AuthGraph.route,
-            modifier = Modifier.padding(innerPadding)
+            modifier = Modifier
+                .padding(innerPadding)
+                .consumeWindowInsets(innerPadding)
         ) {
             authGraph(navController)
             homeGraph(navController)
