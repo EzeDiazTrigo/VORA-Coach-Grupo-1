@@ -38,7 +38,7 @@ fun bottomBarSelection(route: String?): TopLevelDestination? {
 
 fun NavController.navigateToTopLevel(destination: TopLevelDestination) {
     navigate(destination.graphRoute) {
-        popUpTo(AppDestination.HomeGraph.route) { saveState = true }
+        popUpTo(AppDestination.Home.route) { saveState = true }
         launchSingleTop = true
         restoreState = true
     }
