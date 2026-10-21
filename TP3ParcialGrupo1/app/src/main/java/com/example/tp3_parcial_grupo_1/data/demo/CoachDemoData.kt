@@ -1,5 +1,7 @@
 package com.example.tp3_parcial_grupo_1.data.demo
 
+import java.text.Normalizer
+
 // Datos de demostración del Asistente VORA: no hay voz ni IA real (NAV05).
 data class CoachExchange(
     val question: String,
@@ -85,9 +87,20 @@ object CoachDemoData {
         )
     )
 
-    fun exchangeFor(question: String): CoachExchange =
-        suggestions.firstOrNull { it.question.equals(question.trim(), ignoreCase = true) } ?: lunch
+    fun exchangeFor(question: String): CoachExchange = find(question) ?: lunch
 
-    fun replyFor(question: String): String =
-        suggestions.firstOrNull { it.question.equals(question.trim(), ignoreCase = true) }?.reply ?: GenericReply
+    fun replyFor(question: String): String = find(question)?.reply ?: GenericReply
+
+    // «como voy» encuentra «¿Cómo voy?»: se comparan sin tildes, signos ni mayúsculas.
+    private fun find(question: String): CoachExchange? {
+        val key = normalize(question)
+        return suggestions.firstOrNull { normalize(it.question) == key }
+    }
+
+    private fun normalize(text: String): String =
+        Normalizer.normalize(text, Normalizer.Form.NFD)
+            .replace(Regex("\\p{M}+"), "")
+            .lowercase()
+            .replace(Regex("[^a-z0-9 ]"), "")
+            .trim()
 }

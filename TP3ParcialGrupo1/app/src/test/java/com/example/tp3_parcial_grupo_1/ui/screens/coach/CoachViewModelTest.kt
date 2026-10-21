@@ -163,6 +163,12 @@ class CoachViewModelTest {
     }
 
     @Test
+    fun typedQuestionMatchesSuggestionIgnoringAccentsAndPunctuation() {
+        assertEquals(CoachDemoData.replyFor("¿Cómo voy?"), CoachDemoData.replyFor("como voy"))
+        assertEquals(CoachDemoData.GenericReply, CoachDemoData.replyFor("hola"))
+    }
+
+    @Test
     fun blankDraftIsNotSent() {
         val viewModel = CoachViewModel()
         viewModel.onTypeInstead()
