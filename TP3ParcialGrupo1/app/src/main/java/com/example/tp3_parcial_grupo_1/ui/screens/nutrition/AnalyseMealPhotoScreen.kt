@@ -1,23 +1,23 @@
 package com.example.tp3_parcial_grupo_1.ui.screens.nutrition
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.tp3_parcial_grupo_1.ui.components.BottomNavBar
+import com.example.tp3_parcial_grupo_1.R
 import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
 
@@ -28,9 +28,6 @@ fun AnalyseMealPhotoScreen(
     onReviewAndAdd: () -> Unit
 ) {
     Scaffold(
-        bottomBar = {
-            BottomNavBar(currentRoute = "nutrition", onNavigate = onNavigate)
-        },
         containerColor = MaterialTheme.colorScheme.background
     ) { paddingValues ->
         Column(
@@ -45,7 +42,7 @@ fun AnalyseMealPhotoScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 IconButton(onClick = onBackClick) {
-                    Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = MaterialTheme.colorScheme.onBackground)
+                    Icon(painter = painterResource(id = R.drawable.ic_chevron_left), contentDescription = "Back", tint = MaterialTheme.colorScheme.onBackground)
                 }
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
@@ -66,8 +63,14 @@ fun AnalyseMealPhotoScreen(
                     .fillMaxWidth()
                     .height(220.dp)
                     .clip(RoundedCornerShape(20.dp))
-                    .background(Color.DarkGray)
             ) {
+                Image(
+                    painter = painterResource(id = R.drawable.img_meal_demo),
+                    contentDescription = "Meal Photo",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.fillMaxSize()
+                )
+
                 Box(
                     modifier = Modifier
                         .align(Alignment.TopStart)

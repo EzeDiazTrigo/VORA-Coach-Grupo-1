@@ -1,5 +1,6 @@
 package com.example.tp3_parcial_grupo_1.ui.screens.nutrition
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tp3_parcial_grupo_1.data.repository.MealRepository
@@ -8,15 +9,17 @@ import com.example.tp3_parcial_grupo_1.model.MealType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
 
 data class MealUiState(
-    val selectedDate: String = "2026-09-08",
+    val selectedDate: String = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date()),
     val meals: List<Meal> = emptyList(),
-    val totalCalories: Int = 1420,
-    val totalProtein: Int = 104,
-    val totalCarbs: Int = 152,
-    val totalFat: Int = 48,
+    val totalCalories: Int = 0,
+    val totalProtein: Int = 0,
+    val totalCarbs: Int = 0,
+    val totalFat: Int = 0,
     val goalCalories: Int = 2100,
     val isLoading: Boolean = false,
     val errorMessage: String? = null,
@@ -25,32 +28,53 @@ data class MealUiState(
     val inputProtein: String = "",
     val inputCarbs: String = "",
     val inputFat: String = "",
-    val inputType: MealType = MealType.LUNCH
+    val inputType: MealType = MealType.LUNCH,
+    val currentMealDetail: Meal? = null
 )
 
 @HiltViewModel
 class MealsViewModel @Inject constructor(
-    private val mealRepository: MealRepository
+    private val mealRepository: MealRepository,
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
+
+    private val mealIdArg: Long = savedStateHandle.get<Long>("mealId") ?: 0L
 
     private val _uiState = MutableStateFlow(MealUiState())
     val uiState: StateFlow<MealUiState> = _uiState.asStateFlow()
 
     init {
-        loadDefaultMeals()
-        observeMeals("2026-09-08")
+        val today = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+        loadDefaultMealsIfNeeded(today)
+        observeMeals(today)
+        if (mealIdArg > 0L) {
+            loadMealDetail(mealIdArg)
+        }
     }
 
-    private fun loadDefaultMeals() {
+    fun loadMealDetail(id: Long) {
         viewModelScope.launch {
-            val current = _uiState.value.meals
-            if (current.isEmpty()) {
-                val demoMeals = listOf(
-                    Meal(name = "Breakfast", date = "2026-09-08", type = MealType.BREAKFAST, calories = 420, protein = 25, carbs = 45, fat = 12, itemsSummary = "Greek yoghurt - berries - granola"),
-                    Meal(name = "Lunch", date = "2026-09-08", type = MealType.LUNCH, calories = 520, protein = 38, carbs = 54, fat = 14, itemsSummary = "Chicken - rice - vegetables"),
-                    Meal(name = "Snack", date = "2026-09-08", type = MealType.SNACK, calories = 240, protein = 20, carbs = 12, fat = 6, itemsSummary = "Protein shake")
-                )
-                demoMeals.forEach { mealRepository.insertMeal(it) }
+            val meal = mealRepository.getMealById(id)
+            _uiState.update { it.copy(currentMealDetail = meal) }
+        }
+    }
+
+    fun setDate(date: String) {
+        loadDefaultMealsIfNeeded(date)
+        observeMeals(date)
+    }
+
+    private fun loadDefaultMealsIfNeeded(date: String) {
+        viewModelScope.launch {
+            mealRepository.observeMealsByDate(date).take(1).collect { existingMeals ->
+                if (existingMeals.isEmpty()) {
+                    val demoMeals = listOf(
+                        Meal(name = "Breakfast", date = date, type = MealType.BREAKFAST, calories = 420, protein = 25, carbs = 45, fat = 12, itemsSummary = "Greek yoghurt - berries - granola"),
+                        Meal(name = "Lunch", date = date, type = MealType.LUNCH, calories = 520, protein = 38, carbs = 54, fat = 14, itemsSummary = "Chicken - rice - vegetables"),
+                        Meal(name = "Snack", date = date, type = MealType.SNACK, calories = 240, protein = 20, carbs = 12, fat = 6, itemsSummary = "Protein shake")
+                    )
+                    demoMeals.forEach { mealRepository.insertMeal(it) }
+                }
             }
         }
     }
@@ -64,11 +88,12 @@ class MealsViewModel @Inject constructor(
                 val fat = meals.sumOf { it.fat }
                 _uiState.update {
                     it.copy(
+                        selectedDate = date,
                         meals = meals,
-                        totalCalories = if (meals.isNotEmpty()) cal else 1420,
-                        totalProtein = if (meals.isNotEmpty()) pro else 104,
-                        totalCarbs = if (meals.isNotEmpty()) carb else 152,
-                        totalFat = if (meals.isNotEmpty()) fat else 48
+                        totalCalories = cal,
+                        totalProtein = pro,
+                        totalCarbs = carb,
+                        totalFat = fat
                     )
                 }
             }
@@ -84,19 +109,6 @@ class MealsViewModel @Inject constructor(
     fun deleteMeal(id: Long) {
         viewModelScope.launch {
             mealRepository.deleteMeal(id)
-        }
-    }
-
-    fun updateInput(name: String, calories: String, protein: String, carbs: String, fat: String, type: MealType) {
-        _uiState.update {
-            it.copy(
-                inputName = name,
-                inputCalories = calories,
-                inputProtein = protein,
-                inputCarbs = carbs,
-                inputFat = fat,
-                inputType = type
-            )
         }
     }
 }

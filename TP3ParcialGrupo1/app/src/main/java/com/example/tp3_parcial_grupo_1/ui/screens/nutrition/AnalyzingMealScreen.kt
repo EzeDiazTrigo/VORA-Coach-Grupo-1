@@ -5,16 +5,16 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.tp3_parcial_grupo_1.R
 import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
 
 @Composable
@@ -54,7 +54,7 @@ fun AnalyzingMealScreen(
                         .clip(CircleShape)
                         .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.1f))
                 ) {
-                    Icon(imageVector = Icons.Default.Close, contentDescription = "Close", tint = MaterialTheme.colorScheme.surface, modifier = Modifier.size(18.dp))
+                    Icon(painter = painterResource(id = R.drawable.ic_close), contentDescription = "Close", tint = MaterialTheme.colorScheme.surface, modifier = Modifier.size(18.dp))
                 }
             }
 

@@ -8,21 +8,16 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.CameraAlt
-import androidx.compose.material.icons.filled.Create
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.tp3_parcial_grupo_1.ui.components.BottomNavBar
+import com.example.tp3_parcial_grupo_1.R
 import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
 
@@ -32,12 +27,10 @@ fun AddFoodScreen(
     onBackClick: () -> Unit,
     onNavigateToVoice: () -> Unit,
     onNavigateToPhoto: () -> Unit,
+    onNavigateToManual: () -> Unit,
     onNavigateToReview: () -> Unit
 ) {
     Scaffold(
-        bottomBar = {
-            BottomNavBar(currentRoute = "nutrition", onNavigate = onNavigate)
-        },
         containerColor = MaterialTheme.colorScheme.background
     ) { paddingValues ->
         Column(
@@ -52,7 +45,7 @@ fun AddFoodScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 IconButton(onClick = onBackClick) {
-                    Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = MaterialTheme.colorScheme.onBackground)
+                    Icon(painter = painterResource(id = R.drawable.ic_chevron_left), contentDescription = "Back", tint = MaterialTheme.colorScheme.onBackground)
                 }
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
@@ -128,31 +121,31 @@ fun AddFoodScreen(
 
             // Option Cards
             AddOptionCard(
-                icon = Icons.Default.CameraAlt,
+                iconRes = R.drawable.ic_camera,
                 title = "Snap a Photo",
                 subtitle = "Vora estimates sizes and nutrition info.",
                 onClick = onNavigateToPhoto
             )
             Spacer(modifier = Modifier.height(12.dp))
             AddOptionCard(
-                icon = Icons.Default.Search,
+                iconRes = R.drawable.ic_search,
                 title = "Search Database",
                 subtitle = "Search millions of global & local food items.",
                 onClick = onNavigateToReview
             )
             Spacer(modifier = Modifier.height(12.dp))
             AddOptionCard(
-                icon = Icons.Default.Create,
+                iconRes = R.drawable.ic_pen,
                 title = "Log Manually",
                 subtitle = "Input weight, calories and macros yourself.",
-                onClick = onNavigateToReview
+                onClick = onNavigateToManual
             )
         }
     }
 }
 
 @Composable
-fun AddOptionCard(icon: ImageVector, title: String, subtitle: String, onClick: () -> Unit) {
+fun AddOptionCard(iconRes: Int, title: String, subtitle: String, onClick: () -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -174,7 +167,7 @@ fun AddOptionCard(icon: ImageVector, title: String, subtitle: String, onClick: (
                     .background(MaterialTheme.extendedColors.mintSoft),
                 contentAlignment = Alignment.Center
             ) {
-                Icon(imageVector = icon, contentDescription = title, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(22.dp))
+                Icon(painter = painterResource(id = iconRes), contentDescription = title, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(22.dp))
             }
             Spacer(modifier = Modifier.width(16.dp))
             Column(modifier = Modifier.weight(1f)) {

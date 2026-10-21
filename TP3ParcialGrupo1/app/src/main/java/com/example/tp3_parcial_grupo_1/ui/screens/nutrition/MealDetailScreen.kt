@@ -7,31 +7,56 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.tp3_parcial_grupo_1.ui.components.BottomNavBar
+import com.example.tp3_parcial_grupo_1.R
+import com.example.tp3_parcial_grupo_1.model.Meal
 import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
 
 @Composable
 fun MealDetailScreen(
+    viewModel: MealsViewModel,
     onNavigate: (String) -> Unit,
     onBackClick: () -> Unit,
-    onEditMeal: () -> Unit
+    onEditMeal: () -> Unit,
+    onDeleteSuccess: () -> Unit
 ) {
+    val uiState by viewModel.uiState.collectAsState()
+    val meal = uiState.currentMealDetail ?: uiState.meals.firstOrNull() ?: Meal(name = "Lunch", date = "", type = com.example.tp3_parcial_grupo_1.model.MealType.LUNCH, calories = 520, protein = 38, carbs = 54, fat = 14, itemsSummary = "Chicken - rice - vegetables")
+
+    var showDeleteDialog by remember { mutableStateOf(false) }
+
+    if (showDeleteDialog) {
+        AlertDialog(
+            onDismissRequest = { showDeleteDialog = false },
+            title = { Text("Delete Meal") },
+            text = { Text("Are you sure you want to delete ${meal.name}?") },
+            confirmButton = {
+                TextButton(onClick = {
+                    viewModel.deleteMeal(meal.id)
+                    showDeleteDialog = false
+                    onDeleteSuccess()
+                }) {
+                    Text("Delete", color = MaterialTheme.colorScheme.error)
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showDeleteDialog = false }) {
+                    Text("Cancel")
+                }
+            }
+        )
+    }
+
     Scaffold(
-        bottomBar = {
-            BottomNavBar(currentRoute = "nutrition", onNavigate = onNavigate)
-        },
         containerColor = MaterialTheme.colorScheme.background
     ) { paddingValues ->
         Column(
@@ -48,11 +73,11 @@ fun MealDetailScreen(
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     IconButton(onClick = onBackClick) {
-                        Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = MaterialTheme.colorScheme.onBackground)
+                        Icon(painter = painterResource(id = R.drawable.ic_chevron_left), contentDescription = "Back", tint = MaterialTheme.colorScheme.onBackground)
                     }
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
-                        text = "Lunch",
+                        text = meal.name,
                         style = MaterialTheme.typography.headlineMedium.copy(
                             color = MaterialTheme.colorScheme.onBackground,
                             fontWeight = FontWeight.Bold,
@@ -95,7 +120,7 @@ fun MealDetailScreen(
                             )
                             Spacer(modifier = Modifier.height(4.dp))
                             Text(
-                                text = "520 kcal",
+                                text = "${meal.calories} kcal",
                                 style = MaterialTheme.typography.headlineLarge.copy(
                                     color = MaterialTheme.colorScheme.onBackground,
                                     fontWeight = FontWeight.Bold,
@@ -125,9 +150,9 @@ fun MealDetailScreen(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        DetailMacroItem(label = "PROTEIN", value = "38g")
-                        DetailMacroItem(label = "CARBS", value = "54g")
-                        DetailMacroItem(label = "FAT", value = "14g")
+                        DetailMacroItem(label = "PROTEIN", value = "${meal.protein}g")
+                        DetailMacroItem(label = "CARBS", value = "${meal.carbs}g")
+                        DetailMacroItem(label = "FAT", value = "${meal.fat}g")
                     }
                 }
             }
@@ -145,7 +170,7 @@ fun MealDetailScreen(
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(
-                        imageVector = Icons.Default.Star,
+                        painter = painterResource(id = R.drawable.ic_sparkles),
                         contentDescription = "Advice",
                         tint = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.size(20.dp)
@@ -175,14 +200,10 @@ fun MealDetailScreen(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            DetailedMealSection(
+            DetailedMealCard(
                 mealTitle = "",
                 totalCalories = "",
-                items = listOf(
-                    Triple("Grilled Chicken Breast", "180g", "280 kcal"),
-                    Triple("Basmati Rice", "150g", "190 kcal"),
-                    Triple("Mixed Steamed Vegetables", "100g", "50 kcal")
-                )
+                items = listOf(Triple(meal.itemsSummary.ifBlank { meal.name }, "", "${meal.calories} kcal"))
             )
 
             Spacer(modifier = Modifier.height(24.dp))
@@ -200,13 +221,12 @@ fun MealDetailScreen(
             Spacer(modifier = Modifier.height(12.dp))
 
             Button(
-                onClick = onEditMeal,
+                onClick = { showDeleteDialog = true },
                 modifier = Modifier.fillMaxWidth(),
                 shape = PillShape,
-                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.surface, contentColor = MaterialTheme.colorScheme.onBackground),
-                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error, contentColor = MaterialTheme.colorScheme.surface)
             ) {
-                Text(text = "Duplicate Meal", fontWeight = FontWeight.Bold, fontSize = 15.sp)
+                Text(text = "Delete Meal", fontWeight = FontWeight.Bold, fontSize = 15.sp)
             }
         }
     }
