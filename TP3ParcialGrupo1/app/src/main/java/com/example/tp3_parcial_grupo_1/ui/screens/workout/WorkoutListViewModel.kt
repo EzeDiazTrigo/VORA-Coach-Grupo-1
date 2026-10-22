@@ -3,6 +3,7 @@ package com.example.tp3_parcial_grupo_1.ui.screens.workout
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tp3_parcial_grupo_1.data.repository.WorkoutRepository
+import com.example.tp3_parcial_grupo_1.ui.strings.WorkoutStrings
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -16,8 +17,10 @@ class WorkoutListViewModel @Inject constructor(
     private val repository: WorkoutRepository
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(WorkoutListUiState())
+    private val _uiState = MutableStateFlow(WorkoutListUiState(isLoading = true))
     val uiState: StateFlow<WorkoutListUiState> = _uiState.asStateFlow()
+
+    private var hasApiRefreshCompleted = false
 
     init {
         observeWorkouts()
@@ -29,8 +32,8 @@ class WorkoutListViewModel @Inject constructor(
             repository.getWorkouts().collect { workouts ->
                 _uiState.update {
                     it.copy(
-                        isLoading = false,
-                        workouts = workouts
+                        workouts = workouts,
+                        isLoading = if (workouts.isNotEmpty() || hasApiRefreshCompleted) false else it.isLoading
                     )
                 }
             }
@@ -41,11 +44,12 @@ class WorkoutListViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, errorMessage = null) }
             val result = repository.refreshWorkouts()
+            hasApiRefreshCompleted = true
             if (result.isFailure) {
                 _uiState.update {
                     it.copy(
                         isLoading = false,
-                        errorMessage = result.exceptionOrNull()?.message ?: "Error loading workouts"
+                        errorMessage = WorkoutStrings.ErrorGeneric
                     )
                 }
             } else {
@@ -54,8 +58,8 @@ class WorkoutListViewModel @Inject constructor(
         }
     }
 
-    fun setFilter(level: String) {
-        _uiState.update { it.copy(selectedLevelFilter = level) }
+    fun setFilter(filter: LevelFilter) {
+        _uiState.update { it.copy(selectedFilter = filter) }
     }
 
     fun clearErrorMessage() {

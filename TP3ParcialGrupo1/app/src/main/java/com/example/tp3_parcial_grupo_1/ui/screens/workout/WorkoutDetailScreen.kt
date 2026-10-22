@@ -29,8 +29,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.tp3_parcial_grupo_1.R
 import com.example.tp3_parcial_grupo_1.model.Exercise
@@ -78,11 +77,11 @@ fun WorkoutDetailRoute(
 @Composable
 fun WorkoutDetailScreen(
     uiState: WorkoutDetailUiState,
+    modifier: Modifier = Modifier,
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
     onBackClick: () -> Unit,
     onStartWorkoutClick: () -> Unit,
-    onRetryClick: () -> Unit,
-    modifier: Modifier = Modifier
+    onRetryClick: () -> Unit
 ) {
     val workout = uiState.workout
 
@@ -191,11 +190,7 @@ private fun WorkoutHeaderPanel(
         style = AppCardStyle.Panel,
         modifier = modifier
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(MaterialTheme.spacing.lg)
-        ) {
+        Column(modifier = Modifier.fillMaxWidth()) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -204,13 +199,13 @@ private fun WorkoutHeaderPanel(
                 Box(
                     modifier = Modifier
                         .clip(PillShape)
-                        .background(MaterialTheme.extendedColors.mintSoft)
-                        .padding(horizontal = MaterialTheme.spacing.sm, vertical = 4.dp)
+                        .background(MaterialTheme.colorScheme.secondaryContainer)
+                        .padding(horizontal = MaterialTheme.spacing.sm, vertical = MaterialTheme.spacing.xxs)
                 ) {
                     Text(
                         text = workout.level.uppercase(),
                         style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.primary
+                        color = MaterialTheme.colorScheme.onSecondaryContainer
                     )
                 }
 
@@ -218,14 +213,14 @@ private fun WorkoutHeaderPanel(
                     Icon(
                         painter = painterResource(id = R.drawable.ic_clock),
                         contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.size(16.dp)
+                        tint = MaterialTheme.colorScheme.onPrimary,
+                        modifier = Modifier.size(MaterialTheme.spacing.lg)
                     )
-                    Spacer(modifier = Modifier.width(4.dp))
+                    Spacer(modifier = Modifier.width(MaterialTheme.spacing.xxs))
                     Text(
                         text = WorkoutStrings.minutesCount(workout.durationMinutes),
                         style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = MaterialTheme.colorScheme.onPrimary
                     )
                 }
             }
@@ -236,7 +231,7 @@ private fun WorkoutHeaderPanel(
                 text = workout.name,
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onSurface
+                color = MaterialTheme.colorScheme.onPrimary
             )
 
             workout.description?.let { desc ->
@@ -244,7 +239,7 @@ private fun WorkoutHeaderPanel(
                 Text(
                     text = desc,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.85f)
                 )
             }
         }
@@ -260,11 +255,7 @@ private fun ExerciseCardItem(
         style = AppCardStyle.Surface,
         modifier = modifier
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(MaterialTheme.spacing.lg)
-        ) {
+        Column(modifier = Modifier.fillMaxWidth()) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -281,7 +272,7 @@ private fun ExerciseCardItem(
                     modifier = Modifier
                         .clip(PillShape)
                         .background(MaterialTheme.extendedColors.mintSoft)
-                        .padding(horizontal = MaterialTheme.spacing.sm, vertical = 2.dp)
+                        .padding(horizontal = MaterialTheme.spacing.sm, vertical = MaterialTheme.spacing.xxs)
                 ) {
                     Text(
                         text = exercise.muscleGroup,
@@ -323,7 +314,7 @@ private fun ExerciseCardItem(
                             painter = painterResource(id = R.drawable.ic_info),
                             contentDescription = null,
                             tint = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.size(16.dp)
+                            modifier = Modifier.size(MaterialTheme.spacing.lg)
                         )
                         Spacer(modifier = Modifier.width(MaterialTheme.spacing.xs))
                         Text(

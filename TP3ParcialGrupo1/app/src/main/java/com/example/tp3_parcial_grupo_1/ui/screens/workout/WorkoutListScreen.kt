@@ -31,8 +31,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.tp3_parcial_grupo_1.R
 import com.example.tp3_parcial_grupo_1.model.Workout
@@ -49,9 +48,9 @@ import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 
 @Composable
 fun WorkoutListRoute(
-    onBackClick: () -> Unit,
-    onWorkoutClick: (String) -> Unit,
     modifier: Modifier = Modifier,
+    onBackClick: (() -> Unit)? = null,
+    onWorkoutClick: (String) -> Unit,
     viewModel: WorkoutListViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -78,26 +77,15 @@ fun WorkoutListRoute(
 @Composable
 fun WorkoutListScreen(
     uiState: WorkoutListUiState,
+    modifier: Modifier = Modifier,
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
-    onBackClick: () -> Unit,
+    onBackClick: (() -> Unit)? = null,
     onWorkoutClick: (String) -> Unit,
-    onFilterSelect: (String) -> Unit,
-    onRetryClick: () -> Unit,
-    modifier: Modifier = Modifier
+    onFilterSelect: (LevelFilter) -> Unit,
+    onRetryClick: () -> Unit
 ) {
-    val filters = listOf(
-        WorkoutStrings.FilterAll,
-        WorkoutStrings.FilterBeginner,
-        WorkoutStrings.FilterIntermediate,
-        WorkoutStrings.FilterAdvanced
-    )
-
-    val filteredWorkouts = remember(uiState.workouts, uiState.selectedLevelFilter) {
-        if (uiState.selectedLevelFilter == WorkoutStrings.FilterAll) {
-            uiState.workouts
-        } else {
-            uiState.workouts.filter { it.level.equals(uiState.selectedLevelFilter, ignoreCase = true) }
-        }
+    val filteredWorkouts = remember(uiState.workouts, uiState.selectedFilter) {
+        uiState.workouts.filter { uiState.selectedFilter.matches(it.level) }
     }
 
     AppScaffold(
@@ -125,8 +113,8 @@ fun WorkoutListScreen(
                 horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm),
                 modifier = Modifier.fillMaxWidth()
             ) {
-                items(filters) { filter ->
-                    val isSelected = filter.equals(uiState.selectedLevelFilter, ignoreCase = true)
+                items(LevelFilter.entries) { filter ->
+                    val isSelected = filter == uiState.selectedFilter
                     Box(
                         modifier = Modifier
                             .clip(PillShape)
@@ -138,7 +126,7 @@ fun WorkoutListScreen(
                             .padding(horizontal = MaterialTheme.spacing.lg, vertical = MaterialTheme.spacing.sm)
                     ) {
                         Text(
-                            text = filter,
+                            text = filter.label,
                             style = MaterialTheme.typography.labelLarge,
                             color = if (isSelected) MaterialTheme.colorScheme.onTertiary
                                     else MaterialTheme.colorScheme.primary
@@ -215,11 +203,7 @@ private fun WorkoutCardItem(
         style = AppCardStyle.Surface,
         modifier = modifier
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(MaterialTheme.spacing.lg)
-        ) {
+        Column(modifier = Modifier.fillMaxWidth()) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -229,7 +213,7 @@ private fun WorkoutCardItem(
                     modifier = Modifier
                         .clip(PillShape)
                         .background(MaterialTheme.extendedColors.mintSoft)
-                        .padding(horizontal = MaterialTheme.spacing.sm, vertical = 4.dp)
+                        .padding(horizontal = MaterialTheme.spacing.sm, vertical = MaterialTheme.spacing.xxs)
                 ) {
                     Text(
                         text = workout.level.uppercase(),
@@ -242,7 +226,7 @@ private fun WorkoutCardItem(
                     painter = painterResource(id = R.drawable.ic_arrow_forward),
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.size(20.dp)
+                    modifier = Modifier.size(MaterialTheme.spacing.screen)
                 )
             }
 
@@ -255,16 +239,16 @@ private fun WorkoutCardItem(
                 color = MaterialTheme.colorScheme.onSurface
             )
 
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.xxs))
 
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_clock),
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.size(16.dp)
+                    modifier = Modifier.size(MaterialTheme.spacing.lg)
                 )
-                Spacer(modifier = Modifier.width(4.dp))
+                Spacer(modifier = Modifier.width(MaterialTheme.spacing.xxs))
                 Text(
                     text = WorkoutStrings.minutesCount(workout.durationMinutes),
                     style = MaterialTheme.typography.bodyMedium,
@@ -275,9 +259,9 @@ private fun WorkoutCardItem(
                     painter = painterResource(id = R.drawable.ic_dumbbell),
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.size(16.dp)
+                    modifier = Modifier.size(MaterialTheme.spacing.lg)
                 )
-                Spacer(modifier = Modifier.width(4.dp))
+                Spacer(modifier = Modifier.width(MaterialTheme.spacing.xxs))
                 Text(
                     text = WorkoutStrings.exercisesCount(workout.exerciseCount),
                     style = MaterialTheme.typography.bodyMedium,

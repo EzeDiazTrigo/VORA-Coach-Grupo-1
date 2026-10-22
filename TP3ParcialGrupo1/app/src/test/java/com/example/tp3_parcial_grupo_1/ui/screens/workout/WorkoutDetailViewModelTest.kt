@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import com.example.tp3_parcial_grupo_1.data.repository.WorkoutRepository
 import com.example.tp3_parcial_grupo_1.model.Exercise
 import com.example.tp3_parcial_grupo_1.model.Workout
+import com.example.tp3_parcial_grupo_1.ui.strings.WorkoutStrings
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -52,7 +53,7 @@ class WorkoutDetailViewModelTest {
         fakeRepository.shouldFail = true
         viewModel.refreshWorkoutDetail()
 
-        assertEquals("Detail error", viewModel.uiState.value.errorMessage)
+        assertEquals(WorkoutStrings.ErrorGeneric, viewModel.uiState.value.errorMessage)
         assertFalse(viewModel.uiState.value.isLoading)
     }
 

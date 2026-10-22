@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tp3_parcial_grupo_1.data.repository.WorkoutRepository
+import com.example.tp3_parcial_grupo_1.ui.strings.WorkoutStrings
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,8 +21,10 @@ class WorkoutDetailViewModel @Inject constructor(
 
     private val workoutId: String = checkNotNull(savedStateHandle["workoutId"])
 
-    private val _uiState = MutableStateFlow(WorkoutDetailUiState())
+    private val _uiState = MutableStateFlow(WorkoutDetailUiState(isLoading = true))
     val uiState: StateFlow<WorkoutDetailUiState> = _uiState.asStateFlow()
+
+    private var hasApiRefreshCompleted = false
 
     init {
         observeWorkoutDetail()
@@ -33,8 +36,8 @@ class WorkoutDetailViewModel @Inject constructor(
             repository.getWorkoutById(workoutId).collect { workout ->
                 _uiState.update {
                     it.copy(
-                        isLoading = false,
-                        workout = workout
+                        workout = workout,
+                        isLoading = if (workout != null || hasApiRefreshCompleted) false else it.isLoading
                     )
                 }
             }
@@ -45,11 +48,12 @@ class WorkoutDetailViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, errorMessage = null) }
             val result = repository.refreshWorkoutDetails(workoutId)
+            hasApiRefreshCompleted = true
             if (result.isFailure) {
                 _uiState.update {
                     it.copy(
                         isLoading = false,
-                        errorMessage = result.exceptionOrNull()?.message ?: "Error loading workout details"
+                        errorMessage = WorkoutStrings.ErrorGeneric
                     )
                 }
             } else {

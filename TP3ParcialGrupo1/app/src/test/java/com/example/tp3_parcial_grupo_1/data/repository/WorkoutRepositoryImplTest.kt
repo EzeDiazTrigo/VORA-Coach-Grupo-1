@@ -5,6 +5,7 @@ import com.example.tp3_parcial_grupo_1.data.local.dao.WorkoutDao
 import com.example.tp3_parcial_grupo_1.data.local.entity.ExerciseEntity
 import com.example.tp3_parcial_grupo_1.data.local.entity.WorkoutEntity
 import com.example.tp3_parcial_grupo_1.data.remote.api.WorkoutApi
+import com.example.tp3_parcial_grupo_1.data.remote.dto.DataResponse
 import com.example.tp3_parcial_grupo_1.data.remote.dto.ExerciseDto
 import com.example.tp3_parcial_grupo_1.data.remote.dto.WorkoutDto
 import com.example.tp3_parcial_grupo_1.data.remote.dto.WorkoutSummaryDto
@@ -13,6 +14,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.runBlocking
+import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -35,10 +37,12 @@ class WorkoutRepositoryImplTest {
     }
 
     @Test
-    fun `refreshWorkouts fetches from API and inserts into DAO`() = runBlocking {
+    fun `refreshWorkouts fetches from API DataResponse and inserts into DAO`() = runBlocking {
         fakeWorkoutApi.workoutsResponse = Response.success(
-            listOf(
-                WorkoutSummaryDto("w01", "Fuerza", "Intermedio", 45, 3, "Desc")
+            DataResponse(
+                listOf(
+                    WorkoutSummaryDto("w01", "Fuerza", "Intermedio", 45, 3, "Desc")
+                )
             )
         )
 
@@ -52,16 +56,28 @@ class WorkoutRepositoryImplTest {
     }
 
     @Test
-    fun `refreshWorkoutDetails fetches detail from API and inserts exercises into DAO`() = runBlocking {
+    fun `refreshWorkouts handles HTTP 500 error`() = runBlocking {
+        fakeWorkoutApi.workoutsResponse = Response.error(500, "".toResponseBody(null))
+
+        val result = repository.refreshWorkouts()
+
+        assertTrue(result.isFailure)
+        assertTrue(result.exceptionOrNull()?.message?.contains("500") == true)
+    }
+
+    @Test
+    fun `refreshWorkoutDetails fetches detail from API DataResponse and inserts exercises into DAO`() = runBlocking {
         fakeWorkoutApi.workoutDetailResponse = Response.success(
-            WorkoutDto(
-                id = "w01",
-                name = "Fuerza",
-                level = "Intermedio",
-                durationMinutes = 45,
-                description = "Desc",
-                exercises = listOf(
-                    ExerciseDto("e01", "Sentadilla", "Piernas", 4, 10, 60, "Inst", "Tip")
+            DataResponse(
+                WorkoutDto(
+                    id = "w01",
+                    name = "Fuerza",
+                    level = "Intermedio",
+                    durationMinutes = 45,
+                    description = "Desc",
+                    exercises = listOf(
+                        ExerciseDto("e01", "Sentadilla", "Piernas", 4, 10, 60, "Inst", "Tip")
+                    )
                 )
             )
         )
@@ -76,6 +92,26 @@ class WorkoutRepositoryImplTest {
         assertEquals(1, cachedExercises.size)
         assertEquals("e01", cachedExercises.first().id)
         assertEquals("Sentadilla", cachedExercises.first().name)
+    }
+
+    @Test
+    fun `refreshWorkoutDetails handles HTTP 404 error`() = runBlocking {
+        fakeWorkoutApi.workoutDetailResponse = Response.error(404, "".toResponseBody(null))
+
+        val result = repository.refreshWorkoutDetails("w01")
+
+        assertTrue(result.isFailure)
+        assertTrue(result.exceptionOrNull()?.message?.contains("404") == true)
+    }
+
+    @Test
+    fun `refreshWorkoutDetails handles HTTP 503 error`() = runBlocking {
+        fakeWorkoutApi.workoutDetailResponse = Response.error(503, "".toResponseBody(null))
+
+        val result = repository.refreshWorkoutDetails("w01")
+
+        assertTrue(result.isFailure)
+        assertTrue(result.exceptionOrNull()?.message?.contains("503") == true)
     }
 
     // Fake implementations
@@ -114,13 +150,13 @@ class WorkoutRepositoryImplTest {
     }
 
     private class FakeWorkoutApi : WorkoutApi {
-        var workoutsResponse: Response<List<WorkoutSummaryDto>> = Response.success(emptyList())
-        var workoutDetailResponse: Response<WorkoutDto>? = null
+        var workoutsResponse: Response<DataResponse<List<WorkoutSummaryDto>>> = Response.success(DataResponse(emptyList()))
+        var workoutDetailResponse: Response<DataResponse<WorkoutDto>>? = null
 
-        override suspend fun getWorkouts(): Response<List<WorkoutSummaryDto>> = workoutsResponse
+        override suspend fun getWorkouts(): Response<DataResponse<List<WorkoutSummaryDto>>> = workoutsResponse
 
-        override suspend fun getWorkoutById(id: String): Response<WorkoutDto> {
-            return workoutDetailResponse ?: Response.error(404, okhttp3.ResponseBody.create(null, ""))
+        override suspend fun getWorkoutById(id: String): Response<DataResponse<WorkoutDto>> {
+            return workoutDetailResponse ?: Response.error(404, "".toResponseBody(null))
         }
     }
 }

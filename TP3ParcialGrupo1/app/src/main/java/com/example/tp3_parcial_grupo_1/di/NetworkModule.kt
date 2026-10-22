@@ -1,5 +1,6 @@
 package com.example.tp3_parcial_grupo_1.di
 
+import com.example.tp3_parcial_grupo_1.BuildConfig
 import com.example.tp3_parcial_grupo_1.data.remote.api.WorkoutApi
 import dagger.Module
 import dagger.Provides
@@ -20,11 +21,14 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideOkHttpClient(): OkHttpClient {
-        return OkHttpClient.Builder()
-            .addInterceptor(HttpLoggingInterceptor().apply {
+        val builder = OkHttpClient.Builder()
+        if (BuildConfig.DEBUG) {
+            val loggingInterceptor = HttpLoggingInterceptor().apply {
                 level = HttpLoggingInterceptor.Level.BODY
-            })
-            .build()
+            }
+            builder.addInterceptor(loggingInterceptor)
+        }
+        return builder.build()
     }
 
     @Provides
