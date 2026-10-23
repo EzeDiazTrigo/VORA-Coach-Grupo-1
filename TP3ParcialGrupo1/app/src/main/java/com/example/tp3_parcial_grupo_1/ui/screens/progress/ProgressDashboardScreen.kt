@@ -1,9 +1,7 @@
 package com.example.tp3_parcial_grupo_1.ui.screens.progress
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -40,7 +38,6 @@ import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 
 private val InsightOrbSize = 32.dp
 private val CategoryIconContainerSize = 44.dp
-private val SmallIconSize = 16.dp
 private val PanelTagAlpha = 0.12f
 
 @Composable
@@ -115,7 +112,7 @@ private fun StatTile(stat: SummaryStat, modifier: Modifier = Modifier) {
         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xs)) {
             Text(stat.value, style = MaterialTheme.typography.titleLarge)
             if (stat.isStreak) {
-                Icon(painterResource(R.drawable.ic_flame), contentDescription = null, tint = MaterialTheme.colorScheme.error, modifier = Modifier.size(SmallIconSize))
+                Icon(painterResource(R.drawable.ic_flame), contentDescription = null, tint = MaterialTheme.colorScheme.error, modifier = Modifier.size(ProgressSmallIconSize))
             }
             stat.trend?.let {
                 Text(it, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.extendedColors.mint)
@@ -129,12 +126,7 @@ private fun InsightCard(progress: PeriodProgress, onSeeWeeklyReviewClick: () -> 
     val colors = MaterialTheme.colorScheme
     AppCard(style = AppCardStyle.Panel) {
         Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-            Box(
-                Modifier
-                    .size(InsightOrbSize)
-                    .background(MaterialTheme.extendedColors.mint, CircleShape)
-                    .border(BorderStroke(2.dp, colors.tertiary), CircleShape)
-            )
+            ProgressOrb(InsightOrbSize)
             Text(
                 ProgressStrings.VoraInsight,
                 style = MaterialTheme.typography.labelLarge,
@@ -151,14 +143,7 @@ private fun InsightCard(progress: PeriodProgress, onSeeWeeklyReviewClick: () -> 
             )
         }
         Text(ProgressStrings.quoted(progress.insight), style = MaterialTheme.typography.bodyLarge)
-        Row(
-            modifier = Modifier.clickable(onClick = onSeeWeeklyReviewClick),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xs)
-        ) {
-            Text(ProgressStrings.SeeWeeklyReview, style = MaterialTheme.typography.labelLarge, color = colors.tertiary)
-            Icon(painterResource(R.drawable.ic_arrow_right), contentDescription = null, tint = colors.tertiary, modifier = Modifier.size(SmallIconSize))
-        }
+        ProgressLink(ProgressStrings.SeeWeeklyReview, colors.tertiary, onSeeWeeklyReviewClick)
     }
 }
 
@@ -182,7 +167,7 @@ private fun CategoryCard(summary: CategorySummary, onClick: () -> Unit) {
                 Text(summary.subtitle, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
             Text(ProgressStrings.View, style = MaterialTheme.typography.labelMedium)
-            Icon(painterResource(R.drawable.ic_chevron_right), contentDescription = null, modifier = Modifier.size(SmallIconSize))
+            Icon(painterResource(R.drawable.ic_chevron_right), contentDescription = null, modifier = Modifier.size(ProgressSmallIconSize))
         }
     }
 }
@@ -194,12 +179,12 @@ private fun ActiveGoalCard(goal: ActiveGoal) {
         modifier = Modifier
             .fillMaxWidth()
             .background(extended.mintSoft, MaterialTheme.shapes.medium)
-            .border(BorderStroke(1.dp, extended.mint), MaterialTheme.shapes.medium)
+            .border(ProgressBorderWidth, extended.mint, MaterialTheme.shapes.medium)
             .padding(MaterialTheme.spacing.lg),
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xs)
     ) {
         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm)) {
-            Icon(painterResource(R.drawable.ic_target), contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(SmallIconSize))
+            Icon(painterResource(R.drawable.ic_target), contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(ProgressSmallIconSize))
             Text(ProgressStrings.ActiveGoal, style = MaterialTheme.typography.labelMedium, modifier = Modifier.weight(1f))
             Text(ProgressStrings.complete(goal.percentComplete), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.primary)
         }
