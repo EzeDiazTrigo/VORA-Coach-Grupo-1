@@ -13,43 +13,43 @@ Diseño: [Parcial Domiciliario 7 Oct 26](https://www.figma.com/design/1nvbbfYNYm
 
 | Sección | Pantalla (nombre en Figma) | Nodo |
 |---|---|---|
-| Login Flow | Login - 01 · SignIn | `2007:214` |
-| | Login - 02 · SignUp | `4002:2` |
-| Home Flow | Home / 01 · Dashboard | `2007:3` |
-| | Home / 02 · Notifications | `2007:127` |
-| AI Voice Flow | Voice / 01 · Idle | `1:1624` |
-| | Voice / 02 · Listening | `1:1372` |
-| | Voice / 03 · Processing | `1:1419` |
-| | Voice / 04 · Speaking | `1:1459` |
-| | Voice / 05 · Conversation | `1:1512` |
-| | Voice / 06 · Error | `1:1579` |
-| Workout Flow | Workout / 01 · Dashboard | `1:213` |
-| | Workout / 02 · Weekly Plan | `1:328` |
-| | Workout / 03 · Workout Details | `1:424` |
-| | Workout / 04 · Pre Workout | `1:510` |
-| | Workout / 05 · Active Workout | `1:554` |
-| | Workout / 06 · Exercise Details | `1:628` |
-| | Workout / 07 · Workout Complete | `1:673` |
-| Nutrition Flow | Nutrition / 01 · Dashboard | `1:730` |
-| | Nutrition / 02 · Today's Meals | `1:855` |
-| | Nutrition / 03 · Add Food | `1:953` |
-| | Nutrition / 04 · Voice Food Logging | `1:1038` |
-| | Nutrition / 05 · Food Analysis | `1:1077` |
-| | Nutrition / 06 · Photo Analysis | `1:1121` |
-| | Nutrition / 07 · Food Confirmation | `1:1185` |
-| | Nutrition / 08 · Meal Details | `1:1284` |
-| Progress Flow | Progress / 01 · Today's Overview | `1:1682` |
-| | Progress / 02 · Dashboard | `1:1775` |
-| | Progress / 03 · Workout Progress | `1:1904` |
-| | Progress / 04 · Nutrition Progress | `1:2032` |
-| | Progress / 05 · Health Trends | `1:2156` |
-| | Progress / 06 · Weekly Review | `1:2287` |
-| Profile Flow | Profile / 01 · Dashboard | `1:2382` |
-| | Profile / 02 · Edit Profile | `1:2514` |
-| | Profile / 03 · Goals & Preferences | `1:2572` |
-| | Profile / 04 · Nutrition Preferences | `1:2655` |
-| | Profile / 05 · Voice & AI Settings | `1:2785` |
-| | Profile / 06 · Settings | `1:2879` |
+| Login Flow | Login - 01 — SignIn | `2007:214` |
+| | Login - 02 — SignUp | `4002:2` |
+| Home Flow | Home / 01 — Dashboard | `2007:3` |
+| | Home / 02 — Notifications | `2007:127` |
+| AI Voice Flow | Voice / 01 — Idle | `1:1624` |
+| | Voice / 02 — Listening | `1:1372` |
+| | Voice / 03 — Processing | `1:1419` |
+| | Voice / 04 — Speaking | `1:1459` |
+| | Voice / 05 — Conversation | `1:1512` |
+| | Voice / 06 — Error | `1:1579` |
+| Workout Flow | Workout / 01 — Dashboard | `1:213` |
+| | Workout / 02 — Weekly Plan | `1:328` |
+| | Workout / 03 — Workout Details | `1:424` |
+| | Workout / 04 — Pre Workout | `1:510` |
+| | Workout / 05 — Active Workout | `1:554` |
+| | Workout / 06 — Exercise Details | `1:628` |
+| | Workout / 07 — Workout Complete | `1:673` |
+| Nutrition Flow | Nutrition / 01 — Dashboard | `1:730` |
+| | Nutrition / 02 — Today's Meals | `1:855` |
+| | Nutrition / 03 — Add Food | `1:953` |
+| | Nutrition / 04 — Voice Food Logging | `1:1038` |
+| | Nutrition / 05 — Food Analysis | `1:1077` |
+| | Nutrition / 06 — Photo Analysis | `1:1121` |
+| | Nutrition / 07 — Food Confirmation | `1:1185` |
+| | Nutrition / 08 — Meal Details | `1:1284` |
+| Progress Flow | Progress / 01 — Today's Overview | `1:1682` |
+| | Progress / 02 — Dashboard | `1:1775` |
+| | Progress / 03 — Workout Progress | `1:1904` |
+| | Progress / 04 — Nutrition Progress | `1:2032` |
+| | Progress / 05 — Health Trends | `1:2156` |
+| | Progress / 06 — Weekly Review | `1:2287` |
+| Profile Flow | Profile / 01 — Dashboard | `1:2382` |
+| | Profile / 02 — Edit Profile | `1:2514` |
+| | Profile / 03 — Goals & Preferences | `1:2572` |
+| | Profile / 04 — Nutrition Preferences | `1:2655` |
+| | Profile / 05 — Voice & AI Settings | `1:2785` |
+| | Profile / 06 — Settings | `1:2879` |
 
 Sistema de diseño (sección `2004:1966`): Colores `2004:1396`, Tipografía `2004:1512`, Espaciado y radios `2004:1649`, Elementos de interfaz `2004:1779`.
 
@@ -86,8 +86,8 @@ Los nombres siguen las capas de Figma (`home`, `more-horizontal`, `x-circle`…)
 | Recurso | Uso |
 |---|---|
 | `drawable-nodpi/img_avatar_demo.png` | Avatar del perfil de demostración (Home, Profile) |
-| `drawable-nodpi/img_meal_demo.jpg` | Foto del plato (Nutrition / 05 · Food Analysis, 06 · Photo Analysis). Las etiquetas «Grilled Chicken (~180g)» / «Basmati Rice (~150g)» van superpuestas en Compose |
-| `drawable-nodpi/img_exercise_demo.jpg` | Imagen del ejercicio (Workout / 06 · Exercise Details, «Seated Cable Row») |
+| `drawable-nodpi/img_meal_demo.jpg` | Foto del plato (Nutrition / 05 — Food Analysis, 06 — Photo Analysis). Las etiquetas «Grilled Chicken (~180g)» / «Basmati Rice (~150g)» van superpuestas en Compose |
+| `drawable-nodpi/img_exercise_demo.jpg` | Imagen del ejercicio (Workout / 06 — Exercise Details, «Seated Cable Row») |
 
 Las fotos se redujeron a 1050 px de ancho (350 dp × 3) en JPEG 85 % para no inflar el APK.
 

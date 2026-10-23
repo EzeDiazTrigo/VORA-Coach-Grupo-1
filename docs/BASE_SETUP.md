@@ -44,6 +44,19 @@ Fuente: la página «Sistema de diseño» del PDF de Figma.
 
 **Por qué**: las pantallas se arman componiendo estos elementos en lugar de repetir campos y botones, y así mantienen la fidelidad con Figma desde un solo lugar.
 
+### 5. Acceso
+- **Pantallas**: `LoginScreen` y `RegisterScreen` (sin estado, con `@Preview`) y sus `LoginRoute` y `RegisterRoute` con `hiltViewModel`. Los `Route` reciben lambdas de navegación y no un `NavController`, así se conectan a las rutas sin tocar las pantallas.
+- **Validación**: funciones puras (`validateEmail`, `validatePassword`, `validateFullName`) con tests, y tests del `LoginViewModel`.
+- **Modo demostración**: las credenciales válidas entran sin servidor; los botones sociales, «Forgot your password?» y «Recover» informan «modo demostración».
+- **Textos**: `AuthStrings` mantiene los textos del diseño de Figma; los mensajes de error van en español.
+- **Provisorio**: el logo y los botones de Apple y Google usan marcadores hasta contar con los recursos exportados de Figma.
+
+### 6. Inicio
+- **Dashboard** (`HomeScreen`) y **Notificaciones** (`NotificationsScreen`), sin estado y con `@Preview`, con sus `Route` y `ViewModel`. Los `Route` reciben lambdas de navegación (campana, sesión de voz, entrenamiento, registrar comida) y no un `NavController`.
+- **Datos de demostración**: `data/demo/HomeDemoData.kt`, identificados como demostración. Las notificaciones se pueden marcar como leídas (una o todas).
+- **Barra inferior**: no se incluye aquí; se agrega cuando exista el componente compartido.
+- **Provisorio**: el avatar usa las iniciales hasta contar con la foto exportada de Figma.
+
 ## Cómo se verificó
 - `./gradlew :app:assembleDebug` y `:app:testDebugUnitTest` verdes.
 - Se confirmó que existen las clases `Hilt_*`.
@@ -53,5 +66,6 @@ Fuente: la página «Sistema de diseño» del PDF de Figma.
 - No hay `local.properties` versionado (está en `.gitignore`). Para compilar desde terminal: `ANDROID_HOME=~/Android/Sdk sh gradlew :app:assembleDebug` (`gradlew` no tiene bit de ejecución en este checkout).
 
 ## Pendiente
-- Pantallas de Acceso, Inicio y Perfil.
+- Conectar las lambdas de Acceso a las rutas de navegación.
+- Pantallas de Perfil.
 - Fuente Manrope: se incorpora cuando se exporte el `.ttf` de Figma a `res/font/` (hoy `AppFontFamily` usa la del sistema).
