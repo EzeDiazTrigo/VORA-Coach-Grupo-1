@@ -1,7 +1,6 @@
 package com.example.tp3_parcial_grupo_1.ui.screens.nutrition
 
 import android.app.DatePickerDialog
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -24,8 +23,16 @@ import androidx.compose.ui.unit.sp
 import com.example.tp3_parcial_grupo_1.R
 import com.example.tp3_parcial_grupo_1.model.Meal
 import com.example.tp3_parcial_grupo_1.model.MealType
+import com.example.tp3_parcial_grupo_1.ui.components.AppButton
+import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
+import com.example.tp3_parcial_grupo_1.ui.components.AppCard
+import com.example.tp3_parcial_grupo_1.ui.components.AppCardStyle
+import com.example.tp3_parcial_grupo_1.ui.components.MacroProgressBar
+import com.example.tp3_parcial_grupo_1.ui.components.ProgressRing
+import com.example.tp3_parcial_grupo_1.ui.strings.NutritionStrings
 import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
+import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -64,7 +71,7 @@ fun NutritionDashboardScreen(
     if (mealToDelete != null) {
         AlertDialog(
             onDismissRequest = { mealToDelete = null },
-            title = { Text("Delete Meal") },
+            title = { Text(NutritionStrings.title) },
             text = { Text("Are you sure you want to delete ${mealToDelete?.name}?") },
             confirmButton = {
                 TextButton(onClick = {
@@ -89,11 +96,11 @@ fun NutritionDashboardScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .padding(horizontal = 20.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+                .padding(horizontal = MaterialTheme.spacing.screen),
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.lg)
         ) {
             item {
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(MaterialTheme.spacing.sm))
                 // Header
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -105,17 +112,15 @@ fun NutritionDashboardScreen(
                             text = formatDisplayDate(uiState.selectedDate),
                             style = MaterialTheme.typography.labelSmall.copy(
                                 color = MaterialTheme.extendedColors.textSubtle,
-                                fontSize = 11.sp,
                                 fontWeight = FontWeight.SemiBold
                             )
                         )
                         Spacer(modifier = Modifier.height(2.dp))
                         Text(
-                            text = "Nutrition",
+                            text = NutritionStrings.title,
                             style = MaterialTheme.typography.headlineMedium.copy(
                                 color = MaterialTheme.colorScheme.onBackground,
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 28.sp
+                                fontWeight = FontWeight.Bold
                             )
                         )
                     }
@@ -138,81 +143,85 @@ fun NutritionDashboardScreen(
 
             item {
                 // Calories Consumed Card
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(16.dp),
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
-                ) {
-                    Column(modifier = Modifier.padding(16.dp)) {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Column {
-                                Text(
-                                    text = "CALORIES CONSUMED",
-                                    style = MaterialTheme.typography.labelSmall.copy(
-                                        color = MaterialTheme.extendedColors.textSubtle,
-                                        fontSize = 10.sp,
-                                        fontWeight = FontWeight.Bold
-                                    )
+                AppCard {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Column {
+                            Text(
+                                text = NutritionStrings.caloriesConsumed,
+                                style = MaterialTheme.typography.labelSmall.copy(
+                                    color = MaterialTheme.extendedColors.textSubtle,
+                                    fontWeight = FontWeight.Bold
                                 )
-                                Spacer(modifier = Modifier.height(4.dp))
-                                Text(
-                                    text = "${uiState.totalCalories}",
-                                    style = MaterialTheme.typography.headlineLarge.copy(
-                                        color = MaterialTheme.colorScheme.onBackground,
-                                        fontWeight = FontWeight.Bold,
-                                        fontSize = 32.sp
-                                    )
+                            )
+                            Spacer(modifier = Modifier.height(MaterialTheme.spacing.xxs))
+                            Text(
+                                text = "${uiState.totalCalories}",
+                                style = MaterialTheme.typography.headlineLarge.copy(
+                                    color = MaterialTheme.colorScheme.onBackground,
+                                    fontWeight = FontWeight.Bold
                                 )
-                                Spacer(modifier = Modifier.height(2.dp))
-                                Text(
-                                    text = "Goal: ${uiState.goalCalories} kcal",
-                                    style = MaterialTheme.typography.bodySmall.copy(
-                                        color = MaterialTheme.extendedColors.textSubtle,
-                                        fontSize = 12.sp
-                                    )
+                            )
+                            Spacer(modifier = Modifier.height(2.dp))
+                            Text(
+                                text = "${NutritionStrings.goal}: ${uiState.goalCalories} kcal",
+                                style = MaterialTheme.typography.bodySmall.copy(
+                                    color = MaterialTheme.extendedColors.textSubtle
                                 )
-                            }
-
-                            val progressRatio = if (uiState.goalCalories > 0) (uiState.totalCalories.toFloat() / uiState.goalCalories).coerceIn(0f, 1f) else 0f
-                            Box(
-                                contentAlignment = Alignment.Center,
-                                modifier = Modifier.size(72.dp)
-                            ) {
-                                CircularProgressIndicator(
-                                    progress = { progressRatio },
-                                    modifier = Modifier.size(72.dp),
-                                    color = MaterialTheme.colorScheme.primary,
-                                    trackColor = MaterialTheme.colorScheme.outlineVariant,
-                                    strokeWidth = 6.dp,
-                                )
-                                Text(
-                                    text = "${(progressRatio * 100).toInt()}%",
-                                    style = MaterialTheme.typography.titleMedium.copy(
-                                        color = MaterialTheme.colorScheme.onBackground,
-                                        fontWeight = FontWeight.Bold,
-                                        fontSize = 14.sp
-                                    )
-                                )
-                            }
+                            )
                         }
 
-                        Spacer(modifier = Modifier.height(16.dp))
-                        HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant, thickness = 1.dp)
-                        Spacer(modifier = Modifier.height(16.dp))
-
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween
+                        val progressRatio = if (uiState.goalCalories > 0) (uiState.totalCalories.toFloat() / uiState.goalCalories).coerceIn(0f, 1f) else 0f
+                        ProgressRing(
+                            progress = progressRatio,
+                            size = 72.dp,
+                            strokeWidth = 6.dp
                         ) {
-                            MacroIndicator(label = "Protein", current = "${uiState.totalProtein}g", total = "140g", progress = (uiState.totalProtein.toFloat() / 140f).coerceIn(0f, 1f), color = MaterialTheme.colorScheme.primary)
-                            MacroIndicator(label = "Carbs", current = "${uiState.totalCarbs}g", total = "220g", progress = (uiState.totalCarbs.toFloat() / 220f).coerceIn(0f, 1f), color = MaterialTheme.colorScheme.secondary)
-                            MacroIndicator(label = "Fat", current = "${uiState.totalFat}g", total = "65g", progress = (uiState.totalFat.toFloat() / 65f).coerceIn(0f, 1f), color = MaterialTheme.colorScheme.tertiary)
+                            Text(
+                                text = "${(progressRatio * 100).toInt()}%",
+                                style = MaterialTheme.typography.titleMedium.copy(
+                                    color = MaterialTheme.colorScheme.onBackground,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            )
                         }
+                    }
+
+                    Spacer(modifier = Modifier.height(MaterialTheme.spacing.sm))
+                    HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant, thickness = 1.dp)
+                    Spacer(modifier = Modifier.height(MaterialTheme.spacing.sm))
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        MacroProgressBar(
+                            name = NutritionStrings.protein,
+                            current = "${uiState.totalProtein}g",
+                            goal = "140g",
+                            progress = (uiState.totalProtein.toFloat() / 140f).coerceIn(0f, 1f),
+                            color = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.weight(1f).padding(end = MaterialTheme.spacing.xs)
+                        )
+                        MacroProgressBar(
+                            name = NutritionStrings.carbs,
+                            current = "${uiState.totalCarbs}g",
+                            goal = "220g",
+                            progress = (uiState.totalCarbs.toFloat() / 220f).coerceIn(0f, 1f),
+                            color = MaterialTheme.colorScheme.secondary,
+                            modifier = Modifier.weight(1f).padding(horizontal = MaterialTheme.spacing.xs)
+                        )
+                        MacroProgressBar(
+                            name = NutritionStrings.fat,
+                            current = "${uiState.totalFat}g",
+                            goal = "65g",
+                            progress = (uiState.totalFat.toFloat() / 65f).coerceIn(0f, 1f),
+                            color = MaterialTheme.colorScheme.tertiary,
+                            modifier = Modifier.weight(1f).padding(start = MaterialTheme.spacing.xs)
+                        )
                     }
                 }
             }
@@ -225,7 +234,7 @@ fun NutritionDashboardScreen(
                         .clip(RoundedCornerShape(12.dp))
                         .background(MaterialTheme.extendedColors.mintSoft)
                         .border(1.dp, MaterialTheme.colorScheme.secondary, RoundedCornerShape(12.dp))
-                        .padding(14.dp)
+                        .padding(MaterialTheme.spacing.md)
                 ) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(
@@ -234,12 +243,11 @@ fun NutritionDashboardScreen(
                             tint = MaterialTheme.colorScheme.primary,
                             modifier = Modifier.size(20.dp)
                         )
-                        Spacer(modifier = Modifier.width(10.dp))
+                        Spacer(modifier = Modifier.width(MaterialTheme.spacing.md))
                         Text(
                             text = "You're on track today. A protein-rich dinner would help you reach your target.",
                             style = MaterialTheme.typography.bodyMedium.copy(
                                 color = MaterialTheme.colorScheme.primary,
-                                fontSize = 13.sp,
                                 fontWeight = FontWeight.Medium
                             )
                         )
@@ -255,20 +263,18 @@ fun NutritionDashboardScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "Today’s Meals",
+                        text = NutritionStrings.todaysMeals,
                         style = MaterialTheme.typography.titleLarge.copy(
                             color = MaterialTheme.colorScheme.onBackground,
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 18.sp
+                            fontWeight = FontWeight.Bold
                         )
                     )
                     TextButton(onClick = onNavigateToHistory) {
                         Text(
-                            text = "View History",
+                            text = NutritionStrings.viewHistory,
                             style = MaterialTheme.typography.bodyMedium.copy(
                                 color = MaterialTheme.colorScheme.primary,
-                                fontWeight = FontWeight.SemiBold,
-                                fontSize = 13.sp
+                                fontWeight = FontWeight.SemiBold
                             )
                         )
                     }
@@ -292,15 +298,9 @@ fun NutritionDashboardScreen(
             }
 
             item {
-                // Tell Vora what you ate Card (Dark Green)
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clip(RoundedCornerShape(20.dp))
-                        .background(MaterialTheme.colorScheme.primary)
-                        .padding(20.dp)
-                ) {
-                    Column {
+                // Tell Vora what you ate Card (Panel style)
+                AppCard(style = AppCardStyle.Panel) {
+                    Column(verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md)) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Box(
                                 modifier = Modifier
@@ -308,99 +308,63 @@ fun NutritionDashboardScreen(
                                     .clip(CircleShape)
                                     .background(MaterialTheme.colorScheme.secondary)
                             )
-                            Spacer(modifier = Modifier.width(8.dp))
+                            Spacer(modifier = Modifier.width(MaterialTheme.spacing.sm))
                             Text(
-                                text = "Tell Vora what you ate",
+                                text = NutritionStrings.tellVoraTitle,
                                 style = MaterialTheme.typography.titleMedium.copy(
-                                    color = MaterialTheme.colorScheme.surface,
-                                    fontWeight = FontWeight.Bold,
-                                    fontSize = 16.sp
+                                    color = MaterialTheme.colorScheme.onPrimary,
+                                    fontWeight = FontWeight.Bold
                                 )
                             )
                         }
-                        Spacer(modifier = Modifier.height(8.dp))
                         Text(
-                            text = "Vora will automatically estimate the portions, ingredients, and log the nutrition details.",
+                            text = NutritionStrings.tellVoraSubtitle,
                             style = MaterialTheme.typography.bodyMedium.copy(
-                                color = MaterialTheme.colorScheme.surface.copy(alpha = 0.8f),
-                                fontSize = 13.sp
+                                color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f)
                             )
                         )
-                        Spacer(modifier = Modifier.height(16.dp))
                         Row(
                             modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm)
                         ) {
-                            Button(
-                                onClick = onNavigateToVoice,
-                                modifier = Modifier.weight(1f),
-                                shape = PillShape,
-                                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary, contentColor = MaterialTheme.colorScheme.primary)
-                            ) {
-                                Text(text = "Voice", fontWeight = FontWeight.SemiBold, fontSize = 13.sp)
+                            Box(modifier = Modifier.weight(1f)) {
+                                AppButton(
+                                    text = NutritionStrings.voice,
+                                    onClick = onNavigateToVoice,
+                                    style = AppButtonStyle.Accent,
+                                    isCompact = true
+                                )
                             }
-                            Button(
-                                onClick = onNavigateToPhoto,
-                                modifier = Modifier.weight(1f),
-                                shape = PillShape,
-                                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1E4E45), contentColor = MaterialTheme.colorScheme.surface)
-                            ) {
-                                Text(text = "Photo", fontWeight = FontWeight.SemiBold, fontSize = 13.sp)
+                            Box(modifier = Modifier.weight(1f)) {
+                                AppButton(
+                                    text = NutritionStrings.photo,
+                                    onClick = onNavigateToPhoto,
+                                    style = AppButtonStyle.Primary,
+                                    isCompact = true
+                                )
                             }
-                            Button(
-                                onClick = onNavigateToAddFood,
-                                modifier = Modifier.weight(1f),
-                                shape = PillShape,
-                                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1E4E45), contentColor = MaterialTheme.colorScheme.surface)
-                            ) {
-                                Text(text = "Search", fontWeight = FontWeight.SemiBold, fontSize = 13.sp)
+                            Box(modifier = Modifier.weight(1f)) {
+                                AppButton(
+                                    text = NutritionStrings.search,
+                                    onClick = onNavigateToAddFood,
+                                    style = AppButtonStyle.Primary,
+                                    isCompact = true
+                                )
                             }
                         }
                     }
                 }
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(MaterialTheme.spacing.lg))
             }
         }
     }
 }
 
 @Composable
-fun MacroIndicator(label: String, current: String, total: String, progress: Float, color: Color) {
-    Column(modifier = Modifier.width(96.dp)) {
+fun MealRowCard(title: String, subtitle: String, calories: String, onClick: () -> Unit) {
+    AppCard(onClick = onClick) {
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Text(text = label, style = MaterialTheme.typography.labelSmall.copy(color = MaterialTheme.extendedColors.textSubtle, fontSize = 11.sp))
-            Text(text = "$current/$total", style = MaterialTheme.typography.labelSmall.copy(color = MaterialTheme.colorScheme.onBackground, fontWeight = FontWeight.Bold, fontSize = 11.sp))
-        }
-        Spacer(modifier = Modifier.height(4.dp))
-        LinearProgressIndicator(
-            progress = { progress },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(6.dp)
-                .clip(PillShape),
-            color = color,
-            trackColor = MaterialTheme.colorScheme.outlineVariant,
-        )
-    }
-}
-
-@Composable
-fun MealRowCard(title: String, subtitle: String, calories: String, onClick: () -> Unit) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable(onClick = onClick),
-        shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -409,16 +373,14 @@ fun MealRowCard(title: String, subtitle: String, calories: String, onClick: () -
                     text = title,
                     style = MaterialTheme.typography.titleMedium.copy(
                         color = MaterialTheme.colorScheme.onBackground,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 15.sp
+                        fontWeight = FontWeight.Bold
                     )
                 )
                 Spacer(modifier = Modifier.height(2.dp))
                 Text(
                     text = subtitle,
                     style = MaterialTheme.typography.bodySmall.copy(
-                        color = MaterialTheme.extendedColors.textSubtle,
-                        fontSize = 12.sp
+                        color = MaterialTheme.extendedColors.textSubtle
                     )
                 )
             }
@@ -426,8 +388,7 @@ fun MealRowCard(title: String, subtitle: String, calories: String, onClick: () -
                 text = calories,
                 style = MaterialTheme.typography.titleMedium.copy(
                     color = MaterialTheme.colorScheme.onBackground,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 14.sp
+                    fontWeight = FontWeight.Bold
                 )
             )
         }
@@ -436,16 +397,9 @@ fun MealRowCard(title: String, subtitle: String, calories: String, onClick: () -
 
 @Composable
 fun DinnerCard(onAddDinner: () -> Unit) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
-    ) {
+    AppCard {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
+            modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -454,32 +408,23 @@ fun DinnerCard(onAddDinner: () -> Unit) {
                     text = "Dinner",
                     style = MaterialTheme.typography.titleMedium.copy(
                         color = MaterialTheme.colorScheme.onBackground,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 15.sp
+                        fontWeight = FontWeight.Bold
                     )
                 )
                 Spacer(modifier = Modifier.height(2.dp))
                 Text(
                     text = "Not logged yet",
                     style = MaterialTheme.typography.bodySmall.copy(
-                        color = MaterialTheme.extendedColors.textSubtle,
-                        fontSize = 12.sp
+                        color = MaterialTheme.extendedColors.textSubtle
                     )
                 )
             }
-            Button(
-                onClick = onAddDinner,
-                shape = PillShape,
-                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary, contentColor = MaterialTheme.colorScheme.surface),
-                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
-                modifier = Modifier.height(36.dp)
-            ) {
-                Text(
-                    text = "+ Add",
-                    style = MaterialTheme.typography.labelMedium.copy(
-                        fontWeight = FontWeight.SemiBold,
-                        fontSize = 12.sp
-                    )
+            Box(modifier = Modifier.width(100.dp)) {
+                AppButton(
+                    text = NutritionStrings.add,
+                    onClick = onAddDinner,
+                    style = AppButtonStyle.Primary,
+                    isCompact = true
                 )
             }
         }
