@@ -1,4 +1,4 @@
-package com.example.tp3_parcial_grupo_1.ui.screens.nutrition
+package com.example.tp3_parcial_grupo_1.navigation
 
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -9,6 +9,16 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
+import com.example.tp3_parcial_grupo_1.ui.screens.nutrition.AddFoodScreen
+import com.example.tp3_parcial_grupo_1.ui.screens.nutrition.AnalyseMealPhotoScreen
+import com.example.tp3_parcial_grupo_1.ui.screens.nutrition.AnalyzingMealScreen
+import com.example.tp3_parcial_grupo_1.ui.screens.nutrition.ManualLogScreen
+import com.example.tp3_parcial_grupo_1.ui.screens.nutrition.MealDetailScreen
+import com.example.tp3_parcial_grupo_1.ui.screens.nutrition.MealsViewModel
+import com.example.tp3_parcial_grupo_1.ui.screens.nutrition.NutritionDashboardScreen
+import com.example.tp3_parcial_grupo_1.ui.screens.nutrition.ReviewMealScreen
+import com.example.tp3_parcial_grupo_1.ui.screens.nutrition.TodaysMealsScreen
+import com.example.tp3_parcial_grupo_1.ui.screens.nutrition.VoiceLoggingScreen
 
 sealed class NutritionDestination(val route: String) {
     object Dashboard : NutritionDestination("nutrition_dashboard")
