@@ -1,5 +1,7 @@
 package com.example.tp3_parcial_grupo_1.data.demo
 
+import java.text.Normalizer
+
 // Datos de demostración del Asistente VORA: no hay voz ni IA real (NAV05).
 data class CoachExchange(
     val question: String,
@@ -9,6 +11,16 @@ data class CoachExchange(
 )
 
 data class LastConversation(val text: String, val timeAgo: String)
+
+enum class CoachAuthor { User, Vora }
+
+data class CoachMessage(
+    val id: Long,
+    val author: CoachAuthor,
+    val text: String,
+    val time: String,
+    val audioSeconds: Int? = null
+)
 
 object CoachDemoData {
     val lunch = CoachExchange(
@@ -45,6 +57,10 @@ object CoachDemoData {
         )
     )
 
+    // Respuesta para preguntas escritas que no están en la demo.
+    const val GenericReply =
+        "I'm in demo mode, so I answer with examples. Try one of the suggested questions."
+
     val suggestedQuestions: List<String> = suggestions.map { it.question }
 
     val lastConversation = LastConversation(
@@ -52,6 +68,39 @@ object CoachDemoData {
         timeAgo = "2 hours ago"
     )
 
-    fun exchangeFor(question: String): CoachExchange =
-        suggestions.firstOrNull { it.question == question } ?: lunch
+    const val ConversationDate = "TODAY AT 12:40 PM"
+
+    // La conversación de ejemplo del frame «Voice / 05 · Conversation».
+    val conversation = listOf(
+        CoachMessage(1, CoachAuthor.User, "What should I eat for dinner?", "12:41"),
+        CoachMessage(
+            2, CoachAuthor.Vora,
+            "You're 36 g short on protein today. I'd suggest grilled chicken breast with roasted seasonal vegetables and a serving of Greek yogurt.",
+            "12:41",
+            audioSeconds = 14
+        ),
+        CoachMessage(3, CoachAuthor.User, "Can you make it vegetarian?", "12:42"),
+        CoachMessage(
+            4, CoachAuthor.Vora,
+            "Sure. Try grilled tofu, roasted vegetables, quinoa and Greek yogurt.",
+            "12:43"
+        )
+    )
+
+    fun exchangeFor(question: String): CoachExchange = find(question) ?: lunch
+
+    fun replyFor(question: String): String = find(question)?.reply ?: GenericReply
+
+    // «how am i doing» encuentra «How am I doing?»: se comparan sin tildes, signos ni mayúsculas.
+    private fun find(question: String): CoachExchange? {
+        val key = normalize(question)
+        return suggestions.firstOrNull { normalize(it.question) == key }
+    }
+
+    private fun normalize(text: String): String =
+        Normalizer.normalize(text, Normalizer.Form.NFD)
+            .replace(Regex("\\p{M}+"), "")
+            .lowercase()
+            .replace(Regex("[^a-z0-9 ]"), "")
+            .trim()
 }

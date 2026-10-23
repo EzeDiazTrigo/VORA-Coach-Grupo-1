@@ -26,7 +26,8 @@ import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
 import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 
-enum class AppButtonStyle { Primary, Accent, Outlined }
+// Secondary: menta, como «Try again» del Asistente.
+enum class AppButtonStyle { Primary, Secondary, Accent, Outlined }
 
 @Composable
 fun AppButton(
@@ -84,10 +85,12 @@ fun AppButton(
             enabled = isEnabled,
             shape = PillShape,
             contentPadding = contentPadding,
-            colors = if (style == AppButtonStyle.Accent) {
-                ButtonDefaults.buttonColors(containerColor = colors.tertiary, contentColor = colors.onTertiary)
-            } else {
-                ButtonDefaults.buttonColors(containerColor = colors.primary, contentColor = colors.onPrimary)
+            colors = when (style) {
+                AppButtonStyle.Accent ->
+                    ButtonDefaults.buttonColors(containerColor = colors.tertiary, contentColor = colors.onTertiary)
+                AppButtonStyle.Secondary ->
+                    ButtonDefaults.buttonColors(containerColor = colors.secondary, contentColor = colors.onSecondary)
+                else -> ButtonDefaults.buttonColors(containerColor = colors.primary, contentColor = colors.onPrimary)
             },
             content = { content() }
         )
@@ -97,6 +100,7 @@ fun AppButton(
 @Composable
 private fun contentColorFor(style: AppButtonStyle) = when (style) {
     AppButtonStyle.Primary -> MaterialTheme.colorScheme.onPrimary
+    AppButtonStyle.Secondary -> MaterialTheme.colorScheme.onSecondary
     AppButtonStyle.Accent -> MaterialTheme.colorScheme.onTertiary
     AppButtonStyle.Outlined -> MaterialTheme.colorScheme.primary
 }
