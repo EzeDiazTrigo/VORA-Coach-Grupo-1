@@ -19,7 +19,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.tp3_parcial_grupo_1.R
-import com.example.tp3_parcial_grupo_1.ui.screens.nutrition.nutritionGraph
 import com.example.tp3_parcial_grupo_1.ui.strings.NavigationStrings
 
 @Composable
@@ -54,7 +53,7 @@ fun AppNavHost(
             coachPlaceholderGraph()
             workoutPlaceholderGraph(navController)
             nutritionGraph(navController)
-            progressPlaceholderGraph(navController)
+            progressGraph(navController)
             profilePlaceholderGraph(navController)
         }
     }
