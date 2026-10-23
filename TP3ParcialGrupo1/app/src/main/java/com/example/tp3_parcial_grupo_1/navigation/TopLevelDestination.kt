@@ -2,12 +2,12 @@ package com.example.tp3_parcial_grupo_1.navigation
 
 import androidx.navigation.NavController
 
-enum class TopLevelDestination(val graphRoute: String, private val routePrefix: String) {
-    Home(AppDestination.HomeGraph.route, "home/"),
-    Workout(AppDestination.WorkoutGraph.route, "workout/"),
-    Nutrition(AppDestination.NutritionGraph.route, "nutrition/"),
-    Progress(AppDestination.ProgressGraph.route, "progress/"),
-    Profile(AppDestination.ProfileGraph.route, "profile/");
+enum class TopLevelDestination(val graphRoute: String, val startRoute: String, private val routePrefix: String) {
+    Home(AppDestination.HomeGraph.route, AppDestination.Home.route, "home/"),
+    Workout(AppDestination.WorkoutGraph.route, AppDestination.Workout.route, "workout/"),
+    Nutrition(AppDestination.NutritionGraph.route, AppDestination.Nutrition.route, "nutrition/"),
+    Progress(AppDestination.ProgressGraph.route, AppDestination.Progress.route, "progress/"),
+    Profile(AppDestination.ProfileGraph.route, AppDestination.Profile.route, "profile/");
 
     fun owns(route: String) = route.startsWith(routePrefix)
 }
@@ -37,6 +37,10 @@ fun bottomBarSelection(route: String?): TopLevelDestination? {
 }
 
 fun NavController.navigateToTopLevel(destination: TopLevelDestination) {
+    if (bottomBarSelection(currentDestination?.route) == destination) {
+        popBackStack(destination.startRoute, inclusive = false)
+        return
+    }
     navigate(destination.graphRoute) {
         popUpTo(AppDestination.Home.route) { saveState = true }
         launchSingleTop = true
