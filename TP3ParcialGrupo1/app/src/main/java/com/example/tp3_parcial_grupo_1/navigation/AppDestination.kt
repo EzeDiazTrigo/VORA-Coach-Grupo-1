@@ -41,6 +41,7 @@ sealed class AppDestination(val route: String) {
     data object Nutrition : AppDestination("nutrition/dashboard")
     data object TodaysMeals : AppDestination("nutrition/todays_meals")
     data object AddFood : AppDestination("nutrition/add_food")
+    data object ManualLog : AppDestination("nutrition/manual_log")
     data object VoiceFoodLogging : AppDestination("nutrition/voice_logging")
     data object FoodAnalysis : AppDestination("nutrition/food_analysis")
     data object PhotoAnalysis : AppDestination("nutrition/photo_analysis")

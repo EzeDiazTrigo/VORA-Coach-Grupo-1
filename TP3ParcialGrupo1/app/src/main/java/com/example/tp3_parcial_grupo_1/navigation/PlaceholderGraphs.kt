@@ -11,7 +11,6 @@ import androidx.navigation.navArgument
 
 private val workoutIdArgument = navArgument(NavArg.WorkoutId) { type = NavType.StringType }
 private val exerciseIdArgument = navArgument(NavArg.ExerciseId) { type = NavType.StringType }
-private val mealIdArgument = navArgument(NavArg.MealId) { type = NavType.LongType }
 
 private fun NavGraphBuilder.placeholder(
     destination: AppDestination,
@@ -87,46 +86,6 @@ fun NavGraphBuilder.workoutPlaceholderGraph(navController: NavController) {
                 }
             )
         }
-    }
-}
-
-fun NavGraphBuilder.nutritionPlaceholderGraph(navController: NavController) {
-    navigation(startDestination = AppDestination.Nutrition.route, route = AppDestination.NutritionGraph.route) {
-        placeholder(AppDestination.Nutrition, "Nutrition / 01 — Dashboard") {
-            listOf(
-                PlaceholderAction("View History") { navController.navigate(AppDestination.TodaysMeals.route) },
-                PlaceholderAction("Add Food") { navController.navigate(AppDestination.AddFood.route) },
-                PlaceholderAction("Meal 1") { navController.navigate(AppDestination.MealDetails.createRoute(1L)) },
-                PlaceholderAction("Meal 2") { navController.navigate(AppDestination.MealDetails.createRoute(2L)) }
-            )
-        }
-        placeholder(AppDestination.TodaysMeals, "Nutrition / 02 — Today's Meals") {
-            listOf(PlaceholderAction("+ Add Dinner") { navController.navigate(AppDestination.AddFood.route) })
-        }
-        placeholder(AppDestination.AddFood, "Nutrition / 03 — Add Food") {
-            listOf(
-                PlaceholderAction("Start Voice Logging") { navController.navigate(AppDestination.VoiceFoodLogging.route) },
-                PlaceholderAction("Photo") { navController.navigate(AppDestination.PhotoAnalysis.route) },
-                PlaceholderAction("Log Manually") { navController.navigate(AppDestination.FoodConfirmation.route) }
-            )
-        }
-        placeholder(AppDestination.VoiceFoodLogging, "Nutrition / 04 — Voice Food Logging") {
-            listOf(PlaceholderAction("Done") { navController.navigate(AppDestination.FoodAnalysis.route) })
-        }
-        placeholder(AppDestination.FoodAnalysis, "Nutrition / 05 — Food Analysis") {
-            listOf(PlaceholderAction("Review") { navController.navigate(AppDestination.FoodConfirmation.route) })
-        }
-        placeholder(AppDestination.PhotoAnalysis, "Nutrition / 06 — Photo Analysis") {
-            listOf(PlaceholderAction("Review & Add") { navController.navigate(AppDestination.FoodConfirmation.route) })
-        }
-        placeholder(AppDestination.FoodConfirmation, "Nutrition / 07 — Food Confirmation") {
-            listOf(
-                PlaceholderAction("Add to Lunch") {
-                    navController.popBackStack(AppDestination.Nutrition.route, inclusive = false)
-                }
-            )
-        }
-        placeholder(AppDestination.MealDetails, "Nutrition / 08 — Meal Details", listOf(mealIdArgument))
     }
 }
 
