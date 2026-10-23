@@ -43,3 +43,8 @@ fun NavController.navigateToTopLevel(destination: TopLevelDestination) {
         restoreState = true
     }
 }
+
+fun NavController.navigateInTab(route: String) {
+    navigateToTopLevel(TopLevelDestination.entries.first { it.owns(route) })
+    if (currentDestination?.route != route) navigate(route)
+}

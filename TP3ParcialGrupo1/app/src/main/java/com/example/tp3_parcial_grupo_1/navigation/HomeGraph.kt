@@ -22,12 +22,12 @@ fun NavGraphBuilder.homeGraph(navController: NavController) {
                 onNotificationsClick = { navController.navigate(AppDestination.Notifications.route) },
                 onStartVoiceClick = { navController.navigate(AppDestination.Coach.route) },
                 onStartWorkoutClick = { navController.navigateToTopLevel(TopLevelDestination.Workout) },
-                onLogMealClick = { navController.navigate(AppDestination.AddFood.route) }
+                onLogMealClick = { navController.navigateInTab(AppDestination.AddFood.route) }
             )
         }
         composable(AppDestination.Notifications.route) {
             NotificationsRoute(
-                onNotificationOpen = { type -> navController.navigate(type.destinationRoute()) }
+                onNotificationOpen = { type -> navController.navigateInTab(type.destinationRoute()) }
             )
         }
     }
