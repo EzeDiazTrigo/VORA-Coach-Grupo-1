@@ -30,24 +30,24 @@ object CoachStrings {
 
     const val Microphone = "Microphone"
 
-    const val AskPlaceholder = "Preguntale a VORA…"
-    const val Attach = "Adjuntar"
-    const val Send = "Enviar"
-    const val Talk = "Hablar"
-    const val VoraTyping = "VORA está escribiendo…"
-    const val YouSaid = "Vos"
+    const val AskPlaceholder = "Ask VORA anything…"
+    const val Attach = "Attach"
+    const val Send = "Send"
+    const val Talk = "Talk"
+    const val VoraTyping = "VORA is typing…"
+    const val YouSaid = "You"
     const val VoraSaid = "VORA"
 
-    const val ErrorTitle = "Alerta del sistema"
-    const val ErrorHeadline = "Perdón, no te entendí"
-    const val ErrorSubtitle = "Probá hablar de nuevo o escribí tu pedido. Revisá que el micrófono esté habilitado."
-    const val MicAccessTitle = "Se necesita acceso al micrófono"
+    const val ErrorTitle = "System alert"
+    const val ErrorHeadline = "Sorry, I didn't catch that"
+    const val ErrorSubtitle = "Try speaking again or type your request. Make sure your microphone is enabled."
+    const val MicAccessTitle = "Microphone access needed"
     const val MicAccessBody =
-        "VORA usa tu micrófono para escuchar tus comandos de voz y acompañarte en tiempo real, sin usar las manos."
-    const val AllowAccess = "Permitir acceso"
-    const val NotNow = "Ahora no"
+        "VORA uses your microphone to hear your voice commands and coach you in real time, hands-free."
+    const val AllowAccess = "Allow access"
+    const val NotNow = "Not now"
 
-    fun listenToResponse(seconds: Int) = "Escuchar respuesta (${time(seconds)})"
+    fun listenToResponse(seconds: Int) = "Listen to response (${time(seconds)})"
 
     fun quoted(text: String) = "“$text”"
     fun time(seconds: Int) = "%d:%02d".format(seconds / 60, seconds % 60)

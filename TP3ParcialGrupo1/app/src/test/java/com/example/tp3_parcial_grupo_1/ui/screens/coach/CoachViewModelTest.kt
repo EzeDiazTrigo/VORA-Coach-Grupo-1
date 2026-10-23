@@ -144,7 +144,7 @@ class CoachViewModelTest {
     fun sendingAddsUserMessageThenVoraReply() = scope.runTest {
         val viewModel = CoachViewModel()
         viewModel.onTypeInstead()
-        viewModel.onDraftChange("¿Cómo voy?")
+        viewModel.onDraftChange("How am I doing?")
         assertTrue((viewModel.uiState.value as CoachUiState.Conversation).canSend)
 
         viewModel.onSend()
@@ -152,19 +152,19 @@ class CoachViewModelTest {
         val typing = viewModel.uiState.value as CoachUiState.Conversation
         assertTrue(typing.isVoraTyping)
         assertEquals("", typing.draft)
-        assertEquals("¿Cómo voy?", typing.messages.last().text)
+        assertEquals("How am I doing?", typing.messages.last().text)
 
         advanceTimeBy(CoachViewModel.TypingDelayMs)
         runCurrent()
         val replied = viewModel.uiState.value as CoachUiState.Conversation
         assertFalse(replied.isVoraTyping)
         assertEquals(CoachAuthor.Vora, replied.messages.last().author)
-        assertEquals(CoachDemoData.replyFor("¿Cómo voy?"), replied.messages.last().text)
+        assertEquals(CoachDemoData.replyFor("How am I doing?"), replied.messages.last().text)
     }
 
     @Test
     fun typedQuestionMatchesSuggestionIgnoringAccentsAndPunctuation() {
-        assertEquals(CoachDemoData.replyFor("¿Cómo voy?"), CoachDemoData.replyFor("como voy"))
+        assertEquals(CoachDemoData.replyFor("How am I doing?"), CoachDemoData.replyFor("how am i doing"))
         assertEquals(CoachDemoData.GenericReply, CoachDemoData.replyFor("hola"))
     }
 

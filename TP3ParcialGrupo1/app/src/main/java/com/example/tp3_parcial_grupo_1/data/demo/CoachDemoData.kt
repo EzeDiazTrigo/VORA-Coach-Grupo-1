@@ -59,7 +59,7 @@ object CoachDemoData {
 
     // Respuesta para preguntas escritas que no están en la demo.
     const val GenericReply =
-        "Estoy en modo demostración, así que respondo con ejemplos. Probá con alguna de las preguntas sugeridas."
+        "I'm in demo mode, so I answer with examples. Try one of the suggested questions."
 
     val suggestedQuestions: List<String> = suggestions.map { it.question }
 
@@ -68,21 +68,21 @@ object CoachDemoData {
         timeAgo = "2 hours ago"
     )
 
-    const val ConversationDate = "HOY A LAS 12:40"
+    const val ConversationDate = "TODAY AT 12:40 PM"
 
     // La conversación de ejemplo del frame «Voice / 05 · Conversation».
     val conversation = listOf(
-        CoachMessage(1, CoachAuthor.User, "¿Qué ceno hoy?", "12:41"),
+        CoachMessage(1, CoachAuthor.User, "What should I eat for dinner?", "12:41"),
         CoachMessage(
             2, CoachAuthor.Vora,
-            "Hoy te faltan 36 g de proteína. Te recomiendo pechuga grillada con verduras de estación asadas y una porción de yogur griego.",
+            "You're 36 g short on protein today. I'd suggest grilled chicken breast with roasted seasonal vegetables and a serving of Greek yogurt.",
             "12:41",
             audioSeconds = 14
         ),
-        CoachMessage(3, CoachAuthor.User, "¿Me lo pasás a vegetariano?", "12:42"),
+        CoachMessage(3, CoachAuthor.User, "Can you make it vegetarian?", "12:42"),
         CoachMessage(
             4, CoachAuthor.Vora,
-            "Claro. Probá con tofu grillado, verduras asadas, quinoa y yogur griego.",
+            "Sure. Try grilled tofu, roasted vegetables, quinoa and Greek yogurt.",
             "12:43"
         )
     )
@@ -91,7 +91,7 @@ object CoachDemoData {
 
     fun replyFor(question: String): String = find(question)?.reply ?: GenericReply
 
-    // «como voy» encuentra «¿Cómo voy?»: se comparan sin tildes, signos ni mayúsculas.
+    // «how am i doing» encuentra «How am I doing?»: se comparan sin tildes, signos ni mayúsculas.
     private fun find(question: String): CoachExchange? {
         val key = normalize(question)
         return suggestions.firstOrNull { normalize(it.question) == key }
