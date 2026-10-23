@@ -51,7 +51,7 @@ fun LoadingIndicator(
     }
 }
 
-// Carga en línea, como «Revisando tu objetivo de nutrición…» del Asistente.
+// Carga en línea, como «Checking your nutrition goal…» del Asistente.
 @Composable
 fun InlineLoading(
     message: String,
@@ -80,7 +80,7 @@ private fun LoadingIndicatorPreview() {
         Column {
             LoadingIndicator(modifier = Modifier.weight(1f))
             InlineLoading(
-                message = "Revisando tu objetivo de nutrición…",
+                message = "Checking your nutrition goal…",
                 modifier = Modifier.padding(MaterialTheme.spacing.screen)
             )
         }

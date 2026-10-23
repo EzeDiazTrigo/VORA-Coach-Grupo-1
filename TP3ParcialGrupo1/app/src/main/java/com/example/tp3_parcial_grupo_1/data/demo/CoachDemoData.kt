@@ -24,35 +24,35 @@ data class CoachMessage(
 
 object CoachDemoData {
     val lunch = CoachExchange(
-        question = "Almorcé pollo, arroz y algunas verduras.",
-        processingStep = "Revisando tu objetivo de nutrición…",
-        reply = "Suena a un almuerzo equilibrado. Calculo unas 520 calorías con aproximadamente 38 gramos de proteína.",
+        question = "I had chicken, rice and some vegetables for lunch.",
+        processingStep = "Checking your nutrition goal…",
+        reply = "That sounds like a balanced lunch. I estimate about 520 calories with roughly 38 grams of protein.",
         replySeconds = 22
     )
 
     private val suggestions = listOf(
         CoachExchange(
-            question = "Empezar mi entrenamiento",
-            processingStep = "Buscando tu plan de hoy…",
-            reply = "Hoy te toca Upper Body Strength: 42 minutos y 5 ejercicios. ¿Arrancamos con la entrada en calor?",
+            question = "Start my workout",
+            processingStep = "Finding today's plan…",
+            reply = "Today is Upper Body Strength: 42 minutes and 5 exercises. Shall we start with the warm-up?",
             replySeconds = 14
         ),
         CoachExchange(
-            question = "Registrar mi desayuno",
-            processingStep = "Preparando el registro de comidas…",
-            reply = "Contame qué desayunaste y lo agrego a tus comidas de hoy.",
+            question = "Log my breakfast",
+            processingStep = "Opening your meal log…",
+            reply = "Tell me what you had for breakfast and I'll add it to today's meals.",
             replySeconds = 9
         ),
         CoachExchange(
-            question = "¿Qué ceno hoy?",
-            processingStep = "Revisando tu objetivo de proteínas…",
-            reply = "Te faltan 36 g de proteína. Te recomiendo pechuga grillada con verduras asadas y una porción de yogur griego.",
+            question = "What should I eat for dinner?",
+            processingStep = "Checking your protein goal…",
+            reply = "You're 36 g short on protein. I'd suggest grilled chicken breast with roasted vegetables and a serving of Greek yogurt.",
             replySeconds = 18
         ),
         CoachExchange(
-            question = "¿Cómo voy?",
-            processingStep = "Analizando tu semana…",
-            reply = "Vas muy bien: completaste 4 entrenamientos esta semana y estás a 120 calorías de tu objetivo diario.",
+            question = "How am I doing?",
+            processingStep = "Analyzing your week…",
+            reply = "You're doing great: you completed 4 workouts this week and you're 120 calories away from your daily goal.",
             replySeconds = 16
         )
     )
@@ -64,8 +64,8 @@ object CoachDemoData {
     val suggestedQuestions: List<String> = suggestions.map { it.question }
 
     val lastConversation = LastConversation(
-        text = "Armame un entrenamiento de 30 minutos.",
-        timeAgo = "hace 2 horas"
+        text = "Build me a 30-minute workout.",
+        timeAgo = "2 hours ago"
     )
 
     const val ConversationDate = "HOY A LAS 12:40"

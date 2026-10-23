@@ -7,6 +7,7 @@ import com.example.tp3_parcial_grupo_1.data.demo.CoachDemoData
 import com.example.tp3_parcial_grupo_1.data.demo.CoachExchange
 import com.example.tp3_parcial_grupo_1.data.demo.CoachMessage
 import com.example.tp3_parcial_grupo_1.data.demo.LastConversation
+import com.example.tp3_parcial_grupo_1.ui.strings.CoachStrings
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -91,7 +92,7 @@ class CoachViewModel @Inject constructor() : ViewModel() {
         val question = conversation.draft.trim()
         draft = ""
         messages = messages + message(CoachAuthor.User, question)
-        lastConversation = LastConversation(text = question, timeAgo = JustNow)
+        lastConversation = LastConversation(text = question, timeAgo = CoachStrings.JustNow)
         simulation?.cancel()
         simulation = viewModelScope.launch {
             _uiState.value = CoachUiState.Conversation(messages, draft = "", isVoraTyping = true)
@@ -137,7 +138,7 @@ class CoachViewModel @Inject constructor() : ViewModel() {
         simulation = viewModelScope.launch {
             _uiState.value = CoachUiState.Processing(transcript = exchange.question, step = exchange.processingStep)
             delay(ProcessingDelayMs)
-            lastConversation = LastConversation(text = exchange.question, timeAgo = JustNow)
+            lastConversation = LastConversation(text = exchange.question, timeAgo = CoachStrings.JustNow)
             appendReplyToConversation = true
             playReply(fromSecond = 0)
         }
@@ -205,6 +206,5 @@ class CoachViewModel @Inject constructor() : ViewModel() {
         const val SecondMs = 1_000L
         const val TypingDelayMs = 1_200L
         const val ReplyAudioSeconds = 12
-        const val JustNow = "recién"
     }
 }

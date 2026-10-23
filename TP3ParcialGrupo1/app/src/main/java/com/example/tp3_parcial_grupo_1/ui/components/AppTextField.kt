@@ -119,7 +119,7 @@ private fun AppTextFieldPreview() {
         ) {
             AppTextField(value = "alex.morgan@email.com", onValueChange = {}, label = "Email Address", leadingIcon = Icons.Outlined.Email)
             AppTextField(value = "", onValueChange = {}, label = "Full Name", placeholder = "Alex Morgan")
-            AppTextField(value = "alex", onValueChange = {}, label = "Email Address", errorMessage = "Email inválido")
+            AppTextField(value = "alex", onValueChange = {}, label = "Email Address", errorMessage = "Invalid email")
             PasswordTextField(value = "secret123", onValueChange = {}, label = "Password")
         }
     }

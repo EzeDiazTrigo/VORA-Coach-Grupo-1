@@ -46,7 +46,7 @@ private fun EmptyStatePreview() {
     AppTheme {
         EmptyState(
             title = "Sin comidas hoy",
-            message = "Registrá tu primera comida para ver el total del día.",
+            message = "Log your first meal to see today's total.",
             icon = R.drawable.ic_apple,
             actionLabel = "Agregar comida",
             onAction = {}
