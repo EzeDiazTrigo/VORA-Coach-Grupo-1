@@ -25,7 +25,7 @@ object HomeStrings {
     const val MarkAllAsRead = "Mark all as read"
     const val GroupToday = "TODAY"
     const val GroupYesterday = "YESTERDAY"
-    const val NotificationsButton = "Notificaciones"
+    const val NotificationsButton = "Notifications"
 
     fun estimatedVolume(kg: String) = "Estimated Vol: $kg kg"
     fun workoutMeta(minutes: Int, exercises: Int, level: String) = "$minutes min • $exercises exercises • $level"
