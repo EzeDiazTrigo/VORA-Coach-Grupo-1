@@ -131,10 +131,8 @@ fun NavGraphBuilder.nutritionPlaceholderGraph(navController: NavController) {
 }
 
 fun NavGraphBuilder.progressPlaceholderGraph(navController: NavController) {
-    navigation(startDestination = AppDestination.TodaysOverview.route, route = AppDestination.ProgressGraph.route) {
-        placeholder(AppDestination.TodaysOverview, "Progress / 01 — Today's Overview") {
-            listOf(PlaceholderAction("Your progress") { navController.navigate(AppDestination.Progress.route) })
-        }
+    navigation(startDestination = AppDestination.Progress.route, route = AppDestination.ProgressGraph.route) {
+        placeholder(AppDestination.TodaysOverview, "Progress / 01 — Today's Overview")
         placeholder(AppDestination.Progress, "Progress / 02 — Dashboard") {
             listOf(
                 PlaceholderAction("Workout") { navController.navigate(AppDestination.WorkoutProgress.route) },
