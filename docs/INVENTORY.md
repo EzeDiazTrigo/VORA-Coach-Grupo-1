@@ -77,7 +77,7 @@ Seis pantallas con datos de demostración identificados (no hay integración con
 
 | Figma | Contenido visible | Acciones → destino | Estado |
 |---|---|---|---|
-| Progress / 01 — Today's Overview | Fecha; «Daily completion» 72 % con anillo; avance de entrenamiento, nutrición, actividad e hidratación; tarjeta «VORA advice»; «Category breakdowns» con el entrenamiento del día; objetivo actual y meta semanal | Start Workout → Workout Details del entrenamiento recomendado · Atrás → Dashboard | demostración |
+| Progress / 01 — Today's Overview | Fecha; «Daily completion» 72 % con anillo; avance de entrenamiento, nutrición, actividad e hidratación; tarjeta «VORA advice»; «Category breakdowns» con el entrenamiento del día; objetivo actual y meta semanal | Start Workout → Workout (tab) · Atrás → Dashboard | demostración |
 | Progress / 02 — Dashboard | «Your progress»; selector Week / Month / 3 Months; resumen semanal (workouts, pasos, proteína, racha); «VORA insight»; accesos Workout, Nutrition y Activity; objetivo activo | See weekly review → Weekly Review · Workout → Workout Progress · Nutrition → Nutrition Progress · Activity → Health Trends · selector → cambia el período (demostración) | demostración |
 | Progress / 03 — Workout Progress | Selector de período; sesiones, volumen y tiempo promedio; gráfico «Training volume»; récord personal; comentario de VORA; progreso por ejercicio | Atrás → Dashboard · `…` → aviso de modo demostración | demostración |
 | Progress / 04 — Nutrition Progress | Selector de período; calorías y proteína promedio, días en meta; selector de macro y cumplimiento diario; «Nutrition analysis»; hábitos y patrones de comida | Atrás → Dashboard · selector de macro → cambia el indicador (demostración) | demostración |
