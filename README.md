@@ -134,6 +134,9 @@ Pantallas propias sin frame en Figma: el formulario de carga manual de comidas (
 - **Recorridos que Figma no define:** el diseño no tiene interacciones de prototipo, así que donde no hay un control explícito el equipo eligió el destino:
   - El tab **Progress** abre *Your progress*; *Today's Overview* se abre desde la sección homónima de Home.
   - Cada notificación abre su área: revisión semanal, plan semanal, nutrición y progreso de entrenamiento.
+  - **Progreso:** el Dashboard abre Workout Progress, Nutrition Progress y Health Trends desde sus accesos, y *See weekly review* abre la revisión semanal. En la revisión, atrás y *Done* vuelven a la pantalla anterior, *Ask VORA* abre el Asistente, *Get dinner ideas* el tab Nutrition y *View next week's plan* el plan semanal. *Start Workout* de Today's Overview abre el tab Workout, igual que en Home.
+  - **Nutrición:** Add Food ofrece voz, foto y carga manual. Guardar una comida (desde la carga manual o desde la revisión del análisis) vuelve al Dashboard de Nutrition con el total del día actualizado.
+- **Saltos entre áreas:** un acceso que lleva a otra área (Log breakfast, notificaciones, Get dinner ideas, View next week's plan) pasa primero por su tab y después abre la pantalla, para que el tab quede marcado y atrás vuelva a su inicio. Tocar el tab en el que ya estás vuelve a su pantalla inicial.
 
 ## Estado por funcionalidad
 
