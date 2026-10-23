@@ -2,12 +2,15 @@ package com.example.tp3_parcial_grupo_1.ui.screens.nutrition
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -16,10 +19,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tp3_parcial_grupo_1.R
+import com.example.tp3_parcial_grupo_1.ui.strings.Strings
 import com.example.tp3_parcial_grupo_1.model.Meal
 import com.example.tp3_parcial_grupo_1.model.MealType
 import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -30,9 +35,13 @@ fun ReviewMealScreen(
     onSaveMeal: (Meal) -> Unit
 ) {
     val currentDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
+    val showDemoNotice: () -> Unit = { scope.launch { snackbarHostState.showSnackbar(Strings.DemoMode) } }
 
     Scaffold(
-        containerColor = MaterialTheme.colorScheme.background
+        containerColor = MaterialTheme.colorScheme.background,
+        snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -61,14 +70,14 @@ fun ReviewMealScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            ReviewIngredientCard(name = "Grilled Chicken Breast", quantity = "180g", calories = "280 kcal")
+            ReviewIngredientCard(name = "Grilled Chicken Breast", quantity = "180g", calories = "280 kcal", onDemoClick = showDemoNotice)
             Spacer(modifier = Modifier.height(12.dp))
-            ReviewIngredientCard(name = "Basmati Rice", quantity = "150g", calories = "190 kcal")
+            ReviewIngredientCard(name = "Basmati Rice", quantity = "150g", calories = "190 kcal", onDemoClick = showDemoNotice)
             Spacer(modifier = Modifier.height(12.dp))
-            ReviewIngredientCard(name = "Mixed Steamed Vegetables", quantity = "100g", calories = "50 kcal")
+            ReviewIngredientCard(name = "Mixed Steamed Vegetables", quantity = "100g", calories = "50 kcal", onDemoClick = showDemoNotice)
 
             Spacer(modifier = Modifier.height(8.dp))
-            TextButton(onClick = { }) {
+            TextButton(onClick = showDemoNotice) {
                 Text(
                     text = "+ Add Ingredient",
                     style = MaterialTheme.typography.bodyMedium.copy(
@@ -163,7 +172,7 @@ fun ReviewMealScreen(
 }
 
 @Composable
-fun ReviewIngredientCard(name: String, quantity: String, calories: String) {
+fun ReviewIngredientCard(name: String, quantity: String, calories: String, onDemoClick: () -> Unit) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
@@ -212,15 +221,15 @@ fun ReviewIngredientCard(name: String, quantity: String, calories: String) {
                             verticalAlignment = Alignment.CenterVertically,
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                         ) {
-                            Text(text = "—", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                            Text(text = "—", fontSize = 12.sp, fontWeight = FontWeight.Bold, modifier = Modifier.clickable(onClick = onDemoClick))
                             Spacer(modifier = Modifier.width(12.dp))
                             Text(text = quantity, fontSize = 12.sp, fontWeight = FontWeight.Bold)
                             Spacer(modifier = Modifier.width(12.dp))
-                            Text(text = "+", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                            Text(text = "+", fontSize = 12.sp, fontWeight = FontWeight.Bold, modifier = Modifier.clickable(onClick = onDemoClick))
                         }
                     }
                 }
-                TextButton(onClick = { }) {
+                TextButton(onClick = onDemoClick) {
                     Text(
                         text = "Remove",
                         style = MaterialTheme.typography.bodySmall.copy(

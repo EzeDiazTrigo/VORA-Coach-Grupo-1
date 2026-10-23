@@ -119,7 +119,6 @@ fun NavGraphBuilder.nutritionGraph(navController: NavController) {
                 viewModel = viewModel,
                 onNavigate = { route -> navController.navigate(route) { popUpTo(route) { inclusive = true } } },
                 onBackClick = { navController.popBackStack() },
-                onEditMeal = { navController.navigate(AppDestination.AddFood.route) },
                 onDeleteSuccess = { navController.popBackStack() }
             )
         }
