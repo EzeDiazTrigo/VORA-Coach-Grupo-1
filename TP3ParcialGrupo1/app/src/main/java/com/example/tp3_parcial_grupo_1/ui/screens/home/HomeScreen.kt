@@ -64,6 +64,7 @@ fun HomeRoute(
     onStartVoiceClick: () -> Unit,
     onStartWorkoutClick: () -> Unit,
     onLogMealClick: () -> Unit,
+    onTodaysOverviewClick: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
@@ -84,6 +85,7 @@ fun HomeRoute(
         onStartVoiceClick = onStartVoiceClick,
         onStartWorkoutClick = onStartWorkoutClick,
         onLogMealClick = onLogMealClick,
+        onTodaysOverviewClick = onTodaysOverviewClick,
         modifier = modifier
     )
 }
@@ -96,6 +98,7 @@ fun HomeScreen(
     onStartVoiceClick: () -> Unit,
     onStartWorkoutClick: () -> Unit,
     onLogMealClick: () -> Unit,
+    onTodaysOverviewClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     AppScaffold(modifier = modifier.fillMaxSize(), snackbarHostState = snackbarHostState) { padding ->
@@ -110,7 +113,7 @@ fun HomeScreen(
             CoachPanel(onStartVoiceClick, onStartWorkoutClick, onLogMealClick)
             TipCard(uiState.tip)
             Text(HomeStrings.TodaysOverview, style = MaterialTheme.typography.titleMedium)
-            OverviewRow(uiState)
+            OverviewRow(uiState, onTodaysOverviewClick)
             StatsCard(uiState)
             WorkoutCard(uiState.workout, onStartWorkoutClick)
         }
@@ -206,12 +209,12 @@ private fun TipCard(tip: String) {
 }
 
 @Composable
-private fun OverviewRow(uiState: HomeUiState) {
+private fun OverviewRow(uiState: HomeUiState, onClick: () -> Unit) {
     Row(
         modifier = Modifier.fillMaxWidth().height(IntrinsicSize.Max),
         horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md)
     ) {
-        AppCard(modifier = Modifier.width(110.dp).fillMaxHeight()) {
+        AppCard(modifier = Modifier.width(110.dp).fillMaxHeight(), onClick = onClick) {
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -223,7 +226,7 @@ private fun OverviewRow(uiState: HomeUiState) {
                 Text(HomeStrings.DailyGoal, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
         }
-        AppCard(modifier = Modifier.weight(1f)) {
+        AppCard(modifier = Modifier.weight(1f), onClick = onClick) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -324,7 +327,8 @@ private fun HomeScreenPreview() {
         HomeScreen(
             uiState = HomeDemoData.dashboard,
             snackbarHostState = remember { SnackbarHostState() },
-            onNotificationsClick = {}, onStartVoiceClick = {}, onStartWorkoutClick = {}, onLogMealClick = {}
+            onNotificationsClick = {}, onStartVoiceClick = {}, onStartWorkoutClick = {}, onLogMealClick = {},
+            onTodaysOverviewClick = {}
         )
     }
 }
