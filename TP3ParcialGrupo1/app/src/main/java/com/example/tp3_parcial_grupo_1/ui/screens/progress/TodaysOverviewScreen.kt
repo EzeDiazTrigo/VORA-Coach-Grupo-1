@@ -92,7 +92,7 @@ private fun CompletionCard(uiState: TodaysOverviewUiState) {
         Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xxs)) {
                 Text(ProgressStrings.DailyCompletion, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                Text(ProgressStrings.percent((uiState.completion * 100).toInt()), style = MaterialTheme.typography.displaySmall)
+                Text(ProgressStrings.percent(uiState.completionPercent), style = MaterialTheme.typography.displaySmall)
             }
             ProgressRing(progress = uiState.completion)
         }

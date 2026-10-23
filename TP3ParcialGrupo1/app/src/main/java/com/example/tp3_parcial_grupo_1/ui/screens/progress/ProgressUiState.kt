@@ -1,5 +1,7 @@
 package com.example.tp3_parcial_grupo_1.ui.screens.progress
 
+import kotlin.math.roundToInt
+
 enum class MetricTone { Attention, Mint, Primary, Lime }
 
 data class CompletionMetric(
@@ -23,7 +25,9 @@ data class TodaysOverviewUiState(
     val workout: BreakdownWorkout,
     val currentGoal: String,
     val weeklyTarget: String
-)
+) {
+    val completionPercent: Int get() = (completion * 100).roundToInt()
+}
 
 enum class ProgressPeriod { Week, Month, ThreeMonths }
 
