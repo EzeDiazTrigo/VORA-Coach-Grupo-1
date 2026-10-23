@@ -7,6 +7,9 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -16,11 +19,21 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tp3_parcial_grupo_1.R
 import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
+import kotlinx.coroutines.delay
+
+private const val AnalysisDurationMillis = 3_000L
 
 @Composable
 fun AnalyzingMealScreen(
-    onCancelClick: () -> Unit
+    onCancelClick: () -> Unit,
+    onAnalysisComplete: () -> Unit
 ) {
+    val currentOnAnalysisComplete by rememberUpdatedState(onAnalysisComplete)
+    LaunchedEffect(Unit) {
+        delay(AnalysisDurationMillis)
+        currentOnAnalysisComplete()
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
