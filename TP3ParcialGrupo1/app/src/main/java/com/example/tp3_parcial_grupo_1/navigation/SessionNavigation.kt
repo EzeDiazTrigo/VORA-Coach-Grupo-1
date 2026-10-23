@@ -11,7 +11,8 @@ fun NavController.navigateToHomeAfterAuth() {
 
 fun NavController.navigateToLoginAfterLogout() {
     navigate(AppDestination.AuthGraph.route) {
-        popUpTo(0) { inclusive = true }
+        popUpTo(graph.id) { inclusive = true }
         launchSingleTop = true
     }
+    TopLevelDestination.entries.forEach { clearBackStack(it.graphRoute) }
 }
