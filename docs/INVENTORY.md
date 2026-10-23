@@ -49,9 +49,10 @@ Estado previsto: **funcional** (datos reales: Retrofit/Room) · **demostración*
 ## Navegación general
 
 - **Inicio:** la app arranca en Login. Entrar (o el modo demostración) lleva a Home y saca Acceso del historial: atrás desde Home cierra la app.
-- **Barra inferior:** Home, Workout, Nutrition, Progress y Profile. Se muestra solo en las pantallas que la tienen en Figma (columna «Barra inferior»). Cada tab conserva la última pantalla visitada y atrás desde un tab vuelve a Home.
+- **Barra inferior:** Home, Workout, Nutrition, Progress y Profile. Se muestra solo en las pantallas que la tienen en Figma (columna «Barra inferior»). Cada tab conserva la última pantalla visitada; tocar el tab en el que ya estás vuelve a su pantalla inicial, y atrás desde un tab vuelve a Home. El tab Progress abre el Dashboard; Today's Overview se abre desde la sección «Today's Overview» de Home.
 - **Selección coherente (NAV04):** el detalle de entrenamiento recibe su `workoutId`, la guía de ejercicio `workoutId` + `exerciseId` y el detalle de comida su `mealId`.
-- **Cerrar sesión:** desde Settings vuelve a Login y limpia el historial.
+- **Saltos entre áreas:** un acceso que lleva a otra área (Log breakfast, notificaciones, Start Workout, Get dinner ideas, View next week's plan) pasa primero por su tab y después abre la pantalla (`navigateInTab`), para que el tab quede marcado y atrás vuelva a su inicio.
+- **Cerrar sesión:** desde Settings vuelve a Login y limpia el historial, incluido el que guarda cada tab.
 
 ## Asistente VORA (E)
 
@@ -76,7 +77,7 @@ Seis pantallas con datos de demostración identificados (no hay integración con
 
 | Figma | Contenido visible | Acciones → destino | Estado |
 |---|---|---|---|
-| Progress / 01 — Today's Overview | Fecha; «Daily completion» 72 % con anillo; avance de entrenamiento, nutrición, actividad e hidratación; tarjeta «VORA advice»; «Category breakdowns» con el entrenamiento del día; objetivo actual y meta semanal | Start Workout → Workout Details del entrenamiento recomendado · tab Progress → Dashboard | demostración |
+| Progress / 01 — Today's Overview | Fecha; «Daily completion» 72 % con anillo; avance de entrenamiento, nutrición, actividad e hidratación; tarjeta «VORA advice»; «Category breakdowns» con el entrenamiento del día; objetivo actual y meta semanal | Start Workout → Workout Details del entrenamiento recomendado · Atrás → Dashboard | demostración |
 | Progress / 02 — Dashboard | «Your progress»; selector Week / Month / 3 Months; resumen semanal (workouts, pasos, proteína, racha); «VORA insight»; accesos Workout, Nutrition y Activity; objetivo activo | See weekly review → Weekly Review · Workout → Workout Progress · Nutrition → Nutrition Progress · Activity → Health Trends · selector → cambia el período (demostración) | demostración |
 | Progress / 03 — Workout Progress | Selector de período; sesiones, volumen y tiempo promedio; gráfico «Training volume»; récord personal; comentario de VORA; progreso por ejercicio | Atrás → Dashboard · `…` → aviso de modo demostración | demostración |
 | Progress / 04 — Nutrition Progress | Selector de período; calorías y proteína promedio, días en meta; selector de macro y cumplimiento diario; «Nutrition analysis»; hábitos y patrones de comida | Atrás → Dashboard · selector de macro → cambia el indicador (demostración) | demostración |
