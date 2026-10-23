@@ -52,6 +52,7 @@ Estado previsto: **funcional** (datos reales: Retrofit/Room) · **demostración*
 - **Barra inferior:** Home, Workout, Nutrition, Progress y Profile. Se muestra solo en las pantallas que la tienen en Figma (columna «Barra inferior»). Cada tab conserva la última pantalla visitada; tocar el tab en el que ya estás vuelve a su pantalla inicial, y atrás desde un tab vuelve a Home. El tab Progress abre el Dashboard; Today's Overview se abre desde la sección «Today's Overview» de Home.
 - **Selección coherente (NAV04):** el detalle de entrenamiento recibe su `workoutId`, la guía de ejercicio `workoutId` + `exerciseId` y el detalle de comida su `mealId`.
 - **Saltos entre áreas:** un acceso que lleva a otra área (Log breakfast, notificaciones, Start Workout, Get dinner ideas, View next week's plan) pasa primero por su tab y después abre la pantalla (`navigateInTab`), para que el tab quede marcado y atrás vuelva a su inicio.
+- **Pantallas sin frame en Figma:** «Log Manually» en Add Food abre un formulario propio de carga manual (`nutrition/manual_log`, sin barra inferior) que guarda en Room y vuelve al Dashboard.
 - **Cerrar sesión:** desde Settings vuelve a Login y limpia el historial, incluido el que guarda cada tab.
 
 ## Asistente VORA (E)

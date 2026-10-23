@@ -80,6 +80,52 @@ com.example.tp3_parcial_grupo_1
 
 > **Pendiente:** flujo DTO → modelo → Entity, repositorios y qué objetos construye Hilt y su relación con Dagger.
 
+## Inventario de pantallas
+
+Cada pantalla de Figma, su destino en la app y su estado: **funcional** (datos reales con Retrofit o Room) o **demostración** (datos de ejemplo identificados). Las rutas están en `navigation/AppDestination.kt`; el detalle de contenido y acciones por pantalla está en el [inventario](docs/INVENTORY.md).
+
+| Figma | Destino | Estado |
+|---|---|---|
+| Login - 01 — SignIn | `auth/login` | demostración |
+| Login - 02 — SignUp | `auth/register` | demostración |
+| Home / 01 — Dashboard | `home/dashboard` | demostración |
+| Home / 02 — Notifications | `home/notifications` | demostración |
+| Voice / 01 — Idle | `coach` (estado `Idle`) | demostración |
+| Voice / 02 — Listening | `coach` (estado `Listening`) | demostración |
+| Voice / 03 — Processing | `coach` (estado `Processing`) | demostración |
+| Voice / 04 — Speaking | `coach` (estado `Reply`) | demostración |
+| Voice / 05 — Conversation | `coach` (estado `Conversation`) | demostración |
+| Voice / 06 — Error | `coach` (estado `MicError`) | demostración |
+| Workout / 01 — Dashboard | `workout/dashboard` | funcional (catálogo Retrofit + caché Room) |
+| Workout / 02 — Weekly Plan | `workout/weekly_plan` | demostración |
+| Workout / 03 — Workout Details | `workout/detail/{workoutId}` | funcional (detalle Retrofit + caché Room) |
+| Workout / 04 — Pre Workout | `workout/pre/{workoutId}` | demostración |
+| Workout / 05 — Active Workout | `workout/active/{workoutId}` | demostración |
+| Workout / 06 — Exercise Details | `workout/exercise/{workoutId}/{exerciseId}` | demostración |
+| Workout / 07 — Workout Complete | `workout/complete/{workoutId}` | demostración |
+| Nutrition / 01 — Dashboard | `nutrition/dashboard` | funcional (total diario desde Room) |
+| Nutrition / 02 — Today's Meals | `nutrition/todays_meals` | funcional (listado por fecha en Room) |
+| Nutrition / 03 — Add Food | `nutrition/add_food` | funcional (carga manual en Room) |
+| Nutrition / 04 — Voice Food Logging | `nutrition/voice_logging` | demostración |
+| Nutrition / 05 — Food Analysis | `nutrition/food_analysis` | demostración |
+| Nutrition / 06 — Photo Analysis | `nutrition/photo_analysis` | demostración |
+| Nutrition / 07 — Food Confirmation | `nutrition/food_confirmation` | funcional (guarda en Room) |
+| Nutrition / 08 — Meal Details | `nutrition/meal/{mealId}` | funcional (detalle y eliminación en Room) |
+| Progress / 01 — Today's Overview | `progress/todays_overview` | demostración |
+| Progress / 02 — Dashboard | `progress/dashboard` | demostración |
+| Progress / 03 — Workout Progress | `progress/workout` | demostración |
+| Progress / 04 — Nutrition Progress | `progress/nutrition` | demostración |
+| Progress / 05 — Health Trends | `progress/health_trends` | demostración |
+| Progress / 06 — Weekly Review | `progress/weekly_review` | demostración |
+| Profile / 01 — Dashboard | `profile/dashboard` | demostración |
+| Profile / 02 — Edit Profile | `profile/edit` | demostración |
+| Profile / 03 — Goals & Preferences | `profile/goals` | demostración |
+| Profile / 04 — Nutrition Preferences | `profile/nutrition_preferences` | demostración |
+| Profile / 05 — Voice & AI Settings | `profile/voice_ai` | demostración |
+| Profile / 06 — Settings | `profile/settings` | demostración |
+
+Pantallas propias sin frame en Figma: el formulario de carga manual de comidas (`nutrition/manual_log`, funcional en Room), que se abre desde «Log Manually» en Add Food.
+
 ## Navegación
 
 - La app arranca en **Login**. Iniciar sesión, registrarse o entrar en modo demostración lleva a Home y saca Acceso del historial: atrás desde Home cierra la app. Cerrar sesión desde Settings vuelve a Login y limpia el historial.
