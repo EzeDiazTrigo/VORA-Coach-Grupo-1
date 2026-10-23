@@ -130,24 +130,6 @@ fun NavGraphBuilder.nutritionPlaceholderGraph(navController: NavController) {
     }
 }
 
-fun NavGraphBuilder.progressPlaceholderGraph(navController: NavController) {
-    navigation(startDestination = AppDestination.Progress.route, route = AppDestination.ProgressGraph.route) {
-        placeholder(AppDestination.TodaysOverview, "Progress / 01 — Today's Overview")
-        placeholder(AppDestination.Progress, "Progress / 02 — Dashboard") {
-            listOf(
-                PlaceholderAction("Workout") { navController.navigate(AppDestination.WorkoutProgress.route) },
-                PlaceholderAction("Nutrition") { navController.navigate(AppDestination.NutritionProgress.route) },
-                PlaceholderAction("Activity") { navController.navigate(AppDestination.HealthTrends.route) },
-                PlaceholderAction("See weekly review") { navController.navigate(AppDestination.WeeklyReview.route) }
-            )
-        }
-        placeholder(AppDestination.WorkoutProgress, "Progress / 03 — Workout Progress")
-        placeholder(AppDestination.NutritionProgress, "Progress / 04 — Nutrition Progress")
-        placeholder(AppDestination.HealthTrends, "Progress / 05 — Health Trends")
-        placeholder(AppDestination.WeeklyReview, "Progress / 06 — Weekly Review")
-    }
-}
-
 fun NavGraphBuilder.profilePlaceholderGraph(navController: NavController) {
     navigation(startDestination = AppDestination.Profile.route, route = AppDestination.ProfileGraph.route) {
         placeholder(AppDestination.Profile, "Profile / 01 — Dashboard") {
