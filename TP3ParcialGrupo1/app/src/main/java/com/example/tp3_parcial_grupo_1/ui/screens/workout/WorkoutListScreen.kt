@@ -31,6 +31,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.tp3_parcial_grupo_1.R
@@ -45,6 +46,9 @@ import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
 import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
+
+private val SmallIconSize = 16.dp
+private val MediumIconSize = 20.dp
 
 @Composable
 fun WorkoutListRoute(
@@ -226,7 +230,7 @@ private fun WorkoutCardItem(
                     painter = painterResource(id = R.drawable.ic_arrow_forward),
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.size(MaterialTheme.spacing.screen)
+                    modifier = Modifier.size(MediumIconSize)
                 )
             }
 
@@ -246,7 +250,7 @@ private fun WorkoutCardItem(
                     painter = painterResource(id = R.drawable.ic_clock),
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.size(MaterialTheme.spacing.lg)
+                    modifier = Modifier.size(SmallIconSize)
                 )
                 Spacer(modifier = Modifier.width(MaterialTheme.spacing.xxs))
                 Text(
@@ -259,7 +263,7 @@ private fun WorkoutCardItem(
                     painter = painterResource(id = R.drawable.ic_dumbbell),
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.size(MaterialTheme.spacing.lg)
+                    modifier = Modifier.size(SmallIconSize)
                 )
                 Spacer(modifier = Modifier.width(MaterialTheme.spacing.xxs))
                 Text(

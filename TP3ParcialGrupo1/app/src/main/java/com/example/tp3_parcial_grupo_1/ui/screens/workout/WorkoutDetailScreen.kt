@@ -29,6 +29,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.tp3_parcial_grupo_1.R
@@ -44,6 +45,9 @@ import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
 import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
+
+private val SmallIconSize = 16.dp
+private val MediumIconSize = 20.dp
 
 @Composable
 fun WorkoutDetailRoute(
@@ -199,13 +203,14 @@ private fun WorkoutHeaderPanel(
                 Box(
                     modifier = Modifier
                         .clip(PillShape)
-                        .background(MaterialTheme.colorScheme.secondaryContainer)
+                        .background(MaterialTheme.colorScheme.tertiary)
                         .padding(horizontal = MaterialTheme.spacing.sm, vertical = MaterialTheme.spacing.xxs)
                 ) {
                     Text(
                         text = workout.level.uppercase(),
                         style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSecondaryContainer
+                        color = MaterialTheme.colorScheme.onTertiary,
+                        fontWeight = FontWeight.Bold
                     )
                 }
 
@@ -214,7 +219,7 @@ private fun WorkoutHeaderPanel(
                         painter = painterResource(id = R.drawable.ic_clock),
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.onPrimary,
-                        modifier = Modifier.size(MaterialTheme.spacing.lg)
+                        modifier = Modifier.size(SmallIconSize)
                     )
                     Spacer(modifier = Modifier.width(MaterialTheme.spacing.xxs))
                     Text(
@@ -314,7 +319,7 @@ private fun ExerciseCardItem(
                             painter = painterResource(id = R.drawable.ic_info),
                             contentDescription = null,
                             tint = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.size(MaterialTheme.spacing.lg)
+                            modifier = Modifier.size(SmallIconSize)
                         )
                         Spacer(modifier = Modifier.width(MaterialTheme.spacing.xs))
                         Text(

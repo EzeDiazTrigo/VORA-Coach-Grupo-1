@@ -11,6 +11,7 @@ import com.example.tp3_parcial_grupo_1.model.Workout
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -49,7 +50,12 @@ class WorkoutRepositoryImpl @Inject constructor(
             val response = workoutApi.getWorkouts()
             if (response.isSuccessful) {
                 val summaries = response.body()?.data.orEmpty()
+                val serverIds = summaries.map { it.id }.toSet()
                 runInTransaction {
+                    val currentEntities = workoutDao.getAllWorkouts().first()
+                    currentEntities.filter { it.id !in serverIds }.forEach {
+                        workoutDao.delete(it.id)
+                    }
                     summaries.forEach { summaryDto ->
                         workoutDao.insert(summaryDto.toEntity())
                     }

@@ -1,7 +1,9 @@
 package com.example.tp3_parcial_grupo_1.data.remote.dto
 
-import com.google.gson.annotations.SerializedName
+import com.example.tp3_parcial_grupo_1.data.mapper.toDomain
+import com.example.tp3_parcial_grupo_1.data.mapper.toEntity
 import com.example.tp3_parcial_grupo_1.model.Workout
+import com.google.gson.annotations.SerializedName
 
 data class WorkoutDto(
     @SerializedName("id")
@@ -18,15 +20,7 @@ data class WorkoutDto(
     val exercises: List<ExerciseDto>?
 ) {
     fun toDomain(): Workout {
-        val exercisesDomain = exercises.orEmpty().map(ExerciseDto::toDomain)
-        return Workout(
-            id = id,
-            name = name,
-            level = level,
-            durationMinutes = durationMinutes,
-            exerciseCount = exercisesDomain.size,
-            description = description,
-            exercises = exercisesDomain
-        )
+        val exerciseEntities = exercises.orEmpty().map { it.toEntity(id) }
+        return toEntity().toDomain(exerciseEntities)
     }
 }
