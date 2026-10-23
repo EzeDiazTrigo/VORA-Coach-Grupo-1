@@ -37,6 +37,6 @@ fun ErrorState(
 @Composable
 private fun ErrorStatePreview() {
     AppTheme {
-        ErrorState(message = "El servidor no responde. Revisá tu conexión.", onRetry = {})
+        ErrorState(message = "The server isn't responding. Check your connection.", onRetry = {})
     }
 }

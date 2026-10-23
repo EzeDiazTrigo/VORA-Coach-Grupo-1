@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.tp3_parcial_grupo_1.data.demo.CoachDemoData
 import com.example.tp3_parcial_grupo_1.data.demo.CoachExchange
 import com.example.tp3_parcial_grupo_1.data.demo.LastConversation
+import com.example.tp3_parcial_grupo_1.ui.strings.CoachStrings
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.Job
@@ -89,7 +90,7 @@ class CoachViewModel @Inject constructor() : ViewModel() {
         simulation = viewModelScope.launch {
             _uiState.value = CoachUiState.Processing(transcript = exchange.question, step = exchange.processingStep)
             delay(ProcessingDelayMs)
-            lastConversation = LastConversation(text = exchange.question, timeAgo = JustNow)
+            lastConversation = LastConversation(text = exchange.question, timeAgo = CoachStrings.JustNow)
             playReply(fromSecond = 0)
         }
     }
@@ -128,6 +129,5 @@ class CoachViewModel @Inject constructor() : ViewModel() {
         const val ListeningEndDelayMs = 900L
         const val ProcessingDelayMs = 1_800L
         const val SecondMs = 1_000L
-        const val JustNow = "recién"
     }
 }

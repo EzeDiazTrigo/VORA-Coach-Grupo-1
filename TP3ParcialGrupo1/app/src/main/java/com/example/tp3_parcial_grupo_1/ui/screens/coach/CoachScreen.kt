@@ -267,7 +267,7 @@ private fun CoachIdlePreview() = PreviewScreen(
 @Preview(name = "Escuchando", widthDp = 390, heightDp = 844)
 @Composable
 private fun CoachListeningPreview() = PreviewScreen(
-    CoachUiState.Listening("Almorcé pollo, arroz y algunas")
+    CoachUiState.Listening("I had chicken, rice and some")
 )
 
 @Preview(name = "Procesando", widthDp = 390, heightDp = 844)
