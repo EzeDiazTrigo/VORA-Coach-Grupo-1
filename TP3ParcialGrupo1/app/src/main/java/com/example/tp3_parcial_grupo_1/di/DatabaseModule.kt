@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.example.tp3_parcial_grupo_1.data.local.AppDatabase
 import com.example.tp3_parcial_grupo_1.data.local.dao.ExerciseDao
+import com.example.tp3_parcial_grupo_1.data.local.dao.MealDao
 import com.example.tp3_parcial_grupo_1.data.local.dao.WorkoutDao
 import dagger.Module
 import dagger.Provides
@@ -24,7 +25,7 @@ object DatabaseModule {
         return Room.databaseBuilder(
             context,
             AppDatabase::class.java,
-            "vora_database"
+            AppDatabase.DATABASE_NAME
         ).fallbackToDestructiveMigration(dropAllTables = true).build()
     }
 
@@ -36,5 +37,11 @@ object DatabaseModule {
     @Provides
     fun provideExerciseDao(database: AppDatabase): ExerciseDao {
         return database.exerciseDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideMealDao(database: AppDatabase): MealDao {
+        return database.mealDao()
     }
 }
