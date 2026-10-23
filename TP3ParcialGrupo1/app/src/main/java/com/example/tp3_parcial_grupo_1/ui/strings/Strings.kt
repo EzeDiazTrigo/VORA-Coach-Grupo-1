@@ -5,7 +5,7 @@ object Strings {
     const val Back = "Back"
     const val Cancel = "Cancel"
     const val Save = "Save"
-    const val Retry = "Try again"
+    const val Retry = "Retry"
     const val Loading = "Loading…"
     const val ShowPassword = "Show password"
     const val HidePassword = "Hide password"
