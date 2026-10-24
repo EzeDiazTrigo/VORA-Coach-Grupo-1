@@ -15,13 +15,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tp3_parcial_grupo_1.R
-import com.example.tp3_parcial_grupo_1.ui.strings.Strings
 import com.example.tp3_parcial_grupo_1.model.Meal
 import com.example.tp3_parcial_grupo_1.model.MealType
+import com.example.tp3_parcial_grupo_1.ui.strings.Strings
 import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
 import kotlinx.coroutines.launch
@@ -221,11 +224,11 @@ fun ReviewIngredientCard(name: String, quantity: String, calories: String, onDem
                             verticalAlignment = Alignment.CenterVertically,
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
                         ) {
-                            Text(text = "—", fontSize = 12.sp, fontWeight = FontWeight.Bold, modifier = Modifier.clickable(onClick = onDemoClick))
+                            QuantityStepButton(symbol = "—", description = "Decrease quantity", onClick = onDemoClick)
                             Spacer(modifier = Modifier.width(12.dp))
                             Text(text = quantity, fontSize = 12.sp, fontWeight = FontWeight.Bold)
                             Spacer(modifier = Modifier.width(12.dp))
-                            Text(text = "+", fontSize = 12.sp, fontWeight = FontWeight.Bold, modifier = Modifier.clickable(onClick = onDemoClick))
+                            QuantityStepButton(symbol = "+", description = "Increase quantity", onClick = onDemoClick)
                         }
                     }
                 }
@@ -241,6 +244,19 @@ fun ReviewIngredientCard(name: String, quantity: String, calories: String, onDem
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun QuantityStepButton(symbol: String, description: String, onClick: () -> Unit) {
+    Box(
+        modifier = Modifier
+            .minimumInteractiveComponentSize()
+            .clickable(role = Role.Button, onClick = onClick)
+            .semantics { contentDescription = description },
+        contentAlignment = Alignment.Center
+    ) {
+        Text(text = symbol, fontSize = 12.sp, fontWeight = FontWeight.Bold)
     }
 }
 
