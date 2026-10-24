@@ -40,6 +40,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.tp3_parcial_grupo_1.R
 import com.example.tp3_parcial_grupo_1.ui.components.AppButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
@@ -78,13 +79,21 @@ fun ActiveWorkoutScreen(
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
         ) {
-            // Top Header Row
+            // Top Header Row [350 Fill x 45 Hug]
             Row(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(45.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Column {
+                // Header Title Box [155 Hug x 45 Hug]
+                Column(
+                    modifier = Modifier
+                        .width(155.dp)
+                        .height(45.dp),
+                    verticalArrangement = Arrangement.Center
+                ) {
                     Text(
                         text = "EXERCISE 2 OF 5",
                         style = MaterialTheme.typography.labelSmall,
@@ -94,13 +103,14 @@ fun ActiveWorkoutScreen(
                     Spacer(modifier = Modifier.height(2.dp))
                     Text(
                         text = "Seated Cable Row",
-                        style = MaterialTheme.typography.headlineSmall,
+                        style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onPrimary,
                         modifier = Modifier.clickable { onExerciseClick("e02") }
                     )
                 }
 
+                // Finish Workout Button [106 Hug x 28 Hug]
                 Box(
                     modifier = Modifier
                         .width(106.dp)
@@ -135,6 +145,7 @@ fun ActiveWorkoutScreen(
 
                     Spacer(modifier = Modifier.height(MaterialTheme.spacing.sm))
 
+                    // Matrix Box [189 Hug x 57 Hug]
                     Row(
                         modifier = Modifier
                             .width(189.dp)
@@ -182,7 +193,7 @@ fun ActiveWorkoutScreen(
 
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.md))
 
-            // Card 2: LAST SESSION & Weight Selector
+            // Card 2: LAST SESSION & Weight Selector [350 Fill x 60 Hug]
             DarkWorkoutCard {
                 Row(
                     modifier = Modifier
@@ -191,52 +202,60 @@ fun ActiveWorkoutScreen(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Column {
+                    // Last Session Label Box [95 Hug x 36 Hug]
+                    Column(
+                        modifier = Modifier
+                            .width(95.dp)
+                            .height(36.dp),
+                        verticalArrangement = Arrangement.Center
+                    ) {
                         Text(
                             text = "LAST SESSION",
-                            style = MaterialTheme.typography.labelSmall,
+                            fontSize = 11.sp,
                             color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.7f)
                         )
                         Spacer(modifier = Modifier.height(2.dp))
                         Text(
                             text = "45 kg × 12 reps",
-                            style = MaterialTheme.typography.titleMedium,
+                            fontSize = 13.sp,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onPrimary
                         )
                     }
 
-                    // Weight Selector Controls (- / +)
-                    Row(verticalAlignment = Alignment.CenterVertically) {
+                    // Weight Selector Controls (- / 45 kg / +) [134 Hug x 36 Hug]
+                    Row(
+                        modifier = Modifier
+                            .width(134.dp)
+                            .height(36.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
                         IconButton(
                             onClick = { if (weightKg > 2.5) weightKg -= 2.5 },
                             modifier = Modifier
-                                .size(36.dp)
+                                .size(26.dp)
                                 .clip(CircleShape)
                                 .background(MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.15f))
                         ) {
-                            Text("-", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onPrimary)
+                            Text("-", fontSize = 16.sp, color = MaterialTheme.colorScheme.onPrimary)
                         }
-
-                        Spacer(modifier = Modifier.width(MaterialTheme.spacing.sm))
 
                         Text(
                             text = "${weightKg.toInt()} kg",
-                            style = MaterialTheme.typography.titleMedium,
+                            fontSize = 18.sp,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onPrimary
                         )
 
-                        Spacer(modifier = Modifier.width(MaterialTheme.spacing.sm))
-
                         IconButton(
                             onClick = { weightKg += 2.5 },
                             modifier = Modifier
-                                .size(36.dp)
+                                .size(26.dp)
                                 .clip(CircleShape)
                                 .background(MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.15f))
                         ) {
-                            Text("+", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onPrimary)
+                            Text("+", fontSize = 16.sp, color = MaterialTheme.colorScheme.onPrimary)
                         }
                     }
                 }
@@ -313,7 +332,7 @@ fun ActiveWorkoutScreen(
 
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.md))
 
-            // Resting Timer Card
+            // Resting Timer Card [350 Fill x 47 Hug]
             DarkWorkoutCard {
                 Row(
                     modifier = Modifier
@@ -324,7 +343,7 @@ fun ActiveWorkoutScreen(
                 ) {
                     Text(
                         text = "Resting • $formatRestTime",
-                        style = MaterialTheme.typography.titleMedium,
+                        fontSize = 13.sp,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.extendedColors.mint
                     )
@@ -421,13 +440,15 @@ fun ActiveWorkoutScreen(
 
 @Composable
 private fun DarkWorkoutCard(
+    modifier: Modifier = Modifier,
     content: @Composable ColumnScope.() -> Unit
 ) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .clip(MaterialTheme.shapes.large)
             .background(MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.12f))
+            .border(1.dp, Color.White.copy(alpha = 0.1216f), MaterialTheme.shapes.large)
             .padding(MaterialTheme.spacing.lg)
     ) {
         Column(content = content)
