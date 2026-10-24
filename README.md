@@ -83,7 +83,19 @@ com.example.tp3_parcial_grupo_1
 - Cada pantalla tiene un `XxxRoute`, que obtiene su `ViewModel` con `hiltViewModel()` y observa el estado con `collectAsStateWithLifecycle`, y un `XxxScreen` sin estado con `@Preview`. Las pantallas no reciben el `NavController`: exponen callbacks que conecta la navegación.
 - Los datos que no vienen de Retrofit ni Room están en `data/demo/` y se identifican como demostración.
 
-> **Pendiente:** flujo DTO → modelo → Entity, repositorios y qué objetos construye Hilt y su relación con Dagger.
+### Capa de datos
+
+**Entrenamiento (Retrofit con caché en Room).** `WorkoutApi` consulta `GET /v1/workouts` y `GET /v1/workouts/{id}`; las respuestas vienen envueltas en `DataResponse` y se leen como DTOs (`WorkoutSummaryDto`, `WorkoutDto`, `ExerciseDto`). `WorkoutMapper` los convierte en `WorkoutEntity` / `ExerciseEntity` para Room y en los modelos `Workout` / `Exercise` para la UI (`toEntity()` / `toDomain()`).
+
+`WorkoutRepositoryImpl` separa lectura y actualización: las pantallas observan Room como `Flow` (`getWorkouts()`, `getWorkoutById()`), y `refreshWorkouts()` / `refreshWorkoutDetails()` piden los datos al servidor y actualizan la caché en una transacción. Si la red falla, devuelven `Result.failure` y la caché queda como estaba, así que lo ya descargado se sigue viendo sin conexión (RF02) y la pantalla avisa el error (con opción de reintentar cuando todavía no hay nada guardado).
+
+**Nutrición (Room).** `MealRepository` trabaja sobre `MealDao`: observa las comidas de una fecha como `Flow`, agrega y elimina. `MealEntity` se convierte en `Meal` con `toDomain()` / `fromDomain()`. El total del día lo calcula `MealsViewModel` a partir de la lista observada, así que cambia al agregar o eliminar una comida.
+
+**Base de datos.** `AppDatabase` (`vora_database`, versión 1) reúne `WorkoutEntity`, `ExerciseEntity` y `MealEntity`.
+
+**Módulos de Hilt.** `NetworkModule` provee OkHttp, Retrofit y `WorkoutApi`; `DatabaseModule`, la base y los DAOs; `RepositoryModule` vincula `WorkoutRepository` con su implementación.
+
+> **Pendiente:** qué objetos construye Hilt y su relación con Dagger (RF08).
 
 ## Inventario de pantallas
 
