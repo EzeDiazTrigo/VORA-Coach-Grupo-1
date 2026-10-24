@@ -42,7 +42,8 @@ fun AppButton(
     isCompact: Boolean = false,
     fullWidth: Boolean = true,
     textColor: Color? = null,
-    borderColor: Color? = null
+    borderColor: Color? = null,
+    containerColor: Color? = null
 ) {
     val colors = MaterialTheme.colorScheme
     val isEnabled = enabled && !isLoading
@@ -83,7 +84,10 @@ fun AppButton(
             shape = PillShape,
             contentPadding = contentPadding,
             border = BorderStroke(1.dp, borderColor ?: colors.onPrimary.copy(alpha = 0.6f)),
-            colors = ButtonDefaults.outlinedButtonColors(contentColor = actualTextColor),
+            colors = ButtonDefaults.outlinedButtonColors(
+                containerColor = containerColor ?: Color.Unspecified,
+                contentColor = actualTextColor
+            ),
             content = { content() }
         )
         else -> Button(
@@ -92,11 +96,10 @@ fun AppButton(
             enabled = isEnabled,
             shape = PillShape,
             contentPadding = contentPadding,
-            colors = if (style == AppButtonStyle.Accent) {
-                ButtonDefaults.buttonColors(containerColor = colors.tertiary, contentColor = colors.onTertiary)
-            } else {
-                ButtonDefaults.buttonColors(containerColor = colors.primary, contentColor = colors.onPrimary)
-            },
+            colors = ButtonDefaults.buttonColors(
+                containerColor = containerColor ?: if (style == AppButtonStyle.Accent) colors.tertiary else colors.primary,
+                contentColor = actualTextColor
+            ),
             content = { content() }
         )
     }
