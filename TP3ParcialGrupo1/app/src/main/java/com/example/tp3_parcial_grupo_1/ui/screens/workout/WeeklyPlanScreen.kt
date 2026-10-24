@@ -1,7 +1,7 @@
 package com.example.tp3_parcial_grupo_1.ui.screens.workout
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -17,8 +17,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,11 +29,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.tp3_parcial_grupo_1.R
 import com.example.tp3_parcial_grupo_1.ui.components.AppCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppCardStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
@@ -44,8 +43,7 @@ import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 
 data class DayItem(
     val dayName: String,
-    val dayNumber: String,
-    val isSelected: Boolean = false
+    val dayNumber: String
 )
 
 @Composable
@@ -115,7 +113,8 @@ fun WeeklyPlanScreen(
                             Text(
                                 text = day.dayName,
                                 style = MaterialTheme.typography.labelSmall,
-                                color = if (isSelected) MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f)
+                                fontWeight = FontWeight.Bold,
+                                color = if (isSelected) MaterialTheme.colorScheme.tertiary
                                         else MaterialTheme.colorScheme.onSurfaceVariant
                             )
                             Spacer(modifier = Modifier.height(4.dp))
@@ -133,55 +132,62 @@ fun WeeklyPlanScreen(
 
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.sm))
 
-            // Card 1: TODAY'S WORKOUT
-            AppCard(
-                style = AppCardStyle.Surface,
-                onClick = { onWorkoutSelect("w01") }
+            // Card 1: TODAY'S WORKOUT (With Black / Dark Green Border)
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(MaterialTheme.shapes.medium)
+                    .border(1.5.dp, MaterialTheme.colorScheme.primary, MaterialTheme.shapes.medium)
             ) {
-                Column(modifier = Modifier.fillMaxWidth()) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = "TODAY'S WORKOUT",
-                            style = MaterialTheme.typography.labelSmall,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.primary
-                        )
-
-                        Box(
-                            modifier = Modifier
-                                .clip(PillShape)
-                                .background(MaterialTheme.extendedColors.mint)
-                                .padding(horizontal = MaterialTheme.spacing.sm, vertical = 2.dp)
+                AppCard(
+                    style = AppCardStyle.Surface,
+                    onClick = { onWorkoutSelect("w01") }
+                ) {
+                    Column(modifier = Modifier.fillMaxWidth()) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
-                                text = "READY",
+                                text = "TODAY'S WORKOUT",
                                 style = MaterialTheme.typography.labelSmall,
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.primary
                             )
+
+                            Box(
+                                modifier = Modifier
+                                    .clip(PillShape)
+                                    .background(MaterialTheme.extendedColors.mint)
+                                    .padding(horizontal = MaterialTheme.spacing.sm, vertical = 2.dp)
+                            ) {
+                                Text(
+                                    text = "READY",
+                                    style = MaterialTheme.typography.labelSmall,
+                                    fontWeight = FontWeight.Bold,
+                                    color = MaterialTheme.colorScheme.primary
+                                )
+                            }
                         }
+
+                        Spacer(modifier = Modifier.height(MaterialTheme.spacing.sm))
+
+                        Text(
+                            text = "Upper Body Strength",
+                            style = MaterialTheme.typography.titleLarge,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+
+                        Spacer(modifier = Modifier.height(4.dp))
+
+                        Text(
+                            text = "42 min • 5 exercises • Intermediate",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
                     }
-
-                    Spacer(modifier = Modifier.height(MaterialTheme.spacing.sm))
-
-                    Text(
-                        text = "Upper Body Strength",
-                        style = MaterialTheme.typography.titleLarge,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
-
-                    Spacer(modifier = Modifier.height(4.dp))
-
-                    Text(
-                        text = "42 min • 5 exercises • Intermediate",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
                 }
             }
 
@@ -204,9 +210,16 @@ fun WeeklyPlanScreen(
 
                         Box(
                             modifier = Modifier
-                                .size(16.dp)
-                                .clip(PillShape)
-                                .background(MaterialTheme.extendedColors.mint)
+                                .size(18.dp)
+                                .clip(CircleShape)
+                                .background(
+                                    Brush.radialGradient(
+                                        colors = listOf(
+                                            MaterialTheme.extendedColors.mint,
+                                            MaterialTheme.colorScheme.primary
+                                        )
+                                    )
+                                )
                         )
                     }
 
@@ -264,11 +277,18 @@ fun WeeklyPlanScreen(
             AppCard(style = AppCardStyle.Panel) {
                 Column(modifier = Modifier.fillMaxWidth()) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_sparkles),
-                            contentDescription = null,
-                            tint = MaterialTheme.extendedColors.mint,
-                            modifier = Modifier.size(18.dp)
+                        Box(
+                            modifier = Modifier
+                                .size(18.dp)
+                                .clip(CircleShape)
+                                .background(
+                                    Brush.radialGradient(
+                                        colors = listOf(
+                                            MaterialTheme.extendedColors.mint,
+                                            MaterialTheme.colorScheme.tertiary
+                                        )
+                                    )
+                                )
                         )
                         Spacer(modifier = Modifier.width(MaterialTheme.spacing.xs))
                         Text(
