@@ -7,6 +7,7 @@ import com.example.tp3_parcial_grupo_1.data.repository.MealRepository
 import com.example.tp3_parcial_grupo_1.model.Meal
 import com.example.tp3_parcial_grupo_1.model.MealType
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -42,6 +43,8 @@ class MealsViewModel @Inject constructor(
 
     private val _uiState = MutableStateFlow(MealUiState())
     val uiState: StateFlow<MealUiState> = _uiState.asStateFlow()
+
+    private var mealsJob: Job? = null
 
     init {
         val today = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
@@ -80,7 +83,8 @@ class MealsViewModel @Inject constructor(
     }
 
     private fun observeMeals(date: String) {
-        viewModelScope.launch {
+        mealsJob?.cancel()
+        mealsJob = viewModelScope.launch {
             mealRepository.observeMealsByDate(date).collect { meals ->
                 val cal = meals.sumOf { it.calories }
                 val pro = meals.sumOf { it.protein }

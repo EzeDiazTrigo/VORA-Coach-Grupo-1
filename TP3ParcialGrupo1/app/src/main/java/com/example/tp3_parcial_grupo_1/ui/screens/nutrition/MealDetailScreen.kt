@@ -18,15 +18,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tp3_parcial_grupo_1.R
 import com.example.tp3_parcial_grupo_1.model.Meal
+import com.example.tp3_parcial_grupo_1.ui.strings.Strings
 import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
+import kotlinx.coroutines.launch
 
 @Composable
 fun MealDetailScreen(
     viewModel: MealsViewModel,
     onNavigate: (String) -> Unit,
     onBackClick: () -> Unit,
-    onEditMeal: () -> Unit,
     onDeleteSuccess: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -56,8 +57,13 @@ fun MealDetailScreen(
         )
     }
 
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
+    val showDemoNotice: () -> Unit = { scope.launch { snackbarHostState.showSnackbar(Strings.DemoMode) } }
+
     Scaffold(
-        containerColor = MaterialTheme.colorScheme.background
+        containerColor = MaterialTheme.colorScheme.background,
+        snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -209,7 +215,7 @@ fun MealDetailScreen(
             Spacer(modifier = Modifier.height(24.dp))
 
             Button(
-                onClick = onEditMeal,
+                onClick = showDemoNotice,
                 modifier = Modifier.fillMaxWidth(),
                 shape = PillShape,
                 colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.surface, contentColor = MaterialTheme.colorScheme.onBackground),

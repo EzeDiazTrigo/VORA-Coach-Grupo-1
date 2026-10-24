@@ -21,7 +21,8 @@ import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
 @Composable
 fun VoiceLoggingScreen(
     onCloseClick: () -> Unit,
-    onDoneSpeaking: () -> Unit
+    onDoneSpeaking: () -> Unit,
+    onTypeInsteadClick: () -> Unit
 ) {
     Box(
         modifier = Modifier
@@ -157,7 +158,7 @@ fun VoiceLoggingScreen(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            TextButton(onClick = onCloseClick) {
+            TextButton(onClick = onTypeInsteadClick) {
                 Text(
                     text = "Type instead",
                     style = MaterialTheme.typography.bodyMedium.copy(
