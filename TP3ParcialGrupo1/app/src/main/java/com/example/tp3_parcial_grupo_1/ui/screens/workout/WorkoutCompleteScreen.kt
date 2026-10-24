@@ -33,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -73,7 +74,7 @@ fun WorkoutCompleteScreen(
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(modifier = Modifier.height(MaterialTheme.spacing.sm))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.md))
 
             Text(
                 text = "COMPLETED",
@@ -84,23 +85,16 @@ fun WorkoutCompleteScreen(
 
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.lg))
 
-            // Completed Hero Badge Orb [120 x 120 Container, 90 x 90 Ring]
+            // Completed Hero Orb Component [vora-orb: 120 x 120]
             Box(
-                modifier = Modifier
-                    .size(120.dp)
-                    .background(
-                        Brush.radialGradient(
-                            colors = listOf(
-                                VoraMint.copy(alpha = 0.15f),
-                                Color.Transparent
-                            )
-                        )
-                    ),
+                modifier = Modifier.size(120.dp),
                 contentAlignment = Alignment.Center
             ) {
+                // orb-ring: 107 x 107 (80% Opacity)
                 Box(
                     modifier = Modifier
-                        .size(90.dp)
+                        .size(107.dp)
+                        .graphicsLayer(alpha = 0.8f)
                         .clip(CircleShape)
                         .border(
                             width = 1.5.dp,
@@ -108,13 +102,13 @@ fun WorkoutCompleteScreen(
                                 colors = listOf(VoraLime, VoraMint, VoraGreen)
                             ),
                             shape = CircleShape
-                        )
-                        .padding(2.dp),
+                        ),
                     contentAlignment = Alignment.Center
                 ) {
+                    // orb-core: 90 x 90
                     Box(
                         modifier = Modifier
-                            .fillMaxSize()
+                            .size(90.dp)
                             .clip(CircleShape)
                             .background(
                                 Brush.linearGradient(
