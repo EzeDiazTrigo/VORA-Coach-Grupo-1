@@ -1,7 +1,9 @@
 package com.example.tp3_parcial_grupo_1.ui.screens.workout
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,6 +19,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,14 +29,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.tp3_parcial_grupo_1.R
 import com.example.tp3_parcial_grupo_1.ui.components.AppButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
-import com.example.tp3_parcial_grupo_1.ui.components.AppCard
-import com.example.tp3_parcial_grupo_1.ui.components.AppCardStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
+import com.example.tp3_parcial_grupo_1.ui.components.VoraSymbol
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
@@ -46,17 +49,6 @@ fun ExerciseDetailsScreen(
     modifier: Modifier = Modifier
 ) {
     AppScaffold(
-        title = "Exercise Guide",
-        onBack = onBackClick,
-        actions = {
-            IconButton(onClick = { }) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_help_circle),
-                    contentDescription = "Help",
-                    tint = MaterialTheme.colorScheme.onSurface
-                )
-            }
-        },
         modifier = modifier
     ) { padding ->
         Column(
@@ -67,11 +59,58 @@ fun ExerciseDetailsScreen(
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md)
         ) {
+            // Centered Top Header Bar
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = MaterialTheme.spacing.xs),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                IconButton(
+                    onClick = onBackClick,
+                    colors = IconButtonDefaults.iconButtonColors(
+                        containerColor = MaterialTheme.colorScheme.surface
+                    ),
+                    modifier = Modifier.size(40.dp)
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_chevron_left),
+                        contentDescription = "Back",
+                        tint = MaterialTheme.colorScheme.onSurface,
+                        modifier = Modifier.size(20.dp)
+                    )
+                }
+
+                Text(
+                    text = "Exercise Guide",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.weight(1f)
+                )
+
+                IconButton(
+                    onClick = { },
+                    colors = IconButtonDefaults.iconButtonColors(
+                        containerColor = MaterialTheme.colorScheme.surface
+                    ),
+                    modifier = Modifier.size(40.dp)
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_help_circle),
+                        contentDescription = "Help",
+                        tint = MaterialTheme.colorScheme.onSurface,
+                        modifier = Modifier.size(20.dp)
+                    )
+                }
+            }
+
             // Exercise Title Header
             Column(modifier = Modifier.fillMaxWidth()) {
                 Text(
                     text = "Seated Cable Row",
-                    style = MaterialTheme.typography.headlineSmall,
+                    style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onBackground
                 )
@@ -94,42 +133,44 @@ fun ExerciseDetailsScreen(
                     .clip(MaterialTheme.shapes.large)
             )
 
-            // Performance Steps Card
+            // Performance Steps Header
             Text(
                 text = "Performance Steps",
-                style = MaterialTheme.typography.titleLarge,
+                style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onSurface
             )
 
-            AppCard(style = AppCardStyle.Surface) {
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm),
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    val steps = listOf(
-                        "1. Sit upright with your chest lifted.",
-                        "2. Pull the handle toward your lower torso.",
-                        "3. Keep your elbows tucked close to your ribs.",
-                        "4. Pause briefly during peak contraction.",
-                        "5. Return the weight slowly to start."
+            // Performance Steps List
+            Column(
+                verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xs),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                val steps = listOf(
+                    "1. Sit upright with your chest lifted.",
+                    "2. Pull the handle toward your lower torso.",
+                    "3. Keep your elbows tucked close to your ribs.",
+                    "4. Pause briefly during peak contraction.",
+                    "5. Return the weight slowly to start."
+                )
+                steps.forEach { step ->
+                    Text(
+                        text = step,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
-                    steps.forEach { step ->
-                        Text(
-                            text = step,
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurface
-                        )
-                    }
                 }
             }
+
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.xs))
 
             // PRO FORM CUES Box
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clip(MaterialTheme.shapes.medium)
-                    .background(MaterialTheme.colorScheme.surfaceVariant)
+                    .background(MaterialTheme.colorScheme.surface)
+                    .border(1.dp, MaterialTheme.colorScheme.outlineVariant, MaterialTheme.shapes.medium)
                     .padding(MaterialTheme.spacing.lg)
             ) {
                 Column {
@@ -143,12 +184,12 @@ fun ExerciseDetailsScreen(
                     Text(
                         text = "• Keep your shoulders rolled down and back.\n• Do not lean backward to swing the load.",
                         style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurface
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             }
 
-            // Ask Vora Chip
+            // Ask Vora Card
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -157,17 +198,13 @@ fun ExerciseDetailsScreen(
                     .padding(MaterialTheme.spacing.md)
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_sparkles),
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(18.dp)
-                    )
+                    VoraSymbol(size = 18.dp)
                     Spacer(modifier = Modifier.width(MaterialTheme.spacing.sm))
                     Text(
                         text = "Ask Vora: \"Explain grip variations\"",
                         style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurface
+                        fontWeight = FontWeight.Medium,
+                        color = MaterialTheme.colorScheme.primary
                     )
                 }
             }
