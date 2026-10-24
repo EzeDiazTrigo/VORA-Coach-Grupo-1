@@ -44,6 +44,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.tp3_parcial_grupo_1.R
 import com.example.tp3_parcial_grupo_1.data.demo.CoachDemoData
+import com.example.tp3_parcial_grupo_1.ui.strings.CoachStrings
 import com.example.tp3_parcial_grupo_1.ui.strings.Strings
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
 import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
@@ -65,6 +66,7 @@ data class CoachActions(
     val onInterrupt: () -> Unit = {},
     val onDraftChange: (String) -> Unit = {},
     val onSend: () -> Unit = {},
+    val onRetrySend: () -> Unit = {},
     val onListenToMessage: (Long) -> Unit = {},
     val onRetry: () -> Unit = {},
     val onDismissError: () -> Unit = {},
@@ -98,6 +100,7 @@ fun CoachRoute(
             onInterrupt = viewModel::onInterrupt,
             onDraftChange = viewModel::onDraftChange,
             onSend = viewModel::onSend,
+            onRetrySend = viewModel::onRetrySend,
             onListenToMessage = viewModel::onListenToMessage,
             onRetry = viewModel::onRetry,
             onDismissError = viewModel::onDismissError,
@@ -305,6 +308,17 @@ private fun CoachIdleSmallPreview() = PreviewScreen(
 @Composable
 private fun CoachConversationPreview() = PreviewScreen(
     CoachUiState.Conversation(CoachDemoData.conversation, draft = "", isVoraTyping = false)
+)
+
+@Preview(name = "Conversación · error de envío", widthDp = 390, heightDp = 844)
+@Composable
+private fun CoachConversationErrorPreview() = PreviewScreen(
+    CoachUiState.Conversation(
+        CoachDemoData.conversation,
+        draft = "",
+        isVoraTyping = false,
+        sendError = CoachStrings.SendErrorOffline
+    )
 )
 
 @Preview(name = "Error de micrófono", widthDp = 390, heightDp = 844)
