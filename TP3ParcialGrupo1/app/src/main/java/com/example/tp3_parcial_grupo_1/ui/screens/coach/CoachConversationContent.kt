@@ -45,9 +45,9 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.tp3_parcial_grupo_1.R
-import com.example.tp3_parcial_grupo_1.data.demo.CoachAuthor
+import com.example.tp3_parcial_grupo_1.model.CoachAuthor
 import com.example.tp3_parcial_grupo_1.data.demo.CoachDemoData
-import com.example.tp3_parcial_grupo_1.data.demo.CoachMessage
+import com.example.tp3_parcial_grupo_1.model.CoachMessage
 import com.example.tp3_parcial_grupo_1.ui.components.InlineLoading
 import com.example.tp3_parcial_grupo_1.ui.components.VoraOrb
 import com.example.tp3_parcial_grupo_1.ui.strings.CoachStrings

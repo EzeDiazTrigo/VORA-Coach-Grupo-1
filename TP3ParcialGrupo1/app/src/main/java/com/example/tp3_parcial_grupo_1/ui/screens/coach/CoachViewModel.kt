@@ -2,10 +2,10 @@ package com.example.tp3_parcial_grupo_1.ui.screens.coach
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.tp3_parcial_grupo_1.data.demo.CoachAuthor
+import com.example.tp3_parcial_grupo_1.model.CoachAuthor
 import com.example.tp3_parcial_grupo_1.data.demo.CoachDemoData
 import com.example.tp3_parcial_grupo_1.data.demo.CoachExchange
-import com.example.tp3_parcial_grupo_1.data.demo.CoachMessage
+import com.example.tp3_parcial_grupo_1.model.CoachMessage
 import com.example.tp3_parcial_grupo_1.data.demo.LastConversation
 import com.example.tp3_parcial_grupo_1.ui.strings.CoachStrings
 import dagger.hilt.android.lifecycle.HiltViewModel

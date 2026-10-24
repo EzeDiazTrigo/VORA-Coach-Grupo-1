@@ -1,6 +1,6 @@
 package com.example.tp3_parcial_grupo_1.ui.screens.coach
 
-import com.example.tp3_parcial_grupo_1.data.demo.CoachAuthor
+import com.example.tp3_parcial_grupo_1.model.CoachAuthor
 import com.example.tp3_parcial_grupo_1.data.demo.CoachDemoData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

@@ -1,5 +1,7 @@
 package com.example.tp3_parcial_grupo_1.data.demo
 
+import com.example.tp3_parcial_grupo_1.model.CoachAuthor
+import com.example.tp3_parcial_grupo_1.model.CoachMessage
 import java.text.Normalizer
 
 // Datos de demostración del Asistente VORA: no hay voz ni IA real (NAV05).
@@ -11,16 +13,6 @@ data class CoachExchange(
 )
 
 data class LastConversation(val text: String, val timeAgo: String)
-
-enum class CoachAuthor { User, Vora }
-
-data class CoachMessage(
-    val id: Long,
-    val author: CoachAuthor,
-    val text: String,
-    val time: String,
-    val audioSeconds: Int? = null
-)
 
 object CoachDemoData {
     val lunch = CoachExchange(

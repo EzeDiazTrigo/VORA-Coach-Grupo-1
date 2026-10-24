@@ -1,6 +1,6 @@
 package com.example.tp3_parcial_grupo_1.ui.screens.coach
 
-import com.example.tp3_parcial_grupo_1.data.demo.CoachMessage
+import com.example.tp3_parcial_grupo_1.model.CoachMessage
 import com.example.tp3_parcial_grupo_1.data.demo.LastConversation
 
 // Un estado por frame de «AI Voice Flow» en Figma; todos viven en el mismo destino.
