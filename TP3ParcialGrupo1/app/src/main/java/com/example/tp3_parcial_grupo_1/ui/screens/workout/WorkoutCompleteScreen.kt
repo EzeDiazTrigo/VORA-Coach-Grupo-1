@@ -74,7 +74,7 @@ fun WorkoutCompleteScreen(
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(modifier = Modifier.height(MaterialTheme.spacing.md))
+            Spacer(modifier = Modifier.height(24.dp))
 
             Text(
                 text = "COMPLETED",
@@ -83,7 +83,7 @@ fun WorkoutCompleteScreen(
                 color = MaterialTheme.extendedColors.mint
             )
 
-            Spacer(modifier = Modifier.height(MaterialTheme.spacing.lg))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.md))
 
             // Completed Hero Orb Component [vora-orb: 120 x 120]
             Box(
@@ -96,12 +96,10 @@ fun WorkoutCompleteScreen(
                         .size(107.dp)
                         .graphicsLayer(alpha = 0.8f)
                         .clip(CircleShape)
-                        .border(
-                            width = 1.5.dp,
-                            brush = Brush.linearGradient(
+                        .background(
+                            Brush.linearGradient(
                                 colors = listOf(VoraLime, VoraMint, VoraGreen)
-                            ),
-                            shape = CircleShape
+                            )
                         ),
                     contentAlignment = Alignment.Center
                 ) {
@@ -126,7 +124,7 @@ fun WorkoutCompleteScreen(
                 }
             }
 
-            Spacer(modifier = Modifier.height(MaterialTheme.spacing.lg))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.md))
 
             Text(
                 text = "You did well!",
@@ -143,7 +141,7 @@ fun WorkoutCompleteScreen(
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
 
-            Spacer(modifier = Modifier.height(MaterialTheme.spacing.xl))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.lg))
 
             // Stats 3-Column Card
             AppCard(style = AppCardStyle.Surface) {
