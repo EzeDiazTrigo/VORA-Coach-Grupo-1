@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -26,13 +25,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.tp3_parcial_grupo_1.R
 import com.example.tp3_parcial_grupo_1.model.Exercise
 import com.example.tp3_parcial_grupo_1.model.Workout
 import com.example.tp3_parcial_grupo_1.ui.components.AppButton
@@ -40,6 +37,7 @@ import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppCardStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
+import com.example.tp3_parcial_grupo_1.ui.components.VoraSymbol
 import com.example.tp3_parcial_grupo_1.ui.strings.WorkoutStrings
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
@@ -151,7 +149,7 @@ fun WorkoutDetailScreen(
                                     Spacer(modifier = Modifier.height(MaterialTheme.spacing.xs))
 
                                     Text(
-                                        text = "${workout.durationMinutes} min   •   ${workout.level}   •   ${workout.exerciseCount} exercises",
+                                        text = "${workout.durationMinutes} min   •   ${workout.level}   •   ${if (workout.exercises.isNotEmpty()) workout.exercises.size else workout.exerciseCount} exercises",
                                         style = MaterialTheme.typography.bodyMedium,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
@@ -177,12 +175,7 @@ fun WorkoutDetailScreen(
                                 ) {
                                     Column {
                                         Row(verticalAlignment = Alignment.CenterVertically) {
-                                            Icon(
-                                                painter = painterResource(id = R.drawable.ic_sparkles),
-                                                contentDescription = null,
-                                                tint = MaterialTheme.colorScheme.primary,
-                                                modifier = Modifier.size(16.dp)
-                                            )
+                                            VoraSymbol(size = 18.dp)
                                             Spacer(modifier = Modifier.width(MaterialTheme.spacing.xs))
                                             Text(
                                                 text = "VORA COACH NOTE",
@@ -237,7 +230,9 @@ fun WorkoutDetailScreen(
                             AppButton(
                                 text = "Edit workout",
                                 onClick = { },
-                                style = AppButtonStyle.Outlined
+                                style = AppButtonStyle.Outlined,
+                                textColor = MaterialTheme.colorScheme.primary,
+                                borderColor = MaterialTheme.colorScheme.primary
                             )
                         }
                     }
