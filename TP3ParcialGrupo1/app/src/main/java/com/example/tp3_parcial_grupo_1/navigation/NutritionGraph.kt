@@ -86,8 +86,11 @@ fun NavGraphBuilder.nutritionGraph(navController: NavController) {
             AnalyzingMealScreen(
                 onCancelClick = { navController.popBackStack() },
                 onAnalysisComplete = {
-                    navController.navigate(AppDestination.FoodConfirmation.route) {
-                        popUpTo(AppDestination.FoodAnalysis.route) { inclusive = true }
+                    val isStillAnalyzing = navController.currentDestination?.route == AppDestination.FoodAnalysis.route
+                    if (isStillAnalyzing) {
+                        navController.navigate(AppDestination.FoodConfirmation.route) {
+                            popUpTo(AppDestination.FoodAnalysis.route) { inclusive = true }
+                        }
                     }
                 }
             )
