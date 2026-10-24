@@ -36,10 +36,6 @@ private fun NavBackStackEntry.argumentSummary(arguments: List<NamedNavArgument>)
 
 private fun NavBackStackEntry.workoutId(): String = savedStateHandle.get<String>(NavArg.WorkoutId).orEmpty()
 
-fun NavGraphBuilder.coachPlaceholderGraph() {
-    placeholder(AppDestination.Coach, "Voice / 01 — Idle")
-}
-
 fun NavGraphBuilder.workoutPlaceholderGraph(navController: NavController) {
     navigation(startDestination = AppDestination.Workout.route, route = AppDestination.WorkoutGraph.route) {
         placeholder(AppDestination.Workout, "Workout / 01 — Dashboard") {
