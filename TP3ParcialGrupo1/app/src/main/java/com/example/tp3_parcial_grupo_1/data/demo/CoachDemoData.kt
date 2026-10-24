@@ -49,9 +49,6 @@ object CoachDemoData {
         )
     )
 
-    // Respuesta para preguntas escritas que no están en la demo.
-    const val GenericReply =
-        "I'm in demo mode, so I answer with examples. Try one of the suggested questions."
 
     val suggestedQuestions: List<String> = suggestions.map { it.question }
 
@@ -80,8 +77,6 @@ object CoachDemoData {
     )
 
     fun exchangeFor(question: String): CoachExchange = find(question) ?: lunch
-
-    fun replyFor(question: String): String = find(question)?.reply ?: GenericReply
 
     // «how am i doing» encuentra «How am I doing?»: se comparan sin tildes, signos ni mayúsculas.
     private fun find(question: String): CoachExchange? {

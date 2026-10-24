@@ -27,7 +27,9 @@ sealed interface CoachUiState {
     data class Conversation(
         val messages: List<CoachMessage>,
         val draft: String,
-        val isVoraTyping: Boolean
+        val isVoraTyping: Boolean,
+        // Error al pedir la respuesta a POST /v1/coach/messages; el mensaje del usuario ya quedó guardado.
+        val sendError: String? = null
     ) : CoachUiState {
         val canSend: Boolean get() = draft.isNotBlank() && !isVoraTyping
     }
