@@ -193,7 +193,7 @@ fun WorkoutListScreen(
                     Spacer(modifier = Modifier.height(MaterialTheme.spacing.sm))
 
                     Text(
-                        text = recommendedWorkout.name,
+                        text = "Upper Body Strengh",
                         style = MaterialTheme.typography.headlineMedium,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onPrimary
