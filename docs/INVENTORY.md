@@ -16,7 +16,7 @@ Estado previsto: **funcional** (datos reales: Retrofit/Room) · **demostración*
 | 6 | Voice / 02 — Listening | `coach` (estado `Listening`) | no | demostración | E |
 | 7 | Voice / 03 — Processing | `coach` (estado `Processing`) | no | demostración | E |
 | 8 | Voice / 04 — Speaking | `coach` (estado `Reply`) | no | demostración | E |
-| 9 | Voice / 05 — Conversation | `coach` (estado `Conversation`) | no | demostración | E |
+| 9 | Voice / 05 — Conversation | `coach` (estado `Conversation`) | no | funcional (extra: Retrofit + historial en Room) | E |
 | 10 | Voice / 06 — Error | `coach` (estado `MicError`) | no | demostración | E |
 | 11 | Workout / 01 — Dashboard | `workout/dashboard` | sí | funcional (catálogo Retrofit + caché Room) | C |
 | 12 | Workout / 02 — Weekly Plan | `workout/weekly_plan` | sí | demostración | C |
@@ -65,10 +65,12 @@ Las seis pantallas son estados de un mismo destino (`coach`), modelados con `Coa
 | Voice / 02 — Listening | `Listening` | Fondo verde oscuro; «Listening» + `LIVE AUDIO`; orbe con anillos; tarjeta «Live transcript» con el texto que se va dictando; «Speak naturally. I'm listening.»; botón mic activo; «Cancel» | Atrás / Cancel → Idle · Mic (terminar de hablar) o fin de la transcripción simulada → Processing · Mic antes de decir nada → MicError | demostración |
 | Voice / 03 — Processing | `Processing` | «Processing»; orbe; «Thinking…»; tarjeta con la frase transcripta; indicador «Checking your nutrition target…»; «Cancel» | Atrás / Cancel → Idle · al terminar → Speaking | demostración |
 | Voice / 04 — Speaking | `Reply` | «VORA Speaking» + `SPEAKING`; orbe; tarjeta con la respuesta; barra de progreso del audio (0:08 / -0:14); controles repetir, pausa, detener; botón «Tap to Interrupt» | Tap to Interrupt → Listening · Atrás / Detener → Idle · Repetir reinicia y Pausa detiene/reanuda la reproducción simulada · al terminar → Conversation con el intercambio agregado | demostración |
-| Voice / 05 — Conversation | `Conversation` | Encabezado «VORA Coach» con punto de estado y orbe chico; separador de fecha («Today at 12:40 PM»); burbujas del usuario (verde oscuro, derecha) y de VORA (blancas, izquierda, con «Listen to response (0:14)»); barra de entrada: `+`, «Ask VORA anything…», mic, enviar | Atrás → Idle · Enviar → agrega el mensaje, muestra «VORA is typing…» y una respuesta de demostración (extra posible: `POST /v1/coach/messages`) · Escuchar respuesta → Speaking con ese mensaje, vuelve sin duplicarlo · Mic → Listening · `+` → aviso de modo demostración | demostración |
+| Voice / 05 — Conversation | `Conversation` | Encabezado «VORA Coach» con punto de estado y orbe chico; separador de fecha («Today at 12:40 PM»); burbujas del usuario (verde oscuro, derecha) y de VORA (blancas, izquierda, con «Listen to response (0:14)»); barra de entrada: `+`, «Ask VORA anything…», mic, enviar | Atrás → Idle · Enviar → guarda el mensaje en Room, muestra «VORA is typing…» y pide la respuesta a `POST /v1/coach/messages` (se guarda en Room); si falla, el mensaje queda y aparece un aviso con «Retry» · Escuchar respuesta → Speaking con ese mensaje, vuelve sin duplicarlo · Mic → Listening · `+` → aviso de modo demostración | funcional |
 | Voice / 06 — Error | `MicError` | «System Alert»; orbe gris con ícono de reintentar; «Sorry, I didn't catch that» + subtítulo; tarjeta «Microphone access needed» con «Allow access» / «Not now»; botón «Try again»; enlace «Type instead» | Atrás / Not now → Idle · Allow access → aviso de modo demostración (no pide permiso) · Try again → Listening · Type instead → Conversation | demostración |
 
 **Cómo se llega al Asistente:** desde Home (tarjeta del orbe de VORA) y desde los accesos de VORA en otras áreas (a confirmar con B al cerrar el inventario). Como no hay micrófono real, `MicError` aparece al terminar de hablar sin haber dicho nada: en la demo, tocar el micrófono dos veces seguidas.
+
+**Extra — coach por Retrofit con historial en Room:** el chat escrito usa `CoachRepository` (`CoachApi` + `CoachMessageDao`). El historial sobrevive al cerrar la app; si está vacío se muestra la conversación de ejemplo de Figma. Las respuestas por voz siguen simuladas, pero también se guardan en el historial. El mock responde siempre con `isSimulated: true` y texto en español.
 
 **Back del sistema:** desde cualquier estado distinto de `Idle` vuelve a `Idle` (`BackHandler`); desde `Idle` sale del Asistente.
 
