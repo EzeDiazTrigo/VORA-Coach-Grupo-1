@@ -157,15 +157,15 @@ Pantallas propias sin frame en Figma: el formulario de carga manual de comidas (
 
 ## Estado por funcionalidad
 
-| Área | Pantallas | Estado previsto |
+| Área | Pantallas | Estado |
 |---|---|---|
-| Acceso | 2 | Demostración (sin Firebase) |
-| Inicio | 2 | Demostración |
-| Asistente VORA | 6 estados | Demostración (conversación simulada, sin permiso de micrófono) |
-| Entrenamiento | 7 | **Funcional:** catálogo y detalle con Retrofit y caché en Room · resto demostración |
-| Nutrición | 8 | **Funcional:** carga manual, listado por fecha, eliminación y total diario en Room · voz y foto simulados |
-| Progreso | 6 | Demostración |
-| Perfil | 6 | Demostración (perfil local) |
+| Acceso | 2 | Demostración: validación local de los campos, sin Firebase |
+| Inicio | 2 | Demostración: datos de ejemplo (`data/demo/`) |
+| Asistente VORA | 6 estados | Demostración: conversación simulada, sin permiso de micrófono |
+| Entrenamiento | 7 | **Funcional:** catálogo y detalle con Retrofit y caché en Room · Weekly Plan, Pre Workout, Active Workout, Exercise Details y Workout Complete: pendientes (placeholder) |
+| Nutrición | 8 | **Funcional:** carga manual, listado por fecha, eliminación con confirmación y total diario en Room · voz, foto y búsqueda simuladas |
+| Progreso | 6 | Demostración: datos de ejemplo identificados |
+| Perfil | 6 | Pendiente (placeholder) |
 
 El detalle por pantalla (nombre en Figma, ruta, barra inferior y estado) está en el [inventario](docs/INVENTORY.md).
 
