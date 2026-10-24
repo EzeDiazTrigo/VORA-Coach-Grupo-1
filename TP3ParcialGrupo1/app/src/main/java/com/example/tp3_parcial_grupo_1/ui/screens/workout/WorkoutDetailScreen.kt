@@ -133,6 +133,19 @@ fun WorkoutDetailScreen(
                     }
                 }
                 else -> {
+                    // Exercises List: Use exercises from backend if available, fallback if empty
+                    val exerciseList = if (workout.exercises.isNotEmpty()) {
+                        workout.exercises
+                    } else {
+                        listOf(
+                            Exercise("e01", "Bench Press", "Chest", 3, 10, 90, "", ""),
+                            Exercise("e02", "Seated Cable Row", "Back", 3, 12, 75, "", ""),
+                            Exercise("e03", "Shoulder Press", "Shoulders", 3, 10, 75, "", ""),
+                            Exercise("e04", "Dumbbell Lateral Raise", "Shoulders", 3, 12, 60, "", ""),
+                            Exercise("e05", "Tricep Pushdown", "Arms", 3, 12, 60, "", "")
+                        )
+                    }
+
                     Column(
                         modifier = Modifier
                             .fillMaxSize()
@@ -192,7 +205,7 @@ fun WorkoutDetailScreen(
                                     Spacer(modifier = Modifier.height(MaterialTheme.spacing.xs))
 
                                     Text(
-                                        text = "${workout.durationMinutes} min   •   ${workout.level}   •   5 exercises",
+                                        text = "${workout.durationMinutes} min   •   ${workout.level}   •   ${exerciseList.size} exercises",
                                         style = MaterialTheme.typography.bodyMedium,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
@@ -236,15 +249,6 @@ fun WorkoutDetailScreen(
                                     }
                                 }
                             }
-
-                            // Full 5 Exercises List
-                            val exerciseList = if (workout.exercises.size >= 5) workout.exercises else listOf(
-                                Exercise("e01", "Bench Press", "Chest", 3, 10, 90, "", ""),
-                                Exercise("e02", "Seated Cable Row", "Back", 3, 12, 75, "", ""),
-                                Exercise("e03", "Shoulder Press", "Shoulders", 3, 10, 75, "", ""),
-                                Exercise("e04", "Dumbbell Lateral Raise", "Shoulders", 3, 12, 60, "", ""),
-                                Exercise("e05", "Tricep Pushdown", "Arms", 3, 12, 60, "", "")
-                            )
 
                             itemsIndexed(exerciseList, key = { _, e -> e.id }) { index, exercise ->
                                 NumberedExerciseItem(
