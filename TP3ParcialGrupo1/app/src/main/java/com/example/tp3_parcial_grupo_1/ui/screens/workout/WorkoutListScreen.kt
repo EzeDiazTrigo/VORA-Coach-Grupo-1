@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
@@ -46,7 +45,7 @@ import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppCardStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
-import com.example.tp3_parcial_grupo_1.ui.strings.WorkoutStrings
+import com.example.tp3_parcial_grupo_1.ui.components.VoraOrb
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
 import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
@@ -211,16 +210,17 @@ fun WorkoutListScreen(
 
                     Row(
                         modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm)
+                        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm),
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Box(modifier = Modifier.weight(1f)) {
+                        Box(modifier = Modifier.weight(1.8f)) {
                             AppButton(
                                 text = "Start Workout",
                                 onClick = { onStartWorkoutClick(recommendedWorkout.id) },
                                 style = AppButtonStyle.Accent
                             )
                         }
-                        Box(modifier = Modifier.weight(1f)) {
+                        Box(modifier = Modifier.weight(1.2f)) {
                             AppButton(
                                 text = "Details",
                                 onClick = { onWorkoutClick(recommendedWorkout.id) },
@@ -241,12 +241,7 @@ fun WorkoutListScreen(
             ) {
                 Column {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_sparkles),
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.size(SmallIconSize)
-                        )
+                        VoraOrb(size = 18.dp)
                         Spacer(modifier = Modifier.width(MaterialTheme.spacing.xs))
                         Text(
                             text = "VORA RECOMMENDS",
@@ -264,15 +259,31 @@ fun WorkoutListScreen(
                 }
             }
 
-            // Card 3: This Week's Activity
-            AppCard(style = AppCardStyle.Surface) {
+            // Card 3: This Week's Activity (Clicking navigates to Weekly Plan)
+            AppCard(
+                style = AppCardStyle.Surface,
+                onClick = onWeeklyPlanClick
+            ) {
                 Column(modifier = Modifier.fillMaxWidth()) {
-                    Text(
-                        text = "This Week's Activity",
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = "This Week's Activity",
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_chevron_right),
+                            contentDescription = "View Weekly Plan",
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.size(MediumIconSize)
+                        )
+                    }
 
                     Spacer(modifier = Modifier.height(MaterialTheme.spacing.md))
 
