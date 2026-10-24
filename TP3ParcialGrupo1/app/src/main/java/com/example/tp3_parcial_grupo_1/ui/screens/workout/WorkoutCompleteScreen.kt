@@ -1,20 +1,36 @@
 package com.example.tp3_parcial_grupo_1.ui.screens.workout
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,6 +42,8 @@ import com.example.tp3_parcial_grupo_1.ui.components.AppCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppCardStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
+import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
+import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 
 @Composable
@@ -34,8 +52,10 @@ fun WorkoutCompleteScreen(
     onBackToWorkoutsClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    var selectedDifficulty by remember { mutableStateOf("Good") }
+    val difficulties = listOf("Great", "Good", "Tough", "Too Easy")
+
     AppScaffold(
-        title = "Sesión Finalizada",
         onBack = onBackToWorkoutsClick,
         modifier = modifier
     ) { padding ->
@@ -43,64 +63,232 @@ fun WorkoutCompleteScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .padding(horizontal = MaterialTheme.spacing.screen),
+                .padding(horizontal = MaterialTheme.spacing.screen)
+                .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
-            Column {
-                AppCard(style = AppCardStyle.Panel) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier.fillMaxWidth().padding(MaterialTheme.spacing.lg)
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(
+                    text = "COMPLETED",
+                    style = MaterialTheme.typography.labelSmall,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.extendedColors.mint
+                )
+
+                Spacer(modifier = Modifier.height(MaterialTheme.spacing.lg))
+
+                // Glowing Check Circle Badge
+                Box(
+                    modifier = Modifier
+                        .size(96.dp)
+                        .clip(CircleShape)
+                        .background(MaterialTheme.extendedColors.mintSoft),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(72.dp)
+                            .clip(CircleShape)
+                            .background(MaterialTheme.extendedColors.mint),
+                        contentAlignment = Alignment.Center
                     ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_trophy),
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.tertiary,
-                            modifier = Modifier.size(56.dp)
+                        Box(
+                            modifier = Modifier
+                                .size(52.dp)
+                                .clip(CircleShape)
+                                .background(MaterialTheme.colorScheme.primary),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_check_circle_filled),
+                                contentDescription = "Completed",
+                                tint = MaterialTheme.colorScheme.tertiary,
+                                modifier = Modifier.size(32.dp)
+                            )
+                        }
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(MaterialTheme.spacing.lg))
+
+                Text(
+                    text = "You did well!",
+                    style = MaterialTheme.typography.headlineMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onBackground
+                )
+
+                Spacer(modifier = Modifier.height(4.dp))
+
+                Text(
+                    text = "Strong session. Your consistency is improving.",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+
+                Spacer(modifier = Modifier.height(MaterialTheme.spacing.xl))
+
+                // Stats 3-Column Card
+                AppCard(style = AppCardStyle.Surface) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(IntrinsicSize.Min),
+                        horizontalArrangement = Arrangement.SpaceEvenly,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Text(
+                                text = "42 min",
+                                style = MaterialTheme.typography.titleLarge,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                            Spacer(modifier = Modifier.height(2.dp))
+                            Text(
+                                text = "DURATION",
+                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+
+                        VerticalDivider(
+                            modifier = Modifier
+                                .fillMaxHeight()
+                                .padding(horizontal = MaterialTheme.spacing.xs),
+                            color = MaterialTheme.colorScheme.outlineVariant
                         )
-                        Spacer(modifier = Modifier.height(MaterialTheme.spacing.md))
-                        Text(
-                            text = "¡Excelente Trabajo!",
-                            style = MaterialTheme.typography.headlineSmall,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.onPrimary
+
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Text(
+                                text = "5/5",
+                                style = MaterialTheme.typography.titleLarge,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                            Spacer(modifier = Modifier.height(2.dp))
+                            Text(
+                                text = "EXERCISES",
+                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+
+                        VerticalDivider(
+                            modifier = Modifier
+                                .fillMaxHeight()
+                                .padding(horizontal = MaterialTheme.spacing.xs),
+                            color = MaterialTheme.colorScheme.outlineVariant
                         )
+
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Text(
+                                text = "2,340 kg",
+                                style = MaterialTheme.typography.titleLarge,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                            Spacer(modifier = Modifier.height(2.dp))
+                            Text(
+                                text = "VOLUME",
+                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(MaterialTheme.spacing.md))
+
+                // VORA INSIGHT Card
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(MaterialTheme.shapes.large)
+                        .background(MaterialTheme.extendedColors.mintSoft)
+                        .padding(MaterialTheme.spacing.lg)
+                ) {
+                    Column {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Box(
+                                modifier = Modifier
+                                    .size(16.dp)
+                                    .clip(CircleShape)
+                                    .background(MaterialTheme.extendedColors.mint)
+                            )
+                            Spacer(modifier = Modifier.width(MaterialTheme.spacing.xs))
+                            Text(
+                                text = "VORA INSIGHT",
+                                style = MaterialTheme.typography.labelSmall,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.primary
+                            )
+                        }
                         Spacer(modifier = Modifier.height(MaterialTheme.spacing.xs))
                         Text(
-                            text = "Has completado con éxito la rutina $workoutId",
+                            text = "You increased your Seated Cable Row volume by 8% compared with your previous session. Keep this controlled tempo next time.",
                             style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.85f)
+                            color = MaterialTheme.colorScheme.onSurface
                         )
                     }
                 }
 
                 Spacer(modifier = Modifier.height(MaterialTheme.spacing.lg))
 
-                AppCard(style = AppCardStyle.Surface) {
-                    Column(modifier = Modifier.fillMaxWidth().padding(MaterialTheme.spacing.lg)) {
-                        Text(
-                            text = "Resumen del Entrenamiento",
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.onSurface
-                        )
-                        Spacer(modifier = Modifier.height(MaterialTheme.spacing.sm))
-                        Text(
-                            text = "Duración: 45 min · Volumen estimado: 1,420 kg · Calorías: 320 kcal",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
+                // Rate Difficulty Section
+                Text(
+                    text = "Rate this workout difficulty",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+
+                Spacer(modifier = Modifier.height(MaterialTheme.spacing.sm))
+
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xs),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    difficulties.forEach { level ->
+                        val isSelected = level == selectedDifficulty
+                        Box(
+                            modifier = Modifier
+                                .weight(1f)
+                                .clip(PillShape)
+                                .background(
+                                    if (isSelected) MaterialTheme.colorScheme.primary
+                                    else MaterialTheme.colorScheme.surface
+                                )
+                                .then(
+                                    if (!isSelected) Modifier.border(1.dp, MaterialTheme.colorScheme.outlineVariant, PillShape)
+                                    else Modifier
+                                )
+                                .clickable { selectedDifficulty = level }
+                                .padding(vertical = MaterialTheme.spacing.sm),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = level,
+                                style = MaterialTheme.typography.labelMedium,
+                                fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
+                                color = if (isSelected) MaterialTheme.colorScheme.onPrimary
+                                        else MaterialTheme.colorScheme.onSurface
+                            )
+                        }
                     }
                 }
             }
 
-            Box(modifier = Modifier.fillMaxWidth().padding(vertical = MaterialTheme.spacing.md)) {
-                AppButton(
-                    text = "Volver a Entrenamientos",
-                    onClick = onBackToWorkoutsClick,
-                    style = AppButtonStyle.Accent
-                )
-            }
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.xl))
+
+            // Done Button
+            AppButton(
+                text = "Done",
+                onClick = onBackToWorkoutsClick,
+                style = AppButtonStyle.Primary
+            )
         }
     }
 }

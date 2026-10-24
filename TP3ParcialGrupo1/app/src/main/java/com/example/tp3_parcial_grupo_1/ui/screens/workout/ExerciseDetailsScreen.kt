@@ -1,5 +1,6 @@
 package com.example.tp3_parcial_grupo_1.ui.screens.workout
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -15,22 +16,25 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.tp3_parcial_grupo_1.R
+import com.example.tp3_parcial_grupo_1.ui.components.AppButton
+import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppCardStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
-import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 
@@ -42,8 +46,17 @@ fun ExerciseDetailsScreen(
     modifier: Modifier = Modifier
 ) {
     AppScaffold(
-        title = "Guía de Ejercicio",
+        title = "Exercise Guide",
         onBack = onBackClick,
+        actions = {
+            IconButton(onClick = { }) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_help_circle),
+                    contentDescription = "Help",
+                    tint = MaterialTheme.colorScheme.onSurface
+                )
+            }
+        },
         modifier = modifier
     ) { padding ->
         Column(
@@ -54,83 +67,121 @@ fun ExerciseDetailsScreen(
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md)
         ) {
-            AppCard(style = AppCardStyle.Panel) {
-                Column(modifier = Modifier.fillMaxWidth().padding(MaterialTheme.spacing.lg)) {
-                    Box(
-                        modifier = Modifier
-                            .clip(PillShape)
-                            .background(MaterialTheme.colorScheme.tertiary)
-                            .padding(horizontal = MaterialTheme.spacing.sm, vertical = MaterialTheme.spacing.xxs)
-                    ) {
-                        Text(
-                            text = "Piernas",
-                            style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.onTertiary,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-                    Spacer(modifier = Modifier.height(MaterialTheme.spacing.sm))
-                    Text(
-                        text = "Sentadilla con Barra ($exerciseId)",
-                        style = MaterialTheme.typography.headlineSmall,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onPrimary
-                    )
-                    Spacer(modifier = Modifier.height(MaterialTheme.spacing.xs))
-                    Text(
-                        text = "4 series x 10 repeticiones · 90s descanso",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.85f)
-                    )
-                }
+            // Exercise Title Header
+            Column(modifier = Modifier.fillMaxWidth()) {
+                Text(
+                    text = "Seated Cable Row",
+                    style = MaterialTheme.typography.headlineSmall,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onBackground
+                )
+                Spacer(modifier = Modifier.height(2.dp))
+                Text(
+                    text = "Target: Lats, Mid-Back, Rhomboids",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
             }
 
+            // Real Exercise Image
+            Image(
+                painter = painterResource(id = R.drawable.img_exercise_demo),
+                contentDescription = "Seated Cable Row Exercise",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(200.dp)
+                    .clip(MaterialTheme.shapes.large)
+            )
+
+            // Performance Steps Card
             Text(
-                text = "Instrucciones de Ejecución",
+                text = "Performance Steps",
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onSurface
             )
 
             AppCard(style = AppCardStyle.Surface) {
-                Column(modifier = Modifier.fillMaxWidth().padding(MaterialTheme.spacing.lg)) {
-                    Text(
-                        text = "1. Coloca la barra sobre la parte superior de la espalda.\n2. Mantén los pies a la anchura de los hombros.\n3. Flexiona las rodillas y caderas hasta romper el paralelo.\n4. Empuja fuerte desde los talones para volver a la posición inicial.",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    val steps = listOf(
+                        "1. Sit upright with your chest lifted.",
+                        "2. Pull the handle toward your lower torso.",
+                        "3. Keep your elbows tucked close to your ribs.",
+                        "4. Pause briefly during peak contraction.",
+                        "5. Return the weight slowly to start."
                     )
+                    steps.forEach { step ->
+                        Text(
+                            text = step,
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                    }
                 }
             }
 
-            Text(
-                text = "Consejo del Entrenador",
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onSurface
-            )
-
+            // PRO FORM CUES Box
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clip(MaterialTheme.shapes.medium)
-                    .background(MaterialTheme.extendedColors.mintSoft)
+                    .background(MaterialTheme.colorScheme.surfaceVariant)
                     .padding(MaterialTheme.spacing.lg)
             ) {
-                Row(verticalAlignment = Alignment.Top) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_info),
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(20.dp)
-                    )
-                    Spacer(modifier = Modifier.width(MaterialTheme.spacing.sm))
+                Column {
                     Text(
-                        text = "Asegúrate de inhalar al bajar y exhalar al subir. Mantén la mirada al frente y el abdomen contraído.",
+                        text = "PRO FORM CUES",
+                        style = MaterialTheme.typography.labelSmall,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                    Spacer(modifier = Modifier.height(MaterialTheme.spacing.xs))
+                    Text(
+                        text = "• Keep your shoulders rolled down and back.\n• Do not lean backward to swing the load.",
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurface
                     )
                 }
             }
+
+            // Ask Vora Chip
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(MaterialTheme.shapes.medium)
+                    .background(MaterialTheme.extendedColors.mintSoft)
+                    .padding(MaterialTheme.spacing.md)
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_sparkles),
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.size(18.dp)
+                    )
+                    Spacer(modifier = Modifier.width(MaterialTheme.spacing.sm))
+                    Text(
+                        text = "Ask Vora: \"Explain grip variations\"",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.sm))
+
+            // Bottom Back Button
+            AppButton(
+                text = "Back to Workout",
+                onClick = onBackClick,
+                style = AppButtonStyle.Primary
+            )
+
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.lg))
         }
     }
 }

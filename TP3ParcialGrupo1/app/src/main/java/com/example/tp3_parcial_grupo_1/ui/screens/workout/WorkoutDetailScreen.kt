@@ -13,7 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -42,12 +42,8 @@ import com.example.tp3_parcial_grupo_1.ui.components.AppCardStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
 import com.example.tp3_parcial_grupo_1.ui.strings.WorkoutStrings
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
-import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
-
-private val SmallIconSize = 16.dp
-private val MediumIconSize = 20.dp
 
 @Composable
 fun WorkoutDetailRoute(
@@ -90,7 +86,7 @@ fun WorkoutDetailScreen(
     val workout = uiState.workout
 
     AppScaffold(
-        title = WorkoutStrings.WorkoutDetailTitle,
+        title = "Workout Overview",
         onBack = onBackClick,
         snackbarHostState = snackbarHostState,
         modifier = modifier
@@ -144,38 +140,104 @@ fun WorkoutDetailScreen(
                                 .weight(1f)
                         ) {
                             item {
-                                WorkoutHeaderPanel(workout = workout)
+                                Column(modifier = Modifier.fillMaxWidth()) {
+                                    Text(
+                                        text = workout.name,
+                                        style = MaterialTheme.typography.headlineMedium,
+                                        fontWeight = FontWeight.Bold,
+                                        color = MaterialTheme.colorScheme.onBackground
+                                    )
+
+                                    Spacer(modifier = Modifier.height(MaterialTheme.spacing.xs))
+
+                                    Text(
+                                        text = "${workout.durationMinutes} min   •   ${workout.level}   •   ${workout.exerciseCount} exercises",
+                                        style = MaterialTheme.typography.bodyMedium,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
+
+                                    Spacer(modifier = Modifier.height(4.dp))
+
+                                    Text(
+                                        text = workout.description ?: "Focus: Chest • Back • Shoulders • Arms",
+                                        style = MaterialTheme.typography.bodyMedium,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
+                                }
                             }
 
+                            // Coach Note Box
                             item {
-                                Spacer(modifier = Modifier.height(MaterialTheme.spacing.sm))
-                                Text(
-                                    text = WorkoutStrings.ExercisesTitle,
-                                    style = MaterialTheme.typography.titleLarge,
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.onSurface
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .clip(MaterialTheme.shapes.large)
+                                        .background(MaterialTheme.extendedColors.mintSoft)
+                                        .padding(MaterialTheme.spacing.lg)
+                                ) {
+                                    Column {
+                                        Row(verticalAlignment = Alignment.CenterVertically) {
+                                            Icon(
+                                                painter = painterResource(id = R.drawable.ic_sparkles),
+                                                contentDescription = null,
+                                                tint = MaterialTheme.colorScheme.primary,
+                                                modifier = Modifier.size(16.dp)
+                                            )
+                                            Spacer(modifier = Modifier.width(MaterialTheme.spacing.xs))
+                                            Text(
+                                                text = "VORA COACH NOTE",
+                                                style = MaterialTheme.typography.labelSmall,
+                                                fontWeight = FontWeight.Bold,
+                                                color = MaterialTheme.colorScheme.primary
+                                            )
+                                        }
+                                        Spacer(modifier = Modifier.height(MaterialTheme.spacing.xs))
+                                        Text(
+                                            text = "Based on your last session, VORA suggests keeping the same weights and focusing on controlled repetitions today.",
+                                            style = MaterialTheme.typography.bodyMedium,
+                                            color = MaterialTheme.colorScheme.onSurface
+                                        )
+                                    }
+                                }
+                            }
+
+                            // Exercises List
+                            val exerciseList = if (workout.exercises.isNotEmpty()) workout.exercises else listOf(
+                                Exercise("e01", "Bench Press", "Chest", 3, 10, 90, "", ""),
+                                Exercise("e02", "Seated Cable Row", "Back", 3, 12, 75, "", ""),
+                                Exercise("e03", "Shoulder Press", "Shoulders", 3, 10, 75, "", ""),
+                                Exercise("e04", "Dumbbell Lateral Raise", "Shoulders", 3, 12, 60, "", ""),
+                                Exercise("e05", "Tricep Pushdown", "Arms", 3, 12, 60, "", "")
+                            )
+
+                            itemsIndexed(exerciseList, key = { _, e -> e.id }) { index, exercise ->
+                                NumberedExerciseItem(
+                                    number = String.format("%02d", index + 1),
+                                    exercise = exercise
                                 )
                             }
 
-                            items(workout.exercises, key = { it.id }) { exercise ->
-                                ExerciseCardItem(exercise = exercise)
-                            }
-
                             item {
-                                Spacer(modifier = Modifier.height(MaterialTheme.spacing.xxl))
+                                Spacer(modifier = Modifier.height(MaterialTheme.spacing.md))
                             }
                         }
 
-                        // Bottom Action Button
-                        Box(
+                        // Bottom Action Buttons
+                        Column(
+                            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm),
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(vertical = MaterialTheme.spacing.md)
                         ) {
                             AppButton(
-                                text = WorkoutStrings.StartWorkout,
+                                text = "Start Workout",
                                 onClick = onStartWorkoutClick,
-                                style = AppButtonStyle.Accent
+                                style = AppButtonStyle.Primary
+                            )
+                            AppButton(
+                                text = "Edit workout",
+                                onClick = { },
+                                style = AppButtonStyle.Outlined
                             )
                         }
                     }
@@ -186,73 +248,8 @@ fun WorkoutDetailScreen(
 }
 
 @Composable
-private fun WorkoutHeaderPanel(
-    workout: Workout,
-    modifier: Modifier = Modifier
-) {
-    AppCard(
-        style = AppCardStyle.Panel,
-        modifier = modifier
-    ) {
-        Column(modifier = Modifier.fillMaxWidth()) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Box(
-                    modifier = Modifier
-                        .clip(PillShape)
-                        .background(MaterialTheme.colorScheme.tertiary)
-                        .padding(horizontal = MaterialTheme.spacing.sm, vertical = MaterialTheme.spacing.xxs)
-                ) {
-                    Text(
-                        text = workout.level.uppercase(),
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onTertiary,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_clock),
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onPrimary,
-                        modifier = Modifier.size(SmallIconSize)
-                    )
-                    Spacer(modifier = Modifier.width(MaterialTheme.spacing.xxs))
-                    Text(
-                        text = WorkoutStrings.minutesCount(workout.durationMinutes),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onPrimary
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(MaterialTheme.spacing.sm))
-
-            Text(
-                text = workout.name,
-                style = MaterialTheme.typography.headlineSmall,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onPrimary
-            )
-
-            workout.description?.let { desc ->
-                Spacer(modifier = Modifier.height(MaterialTheme.spacing.sm))
-                Text(
-                    text = desc,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.85f)
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun ExerciseCardItem(
+private fun NumberedExerciseItem(
+    number: String,
     exercise: Exercise,
     modifier: Modifier = Modifier
 ) {
@@ -260,75 +257,40 @@ private fun ExerciseCardItem(
         style = AppCardStyle.Surface,
         modifier = modifier
     ) {
-        Column(modifier = Modifier.fillMaxWidth()) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Box(
+                modifier = Modifier
+                    .clip(MaterialTheme.shapes.small)
+                    .background(MaterialTheme.colorScheme.surfaceVariant)
+                    .padding(horizontal = MaterialTheme.spacing.md, vertical = MaterialTheme.spacing.sm),
+                contentAlignment = Alignment.Center
             ) {
+                Text(
+                    text = number,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            }
+
+            Spacer(modifier = Modifier.width(MaterialTheme.spacing.md))
+
+            Column {
                 Text(
                     text = exercise.name,
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onSurface
                 )
-
-                Box(
-                    modifier = Modifier
-                        .clip(PillShape)
-                        .background(MaterialTheme.extendedColors.mintSoft)
-                        .padding(horizontal = MaterialTheme.spacing.sm, vertical = MaterialTheme.spacing.xxs)
-                ) {
-                    Text(
-                        text = exercise.muscleGroup,
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.primary
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(MaterialTheme.spacing.xs))
-
-            Text(
-                text = "${WorkoutStrings.setsReps(exercise.sets, exercise.reps)} • ${WorkoutStrings.restSeconds(exercise.restSeconds)}",
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.primary
-            )
-
-            if (exercise.instructions.isNotEmpty()) {
-                Spacer(modifier = Modifier.height(MaterialTheme.spacing.sm))
+                Spacer(modifier = Modifier.height(2.dp))
                 Text(
-                    text = exercise.instructions,
+                    text = "${exercise.sets} × ${exercise.reps}  •  Rest ${exercise.restSeconds}s",
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
-            }
-
-            if (exercise.tip.isNotEmpty()) {
-                Spacer(modifier = Modifier.height(MaterialTheme.spacing.sm))
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clip(MaterialTheme.shapes.small)
-                        .background(MaterialTheme.extendedColors.mintSoft)
-                        .padding(MaterialTheme.spacing.sm)
-                ) {
-                    Row(verticalAlignment = Alignment.Top) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_info),
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.size(SmallIconSize)
-                        )
-                        Spacer(modifier = Modifier.width(MaterialTheme.spacing.xs))
-                        Text(
-                            text = exercise.tip,
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurface
-                        )
-                    }
-                }
             }
         }
     }
@@ -343,22 +305,14 @@ private fun WorkoutDetailScreenPreview() {
                 isLoading = false,
                 workout = Workout(
                     id = "w01",
-                    name = "Fuerza Total",
-                    level = "Intermedio",
-                    durationMinutes = 45,
-                    exerciseCount = 1,
-                    description = "Rutina completa de fuerza.",
+                    name = "Upper Body Strength",
+                    level = "Moderate",
+                    durationMinutes = 42,
+                    exerciseCount = 5,
+                    description = "Focus: Chest • Back • Shoulders • Arms",
                     exercises = listOf(
-                        Exercise(
-                            id = "e01",
-                            name = "Sentadilla con Barra",
-                            muscleGroup = "Piernas",
-                            sets = 4,
-                            reps = 10,
-                            restSeconds = 90,
-                            instructions = "Mantén la espalda recta y baja hasta romper el paralelo.",
-                            tip = "Empuja fuerte desde los talones al subir."
-                        )
+                        Exercise("e01", "Bench Press", "Chest", 3, 10, 90, "", ""),
+                        Exercise("e02", "Seated Cable Row", "Back", 3, 12, 75, "", "")
                     )
                 )
             ),
