@@ -84,14 +84,23 @@ fun WorkoutCompleteScreen(
 
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.lg))
 
-            // Completed Hero Badge Orb [120 x 120 Bounding Container]
+            // Completed Hero Badge Orb [120 x 120 Container, 90 x 90 Ring]
             Box(
-                modifier = Modifier.size(120.dp),
+                modifier = Modifier
+                    .size(120.dp)
+                    .background(
+                        Brush.radialGradient(
+                            colors = listOf(
+                                VoraMint.copy(alpha = 0.15f),
+                                Color.Transparent
+                            )
+                        )
+                    ),
                 contentAlignment = Alignment.Center
             ) {
                 Box(
                     modifier = Modifier
-                        .size(92.dp)
+                        .size(90.dp)
                         .clip(CircleShape)
                         .border(
                             width = 1.5.dp,
