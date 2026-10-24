@@ -1,6 +1,7 @@
 package com.example.tp3_parcial_grupo_1.ui.screens.workout
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -100,8 +101,8 @@ fun PreWorkoutScreen(
 
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.xl))
 
-            // Card 1: TODAY'S FOCUS
-            DarkWorkoutCard {
+            // Card 1: TODAY'S FOCUS (Has border)
+            DarkWorkoutCard(hasBorder = true) {
                 Text(
                     text = "TODAY'S FOCUS",
                     style = MaterialTheme.typography.labelSmall,
@@ -125,8 +126,8 @@ fun PreWorkoutScreen(
 
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.md))
 
-            // Card 2: YOUR LAST SESSION
-            DarkWorkoutCard {
+            // Card 2: YOUR LAST SESSION (Has border)
+            DarkWorkoutCard(hasBorder = true) {
                 Text(
                     text = "YOUR LAST SESSION",
                     style = MaterialTheme.typography.labelSmall,
@@ -150,8 +151,8 @@ fun PreWorkoutScreen(
 
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.md))
 
-            // Card 3: VORA'S COACH TIP
-            DarkWorkoutCard {
+            // Card 3: VORA'S COACH TIP (Has border)
+            DarkWorkoutCard(hasBorder = true) {
                 Text(
                     text = "VORA'S COACH TIP",
                     style = MaterialTheme.typography.labelSmall,
@@ -168,8 +169,8 @@ fun PreWorkoutScreen(
 
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.md))
 
-            // Card 4: Need anything? Mic Widget
-            DarkWorkoutCard {
+            // Card 4: Need anything? Mic Widget (No border)
+            DarkWorkoutCard(hasBorder = false) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -229,6 +230,7 @@ fun PreWorkoutScreen(
 
 @Composable
 private fun DarkWorkoutCard(
+    hasBorder: Boolean = true,
     content: @Composable ColumnScope.() -> Unit
 ) {
     Box(
@@ -236,6 +238,10 @@ private fun DarkWorkoutCard(
             .fillMaxWidth()
             .clip(MaterialTheme.shapes.large)
             .background(MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.12f))
+            .then(
+                if (hasBorder) Modifier.border(1.dp, Color.White.copy(alpha = 0.1216f), MaterialTheme.shapes.large)
+                else Modifier
+            )
             .padding(MaterialTheme.spacing.lg)
     ) {
         Column(content = content)
