@@ -27,6 +27,15 @@ fun NavGraphBuilder.workoutGraph(navController: NavController) {
                 onBackClick = null,
                 onWorkoutClick = { workoutId ->
                     navController.navigate(AppDestination.WorkoutDetail.createRoute(workoutId))
+                },
+                onStartWorkoutClick = { workoutId ->
+                    navController.navigate(AppDestination.PreWorkout.createRoute(workoutId))
+                },
+                onWeeklyPlanClick = {
+                    navController.navigate(AppDestination.WeeklyPlan.route)
+                },
+                onViewProgressClick = {
+                    navController.navigateInTab(AppDestination.WorkoutProgress.route)
                 }
             )
         }

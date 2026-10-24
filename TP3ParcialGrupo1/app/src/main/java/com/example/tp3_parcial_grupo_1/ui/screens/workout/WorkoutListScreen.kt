@@ -210,7 +210,9 @@ fun WorkoutListScreen(
                     Spacer(modifier = Modifier.height(MaterialTheme.spacing.lg))
 
                     Row(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(43.dp),
                         horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -220,8 +222,8 @@ fun WorkoutListScreen(
                             style = AppButtonStyle.Accent,
                             fullWidth = false,
                             modifier = Modifier
-                                .width(219.dp)
-                                .height(42.dp)
+                                .weight(1f)
+                                .height(43.dp)
                         )
 
                         AppButton(
@@ -231,9 +233,7 @@ fun WorkoutListScreen(
                             fullWidth = false,
                             textColor = Color.White,
                             borderColor = Color.White.copy(alpha = 0.6f),
-                            modifier = Modifier
-                                .width(79.dp)
-                                .height(43.dp)
+                            modifier = Modifier.height(43.dp)
                         )
                     }
                 }
