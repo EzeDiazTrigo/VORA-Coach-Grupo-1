@@ -7,6 +7,7 @@ import androidx.room.PrimaryKey
 import androidx.room.ColumnInfo
 
 @Entity(
+    tableName = "exercises",
     indices = [Index("workout_id")],
     primaryKeys = ["workout_id", "id"],
     foreignKeys = [ForeignKey(

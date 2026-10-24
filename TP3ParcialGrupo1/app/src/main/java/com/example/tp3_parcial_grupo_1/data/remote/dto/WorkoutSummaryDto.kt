@@ -1,5 +1,7 @@
 package com.example.tp3_parcial_grupo_1.data.remote.dto
 
+import com.example.tp3_parcial_grupo_1.data.mapper.toDomain
+import com.example.tp3_parcial_grupo_1.data.mapper.toEntity
 import com.example.tp3_parcial_grupo_1.model.Workout
 import com.google.gson.annotations.SerializedName
 
@@ -17,13 +19,5 @@ data class WorkoutSummaryDto(
     @SerializedName("description")
     val description: String?
 ) {
-    fun toDomain(): Workout =
-        Workout(
-            id = id,
-            name = name,
-            level = level,
-            durationMinutes = durationMinutes,
-            exerciseCount = exerciseCount,
-            description = description
-        )
+    fun toDomain(): Workout = toEntity().toDomain()
 }
