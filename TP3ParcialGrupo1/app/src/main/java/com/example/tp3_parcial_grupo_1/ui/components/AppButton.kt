@@ -18,6 +18,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
@@ -38,10 +39,19 @@ fun AppButton(
     isLoading: Boolean = false,
     leadingIcon: Painter? = null,
     trailingIcon: ImageVector? = null,
-    isCompact: Boolean = false
+    isCompact: Boolean = false,
+    fullWidth: Boolean = true,
+    textColor: Color? = null,
+    borderColor: Color? = null,
+    containerColor: Color? = null
 ) {
     val colors = MaterialTheme.colorScheme
     val isEnabled = enabled && !isLoading
+    val actualTextColor = textColor ?: when (style) {
+        AppButtonStyle.Primary -> colors.onPrimary
+        AppButtonStyle.Accent -> colors.onTertiary
+        AppButtonStyle.Outlined -> colors.onPrimary
+    }
     val content: @Composable () -> Unit = {
         Row(
             horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm),
@@ -51,22 +61,21 @@ fun AppButton(
                 CircularProgressIndicator(
                     modifier = Modifier.size(18.dp),
                     strokeWidth = 2.dp,
-                    color = contentColorFor(style)
+                    color = actualTextColor
                 )
             }
             if (leadingIcon != null) {
-                Icon(leadingIcon, contentDescription = null, modifier = Modifier.size(18.dp))
+                Icon(leadingIcon, contentDescription = null, modifier = Modifier.size(18.dp), tint = actualTextColor)
             }
-            Text(text, style = MaterialTheme.typography.labelLarge, maxLines = 1)
+            Text(text, style = MaterialTheme.typography.labelLarge, maxLines = 1, color = actualTextColor)
             if (trailingIcon != null) {
-                Icon(trailingIcon, contentDescription = null, modifier = Modifier.size(18.dp))
+                Icon(trailingIcon, contentDescription = null, modifier = Modifier.size(18.dp), tint = actualTextColor)
             }
         }
     }
-    val contentPadding = if (isCompact) PaddingValues(horizontal = 8.dp) else ButtonDefaults.ContentPadding
-    val buttonModifier = modifier
-        .fillMaxWidth()
-        .heightIn(min = 52.dp)
+    val contentPadding = if (isCompact) PaddingValues(horizontal = 8.dp) else PaddingValues(horizontal = 16.dp, vertical = 8.dp)
+    val buttonModifier = if (fullWidth) modifier.fillMaxWidth().heightIn(min = 42.dp) else modifier.heightIn(min = 42.dp)
+
     when (style) {
         AppButtonStyle.Outlined -> OutlinedButton(
             onClick = onClick,
@@ -74,8 +83,11 @@ fun AppButton(
             enabled = isEnabled,
             shape = PillShape,
             contentPadding = contentPadding,
-            border = BorderStroke(1.dp, colors.outlineVariant),
-            colors = ButtonDefaults.outlinedButtonColors(contentColor = colors.primary),
+            border = BorderStroke(1.dp, borderColor ?: colors.onPrimary.copy(alpha = 0.6f)),
+            colors = ButtonDefaults.outlinedButtonColors(
+                containerColor = containerColor ?: Color.Unspecified,
+                contentColor = actualTextColor
+            ),
             content = { content() }
         )
         else -> Button(
@@ -84,21 +96,13 @@ fun AppButton(
             enabled = isEnabled,
             shape = PillShape,
             contentPadding = contentPadding,
-            colors = if (style == AppButtonStyle.Accent) {
-                ButtonDefaults.buttonColors(containerColor = colors.tertiary, contentColor = colors.onTertiary)
-            } else {
-                ButtonDefaults.buttonColors(containerColor = colors.primary, contentColor = colors.onPrimary)
-            },
+            colors = ButtonDefaults.buttonColors(
+                containerColor = containerColor ?: if (style == AppButtonStyle.Accent) colors.tertiary else colors.primary,
+                contentColor = actualTextColor
+            ),
             content = { content() }
         )
     }
-}
-
-@Composable
-private fun contentColorFor(style: AppButtonStyle) = when (style) {
-    AppButtonStyle.Primary -> MaterialTheme.colorScheme.onPrimary
-    AppButtonStyle.Accent -> MaterialTheme.colorScheme.onTertiary
-    AppButtonStyle.Outlined -> MaterialTheme.colorScheme.primary
 }
 
 @Preview(showBackground = true)

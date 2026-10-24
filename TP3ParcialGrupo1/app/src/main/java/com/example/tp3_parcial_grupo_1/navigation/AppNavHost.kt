@@ -51,7 +51,7 @@ fun AppNavHost(
             authGraph(navController)
             homeGraph(navController)
             coachPlaceholderGraph()
-            workoutPlaceholderGraph(navController)
+            workoutGraph(navController)
             nutritionGraph(navController)
             progressGraph(navController)
             profilePlaceholderGraph(navController)
