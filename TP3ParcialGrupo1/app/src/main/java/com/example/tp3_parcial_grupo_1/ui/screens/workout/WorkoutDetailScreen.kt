@@ -53,6 +53,7 @@ import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 fun WorkoutDetailRoute(
     onBackClick: () -> Unit,
     onStartWorkoutClick: (String) -> Unit,
+    onExerciseClick: (String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: WorkoutDetailViewModel = hiltViewModel()
 ) {
@@ -73,6 +74,7 @@ fun WorkoutDetailRoute(
         onStartWorkoutClick = {
             uiState.workout?.id?.let { onStartWorkoutClick(it) }
         },
+        onExerciseClick = onExerciseClick,
         onRetryClick = viewModel::refreshWorkoutDetail,
         modifier = modifier
     )
@@ -85,6 +87,7 @@ fun WorkoutDetailScreen(
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
     onBackClick: () -> Unit,
     onStartWorkoutClick: () -> Unit,
+    onExerciseClick: (String) -> Unit,
     onRetryClick: () -> Unit
 ) {
     val workout = uiState.workout
@@ -246,7 +249,8 @@ fun WorkoutDetailScreen(
                             itemsIndexed(exerciseList, key = { _, e -> e.id }) { index, exercise ->
                                 NumberedExerciseItem(
                                     number = String.format("%02d", index + 1),
-                                    exercise = exercise
+                                    exercise = exercise,
+                                    onClick = { onExerciseClick(exercise.id) }
                                 )
                             }
 
@@ -286,10 +290,12 @@ fun WorkoutDetailScreen(
 private fun NumberedExerciseItem(
     number: String,
     exercise: Exercise,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     AppCard(
         style = AppCardStyle.Surface,
+        onClick = onClick,
         modifier = modifier
     ) {
         Row(
@@ -356,6 +362,7 @@ private fun WorkoutDetailScreenPreview() {
             ),
             onBackClick = {},
             onStartWorkoutClick = {},
+            onExerciseClick = {},
             onRetryClick = {}
         )
     }

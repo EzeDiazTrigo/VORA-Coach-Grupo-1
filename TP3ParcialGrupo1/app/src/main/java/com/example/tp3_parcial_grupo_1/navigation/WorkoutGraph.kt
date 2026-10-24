@@ -52,11 +52,15 @@ fun NavGraphBuilder.workoutGraph(navController: NavController) {
         composable(
             route = AppDestination.WorkoutDetail.route,
             arguments = listOf(workoutIdArgument)
-        ) {
+        ) { entry ->
+            val workoutId = entry.arguments?.getString(NavArg.WorkoutId).orEmpty()
             WorkoutDetailRoute(
                 onBackClick = { navController.popBackStack() },
-                onStartWorkoutClick = { workoutId ->
-                    navController.navigate(AppDestination.PreWorkout.createRoute(workoutId))
+                onStartWorkoutClick = { id ->
+                    navController.navigate(AppDestination.PreWorkout.createRoute(id))
+                },
+                onExerciseClick = { exerciseId ->
+                    navController.navigate(AppDestination.ExerciseDetails.createRoute(workoutId, exerciseId))
                 }
             )
         }
