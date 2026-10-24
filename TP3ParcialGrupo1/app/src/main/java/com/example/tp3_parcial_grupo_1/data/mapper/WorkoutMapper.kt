@@ -10,21 +10,30 @@ import com.example.tp3_parcial_grupo_1.model.Workout
 
 private fun mapWorkoutName(rawName: String): String {
     return when {
-        rawName.contains("Fuerza inicial", ignoreCase = true) ||
-        rawName.contains("Fuerza de torso", ignoreCase = true) -> "Upper Body Strength"
+        rawName.equals("Entrenamiento completo", ignoreCase = true) ||
+        rawName.equals("Fuerza y constancia", ignoreCase = true) ||
+        rawName.equals("Fuerza inicial", ignoreCase = true) ||
+        rawName.equals("Fuerza de torso", ignoreCase = true) -> "Upper Body Strength"
+        rawName.equals("Recuperación activa", ignoreCase = true) -> "Active Recovery"
+        rawName.equals("Fuerza de piernas", ignoreCase = true) -> "Lower Body Strength"
         else -> rawName
     }
 }
 
 private fun mapWorkoutLevel(rawLevel: String): String {
     return when {
-        rawLevel.equals("beginner", ignoreCase = true) -> "Moderate"
+        rawLevel.equals("beginner", ignoreCase = true) ||
+        rawLevel.equals("principiante", ignoreCase = true) -> "Moderate"
+        rawLevel.equals("intermediate", ignoreCase = true) -> "Moderate"
         else -> rawLevel
     }
 }
 
 private fun mapWorkoutDescription(rawDesc: String?): String? {
-    if (rawDesc != null && rawDesc.contains("Rutina de ejemplo para el trabajo práctico", ignoreCase = true)) {
+    if (rawDesc != null && (
+            rawDesc.contains("ejemplo para el trabajo", ignoreCase = true) ||
+            rawDesc.contains("rutina de ejemplo", ignoreCase = true)
+        )) {
         return "Focus: Chest • Back • Shoulders • Arms"
     }
     return rawDesc
