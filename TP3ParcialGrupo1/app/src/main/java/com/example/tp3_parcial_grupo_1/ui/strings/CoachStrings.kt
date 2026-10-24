@@ -30,6 +30,25 @@ object CoachStrings {
 
     const val Microphone = "Microphone"
 
+    const val AskPlaceholder = "Ask VORA anything…"
+    const val Attach = "Attach"
+    const val Send = "Send"
+    const val Talk = "Talk"
+    const val VoraTyping = "VORA is typing…"
+    const val YouSaid = "You"
+    const val VoraSaid = "VORA"
+
+    const val ErrorTitle = "System alert"
+    const val ErrorHeadline = "Sorry, I didn't catch that"
+    const val ErrorSubtitle = "Try speaking again or type your request. Make sure your microphone is enabled."
+    const val MicAccessTitle = "Microphone access needed"
+    const val MicAccessBody =
+        "VORA uses your microphone to hear your voice commands and coach you in real time, hands-free."
+    const val AllowAccess = "Allow access"
+    const val NotNow = "Not now"
+
+    fun listenToResponse(seconds: Int) = "Listen to response (${time(seconds)})"
+
     fun quoted(text: String) = "“$text”"
     fun time(seconds: Int) = "%d:%02d".format(seconds / 60, seconds % 60)
     fun remaining(seconds: Int) = "-" + time(seconds)
