@@ -45,7 +45,12 @@ La app consume la VORA Mock API (sin autenticación).
 | Publicado | `https://tp3.martinrivas.ar/` (Swagger en `/docs`) |
 | Local | `python3 mock/server.py` del paquete del docente → `http://localhost:8000` (desde el emulador: `http://10.0.2.2:8000/`) |
 
-> **Pendiente (Entrenamiento):** dónde se configura `BASE_URL` y cómo cambiarla entre el servidor publicado y el local.
+La URL base está en `di/NetworkModule.kt` (`BASE_URL`) y apunta al servidor publicado. Para usar el mock local desde el emulador:
+
+1. Cambiar `BASE_URL` a `http://10.0.2.2:8000/`.
+2. Permitir HTTP solo para desarrollo: `android:usesCleartextTraffic="true"` en `<application>` del `AndroidManifest.xml`.
+
+No commitear ese cambio: la entrega usa el servidor publicado. La app solo pide el permiso `INTERNET`; no solicita micrófono ni cámara, porque la voz y la foto son simuladas (NAV05).
 
 ## Versiones
 
