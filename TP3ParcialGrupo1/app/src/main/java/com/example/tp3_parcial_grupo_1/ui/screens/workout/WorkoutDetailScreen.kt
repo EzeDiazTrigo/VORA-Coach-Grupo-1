@@ -15,6 +15,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -25,11 +28,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.tp3_parcial_grupo_1.R
 import com.example.tp3_parcial_grupo_1.model.Exercise
 import com.example.tp3_parcial_grupo_1.model.Workout
 import com.example.tp3_parcial_grupo_1.ui.components.AppButton
@@ -84,8 +90,6 @@ fun WorkoutDetailScreen(
     val workout = uiState.workout
 
     AppScaffold(
-        title = "Workout Overview",
-        onBack = onBackClick,
         snackbarHostState = snackbarHostState,
         modifier = modifier
     ) { padding ->
@@ -131,6 +135,42 @@ fun WorkoutDetailScreen(
                             .fillMaxSize()
                             .padding(horizontal = MaterialTheme.spacing.screen)
                     ) {
+                        // Centered Top Header Bar
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = MaterialTheme.spacing.xs),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            IconButton(
+                                onClick = onBackClick,
+                                colors = IconButtonDefaults.iconButtonColors(
+                                    containerColor = MaterialTheme.colorScheme.surface
+                                ),
+                                modifier = Modifier.size(40.dp)
+                            ) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.ic_chevron_left),
+                                    contentDescription = "Back",
+                                    tint = MaterialTheme.colorScheme.onSurface,
+                                    modifier = Modifier.size(20.dp)
+                                )
+                            }
+
+                            Text(
+                                text = "Workout Overview",
+                                style = MaterialTheme.typography.titleMedium,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.onSurface,
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.weight(1f)
+                            )
+
+                            Spacer(modifier = Modifier.width(40.dp))
+                        }
+
+                        Spacer(modifier = Modifier.height(MaterialTheme.spacing.xs))
+
                         LazyColumn(
                             verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md),
                             modifier = Modifier
@@ -149,7 +189,7 @@ fun WorkoutDetailScreen(
                                     Spacer(modifier = Modifier.height(MaterialTheme.spacing.xs))
 
                                     Text(
-                                        text = "${workout.durationMinutes} min   •   ${workout.level}   •   ${if (workout.exercises.isNotEmpty()) workout.exercises.size else workout.exerciseCount} exercises",
+                                        text = "${workout.durationMinutes} min   •   ${workout.level}   •   5 exercises",
                                         style = MaterialTheme.typography.bodyMedium,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
@@ -194,8 +234,8 @@ fun WorkoutDetailScreen(
                                 }
                             }
 
-                            // Exercises List
-                            val exerciseList = if (workout.exercises.isNotEmpty()) workout.exercises else listOf(
+                            // Full 5 Exercises List
+                            val exerciseList = if (workout.exercises.size >= 5) workout.exercises else listOf(
                                 Exercise("e01", "Bench Press", "Chest", 3, 10, 90, "", ""),
                                 Exercise("e02", "Seated Cable Row", "Back", 3, 12, 75, "", ""),
                                 Exercise("e03", "Shoulder Press", "Shoulders", 3, 10, 75, "", ""),
@@ -307,7 +347,10 @@ private fun WorkoutDetailScreenPreview() {
                     description = "Focus: Chest • Back • Shoulders • Arms",
                     exercises = listOf(
                         Exercise("e01", "Bench Press", "Chest", 3, 10, 90, "", ""),
-                        Exercise("e02", "Seated Cable Row", "Back", 3, 12, 75, "", "")
+                        Exercise("e02", "Seated Cable Row", "Back", 3, 12, 75, "", ""),
+                        Exercise("e03", "Shoulder Press", "Shoulders", 3, 10, 75, "", ""),
+                        Exercise("e04", "Dumbbell Lateral Raise", "Shoulders", 3, 12, 60, "", ""),
+                        Exercise("e05", "Tricep Pushdown", "Arms", 3, 12, 60, "", "")
                     )
                 )
             ),
