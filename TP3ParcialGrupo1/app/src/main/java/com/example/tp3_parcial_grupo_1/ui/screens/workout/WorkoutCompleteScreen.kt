@@ -84,37 +84,42 @@ fun WorkoutCompleteScreen(
 
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.lg))
 
-            // Completed Hero Badge Orb
+            // Completed Hero Badge Orb [120 x 120 Bounding Container]
             Box(
-                modifier = Modifier
-                    .size(120.dp)
-                    .clip(CircleShape)
-                    .border(
-                        width = 1.5.dp,
-                        brush = Brush.linearGradient(
-                            colors = listOf(VoraLime, VoraMint, VoraGreen)
-                        ),
-                        shape = CircleShape
-                    )
-                    .padding(3.dp),
+                modifier = Modifier.size(120.dp),
                 contentAlignment = Alignment.Center
             ) {
                 Box(
                     modifier = Modifier
-                        .fillMaxSize()
+                        .size(92.dp)
                         .clip(CircleShape)
-                        .background(
-                            Brush.linearGradient(
-                                colors = listOf(VoraMint, VoraGreen)
-                            )
-                        ),
+                        .border(
+                            width = 1.5.dp,
+                            brush = Brush.linearGradient(
+                                colors = listOf(VoraLime, VoraMint, VoraGreen)
+                            ),
+                            shape = CircleShape
+                        )
+                        .padding(2.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.ic_badge_completed),
-                        contentDescription = "Completed Badge",
-                        modifier = Modifier.size(42.dp)
-                    )
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .clip(CircleShape)
+                            .background(
+                                Brush.linearGradient(
+                                    colors = listOf(VoraMint, VoraGreen)
+                                )
+                            ),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_badge_completed),
+                            contentDescription = "Completed Badge",
+                            modifier = Modifier.size(42.dp)
+                        )
+                    }
                 }
             }
 
