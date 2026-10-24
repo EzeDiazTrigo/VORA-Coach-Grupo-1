@@ -45,7 +45,12 @@ La app consume la VORA Mock API (sin autenticación).
 | Publicado | `https://tp3.martinrivas.ar/` (Swagger en `/docs`) |
 | Local | `python3 mock/server.py` del paquete del docente → `http://localhost:8000` (desde el emulador: `http://10.0.2.2:8000/`) |
 
-> **Pendiente (Entrenamiento):** dónde se configura `BASE_URL` y cómo cambiarla entre el servidor publicado y el local.
+La URL base está en `di/NetworkModule.kt` (`BASE_URL`) y apunta al servidor publicado. Para usar el mock local desde el emulador:
+
+1. Cambiar `BASE_URL` a `http://10.0.2.2:8000/`.
+2. Permitir HTTP solo para desarrollo: `android:usesCleartextTraffic="true"` en `<application>` del `AndroidManifest.xml`.
+
+No commitear ese cambio: la entrega usa el servidor publicado. La app solo pide el permiso `INTERNET`; no solicita micrófono ni cámara, porque la voz y la foto son simuladas (NAV05).
 
 ## Versiones
 
@@ -78,7 +83,19 @@ com.example.tp3_parcial_grupo_1
 - Cada pantalla tiene un `XxxRoute`, que obtiene su `ViewModel` con `hiltViewModel()` y observa el estado con `collectAsStateWithLifecycle`, y un `XxxScreen` sin estado con `@Preview`. Las pantallas no reciben el `NavController`: exponen callbacks que conecta la navegación.
 - Los datos que no vienen de Retrofit ni Room están en `data/demo/` y se identifican como demostración.
 
-> **Pendiente:** flujo DTO → modelo → Entity, repositorios y qué objetos construye Hilt y su relación con Dagger.
+### Capa de datos
+
+**Entrenamiento (Retrofit con caché en Room).** `WorkoutApi` consulta `GET /v1/workouts` y `GET /v1/workouts/{id}`; las respuestas vienen envueltas en `DataResponse` y se leen como DTOs (`WorkoutSummaryDto`, `WorkoutDto`, `ExerciseDto`). `WorkoutMapper` los convierte en `WorkoutEntity` / `ExerciseEntity` para Room y en los modelos `Workout` / `Exercise` para la UI (`toEntity()` / `toDomain()`).
+
+`WorkoutRepositoryImpl` separa lectura y actualización: las pantallas observan Room como `Flow` (`getWorkouts()`, `getWorkoutById()`), y `refreshWorkouts()` / `refreshWorkoutDetails()` piden los datos al servidor y actualizan la caché en una transacción. Si la red falla, devuelven `Result.failure` y la caché queda como estaba, así que lo ya descargado se sigue viendo sin conexión (RF02) y la pantalla avisa el error (con opción de reintentar cuando todavía no hay nada guardado).
+
+**Nutrición (Room).** `MealRepository` trabaja sobre `MealDao`: observa las comidas de una fecha como `Flow`, agrega y elimina. `MealEntity` se convierte en `Meal` con `toDomain()` / `fromDomain()`. El total del día lo calcula `MealsViewModel` a partir de la lista observada, así que cambia al agregar o eliminar una comida.
+
+**Base de datos.** `AppDatabase` (`vora_database`, versión 1) reúne `WorkoutEntity`, `ExerciseEntity` y `MealEntity`.
+
+**Módulos de Hilt.** `NetworkModule` provee OkHttp, Retrofit y `WorkoutApi`; `DatabaseModule`, la base y los DAOs; `RepositoryModule` vincula `WorkoutRepository` con su implementación.
+
+> **Pendiente:** qué objetos construye Hilt y su relación con Dagger (RF08).
 
 ## Inventario de pantallas
 
@@ -135,20 +152,21 @@ Pantallas propias sin frame en Figma: el formulario de carga manual de comidas (
   - El tab **Progress** abre *Your progress*; *Today's Overview* se abre desde la sección homónima de Home.
   - Cada notificación abre su área: revisión semanal, plan semanal, nutrición y progreso de entrenamiento.
   - **Progreso:** el Dashboard abre Workout Progress, Nutrition Progress y Health Trends desde sus accesos, y *See weekly review* abre la revisión semanal. En la revisión, atrás y *Done* vuelven a la pantalla anterior, *Ask VORA* abre el Asistente, *Get dinner ideas* el tab Nutrition y *View next week's plan* el plan semanal. *Start Workout* de Today's Overview abre el tab Workout, igual que en Home.
+  - **Asistente:** se abre desde Home (*Start voice session*) y desde la revisión semanal (*Ask VORA*). Atrás desde cualquier estado vuelve a *Idle*, y desde *Idle* sale del Asistente.
   - **Nutrición:** Add Food ofrece voz, foto y carga manual. Guardar una comida (desde la carga manual o desde la revisión del análisis) vuelve al Dashboard de Nutrition con el total del día actualizado.
 - **Saltos entre áreas:** un acceso que lleva a otra área (Log breakfast, notificaciones, Get dinner ideas, View next week's plan) pasa primero por su tab y después abre la pantalla, para que el tab quede marcado y atrás vuelva a su inicio. Tocar el tab en el que ya estás vuelve a su pantalla inicial.
 
 ## Estado por funcionalidad
 
-| Área | Pantallas | Estado previsto |
+| Área | Pantallas | Estado |
 |---|---|---|
-| Acceso | 2 | Demostración (sin Firebase) |
-| Inicio | 2 | Demostración |
-| Asistente VORA | 6 estados | Demostración (conversación simulada, sin permiso de micrófono) |
-| Entrenamiento | 7 | **Funcional:** catálogo y detalle con Retrofit y caché en Room · resto demostración |
-| Nutrición | 8 | **Funcional:** carga manual, listado por fecha, eliminación y total diario en Room · voz y foto simulados |
-| Progreso | 6 | Demostración |
-| Perfil | 6 | Demostración (perfil local) |
+| Acceso | 2 | Demostración: validación local de los campos, sin Firebase |
+| Inicio | 2 | Demostración: datos de ejemplo (`data/demo/`) |
+| Asistente VORA | 6 estados | Demostración: conversación simulada, sin permiso de micrófono |
+| Entrenamiento | 7 | **Funcional:** catálogo y detalle con Retrofit y caché en Room · Weekly Plan, Pre Workout, Active Workout, Exercise Details y Workout Complete: pendientes (placeholder) |
+| Nutrición | 8 | **Funcional:** carga manual, listado por fecha, eliminación con confirmación y total diario en Room · voz, foto y búsqueda simuladas |
+| Progreso | 6 | Demostración: datos de ejemplo identificados |
+| Perfil | 6 | Pendiente (placeholder) |
 
 El detalle por pantalla (nombre en Figma, ruta, barra inferior y estado) está en el [inventario](docs/INVENTORY.md).
 
