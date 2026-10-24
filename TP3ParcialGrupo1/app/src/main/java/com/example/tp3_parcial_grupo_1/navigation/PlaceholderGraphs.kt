@@ -9,9 +9,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
 
-private val workoutIdArgument = navArgument(NavArg.WorkoutId) { type = NavType.StringType }
-private val exerciseIdArgument = navArgument(NavArg.ExerciseId) { type = NavType.StringType }
-
 private fun NavGraphBuilder.placeholder(
     destination: AppDestination,
     title: String,
@@ -34,59 +31,8 @@ private fun NavBackStackEntry.argumentSummary(arguments: List<NamedNavArgument>)
     }
 }
 
-private fun NavBackStackEntry.workoutId(): String = savedStateHandle.get<String>(NavArg.WorkoutId).orEmpty()
-
 fun NavGraphBuilder.coachPlaceholderGraph() {
     placeholder(AppDestination.Coach, "Voice / 01 — Idle")
-}
-
-fun NavGraphBuilder.workoutPlaceholderGraph(navController: NavController) {
-    navigation(startDestination = AppDestination.Workout.route, route = AppDestination.WorkoutGraph.route) {
-        placeholder(AppDestination.Workout, "Workout / 01 — Dashboard") {
-            listOf(
-                PlaceholderAction("Weekly Plan") { navController.navigate(AppDestination.WeeklyPlan.route) },
-                PlaceholderAction("Workout w01") { navController.navigate(AppDestination.WorkoutDetail.createRoute("w01")) },
-                PlaceholderAction("Workout w02") { navController.navigate(AppDestination.WorkoutDetail.createRoute("w02")) }
-            )
-        }
-        placeholder(AppDestination.WeeklyPlan, "Workout / 02 — Weekly Plan")
-        placeholder(AppDestination.WorkoutDetail, "Workout / 03 — Workout Details", listOf(workoutIdArgument)) { entry ->
-            listOf(
-                PlaceholderAction("Start Workout") {
-                    navController.navigate(AppDestination.PreWorkout.createRoute(entry.workoutId()))
-                }
-            )
-        }
-        placeholder(AppDestination.PreWorkout, "Workout / 04 — Pre Workout", listOf(workoutIdArgument)) { entry ->
-            listOf(
-                PlaceholderAction("Begin") {
-                    navController.navigate(AppDestination.ActiveWorkout.createRoute(entry.workoutId()))
-                }
-            )
-        }
-        placeholder(AppDestination.ActiveWorkout, "Workout / 05 — Active Workout", listOf(workoutIdArgument)) { entry ->
-            listOf(
-                PlaceholderAction("Exercise e01") {
-                    navController.navigate(AppDestination.ExerciseDetails.createRoute(entry.workoutId(), "e01"))
-                },
-                PlaceholderAction("Finish workout") {
-                    navController.navigate(AppDestination.WorkoutComplete.createRoute(entry.workoutId()))
-                }
-            )
-        }
-        placeholder(
-            AppDestination.ExerciseDetails,
-            "Workout / 06 — Exercise Details",
-            listOf(workoutIdArgument, exerciseIdArgument)
-        )
-        placeholder(AppDestination.WorkoutComplete, "Workout / 07 — Workout Complete", listOf(workoutIdArgument)) {
-            listOf(
-                PlaceholderAction("Back to workouts") {
-                    navController.popBackStack(AppDestination.Workout.route, inclusive = false)
-                }
-            )
-        }
-    }
 }
 
 fun NavGraphBuilder.profilePlaceholderGraph(navController: NavController) {
