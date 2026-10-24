@@ -206,6 +206,7 @@ class CoachViewModel @Inject constructor(
             messages = visibleMessages(),
             draft = draft,
             isVoraTyping = isVoraTyping,
+            dateLabel = if (history.isEmpty()) CoachDemoData.ConversationDate else CoachStrings.Today,
             sendError = sendError
         )
     }

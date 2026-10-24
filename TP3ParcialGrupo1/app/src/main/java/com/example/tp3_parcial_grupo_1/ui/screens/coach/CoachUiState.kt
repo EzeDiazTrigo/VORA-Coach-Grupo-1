@@ -28,6 +28,7 @@ sealed interface CoachUiState {
         val messages: List<CoachMessage>,
         val draft: String,
         val isVoraTyping: Boolean,
+        val dateLabel: String = "",
         // Error al pedir la respuesta a POST /v1/coach/messages; el mensaje del usuario ya quedó guardado.
         val sendError: String? = null
     ) : CoachUiState {

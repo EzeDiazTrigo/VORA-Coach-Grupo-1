@@ -307,7 +307,12 @@ private fun CoachIdleSmallPreview() = PreviewScreen(
 @Preview(name = "Conversación", widthDp = 390, heightDp = 844)
 @Composable
 private fun CoachConversationPreview() = PreviewScreen(
-    CoachUiState.Conversation(CoachDemoData.conversation, draft = "", isVoraTyping = false)
+    CoachUiState.Conversation(
+        CoachDemoData.conversation,
+        draft = "",
+        isVoraTyping = false,
+        dateLabel = CoachDemoData.ConversationDate
+    )
 )
 
 @Preview(name = "Conversación · error de envío", widthDp = 390, heightDp = 844)
@@ -317,6 +322,7 @@ private fun CoachConversationErrorPreview() = PreviewScreen(
         CoachDemoData.conversation,
         draft = "",
         isVoraTyping = false,
+        dateLabel = CoachDemoData.ConversationDate,
         sendError = CoachStrings.SendErrorOffline
     )
 )

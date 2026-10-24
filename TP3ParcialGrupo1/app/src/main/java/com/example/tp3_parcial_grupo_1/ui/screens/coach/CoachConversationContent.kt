@@ -47,7 +47,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.tp3_parcial_grupo_1.R
 import com.example.tp3_parcial_grupo_1.model.CoachAuthor
-import com.example.tp3_parcial_grupo_1.data.demo.CoachDemoData
 import com.example.tp3_parcial_grupo_1.model.CoachMessage
 import com.example.tp3_parcial_grupo_1.ui.components.InlineLoading
 import com.example.tp3_parcial_grupo_1.ui.components.VoraOrb
@@ -88,7 +87,7 @@ internal fun CoachConversationContent(state: CoachUiState.Conversation, actions:
         ) {
             item(key = "date") {
                 Text(
-                    text = CoachDemoData.ConversationDate,
+                    text = state.dateLabel,
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.extendedColors.textSubtle,
                     modifier = Modifier.fillMaxWidth().padding(bottom = MaterialTheme.spacing.xs),

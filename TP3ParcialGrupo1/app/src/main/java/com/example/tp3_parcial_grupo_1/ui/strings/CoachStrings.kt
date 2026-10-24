@@ -35,6 +35,7 @@ object CoachStrings {
     const val Send = "Send"
     const val Talk = "Talk"
     const val VoraTyping = "VORA is typing…"
+    const val Today = "TODAY"
     const val SendErrorOffline = "Couldn't reach VORA. Check your connection and try again."
     const val SendErrorMalformed = "VORA's reply couldn't be read. Try again."
     fun sendErrorServer(code: Int) = "VORA is unavailable right now (error $code). Try again."
