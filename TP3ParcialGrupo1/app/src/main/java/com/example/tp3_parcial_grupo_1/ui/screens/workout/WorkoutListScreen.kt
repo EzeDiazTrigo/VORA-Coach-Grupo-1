@@ -32,6 +32,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -45,7 +47,6 @@ import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppCardStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
-import com.example.tp3_parcial_grupo_1.ui.components.VoraOrb
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
 import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
@@ -213,20 +214,27 @@ fun WorkoutListScreen(
                         horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Box(modifier = Modifier.weight(1.8f)) {
-                            AppButton(
-                                text = "Start Workout",
-                                onClick = { onStartWorkoutClick(recommendedWorkout.id) },
-                                style = AppButtonStyle.Accent
-                            )
-                        }
-                        Box(modifier = Modifier.weight(1.2f)) {
-                            AppButton(
-                                text = "Details",
-                                onClick = { onWorkoutClick(recommendedWorkout.id) },
-                                style = AppButtonStyle.Outlined
-                            )
-                        }
+                        AppButton(
+                            text = "Start Workout",
+                            onClick = { onStartWorkoutClick(recommendedWorkout.id) },
+                            style = AppButtonStyle.Accent,
+                            fullWidth = false,
+                            modifier = Modifier
+                                .width(219.dp)
+                                .height(42.dp)
+                        )
+
+                        AppButton(
+                            text = "Details",
+                            onClick = { onWorkoutClick(recommendedWorkout.id) },
+                            style = AppButtonStyle.Outlined,
+                            fullWidth = false,
+                            textColor = Color.White,
+                            borderColor = Color.White.copy(alpha = 0.6f),
+                            modifier = Modifier
+                                .width(79.dp)
+                                .height(43.dp)
+                        )
                     }
                 }
             }
@@ -241,7 +249,19 @@ fun WorkoutListScreen(
             ) {
                 Column {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        VoraOrb(size = 18.dp)
+                        Box(
+                            modifier = Modifier
+                                .size(18.dp)
+                                .clip(CircleShape)
+                                .background(
+                                    Brush.radialGradient(
+                                        colors = listOf(
+                                            MaterialTheme.extendedColors.mint,
+                                            MaterialTheme.colorScheme.primary
+                                        )
+                                    )
+                                )
+                        )
                         Spacer(modifier = Modifier.width(MaterialTheme.spacing.xs))
                         Text(
                             text = "VORA RECOMMENDS",
@@ -380,7 +400,7 @@ fun WorkoutListScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(IntrinsicSize.Min),
-                        horizontalArrangement = Arrangement.SpaceEvenly,
+                        horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Column(modifier = Modifier.weight(1f)) {
@@ -405,7 +425,7 @@ fun WorkoutListScreen(
                             color = MaterialTheme.colorScheme.outlineVariant
                         )
 
-                        Column(modifier = Modifier.weight(1.2f)) {
+                        Column(modifier = Modifier.weight(1.1f)) {
                             Text(
                                 text = "WORKOUTS",
                                 style = MaterialTheme.typography.labelSmall,
