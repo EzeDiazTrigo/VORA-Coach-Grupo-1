@@ -1,6 +1,5 @@
 package com.example.tp3_parcial_grupo_1.ui.screens.workout
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -8,7 +7,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -21,8 +19,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
@@ -36,12 +32,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.tp3_parcial_grupo_1.R
 import com.example.tp3_parcial_grupo_1.ui.components.AppButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
 import com.example.tp3_parcial_grupo_1.ui.components.VoraSymbol
@@ -79,19 +73,15 @@ fun ActiveWorkoutScreen(
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
         ) {
-            // Top Header Row [350 Fill x 45 Hug]
+            // Top Header Row
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(45.dp),
+                modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                // Header Title Box [155 Hug x 45 Hug]
+                // Header Title Box (Flexible width)
                 Column(
-                    modifier = Modifier
-                        .width(155.dp)
-                        .height(45.dp),
+                    modifier = Modifier.weight(1f),
                     verticalArrangement = Arrangement.Center
                 ) {
                     Text(
@@ -103,12 +93,14 @@ fun ActiveWorkoutScreen(
                     Spacer(modifier = Modifier.height(2.dp))
                     Text(
                         text = "Seated Cable Row",
-                        style = MaterialTheme.typography.titleMedium,
+                        style = MaterialTheme.typography.headlineSmall,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onPrimary,
                         modifier = Modifier.clickable { onExerciseClick("e02") }
                     )
                 }
+
+                Spacer(modifier = Modifier.width(MaterialTheme.spacing.sm))
 
                 // Finish Workout Button [106 Hug x 28 Hug]
                 Box(
@@ -143,7 +135,7 @@ fun ActiveWorkoutScreen(
                         color = MaterialTheme.extendedColors.mint
                     )
 
-                    Spacer(modifier = Modifier.height(MaterialTheme.spacing.sm))
+                    Spacer(modifier = Modifier.height(MaterialTheme.spacing.xs))
 
                     // Matrix Box [189 Hug x 57 Hug]
                     Row(
@@ -193,20 +185,16 @@ fun ActiveWorkoutScreen(
 
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.md))
 
-            // Card 2: LAST SESSION & Weight Selector [350 Fill x 60 Hug]
+            // Card 2: LAST SESSION & Weight Selector
             DarkWorkoutCard {
                 Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(60.dp),
+                    modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    // Last Session Label Box [95 Hug x 36 Hug]
+                    // Last Session Label Box
                     Column(
-                        modifier = Modifier
-                            .width(95.dp)
-                            .height(36.dp),
+                        modifier = Modifier.weight(1f),
                         verticalArrangement = Arrangement.Center
                     ) {
                         Text(
@@ -219,26 +207,27 @@ fun ActiveWorkoutScreen(
                             text = "45 kg × 12 reps",
                             fontSize = 13.sp,
                             fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.onPrimary
+                            color = MaterialTheme.colorScheme.onPrimary,
+                            maxLines = 1
                         )
                     }
 
-                    // Weight Selector Controls (- / 45 kg / +) [134 Hug x 36 Hug]
+                    Spacer(modifier = Modifier.width(MaterialTheme.spacing.sm))
+
+                    // Weight Selector Controls (- / 45 kg / +)
                     Row(
-                        modifier = Modifier
-                            .width(134.dp)
-                            .height(36.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        IconButton(
-                            onClick = { if (weightKg > 2.5) weightKg -= 2.5 },
+                        Box(
                             modifier = Modifier
-                                .size(26.dp)
+                                .size(28.dp)
                                 .clip(CircleShape)
                                 .background(MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.15f))
+                                .clickable { if (weightKg > 2.5) weightKg -= 2.5 },
+                            contentAlignment = Alignment.Center
                         ) {
-                            Text("-", fontSize = 16.sp, color = MaterialTheme.colorScheme.onPrimary)
+                            Text("-", fontSize = 16.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onPrimary)
                         }
 
                         Text(
@@ -248,14 +237,15 @@ fun ActiveWorkoutScreen(
                             color = MaterialTheme.colorScheme.onPrimary
                         )
 
-                        IconButton(
-                            onClick = { weightKg += 2.5 },
+                        Box(
                             modifier = Modifier
-                                .size(26.dp)
+                                .size(28.dp)
                                 .clip(CircleShape)
                                 .background(MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.15f))
+                                .clickable { weightKg += 2.5 },
+                            contentAlignment = Alignment.Center
                         ) {
-                            Text("+", fontSize = 16.sp, color = MaterialTheme.colorScheme.onPrimary)
+                            Text("+", fontSize = 16.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onPrimary)
                         }
                     }
                 }
@@ -263,7 +253,7 @@ fun ActiveWorkoutScreen(
 
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.md))
 
-            // Set Chips Row (Interactive)
+            // Set Chips Row (Interactive - Always shows number 1, 2, 3)
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm)
@@ -276,14 +266,14 @@ fun ActiveWorkoutScreen(
                     Box(
                         modifier = Modifier
                             .weight(1f)
-                            .clip(MaterialTheme.shapes.medium)
+                            .height(38.dp)
+                            .clip(PillShape)
                             .background(MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.12f))
                             .then(
-                                if (isCurrent) Modifier.border(1.5.dp, MaterialTheme.colorScheme.tertiary, MaterialTheme.shapes.medium)
+                                if (isCurrent) Modifier.border(1.5.dp, MaterialTheme.colorScheme.tertiary, PillShape)
                                 else Modifier
                             )
-                            .clickable { activeSetIndex = index }
-                            .padding(vertical = MaterialTheme.spacing.sm, horizontal = MaterialTheme.spacing.sm),
+                            .clickable { activeSetIndex = index },
                         contentAlignment = Alignment.Center
                     ) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -293,29 +283,21 @@ fun ActiveWorkoutScreen(
                                     .clip(CircleShape)
                                     .background(
                                         when {
-                                            isCompleted -> MaterialTheme.extendedColors.mint
                                             isCurrent -> MaterialTheme.colorScheme.tertiary
+                                            isCompleted -> MaterialTheme.extendedColors.mint
                                             else -> MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.2f)
                                         }
                                     ),
                                 contentAlignment = Alignment.Center
                             ) {
-                                if (isCompleted) {
-                                    Icon(
-                                        painter = painterResource(id = R.drawable.ic_check),
-                                        contentDescription = null,
-                                        tint = MaterialTheme.colorScheme.primary,
-                                        modifier = Modifier.size(12.dp)
-                                    )
-                                } else {
-                                    Text(
-                                        text = "${index + 1}",
-                                        style = MaterialTheme.typography.labelSmall,
-                                        fontWeight = FontWeight.Bold,
-                                        color = if (isCurrent) MaterialTheme.colorScheme.onTertiary
-                                                else MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.6f)
-                                    )
-                                }
+                                Text(
+                                    text = "${index + 1}",
+                                    style = MaterialTheme.typography.labelSmall,
+                                    fontWeight = FontWeight.Bold,
+                                    color = if (isCurrent) MaterialTheme.colorScheme.onTertiary
+                                            else if (isCompleted) MaterialTheme.colorScheme.primary
+                                            else MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.6f)
+                                )
                             }
                             Spacer(modifier = Modifier.width(MaterialTheme.spacing.xs))
                             Text(
@@ -335,9 +317,7 @@ fun ActiveWorkoutScreen(
             // Resting Timer Card [350 Fill x 47 Hug]
             DarkWorkoutCard {
                 Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(47.dp),
+                    modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -355,7 +335,7 @@ fun ActiveWorkoutScreen(
                                 .background(MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.12f))
                                 .border(1.dp, Color.White.copy(alpha = 0.3f), PillShape)
                                 .clickable { restTimeSeconds += 30 }
-                                .padding(horizontal = MaterialTheme.spacing.md, vertical = 6.dp)
+                                .padding(horizontal = MaterialTheme.spacing.md, vertical = 4.dp)
                         ) {
                             Text(
                                 text = "+30s",
@@ -369,7 +349,7 @@ fun ActiveWorkoutScreen(
                                 .clip(PillShape)
                                 .background(Color(0xFF65D6B0))
                                 .clickable { restTimeSeconds = 0 }
-                                .padding(horizontal = MaterialTheme.spacing.md, vertical = 6.dp)
+                                .padding(horizontal = MaterialTheme.spacing.md, vertical = 4.dp)
                         ) {
                             Text(
                                 text = "Skip",
@@ -449,7 +429,7 @@ private fun DarkWorkoutCard(
             .clip(MaterialTheme.shapes.large)
             .background(MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.12f))
             .border(1.dp, Color.White.copy(alpha = 0.1216f), MaterialTheme.shapes.large)
-            .padding(MaterialTheme.spacing.lg)
+            .padding(horizontal = MaterialTheme.spacing.md, vertical = 10.dp)
     ) {
         Column(content = content)
     }
