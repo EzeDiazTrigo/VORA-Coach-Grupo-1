@@ -15,7 +15,9 @@ class SettingsViewModel @Inject constructor(
     repository: ProfileRepository
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(SettingsUiState(email = repository.profile.value.email))
+    private val _uiState = MutableStateFlow(
+        SettingsUiState(fullName = repository.profile.value.fullName, email = repository.profile.value.email)
+    )
     val uiState: StateFlow<SettingsUiState> = _uiState.asStateFlow()
 
     fun onDemoNoticeClick() = _uiState.update { it.copy(message = Strings.DemoMode) }
