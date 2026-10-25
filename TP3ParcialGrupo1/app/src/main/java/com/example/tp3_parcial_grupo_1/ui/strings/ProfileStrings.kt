@@ -2,6 +2,7 @@ package com.example.tp3_parcial_grupo_1.ui.strings
 
 // Textos de Perfil. Se mantienen los del diseño de Figma.
 object ProfileStrings {
+    const val ProfileTitle = "Profile"
     const val SettingsButton = "Configuración"
     const val EditProfile = "Edit profile"
     const val MySnapshot = "My Snapshot"
@@ -23,7 +24,7 @@ object ProfileStrings {
     const val Account = "Account"
     const val AccountSubtitle = "Subscription, notifications & privacy"
 
-    const val EditProfileTitle = "Edit Profile"
+    const val EditProfileTitle = "Edit profile"
     const val ChangePhoto = "Change photo"
     const val FirstName = "First Name"
     const val LastName = "Last Name"
@@ -78,7 +79,7 @@ object ProfileStrings {
     val BreakfastOptions = listOf("Quick & high protein", "Light & fresh", "Hearty & filling", "I usually skip it")
     val DinnerOptions = listOf("Light & early", "Balanced plate", "High protein", "Hearty & filling")
 
-    const val VoiceTitle = "Voice & AI Settings"
+    const val VoiceTitle = "VORA Coach"
     const val VoiceIntro = "Choose how VORA communicates and coaches you."
     const val ActiveVoiceLabel = "Active Voice"
     const val Preview = "Preview"
@@ -116,6 +117,7 @@ object ProfileStrings {
     const val LogOut = "Log out"
     const val AppVersion = "VORA v1.0.0"
     const val LogOutDialogTitle = "Cerrar sesión"
+    const val LogOutDialogCancel = "Cancelar"
     const val LogOutDialogBody = "¿Querés cerrar sesión en este dispositivo?"
 
     fun daysPerWeek(days: Int) = "$days days/week"

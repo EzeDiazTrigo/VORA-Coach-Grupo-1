@@ -44,8 +44,9 @@ fun AppSwitchRow(
             checked = checked,
             onCheckedChange = onCheckedChange,
             colors = SwitchDefaults.colors(
-                checkedTrackColor = colors.primary,
-                checkedThumbColor = colors.onPrimary
+                checkedTrackColor = colors.secondary,
+                checkedThumbColor = colors.surface,
+                checkedBorderColor = colors.secondary
             )
         )
     }

@@ -1,5 +1,9 @@
 package com.example.tp3_parcial_grupo_1.ui.components
 
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Icon
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.Icons
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -17,32 +21,51 @@ import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 
 private val ChipBorderWidth = 1.dp
 
-// Chip de selección con radio completo; el seleccionado se rellena de verde.
+private val CheckIconSize = 16.dp
+
+// Mint: selección única con relleno menta; Dark: relleno verde oscuro; Outlined: selección múltiple con borde menta y check.
+enum class AppChipStyle { Mint, Dark, Outlined }
+
+// Chip de selección con radio completo.
 @Composable
 fun AppChip(
     text: String,
     selected: Boolean,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    style: AppChipStyle = AppChipStyle.Mint
 ) {
     val colors = MaterialTheme.colorScheme
+    val selectedContainer = when (style) {
+        AppChipStyle.Mint -> colors.secondary
+        AppChipStyle.Dark -> colors.primary
+        AppChipStyle.Outlined -> colors.surface
+    }
+    val selectedLabel = if (style == AppChipStyle.Dark) colors.onPrimary else colors.onSurface
+    val selectedBorder = if (style == AppChipStyle.Dark) colors.primary else colors.secondary
     FilterChip(
         selected = selected,
         onClick = onClick,
         label = { Text(text, style = MaterialTheme.typography.labelLarge) },
         modifier = modifier,
         shape = PillShape,
+        trailingIcon = if (style == AppChipStyle.Outlined && selected) {
+            { Icon(Icons.Filled.Check, contentDescription = null, modifier = Modifier.size(CheckIconSize)) }
+        } else {
+            null
+        },
         colors = FilterChipDefaults.filterChipColors(
             containerColor = colors.surface,
             labelColor = colors.onSurface,
-            selectedContainerColor = colors.primary,
-            selectedLabelColor = colors.onPrimary
+            selectedContainerColor = selectedContainer,
+            selectedLabelColor = selectedLabel,
+            selectedTrailingIconColor = colors.primary
         ),
         border = FilterChipDefaults.filterChipBorder(
             enabled = true,
             selected = selected,
             borderColor = colors.outlineVariant,
-            selectedBorderColor = colors.primary,
+            selectedBorderColor = selectedBorder,
             borderWidth = ChipBorderWidth
         )
     )
@@ -57,6 +80,8 @@ private fun AppChipPreview() {
             horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm)
         ) {
             AppChip(text = "Strength", selected = true, onClick = {})
+            AppChip(text = "4 days", selected = true, onClick = {}, style = AppChipStyle.Dark)
+            AppChip(text = "Chicken", selected = true, onClick = {}, style = AppChipStyle.Outlined)
             AppChip(text = "Cardio", selected = false, onClick = {})
         }
     }
