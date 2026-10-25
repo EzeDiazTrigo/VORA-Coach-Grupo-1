@@ -139,7 +139,8 @@ fun NutritionPreferencesScreen(
                 AppTextField(
                     value = uiState.ingredientInput,
                     onValueChange = onIngredientInputChange,
-                    label = ProfileStrings.AddIngredientPlaceholder,
+                    label = "",
+                    placeholder = ProfileStrings.AddIngredientPlaceholder,
                     errorMessage = uiState.ingredientError,
                     trailingIcon = {
                         IconButton(onClick = onAddIngredientClick) {

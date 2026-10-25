@@ -116,18 +116,21 @@ fun EditProfileScreen(
                 value = uiState.firstName,
                 onValueChange = onFirstNameChange,
                 label = ProfileStrings.FirstName,
+                uppercaseLabel = true,
                 errorMessage = uiState.firstNameError
             )
             AppTextField(
                 value = uiState.lastName,
                 onValueChange = onLastNameChange,
                 label = ProfileStrings.LastName,
+                uppercaseLabel = true,
                 errorMessage = uiState.lastNameError
             )
             AppTextField(
                 value = uiState.dateOfBirth,
                 onValueChange = onDateOfBirthChange,
                 label = ProfileStrings.DateOfBirth,
+                uppercaseLabel = true,
                 errorMessage = uiState.dateOfBirthError
             )
             Row(horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md)) {
@@ -135,6 +138,7 @@ fun EditProfileScreen(
                     value = uiState.height,
                     onValueChange = onHeightChange,
                     label = ProfileStrings.Height,
+                uppercaseLabel = true,
                     modifier = Modifier.weight(1f),
                     errorMessage = uiState.heightError,
                     keyboardType = KeyboardType.Number,
@@ -144,6 +148,7 @@ fun EditProfileScreen(
                     value = uiState.weight,
                     onValueChange = onWeightChange,
                     label = ProfileStrings.Weight,
+                uppercaseLabel = true,
                     modifier = Modifier.weight(1f),
                     errorMessage = uiState.weightError,
                     keyboardType = KeyboardType.Number,
@@ -197,6 +202,7 @@ private fun GenderField(selected: String, onSelected: (String) -> Unit) {
     Column(verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xs)) {
         AppDropdownField(
             label = ProfileStrings.Gender,
+            uppercaseLabel = true,
             selected = selected,
             options = ProfileStrings.GenderOptions,
             onSelected = onSelected

@@ -27,7 +27,8 @@ fun AppDropdownField(
     selected: String,
     options: List<String>,
     onSelected: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    uppercaseLabel: Boolean = false
 ) {
     var expanded by remember { mutableStateOf(false) }
     Box(modifier = modifier) {
@@ -35,6 +36,7 @@ fun AppDropdownField(
             value = selected,
             onValueChange = {},
             label = label,
+            uppercaseLabel = uppercaseLabel,
             trailingIcon = { Icon(Icons.Outlined.KeyboardArrowDown, contentDescription = null) }
         )
         // Captura el toque para abrir el menú en lugar de editar el texto.
