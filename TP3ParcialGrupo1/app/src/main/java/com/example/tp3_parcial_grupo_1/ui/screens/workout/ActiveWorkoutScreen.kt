@@ -36,6 +36,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.tp3_parcial_grupo_1.model.Workout
 import com.example.tp3_parcial_grupo_1.ui.components.AppButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
 import com.example.tp3_parcial_grupo_1.ui.components.VoraSymbol
@@ -46,7 +47,9 @@ import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 
 @Composable
 fun ActiveWorkoutScreen(
-    workoutId: String,
+    workout: Workout? = null,
+    currentExerciseIndex: Int = 1,
+    workoutId: String = "w01",
     onBackClick: () -> Unit,
     onExerciseClick: (String) -> Unit,
     onFinishWorkoutClick: () -> Unit,
@@ -55,6 +58,14 @@ fun ActiveWorkoutScreen(
     var activeSetIndex by remember { mutableIntStateOf(1) } // 0: Set 1, 1: Set 2, 2: Set 3
     var weightKg by remember { mutableDoubleStateOf(45.0) }
     var restTimeSeconds by remember { mutableIntStateOf(78) }
+
+    val exercises = workout?.exercises.orEmpty()
+    val totalExercises = if (exercises.isNotEmpty()) exercises.size else (workout?.exerciseCount ?: 5)
+    val exercise2Index = if (exercises.size >= 2) 1 else 0
+    val currentExercise = exercises.getOrNull(exercise2Index)
+
+    val exerciseName = currentExercise?.name ?: "Seated Cable Row"
+    val exerciseId = currentExercise?.id ?: "e02"
 
     val formatRestTime = remember(restTimeSeconds) {
         val mins = restTimeSeconds / 60
@@ -79,24 +90,25 @@ fun ActiveWorkoutScreen(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                // Header Title Box (Flexible width)
+                // Header Title Box
                 Column(
                     modifier = Modifier.weight(1f),
                     verticalArrangement = Arrangement.Center
                 ) {
                     Text(
-                        text = "EXERCISE 2 OF 5",
+                        text = "EXERCISE 2 OF $totalExercises",
                         style = MaterialTheme.typography.labelSmall,
                         fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.extendedColors.mint
+                        color = MaterialTheme.extendedColors.mint,
+                        maxLines = 1
                     )
                     Spacer(modifier = Modifier.height(2.dp))
                     Text(
-                        text = "Seated Cable Row",
+                        text = exerciseName,
                         style = MaterialTheme.typography.headlineSmall,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onPrimary,
-                        modifier = Modifier.clickable { onExerciseClick("e02") }
+                        modifier = Modifier.clickable { onExerciseClick(exerciseId) }
                     )
                 }
 
@@ -147,7 +159,7 @@ fun ActiveWorkoutScreen(
                     ) {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Text(
-                                text = "10",
+                                text = "${currentExercise?.reps ?: 10}",
                                 style = MaterialTheme.typography.headlineMedium,
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.onPrimary
@@ -168,7 +180,7 @@ fun ActiveWorkoutScreen(
 
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Text(
-                                text = "3 × 12",
+                                text = "${currentExercise?.sets ?: 3} × ${currentExercise?.reps ?: 12}",
                                 style = MaterialTheme.typography.headlineMedium,
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.onPrimary
@@ -200,11 +212,12 @@ fun ActiveWorkoutScreen(
                         Text(
                             text = "LAST SESSION",
                             fontSize = 11.sp,
-                            color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.7f)
+                            color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.7f),
+                            maxLines = 1
                         )
                         Spacer(modifier = Modifier.height(2.dp))
                         Text(
-                            text = "45 kg × 12 reps",
+                            text = "45 kg × ${currentExercise?.reps ?: 12} reps",
                             fontSize = 13.sp,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onPrimary,
@@ -440,6 +453,8 @@ private fun DarkWorkoutCard(
 private fun ActiveWorkoutScreenPreview() {
     AppTheme {
         ActiveWorkoutScreen(
+            workout = null,
+            currentExerciseIndex = 1,
             workoutId = "w01",
             onBackClick = {},
             onExerciseClick = {},

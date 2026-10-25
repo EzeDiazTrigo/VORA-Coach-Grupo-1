@@ -31,6 +31,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.tp3_parcial_grupo_1.R
+import com.example.tp3_parcial_grupo_1.model.Workout
 import com.example.tp3_parcial_grupo_1.ui.components.AppButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
 import com.example.tp3_parcial_grupo_1.ui.components.VoraSymbol
@@ -40,11 +41,16 @@ import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 
 @Composable
 fun PreWorkoutScreen(
-    workoutId: String,
+    workout: Workout? = null,
+    workoutId: String = "w01",
     onBackClick: () -> Unit,
     onBeginClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val workoutName = workout?.name ?: "Upper Body Strength"
+    val durationMinutes = workout?.durationMinutes ?: 42
+    val exerciseCount = if (workout?.exercises?.isNotEmpty() == true) workout.exercises.size else (workout?.exerciseCount ?: 5)
+
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -83,9 +89,9 @@ fun PreWorkoutScreen(
 
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.md))
 
-            // Title Section
+            // Title Section (Dynamic workout name)
             Text(
-                text = "Upper Body Strength",
+                text = workoutName,
                 style = MaterialTheme.typography.headlineLarge,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onPrimary
@@ -94,7 +100,7 @@ fun PreWorkoutScreen(
             Spacer(modifier = Modifier.height(4.dp))
 
             Text(
-                text = "42 min • 5 exercises",
+                text = "$durationMinutes min • $exerciseCount exercises",
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.extendedColors.mint
             )
@@ -136,7 +142,7 @@ fun PreWorkoutScreen(
                 )
                 Spacer(modifier = Modifier.height(MaterialTheme.spacing.xs))
                 Text(
-                    text = "Bench Press Volume",
+                    text = "$workoutName Volume",
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onPrimary
@@ -252,6 +258,6 @@ private fun DarkWorkoutCard(
 @Composable
 private fun PreWorkoutScreenPreview() {
     AppTheme {
-        PreWorkoutScreen(workoutId = "w01", onBackClick = {}, onBeginClick = {})
+        PreWorkoutScreen(workout = null, workoutId = "w01", onBackClick = {}, onBeginClick = {})
     }
 }

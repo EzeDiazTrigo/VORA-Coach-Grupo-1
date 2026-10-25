@@ -39,6 +39,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.tp3_parcial_grupo_1.R
+import com.example.tp3_parcial_grupo_1.model.Workout
 import com.example.tp3_parcial_grupo_1.ui.components.AppButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppCard
@@ -56,12 +57,16 @@ private val VoraGreen = Color(0xFF123D35)
 
 @Composable
 fun WorkoutCompleteScreen(
-    workoutId: String,
+    workout: Workout? = null,
+    workoutId: String = "w01",
     onBackToWorkoutsClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     var selectedDifficulty by remember { mutableStateOf("Good") }
     val difficulties = listOf("Great", "Good", "Tough", "Too Easy")
+
+    val totalExercises = if (workout?.exercises?.isNotEmpty() == true) workout.exercises.size else (workout?.exerciseCount ?: 3)
+    val durationMinutes = workout?.durationMinutes ?: 42
 
     AppScaffold(
         modifier = modifier
@@ -154,7 +159,7 @@ fun WorkoutCompleteScreen(
                 ) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(
-                            text = "42 min",
+                            text = "$durationMinutes min",
                             style = MaterialTheme.typography.titleLarge,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onSurface
@@ -176,7 +181,7 @@ fun WorkoutCompleteScreen(
 
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(
-                            text = "5/5",
+                            text = "$totalExercises/$totalExercises",
                             style = MaterialTheme.typography.titleLarge,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onSurface
@@ -305,6 +310,6 @@ fun WorkoutCompleteScreen(
 @Composable
 private fun WorkoutCompleteScreenPreview() {
     AppTheme {
-        WorkoutCompleteScreen(workoutId = "w01", onBackToWorkoutsClick = {})
+        WorkoutCompleteScreen(workout = null, workoutId = "w01", onBackToWorkoutsClick = {})
     }
 }

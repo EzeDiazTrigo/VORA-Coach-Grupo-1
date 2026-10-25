@@ -19,7 +19,7 @@ class WorkoutDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val workoutId: String = checkNotNull(savedStateHandle["workoutId"])
+    val workoutId: String = checkNotNull(savedStateHandle["workoutId"])
 
     private val _uiState = MutableStateFlow(WorkoutDetailUiState(isLoading = true))
     val uiState: StateFlow<WorkoutDetailUiState> = _uiState.asStateFlow()
