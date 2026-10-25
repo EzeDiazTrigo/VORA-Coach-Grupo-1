@@ -1,5 +1,7 @@
 package com.example.tp3_parcial_grupo_1.ui.screens.profile
 
+import androidx.annotation.DrawableRes
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -13,19 +15,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.KeyboardArrowRight
-import androidx.compose.material.icons.outlined.Lock
-import androidx.compose.material.icons.outlined.MonitorHeart
-import androidx.compose.material.icons.outlined.Person
-import androidx.compose.material.icons.outlined.Settings
-import androidx.compose.material.icons.outlined.Tune
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -33,18 +28,22 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.tp3_parcial_grupo_1.R
 import com.example.tp3_parcial_grupo_1.data.demo.ProfileDemoData
-import com.example.tp3_parcial_grupo_1.ui.components.AppButton
-import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppCardStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
+import com.example.tp3_parcial_grupo_1.ui.components.AppSectionLabel
+import com.example.tp3_parcial_grupo_1.ui.components.VoraOrb
 import com.example.tp3_parcial_grupo_1.ui.strings.ProfileStrings
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
 import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
@@ -52,7 +51,8 @@ import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 
 private val BorderWidth = 1.dp
-private val AvatarSize = 64.dp
+private val AvatarSize = 72.dp
+private val OrbSize = 32.dp
 private val LinkIconBoxSize = 40.dp
 private val LinkIconSize = 20.dp
 
@@ -104,7 +104,12 @@ fun ProfileScreen(
     onAccountClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    AppScaffold(modifier = modifier.fillMaxSize(), snackbarHostState = snackbarHostState) { padding ->
+    AppScaffold(
+        modifier = modifier.fillMaxSize(),
+        title = ProfileStrings.ProfileTitle,
+        actions = { SettingsButton(onClick = onSettingsClick) },
+        snackbarHostState = snackbarHostState
+    ) { padding ->
         Column(
             modifier = Modifier
                 .padding(padding)
@@ -112,35 +117,30 @@ fun ProfileScreen(
                 .padding(horizontal = MaterialTheme.spacing.screen, vertical = MaterialTheme.spacing.lg),
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.lg)
         ) {
-            ProfileHeader(uiState, onSettingsClick)
-            AppButton(
-                text = ProfileStrings.EditProfile,
-                onClick = onEditProfileClick,
-                style = AppButtonStyle.Outlined
-            )
+            HeroCard(uiState, onEditProfileClick)
             SnapshotCard(uiState)
             PersonalisationPanel(onReviewPreferencesClick = onVoiceAiClick)
             ProfileLink(
-                icon = Icons.Outlined.Tune,
+                iconRes = R.drawable.ic_target,
                 title = ProfileStrings.YourGoals,
-                subtitle = ProfileStrings.YourGoalsSubtitle,
+                subtitle = uiState.goal,
                 onClick = onGoalsClick
             )
             ProfileLink(
-                icon = Icons.Outlined.Person,
+                iconRes = R.drawable.ic_sliders,
                 title = ProfileStrings.YourPreferences,
                 subtitle = ProfileStrings.YourPreferencesSubtitle,
                 onClick = onPreferencesClick
             )
             ProfileLink(
-                icon = Icons.Outlined.MonitorHeart,
+                iconRes = R.drawable.ic_activity,
                 title = ProfileStrings.ConnectedData,
                 subtitle = ProfileStrings.ConnectedDataSubtitle,
                 onClick = onConnectedDataClick,
                 badge = if (uiState.isDataSynced) ProfileStrings.Synced else null
             )
             ProfileLink(
-                icon = Icons.Outlined.Lock,
+                iconRes = R.drawable.ic_lock,
                 title = ProfileStrings.Account,
                 subtitle = ProfileStrings.AccountSubtitle,
                 onClick = onAccountClick
@@ -150,50 +150,85 @@ fun ProfileScreen(
 }
 
 @Composable
-private fun ProfileHeader(uiState: ProfileUiState, onSettingsClick: () -> Unit) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.lg)
+private fun SettingsButton(onClick: () -> Unit) {
+    IconButton(
+        onClick = onClick,
+        colors = IconButtonDefaults.iconButtonColors(containerColor = MaterialTheme.colorScheme.surface),
+        modifier = Modifier
+            .padding(end = MaterialTheme.spacing.sm)
+            .border(BorderWidth, MaterialTheme.colorScheme.outlineVariant, CircleShape)
     ) {
-        // Marcador del avatar; se reemplaza por la foto exportada de Figma.
-        Box(
-            modifier = Modifier.size(AvatarSize).background(MaterialTheme.extendedColors.mintSoft, CircleShape),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(uiState.initials, style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.primary)
-        }
+        Icon(painterResource(R.drawable.ic_settings), contentDescription = ProfileStrings.SettingsButton)
+    }
+}
+
+@Composable
+private fun HeroCard(uiState: ProfileUiState, onEditProfileClick: () -> Unit) {
+    AppCard {
         Column(
-            modifier = Modifier.weight(1f),
-            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xxs)
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md)
         ) {
-            Text(uiState.fullName, style = MaterialTheme.typography.titleLarge)
-            Text(
-                uiState.tagline,
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+            Image(
+                painter = painterResource(R.drawable.img_avatar_demo),
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.size(AvatarSize).clip(CircleShape)
+            )
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xxs)
+            ) {
+                Text(uiState.fullName, style = MaterialTheme.typography.titleLarge)
+                Text(
+                    uiState.tagline,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    textAlign = TextAlign.Center
+                )
+            }
+            PillAction(
+                text = ProfileStrings.EditProfile,
+                onClick = onEditProfileClick,
+                containerColor = MaterialTheme.colorScheme.background,
+                contentColor = MaterialTheme.colorScheme.onSurface
             )
         }
-        IconButton(
-            onClick = onSettingsClick,
-            colors = IconButtonDefaults.iconButtonColors(containerColor = MaterialTheme.colorScheme.surface),
-            modifier = Modifier.border(BorderWidth, MaterialTheme.colorScheme.outlineVariant, CircleShape)
-        ) {
-            Icon(Icons.Outlined.Settings, contentDescription = ProfileStrings.SettingsButton)
-        }
+    }
+}
+
+// Botón chico en píldora del diseño; AppButton tiene un alto mínimo de 52 dp que aquí no corresponde.
+@Composable
+private fun PillAction(
+    text: String,
+    onClick: () -> Unit,
+    containerColor: Color,
+    contentColor: Color,
+    modifier: Modifier = Modifier
+) {
+    Surface(
+        onClick = onClick,
+        modifier = modifier,
+        shape = PillShape,
+        color = containerColor,
+        contentColor = contentColor
+    ) {
+        Text(
+            text,
+            style = MaterialTheme.typography.labelMedium,
+            modifier = Modifier.padding(horizontal = MaterialTheme.spacing.lg, vertical = MaterialTheme.spacing.sm)
+        )
     }
 }
 
 @Composable
 private fun SnapshotCard(uiState: ProfileUiState) {
     AppCard {
-        Text(ProfileStrings.MySnapshot, style = MaterialTheme.typography.titleSmall)
+        AppSectionLabel(ProfileStrings.MySnapshot)
         SnapshotRow(ProfileStrings.Goal, uiState.goal)
-        HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
         SnapshotRow(ProfileStrings.Experience, uiState.experience)
-        HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
         SnapshotRow(ProfileStrings.Training, uiState.training)
-        HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
         SnapshotRow(ProfileStrings.PreferredWorkout, uiState.preferredWorkout)
     }
 }
@@ -218,28 +253,35 @@ private fun SnapshotRow(label: String, value: String) {
 @Composable
 private fun PersonalisationPanel(onReviewPreferencesClick: () -> Unit) {
     AppCard(style = AppCardStyle.Panel) {
-        Text(
-            ProfileStrings.PersonalisationTitle,
-            style = MaterialTheme.typography.labelLarge,
-            color = MaterialTheme.extendedColors.mint
-        )
-        Text(ProfileStrings.PersonalisationHeadline, style = MaterialTheme.typography.headlineSmall)
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md)
+        ) {
+            VoraOrb(size = OrbSize)
+            Text(
+                ProfileStrings.PersonalisationTitle,
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.extendedColors.mint
+            )
+        }
+        Text(ProfileStrings.PersonalisationHeadline, style = MaterialTheme.typography.titleSmall)
         Text(
             ProfileStrings.PersonalisationBody,
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.7f)
         )
-        AppButton(
+        PillAction(
             text = ProfileStrings.ReviewPreferences,
             onClick = onReviewPreferencesClick,
-            style = AppButtonStyle.Accent
+            containerColor = MaterialTheme.colorScheme.tertiary,
+            contentColor = MaterialTheme.colorScheme.onTertiary
         )
     }
 }
 
 @Composable
 private fun ProfileLink(
-    icon: ImageVector,
+    @DrawableRes iconRes: Int,
     title: String,
     subtitle: String,
     onClick: () -> Unit,
@@ -252,10 +294,15 @@ private fun ProfileLink(
             horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md)
         ) {
             Box(
-                modifier = Modifier.size(LinkIconBoxSize).background(MaterialTheme.extendedColors.mintSoft, CircleShape),
+                modifier = Modifier.size(LinkIconBoxSize).background(MaterialTheme.colorScheme.background, CircleShape),
                 contentAlignment = Alignment.Center
             ) {
-                Icon(icon, contentDescription = null, modifier = Modifier.size(LinkIconSize), tint = MaterialTheme.colorScheme.primary)
+                Icon(
+                    painterResource(iconRes),
+                    contentDescription = null,
+                    modifier = Modifier.size(LinkIconSize),
+                    tint = MaterialTheme.colorScheme.primary
+                )
             }
             Column(
                 modifier = Modifier.weight(1f),
@@ -268,14 +315,14 @@ private fun ProfileLink(
                 Text(
                     badge,
                     style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.extendedColors.success,
+                    color = MaterialTheme.colorScheme.onPrimary,
                     modifier = Modifier
-                        .background(MaterialTheme.extendedColors.mintSoft, PillShape)
+                        .background(MaterialTheme.colorScheme.primary, PillShape)
                         .padding(horizontal = MaterialTheme.spacing.md, vertical = MaterialTheme.spacing.xs)
                 )
             }
             Icon(
-                Icons.AutoMirrored.Outlined.KeyboardArrowRight,
+                painterResource(R.drawable.ic_chevron_right),
                 contentDescription = null,
                 tint = MaterialTheme.extendedColors.textSubtle
             )
@@ -283,7 +330,7 @@ private fun ProfileLink(
     }
 }
 
-@Preview(showBackground = true, widthDp = 390, heightDp = 900)
+@Preview(showBackground = true, widthDp = 390, heightDp = 1000)
 @Composable
 private fun ProfileScreenPreview() {
     AppTheme {
