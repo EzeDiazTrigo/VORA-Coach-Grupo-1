@@ -308,7 +308,7 @@ fun ExerciseDetailsScreen(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, widthDp = 390, heightDp = 695)
 @Composable
 private fun ExerciseDetailsScreenPreview() {
     AppTheme {

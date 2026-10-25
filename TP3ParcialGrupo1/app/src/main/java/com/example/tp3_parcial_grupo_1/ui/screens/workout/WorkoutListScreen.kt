@@ -417,20 +417,52 @@ fun WorkoutListScreen(
                                         .fillMaxWidth()
                                         .height(IntrinsicSize.Min),
                                     horizontalArrangement = Arrangement.SpaceBetween,
-                                    verticalAlignment = Alignment.CenterVertically
+                                    verticalAlignment = Alignment.Top
                                 ) {
-                                    Column(modifier = Modifier.weight(1f)) {
+                                    Column(modifier = Modifier.weight(0.9f)) {
                                         Text(
                                             text = "STREAK",
                                             style = MaterialTheme.typography.labelSmall,
-                                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                            maxLines = 1
                                         )
                                         Spacer(modifier = Modifier.height(4.dp))
                                         Text(
                                             text = "4 Days",
                                             style = MaterialTheme.typography.titleMedium,
                                             fontWeight = FontWeight.Bold,
-                                            color = MaterialTheme.colorScheme.onSurface
+                                            color = MaterialTheme.colorScheme.onSurface,
+                                            maxLines = 1
+                                        )
+                                    }
+
+                                    VerticalDivider(
+                                        modifier = Modifier
+                                            .fillMaxHeight()
+                                            .padding(horizontal = MaterialTheme.spacing.xs),
+                                        color = MaterialTheme.colorScheme.outlineVariant
+                                    )
+
+                                    Column(modifier = Modifier.weight(1.3f)) {
+                                        Text(
+                                            text = "WORKOUTS",
+                                            style = MaterialTheme.typography.labelSmall,
+                                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                            maxLines = 1
+                                        )
+                                        Spacer(modifier = Modifier.height(4.dp))
+                                        Text(
+                                            text = "3/5",
+                                            style = MaterialTheme.typography.titleMedium,
+                                            fontWeight = FontWeight.Bold,
+                                            color = MaterialTheme.colorScheme.onSurface,
+                                            maxLines = 1
+                                        )
+                                        Text(
+                                            text = "complete",
+                                            style = MaterialTheme.typography.titleMedium,
+                                            color = MaterialTheme.colorScheme.onSurface,
+                                            maxLines = 1
                                         )
                                     }
 
@@ -443,38 +475,18 @@ fun WorkoutListScreen(
 
                                     Column(modifier = Modifier.weight(1.1f)) {
                                         Text(
-                                            text = "WORKOUTS",
-                                            style = MaterialTheme.typography.labelSmall,
-                                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                                        )
-                                        Spacer(modifier = Modifier.height(4.dp))
-                                        Text(
-                                            text = "3/5 complete",
-                                            style = MaterialTheme.typography.titleMedium,
-                                            fontWeight = FontWeight.Bold,
-                                            color = MaterialTheme.colorScheme.onSurface
-                                        )
-                                    }
-
-                                    VerticalDivider(
-                                        modifier = Modifier
-                                            .fillMaxHeight()
-                                            .padding(horizontal = MaterialTheme.spacing.xs),
-                                        color = MaterialTheme.colorScheme.outlineVariant
-                                    )
-
-                                    Column(modifier = Modifier.weight(1.2f)) {
-                                        Text(
                                             text = "VOL. LIFTED",
                                             style = MaterialTheme.typography.labelSmall,
-                                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                            maxLines = 1
                                         )
                                         Spacer(modifier = Modifier.height(4.dp))
                                         Text(
                                             text = "8,420 kg",
                                             style = MaterialTheme.typography.titleMedium,
                                             fontWeight = FontWeight.Bold,
-                                            color = MaterialTheme.colorScheme.onSurface
+                                            color = MaterialTheme.colorScheme.onSurface,
+                                            maxLines = 1
                                         )
                                     }
                                 }
@@ -489,7 +501,7 @@ fun WorkoutListScreen(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, widthDp = 390, heightDp = 714)
 @Composable
 private fun WorkoutListScreenPreview() {
     AppTheme {

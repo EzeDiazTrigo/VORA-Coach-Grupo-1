@@ -341,7 +341,7 @@ private fun NumberedExerciseItem(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, widthDp = 390, heightDp = 760)
 @Composable
 private fun WorkoutDetailScreenPreview() {
     AppTheme {

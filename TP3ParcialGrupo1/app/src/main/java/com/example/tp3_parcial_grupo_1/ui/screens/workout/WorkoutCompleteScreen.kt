@@ -306,7 +306,7 @@ fun WorkoutCompleteScreen(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, widthDp = 390, heightDp = 713)
 @Composable
 private fun WorkoutCompleteScreenPreview() {
     AppTheme {

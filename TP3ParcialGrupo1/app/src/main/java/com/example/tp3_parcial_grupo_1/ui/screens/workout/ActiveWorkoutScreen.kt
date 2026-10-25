@@ -1,5 +1,6 @@
 package com.example.tp3_parcial_grupo_1.ui.screens.workout
 
+import android.app.Activity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -15,6 +16,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -23,6 +25,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableDoubleStateOf
 import androidx.compose.runtime.mutableIntStateOf
@@ -32,10 +35,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.view.WindowCompat
 import com.example.tp3_parcial_grupo_1.model.Workout
 import com.example.tp3_parcial_grupo_1.ui.components.AppButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
@@ -55,6 +60,18 @@ fun ActiveWorkoutScreen(
     onFinishWorkoutClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val view = LocalView.current
+    if (!view.isInEditMode) {
+        SideEffect {
+            val window = (view.context as Activity).window
+            window.statusBarColor = android.graphics.Color.parseColor("#123D35")
+            window.navigationBarColor = android.graphics.Color.parseColor("#123D35")
+            window.isNavigationBarContrastEnforced = false
+            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = false
+            WindowCompat.getInsetsController(window, view).isAppearanceLightNavigationBars = false
+        }
+    }
+
     var activeSetIndex by remember { mutableIntStateOf(1) } // 0: Set 1, 1: Set 2, 2: Set 3
     var weightKg by remember { mutableDoubleStateOf(45.0) }
     var restTimeSeconds by remember { mutableIntStateOf(78) }
@@ -77,12 +94,14 @@ fun ActiveWorkoutScreen(
         modifier = modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.primary)
-            .padding(horizontal = MaterialTheme.spacing.screen, vertical = MaterialTheme.spacing.lg)
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .verticalScroll(rememberScrollState())
+                .statusBarsPadding()
+                .padding(horizontal = MaterialTheme.spacing.screen, vertical = MaterialTheme.spacing.md)
+                .verticalScroll(rememberScrollState()),
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md)
         ) {
             // Top Header Row
             Row(
@@ -131,8 +150,6 @@ fun ActiveWorkoutScreen(
                     )
                 }
             }
-
-            Spacer(modifier = Modifier.height(MaterialTheme.spacing.lg))
 
             // Card 1: CURRENT VOLUME WORK Matrix
             DarkWorkoutCard {
@@ -194,8 +211,6 @@ fun ActiveWorkoutScreen(
                     }
                 }
             }
-
-            Spacer(modifier = Modifier.height(MaterialTheme.spacing.md))
 
             // Card 2: LAST SESSION & Weight Selector
             DarkWorkoutCard {
@@ -264,8 +279,6 @@ fun ActiveWorkoutScreen(
                 }
             }
 
-            Spacer(modifier = Modifier.height(MaterialTheme.spacing.md))
-
             // Set Chips Row (Interactive - Always shows number 1, 2, 3)
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -325,8 +338,6 @@ fun ActiveWorkoutScreen(
                 }
             }
 
-            Spacer(modifier = Modifier.height(MaterialTheme.spacing.md))
-
             // Resting Timer Card [350 Fill x 47 Hug]
             DarkWorkoutCard {
                 Row(
@@ -375,8 +386,6 @@ fun ActiveWorkoutScreen(
                 }
             }
 
-            Spacer(modifier = Modifier.height(MaterialTheme.spacing.md))
-
             // VORA Coach Note Card
             DarkWorkoutCard {
                 Row(
@@ -411,7 +420,7 @@ fun ActiveWorkoutScreen(
                 )
             }
 
-            Spacer(modifier = Modifier.height(MaterialTheme.spacing.lg))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.xs))
 
             // Complete Set Button directly below cards
             AppButton(
@@ -426,7 +435,7 @@ fun ActiveWorkoutScreen(
                 style = AppButtonStyle.Accent
             )
 
-            Spacer(modifier = Modifier.height(MaterialTheme.spacing.lg))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.md))
         }
     }
 }
@@ -448,7 +457,7 @@ private fun DarkWorkoutCard(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, widthDp = 390, heightDp = 597)
 @Composable
 private fun ActiveWorkoutScreenPreview() {
     AppTheme {
