@@ -3,7 +3,7 @@ package com.example.tp3_parcial_grupo_1.ui.strings
 // Textos de Perfil. Se mantienen los del diseño de Figma.
 object ProfileStrings {
     const val ProfileTitle = "Profile"
-    const val SettingsButton = "Configuración"
+    const val SettingsButton = "Settings"
     const val EditProfile = "Edit profile"
     const val MySnapshot = "My Snapshot"
     const val Goal = "Goal"
@@ -40,12 +40,12 @@ object ProfileStrings {
 
     val GenderOptions = listOf("Female", "Male", "Non-binary", "Prefer not to say")
 
-    const val FirstNameRequired = "Ingresá tu nombre."
-    const val LastNameRequired = "Ingresá tu apellido."
-    const val DateOfBirthRequired = "Ingresá tu fecha de nacimiento."
-    const val DateOfBirthInvalid = "Usá el formato 14 March 1995."
-    const val HeightInvalid = "La altura debe estar entre 100 y 250 cm."
-    const val WeightInvalid = "El peso debe estar entre 30 y 300 kg."
+    const val FirstNameRequired = "Enter your first name."
+    const val LastNameRequired = "Enter your last name."
+    const val DateOfBirthRequired = "Enter your date of birth."
+    const val DateOfBirthInvalid = "Use the format 14 March 1995."
+    const val HeightInvalid = "Height must be between 100 and 250 cm."
+    const val WeightInvalid = "Weight must be between 30 and 300 kg."
 
     const val GoalsTitle = "Goals & Preferences"
     const val GoalsHeading = "Your goals"
@@ -65,14 +65,14 @@ object ProfileStrings {
     const val FoodsEnjoyLabel = "Foods You Enjoy"
     const val FoodsAvoidLabel = "Foods to Avoid"
     const val AddIngredientPlaceholder = "Add an ingredient..."
-    const val AddIngredient = "Agregar ingrediente"
-    const val RemoveIngredient = "Quitar"
+    const val AddIngredient = "Add ingredient"
+    const val RemoveIngredient = "Remove"
     const val MealPreferencesLabel = "Meal Preferences"
     const val MealsPerDayLabel = "Meals per day"
     const val PreferredBreakfastLabel = "Preferred breakfast"
     const val PreferredDinnerLabel = "Preferred dinner"
     const val NutritionPriorityPrompt = "What matters most to you?"
-    const val IngredientDuplicate = "Ese ingrediente ya está en la lista."
+    const val IngredientDuplicate = "That ingredient is already on the list."
 
     val FoodsEnjoyOptions = listOf("Chicken", "Eggs", "Fish", "Rice", "Pasta", "Greek yoghurt", "Vegetables", "Fruit")
     val MealsPerDayOptions = listOf("3 meals", "3 meals + 1 snack", "4 meals", "5 meals")
@@ -116,9 +116,9 @@ object ProfileStrings {
     const val ContactSupportRow = "Contact Support"
     const val LogOut = "Log out"
     const val AppVersion = "VORA v1.0.0"
-    const val LogOutDialogTitle = "Cerrar sesión"
-    const val LogOutDialogCancel = "Cancelar"
-    const val LogOutDialogBody = "¿Querés cerrar sesión en este dispositivo?"
+    const val LogOutDialogTitle = "Log out"
+    const val LogOutDialogCancel = "Cancel"
+    const val LogOutDialogBody = "Do you want to log out of this device?"
 
     fun daysPerWeek(days: Int) = "$days days/week"
 }
