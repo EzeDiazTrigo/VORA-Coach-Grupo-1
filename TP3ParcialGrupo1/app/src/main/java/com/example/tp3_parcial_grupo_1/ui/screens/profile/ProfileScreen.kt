@@ -62,6 +62,7 @@ fun ProfileRoute(
     onEditProfileClick: () -> Unit,
     onGoalsClick: () -> Unit,
     onPreferencesClick: () -> Unit,
+    onVoiceAiClick: () -> Unit,
     onAccountClick: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: ProfileViewModel = hiltViewModel()
@@ -83,6 +84,7 @@ fun ProfileRoute(
         onEditProfileClick = onEditProfileClick,
         onGoalsClick = onGoalsClick,
         onPreferencesClick = onPreferencesClick,
+        onVoiceAiClick = onVoiceAiClick,
         onConnectedDataClick = viewModel::onDemoNoticeClick,
         onAccountClick = onAccountClick,
         modifier = modifier
@@ -97,6 +99,7 @@ fun ProfileScreen(
     onEditProfileClick: () -> Unit,
     onGoalsClick: () -> Unit,
     onPreferencesClick: () -> Unit,
+    onVoiceAiClick: () -> Unit,
     onConnectedDataClick: () -> Unit,
     onAccountClick: () -> Unit,
     modifier: Modifier = Modifier
@@ -116,7 +119,7 @@ fun ProfileScreen(
                 style = AppButtonStyle.Outlined
             )
             SnapshotCard(uiState)
-            PersonalisationPanel(onReviewPreferencesClick = onPreferencesClick)
+            PersonalisationPanel(onReviewPreferencesClick = onVoiceAiClick)
             ProfileLink(
                 icon = Icons.Outlined.Tune,
                 title = ProfileStrings.YourGoals,
@@ -291,6 +294,7 @@ private fun ProfileScreenPreview() {
             onEditProfileClick = {},
             onGoalsClick = {},
             onPreferencesClick = {},
+            onVoiceAiClick = {},
             onConnectedDataClick = {},
             onAccountClick = {}
         )
