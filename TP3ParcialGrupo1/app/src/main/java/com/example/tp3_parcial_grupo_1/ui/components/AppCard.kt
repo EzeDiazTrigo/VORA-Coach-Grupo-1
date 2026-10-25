@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
+import com.example.tp3_parcial_grupo_1.ui.theme.HairlineWidth
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 
 // Tarjeta blanca con borde sutil; Panel es el contenedor verde destacado.
@@ -34,7 +35,7 @@ fun AppCard(
         containerColor = if (isPanel) colors.primary else colors.surface,
         contentColor = if (isPanel) colors.onPrimary else colors.onSurface
     )
-    val border = if (isPanel) null else BorderStroke(1.dp, colors.outlineVariant)
+    val border = if (isPanel) null else BorderStroke(HairlineWidth, colors.outlineVariant)
     val inner: @Composable ColumnScope.() -> Unit = {
         Column(
             modifier = Modifier.padding(if (isPanel) MaterialTheme.spacing.screen else MaterialTheme.spacing.lg),
