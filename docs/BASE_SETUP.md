@@ -62,6 +62,7 @@ Fuente: la página «Sistema de diseño» del PDF de Figma.
 - **Perfil de demostración**: `ProfileRepository` (`@Singleton`, en memoria) guarda el perfil, las preferencias nutricionales y los ajustes de voz; los datos iniciales están en `data/demo/ProfileDemoData.kt`.
 - **Componentes nuevos**: `AppChip`, `AppOptionCard`, `AppDropdownField` y `AppSwitchRow`.
 - **Validación**: `ProfileValidation.kt` (nombres, fecha con el formato del diseño, altura y peso) con tests.
+- **Navegación**: `profileGraph` (`navigation/ProfileGraph.kt`). Desde el Dashboard: engranaje y «Account» → Configuración, «Edit profile» → Editar perfil, «Your Goals» → Objetivos, «Your Preferences» → Pref. nutricionales, «Review preferences» → Voz e IA. «Connected data» y la fila de privacidad de Voz e IA informan «modo demostración». Cerrar sesión vuelve a Acceso y limpia el historial.
 
 **Por qué**: Dashboard y pantallas de edición comparten un único perfil, así que lo que se guarda en una se ve en las otras. Los ajustes de Voz e IA se aplican al instante porque el diseño no tiene botón de guardar. Los controles sin destino informan «modo demostración».
 
@@ -75,5 +76,4 @@ Fuente: la página «Sistema de diseño» del PDF de Figma.
 
 ## Pendiente
 - Conectar las lambdas de Acceso a las rutas de navegación.
-- Conectar las lambdas de Perfil (ajustes, editar, objetivos, preferencias, cerrar sesión) a las rutas de navegación.
 - Fuente Manrope: se incorpora cuando se exporte el `.ttf` de Figma a `res/font/` (hoy `AppFontFamily` usa la del sistema).
