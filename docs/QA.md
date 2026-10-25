@@ -68,3 +68,17 @@ Cada punto tiene dueño y prioridad: **alta** (se nota a simple vista en la demo
 - Las seis pantallas del Asistente y la barra inferior se compararon contra Figma al implementarlas (ver PR #9, #14 y #20).
 - [ ] **Media · E —** Alturas de los botones de la tarjeta de Error (depende de la transversal de `AppButton`).
 - [ ] **Media · E —** Fuente (depende de Manrope).
+
+## Rotación sin consultas duplicadas (RF07)
+
+Verificado el 25/10 en el emulador (Pixel 10 Pro en 390 × 844 dp), rotando a horizontal y de vuelta a vertical con `adb emu rotate`. Las consultas se contaron en el log de OkHttp (`--> GET`), contra el mock local.
+
+| Pantalla | Rama | Consultas antes → después de rotar | Estado tras rotar |
+|---|---|---|---|
+| Workout / 01 · Dashboard (catálogo) | #22 | `GET /v1/workouts`: 1 → 1 | Lista conservada |
+| Workout / 03 · Details (`w01`) | #22 | `GET /v1/workouts/w01`: 1 → 1; catálogo sigue en 1 | Detalle conservado |
+| Nutrition · Log Manually | `main` | sin red | Nombre, tipo de comida y calorías conservados |
+| Asistente (todos los estados) | #20 | sin red | Estado y progreso de la respuesta conservados; la simulación no se reinicia |
+
+- [x] El catálogo y el detalle no se vuelven a pedir al rotar: el estado vive en los ViewModel.
+- [ ] **Baja · D —** En horizontal, el formulario de Log Manually deja las calorías fuera de la vista inicial (se llega con scroll; no se pierde nada).
