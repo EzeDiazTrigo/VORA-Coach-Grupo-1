@@ -1,5 +1,7 @@
 package com.example.tp3_parcial_grupo_1.ui.screens.profile
 
+import com.example.tp3_parcial_grupo_1.ui.components.AppPillStyle
+import com.example.tp3_parcial_grupo_1.ui.components.AppPillButton
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -20,7 +22,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -29,7 +30,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
@@ -188,37 +188,8 @@ private fun HeroCard(uiState: ProfileUiState, onEditProfileClick: () -> Unit) {
                     textAlign = TextAlign.Center
                 )
             }
-            PillAction(
-                text = ProfileStrings.EditProfile,
-                onClick = onEditProfileClick,
-                containerColor = MaterialTheme.colorScheme.background,
-                contentColor = MaterialTheme.colorScheme.onSurface
-            )
+            AppPillButton(text = ProfileStrings.EditProfile, onClick = onEditProfileClick)
         }
-    }
-}
-
-// Botón chico en píldora del diseño; AppButton tiene un alto mínimo de 52 dp que aquí no corresponde.
-@Composable
-private fun PillAction(
-    text: String,
-    onClick: () -> Unit,
-    containerColor: Color,
-    contentColor: Color,
-    modifier: Modifier = Modifier
-) {
-    Surface(
-        onClick = onClick,
-        modifier = modifier,
-        shape = PillShape,
-        color = containerColor,
-        contentColor = contentColor
-    ) {
-        Text(
-            text,
-            style = MaterialTheme.typography.labelMedium,
-            modifier = Modifier.padding(horizontal = MaterialTheme.spacing.lg, vertical = MaterialTheme.spacing.sm)
-        )
     }
 }
 
@@ -270,11 +241,10 @@ private fun PersonalisationPanel(onReviewPreferencesClick: () -> Unit) {
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.7f)
         )
-        PillAction(
+        AppPillButton(
             text = ProfileStrings.ReviewPreferences,
             onClick = onReviewPreferencesClick,
-            containerColor = MaterialTheme.colorScheme.tertiary,
-            contentColor = MaterialTheme.colorScheme.onTertiary
+            style = AppPillStyle.Accent
         )
     }
 }
