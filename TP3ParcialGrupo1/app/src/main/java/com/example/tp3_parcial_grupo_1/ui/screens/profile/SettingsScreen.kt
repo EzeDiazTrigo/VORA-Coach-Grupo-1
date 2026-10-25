@@ -35,6 +35,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -146,7 +147,7 @@ fun SettingsScreen(
                 text = ProfileStrings.LogOut,
                 onClick = onLogOutClick,
                 style = AppButtonStyle.Outlined,
-                leadingIcon = Icons.AutoMirrored.Outlined.Logout
+                leadingIcon = rememberVectorPainter(Icons.AutoMirrored.Outlined.Logout)
             )
             Text(
                 ProfileStrings.AppVersion,

@@ -57,6 +57,8 @@ class VoiceSettingsViewModel @Inject constructor(
 
     fun onPreviewClick() = message.update { Strings.DemoMode }
 
+    fun onPrivacyClick() = message.update { Strings.DemoMode }
+
     fun onMessageShown() = message.update { null }
 
     private companion object {

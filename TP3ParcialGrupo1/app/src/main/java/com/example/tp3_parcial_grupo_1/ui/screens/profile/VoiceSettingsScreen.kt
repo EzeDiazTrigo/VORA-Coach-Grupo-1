@@ -13,7 +13,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.VolumeUp
-import androidx.compose.material.icons.outlined.GraphicEq
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -25,10 +24,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.tp3_parcial_grupo_1.R
 import com.example.tp3_parcial_grupo_1.data.demo.ProfileDemoData
 import com.example.tp3_parcial_grupo_1.model.CoachingStyle
 import com.example.tp3_parcial_grupo_1.model.ResponseStyle
@@ -51,7 +52,6 @@ private val VoiceIconSize = 20.dp
 
 @Composable
 fun VoiceSettingsRoute(
-    onPrivacyClick: () -> Unit,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: VoiceSettingsViewModel = hiltViewModel()
@@ -78,7 +78,7 @@ fun VoiceSettingsRoute(
         onResponseStyleSelected = viewModel::onResponseStyleSelected,
         onVoiceFeedbackChange = viewModel::onVoiceFeedbackChange,
         onHapticFeedbackChange = viewModel::onHapticFeedbackChange,
-        onPrivacyClick = onPrivacyClick,
+        onPrivacyClick = viewModel::onPrivacyClick,
         modifier = modifier
     )
 }
@@ -154,7 +154,7 @@ fun VoiceSettingsScreen(
                             text = ProfileStrings.Preview,
                             onClick = onPreviewClick,
                             style = AppButtonStyle.Outlined,
-                            leadingIcon = Icons.Outlined.GraphicEq,
+                            leadingIcon = painterResource(R.drawable.ic_audio_waveform),
                             isCompact = true,
                             modifier = Modifier.weight(1f)
                         )
