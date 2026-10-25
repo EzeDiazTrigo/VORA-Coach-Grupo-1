@@ -15,7 +15,8 @@ android {
         applicationId = "com.example.tp3_parcial_grupo_1"
         minSdk = 24
         targetSdk = 37
-        versionCode = 1
+        // En CI cada corrida sube el versionCode para que los APKs se puedan instalar uno sobre otro.
+        versionCode = System.getenv("GITHUB_RUN_NUMBER")?.toIntOrNull() ?: 1
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
