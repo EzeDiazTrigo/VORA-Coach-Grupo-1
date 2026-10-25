@@ -1,5 +1,7 @@
 package com.example.tp3_parcial_grupo_1.ui.screens.profile
 
+import com.example.tp3_parcial_grupo_1.ui.components.AppSectionLabel
+import com.example.tp3_parcial_grupo_1.ui.components.AppChipStyle
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -72,7 +74,7 @@ fun GoalsPreferencesScreen(
 ) {
     AppScaffold(
         modifier = modifier.fillMaxSize(),
-        title = ProfileStrings.GoalsTitle,
+        title = ProfileStrings.GoalsHeading,
         onBack = onBackClick
     ) { padding ->
         Column(
@@ -82,14 +84,11 @@ fun GoalsPreferencesScreen(
                 .padding(horizontal = MaterialTheme.spacing.screen, vertical = MaterialTheme.spacing.lg),
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xl)
         ) {
-            Column(verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xs)) {
-                Text(ProfileStrings.GoalsHeading, style = MaterialTheme.typography.titleMedium)
-                Text(
-                    ProfileStrings.GoalsIntro,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
+            Text(
+                ProfileStrings.GoalsIntro,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
             Section(label = ProfileStrings.PrimaryGoalLabel, prompt = ProfileStrings.PrimaryGoalPrompt) {
                 PrimaryGoal.entries.forEach { goal ->
                     AppOptionCard(
@@ -109,7 +108,8 @@ fun GoalsPreferencesScreen(
                         AppChip(
                             text = trainingDaysLabel(days),
                             selected = days == uiState.trainingDays,
-                            onClick = { onTrainingDaysSelected(days) }
+                            onClick = { onTrainingDaysSelected(days) },
+                            style = AppChipStyle.Dark
                         )
                     }
                 }
@@ -150,16 +150,7 @@ private fun Section(
     content: @Composable () -> Unit
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md)) {
-        Column(verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xxs)) {
-            Text(label, style = MaterialTheme.typography.labelMedium)
-            if (prompt != null) {
-                Text(
-                    prompt,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
-        }
+        AppSectionLabel(if (prompt != null) "$label — $prompt" else label)
         content()
     }
 }

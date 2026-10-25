@@ -60,7 +60,7 @@ Fuente: la página «Sistema de diseño» del PDF de Figma.
 ### 7. Perfil
 - **Pantallas** (`ui/screens/profile/`): Dashboard, Editar perfil, Objetivos y preferencias, Preferencias nutricionales, Voz e IA y Configuración, cada una con su `Route`, `Screen` sin estado, `UiState`, `ViewModel` y `@Preview`. Los `Route` reciben lambdas de navegación.
 - **Perfil de demostración**: `ProfileRepository` (`@Singleton`, en memoria) guarda el perfil, las preferencias nutricionales y los ajustes de voz; los datos iniciales están en `data/demo/ProfileDemoData.kt`.
-- **Componentes nuevos**: `AppChip`, `AppOptionCard`, `AppDropdownField` y `AppSwitchRow`.
+- **Componentes nuevos**: `AppChip` (estilos menta, oscuro y contorno con check), `AppOptionCard`, `AppDropdownField`, `AppSwitchRow` y `AppSectionLabel` (rótulo de sección en mayúsculas). Las pantallas usan los íconos exportados de Figma y la foto `img_avatar_demo`.
 - **Validación**: `ProfileValidation.kt` (nombres, fecha con el formato del diseño, altura y peso) con tests.
 - **Navegación**: `profileGraph` (`navigation/ProfileGraph.kt`). Desde el Dashboard: engranaje y «Account» → Configuración, «Edit profile» → Editar perfil, «Your Goals» → Objetivos, «Your Preferences» → Pref. nutricionales, «Review preferences» → Voz e IA. «Connected data» y la fila de privacidad de Voz e IA informan «modo demostración». Cerrar sesión vuelve a Acceso y limpia el historial.
 

@@ -1,5 +1,9 @@
 package com.example.tp3_parcial_grupo_1.ui.screens.profile
 
+import com.example.tp3_parcial_grupo_1.ui.components.AppSectionLabel
+import com.example.tp3_parcial_grupo_1.ui.components.AppChipStyle
+import androidx.compose.ui.res.painterResource
+import com.example.tp3_parcial_grupo_1.R
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -11,7 +15,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
-import androidx.compose.material.icons.outlined.Cancel
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -40,7 +43,6 @@ import com.example.tp3_parcial_grupo_1.ui.strings.ProfileStrings
 import com.example.tp3_parcial_grupo_1.ui.strings.title
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
 import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
-import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 
 private val RemoveIconSize = 18.dp
@@ -93,7 +95,7 @@ fun NutritionPreferencesScreen(
 ) {
     AppScaffold(
         modifier = modifier.fillMaxSize(),
-        title = ProfileStrings.NutritionTitle,
+        title = ProfileStrings.NutritionHeading,
         onBack = onBackClick
     ) { padding ->
         Column(
@@ -103,14 +105,11 @@ fun NutritionPreferencesScreen(
                 .padding(horizontal = MaterialTheme.spacing.screen, vertical = MaterialTheme.spacing.lg),
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xl)
         ) {
-            Column(verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xs)) {
-                Text(ProfileStrings.NutritionHeading, style = MaterialTheme.typography.titleMedium)
-                Text(
-                    ProfileStrings.NutritionIntro,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
+            Text(
+                ProfileStrings.NutritionIntro,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
             PreferenceSection(ProfileStrings.DietaryPreferenceLabel) {
                 FlowRow(
                     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm),
@@ -127,7 +126,12 @@ fun NutritionPreferencesScreen(
                     verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm)
                 ) {
                     ProfileStrings.FoodsEnjoyOptions.forEach { food ->
-                        AppChip(food, selected = food in uiState.foodsEnjoyed, onClick = { onFoodEnjoyedToggled(food) })
+                        AppChip(
+                            food,
+                            selected = food in uiState.foodsEnjoyed,
+                            onClick = { onFoodEnjoyedToggled(food) },
+                            style = AppChipStyle.Outlined
+                        )
                     }
                 }
             }
@@ -154,18 +158,22 @@ fun NutritionPreferencesScreen(
                             label = { Text(ingredient, style = MaterialTheme.typography.labelLarge) },
                             trailingIcon = {
                                 Icon(
-                                    Icons.Outlined.Cancel,
+                                    painterResource(R.drawable.ic_x_circle),
                                     contentDescription = ProfileStrings.RemoveIngredient,
-                                    modifier = Modifier.size(RemoveIconSize)
+                                    modifier = Modifier.size(RemoveIconSize),
+                                    tint = MaterialTheme.colorScheme.error
                                 )
                             },
                             shape = PillShape,
                             colors = InputChipDefaults.inputChipColors(
-                                containerColor = MaterialTheme.extendedColors.mintSoft,
-                                labelColor = MaterialTheme.colorScheme.primary,
-                                trailingIconColor = MaterialTheme.colorScheme.primary
+                                containerColor = MaterialTheme.colorScheme.surface,
+                                labelColor = MaterialTheme.colorScheme.onSurface
                             ),
-                            border = null
+                            border = InputChipDefaults.inputChipBorder(
+                                enabled = true,
+                                selected = false,
+                                borderColor = MaterialTheme.colorScheme.outlineVariant
+                            )
                         )
                     }
                 }
@@ -207,7 +215,7 @@ fun NutritionPreferencesScreen(
 @Composable
 private fun PreferenceSection(label: String, content: @Composable () -> Unit) {
     Column(verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md)) {
-        Text(label, style = MaterialTheme.typography.labelMedium)
+        AppSectionLabel(label)
         content()
     }
 }

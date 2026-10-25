@@ -1,5 +1,10 @@
 package com.example.tp3_parcial_grupo_1.ui.screens.profile
 
+import com.example.tp3_parcial_grupo_1.R
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.draw.clip
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -106,7 +111,7 @@ fun EditProfileScreen(
                 .padding(horizontal = MaterialTheme.spacing.screen, vertical = MaterialTheme.spacing.lg),
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.lg)
         ) {
-            PhotoSection(initials = initialsOf(uiState), onChangePhotoClick = onChangePhotoClick)
+            PhotoSection(onChangePhotoClick = onChangePhotoClick)
             AppTextField(
                 value = uiState.firstName,
                 onValueChange = onFirstNameChange,
@@ -158,23 +163,19 @@ fun EditProfileScreen(
     }
 }
 
-private fun initialsOf(uiState: EditProfileUiState): String =
-    "${uiState.firstName.firstOrNull() ?: ""}${uiState.lastName.firstOrNull() ?: ""}".uppercase()
-
 @Composable
-private fun PhotoSection(initials: String, onChangePhotoClick: () -> Unit) {
+private fun PhotoSection(onChangePhotoClick: () -> Unit) {
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm)
     ) {
-        // Marcador del avatar; se reemplaza por la foto exportada de Figma.
-        Box(
-            modifier = Modifier.size(PhotoSize).background(MaterialTheme.extendedColors.mintSoft, CircleShape),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(initials, style = MaterialTheme.typography.titleLarge, color = MaterialTheme.colorScheme.primary)
-        }
+        Image(
+            painter = painterResource(R.drawable.img_avatar_demo),
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.size(PhotoSize).clip(CircleShape)
+        )
         TextButton(onClick = onChangePhotoClick) {
             Text(ProfileStrings.ChangePhoto, style = MaterialTheme.typography.labelLarge)
         }
@@ -201,19 +202,22 @@ private fun GenderField(selected: String, onSelected: (String) -> Unit) {
             onSelected = onSelected
         )
         Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(MaterialTheme.extendedColors.mintSoft, MaterialTheme.shapes.small)
+                .padding(MaterialTheme.spacing.md),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xs)
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm)
         ) {
             Icon(
-                Icons.Outlined.Info,
+                painterResource(R.drawable.ic_info),
                 contentDescription = null,
                 modifier = Modifier.size(HintIconSize),
-                tint = MaterialTheme.extendedColors.textSubtle
+                tint = MaterialTheme.colorScheme.primary
             )
             Text(
                 ProfileStrings.GenderHint,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.extendedColors.textSubtle
+                style = MaterialTheme.typography.bodyMedium
             )
         }
     }

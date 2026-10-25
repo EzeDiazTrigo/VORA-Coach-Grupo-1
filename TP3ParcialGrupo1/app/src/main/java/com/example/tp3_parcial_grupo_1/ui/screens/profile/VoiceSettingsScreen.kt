@@ -1,5 +1,10 @@
 package com.example.tp3_parcial_grupo_1.ui.screens.profile
 
+import com.example.tp3_parcial_grupo_1.ui.components.AppSectionLabel
+import com.example.tp3_parcial_grupo_1.ui.components.AppChipStyle
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Column
@@ -11,8 +16,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.VolumeUp
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -48,6 +51,7 @@ import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 
+private val VoiceIconBoxSize = 40.dp
 private val VoiceIconSize = 20.dp
 
 @Composable
@@ -127,7 +131,8 @@ fun VoiceSettingsScreen(
                         AppChip(
                             text = style.title(),
                             selected = style == uiState.coachingStyle,
-                            onClick = { onCoachingStyleSelected(style) }
+                            onClick = { onCoachingStyleSelected(style) },
+                            style = AppChipStyle.Dark
                         )
                     }
                 }
@@ -139,12 +144,17 @@ fun VoiceSettingsScreen(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md)
                     ) {
-                        Icon(
-                            Icons.AutoMirrored.Outlined.VolumeUp,
-                            contentDescription = null,
-                            modifier = Modifier.size(VoiceIconSize),
-                            tint = MaterialTheme.colorScheme.primary
-                        )
+                        Box(
+                            modifier = Modifier.size(VoiceIconBoxSize).background(MaterialTheme.colorScheme.primary, CircleShape),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(
+                                painterResource(R.drawable.ic_volume_2),
+                                contentDescription = null,
+                                modifier = Modifier.size(VoiceIconSize),
+                                tint = MaterialTheme.colorScheme.onPrimary
+                            )
+                        }
                         Text(
                             uiState.voiceName,
                             style = MaterialTheme.typography.labelLarge,
@@ -230,7 +240,7 @@ fun VoiceSettingsScreen(
 @Composable
 private fun VoiceSection(label: String, content: @Composable () -> Unit) {
     Column(verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md)) {
-        Text(label, style = MaterialTheme.typography.labelMedium)
+        AppSectionLabel(label)
         content()
     }
 }
