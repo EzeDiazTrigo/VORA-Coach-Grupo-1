@@ -29,9 +29,7 @@ import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -105,8 +103,6 @@ fun WorkoutListScreen(
     onViewProgressClick: () -> Unit,
     onRetryClick: () -> Unit
 ) {
-    var selectedLevelFilter by remember { mutableStateOf("ALL") }
-
     AppScaffold(
         onBack = onBackClick,
         snackbarHostState = snackbarHostState,
@@ -146,10 +142,6 @@ fun WorkoutListScreen(
                 }
                 else -> {
                     val recommendedWorkout = uiState.workouts.first()
-                    val filteredWorkouts = remember(uiState.workouts, selectedLevelFilter) {
-                        if (selectedLevelFilter == "ALL") uiState.workouts
-                        else uiState.workouts.filter { it.level.equals(selectedLevelFilter, ignoreCase = true) }
-                    }
 
                     Column(
                         modifier = Modifier
@@ -301,53 +293,6 @@ fun WorkoutListScreen(
                                     color = MaterialTheme.colorScheme.onSurface
                                 )
                             }
-                        }
-
-                        // Workouts Catalog Section & Level Filters
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(
-                                text = "All Workouts",
-                                style = MaterialTheme.typography.titleMedium,
-                                fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.onSurface
-                            )
-
-                            Row(horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xs)) {
-                                val filters = listOf("ALL", "MODERATE", "INTERMEDIATE")
-                                filters.forEach { filter ->
-                                    val isSelected = filter == selectedLevelFilter
-                                    Box(
-                                        modifier = Modifier
-                                            .clip(PillShape)
-                                            .background(
-                                                if (isSelected) MaterialTheme.colorScheme.primary
-                                                else MaterialTheme.colorScheme.surface
-                                            )
-                                            .clickable { selectedLevelFilter = filter }
-                                            .padding(horizontal = MaterialTheme.spacing.sm, vertical = 4.dp)
-                                    ) {
-                                        Text(
-                                            text = filter,
-                                            style = MaterialTheme.typography.labelSmall,
-                                            fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
-                                            color = if (isSelected) MaterialTheme.colorScheme.onPrimary
-                                                    else MaterialTheme.colorScheme.onSurfaceVariant
-                                        )
-                                    }
-                                }
-                            }
-                        }
-
-                        // Workouts Catalog List Items (Each opens its own detail!)
-                        filteredWorkouts.forEach { workout ->
-                            WorkoutCatalogCard(
-                                workout = workout,
-                                onClick = { onWorkoutClick(workout.id) }
-                            )
                         }
 
                         // Card 3: This Week's Activity
@@ -544,49 +489,6 @@ fun WorkoutListScreen(
     }
 }
 
-@Composable
-private fun WorkoutCatalogCard(
-    workout: Workout,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    AppCard(
-        style = AppCardStyle.Surface,
-        onClick = onClick,
-        modifier = modifier
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = workout.name,
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
-                Spacer(modifier = Modifier.height(2.dp))
-                Text(
-                    text = "${workout.durationMinutes} min • ${workout.exerciseCount} exercises • ${workout.level}",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
-
-            Spacer(modifier = Modifier.width(MaterialTheme.spacing.sm))
-
-            Icon(
-                painter = painterResource(id = R.drawable.ic_chevron_right),
-                contentDescription = "View Workout Details",
-                tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.size(MediumIconSize)
-            )
-        }
-    }
-}
-
 @Preview(showBackground = true)
 @Composable
 private fun WorkoutListScreenPreview() {
@@ -602,14 +504,6 @@ private fun WorkoutListScreenPreview() {
                         durationMinutes = 42,
                         exerciseCount = 5,
                         description = "Focus: Chest & Back"
-                    ),
-                    Workout(
-                        id = "w02",
-                        name = "Active Recovery",
-                        level = "MODERATE",
-                        durationMinutes = 25,
-                        exerciseCount = 3,
-                        description = "Mobility + Walk"
                     )
                 )
             ),
