@@ -8,12 +8,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -50,7 +50,7 @@ fun AppButton(
     val actualTextColor = textColor ?: when (style) {
         AppButtonStyle.Primary -> colors.onPrimary
         AppButtonStyle.Accent -> colors.onTertiary
-        AppButtonStyle.Outlined -> colors.onPrimary
+        AppButtonStyle.Outlined -> colors.onSurface
     }
     val content: @Composable () -> Unit = {
         Row(
@@ -73,8 +73,8 @@ fun AppButton(
             }
         }
     }
-    val contentPadding = if (isCompact) PaddingValues(horizontal = 8.dp) else PaddingValues(horizontal = 16.dp, vertical = 8.dp)
-    val buttonModifier = if (fullWidth) modifier.fillMaxWidth().heightIn(min = 42.dp) else modifier.heightIn(min = 42.dp)
+    val contentPadding = if (isCompact) PaddingValues(horizontal = 12.dp, vertical = 6.dp) else PaddingValues(horizontal = 16.dp, vertical = 12.dp)
+    val buttonModifier = if (fullWidth) modifier.fillMaxWidth().heightIn(min = 52.dp) else modifier.heightIn(min = 52.dp)
 
     when (style) {
         AppButtonStyle.Outlined -> OutlinedButton(
@@ -83,7 +83,7 @@ fun AppButton(
             enabled = isEnabled,
             shape = PillShape,
             contentPadding = contentPadding,
-            border = BorderStroke(1.dp, borderColor ?: colors.onPrimary.copy(alpha = 0.6f)),
+            border = BorderStroke(1.dp, borderColor ?: colors.outlineVariant),
             colors = ButtonDefaults.outlinedButtonColors(
                 containerColor = containerColor ?: Color.Unspecified,
                 contentColor = actualTextColor

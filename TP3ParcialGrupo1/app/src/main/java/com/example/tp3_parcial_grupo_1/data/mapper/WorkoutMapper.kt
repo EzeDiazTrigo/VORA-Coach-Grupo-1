@@ -8,57 +8,26 @@ import com.example.tp3_parcial_grupo_1.data.remote.dto.WorkoutSummaryDto
 import com.example.tp3_parcial_grupo_1.model.Exercise
 import com.example.tp3_parcial_grupo_1.model.Workout
 
-private fun mapWorkoutName(rawName: String): String {
-    return when {
-        rawName.equals("Entrenamiento completo", ignoreCase = true) ||
-        rawName.equals("Fuerza y constancia", ignoreCase = true) ||
-        rawName.equals("Fuerza inicial", ignoreCase = true) ||
-        rawName.equals("Fuerza de torso", ignoreCase = true) -> "Upper Body Strength"
-        rawName.equals("Recuperación activa", ignoreCase = true) -> "Active Recovery"
-        rawName.equals("Fuerza de piernas", ignoreCase = true) -> "Lower Body Strength"
-        else -> rawName
-    }
-}
-
-private fun mapWorkoutLevel(rawLevel: String): String {
-    return when {
-        rawLevel.equals("beginner", ignoreCase = true) ||
-        rawLevel.equals("principiante", ignoreCase = true) -> "Moderate"
-        rawLevel.equals("intermediate", ignoreCase = true) -> "Moderate"
-        else -> rawLevel
-    }
-}
-
-private fun mapWorkoutDescription(rawDesc: String?): String? {
-    if (rawDesc != null && (
-            rawDesc.contains("ejemplo para el trabajo", ignoreCase = true) ||
-            rawDesc.contains("rutina de ejemplo", ignoreCase = true)
-        )) {
-        return "Focus: Chest • Back • Shoulders • Arms"
-    }
-    return rawDesc
-}
-
 // DTO -> Entity
 fun WorkoutSummaryDto.toEntity(): WorkoutEntity =
     WorkoutEntity(
         id = id,
-        name = mapWorkoutName(name),
-        level = mapWorkoutLevel(level),
+        name = name,
+        level = level,
         durationMinutes = durationMinutes,
         exerciseCount = exerciseCount,
-        description = mapWorkoutDescription(description)
+        description = description
     )
 
 fun WorkoutDto.toEntity(): WorkoutEntity {
     val exerciseList = exercises.orEmpty()
     return WorkoutEntity(
         id = id,
-        name = mapWorkoutName(name),
-        level = mapWorkoutLevel(level),
+        name = name,
+        level = level,
         durationMinutes = durationMinutes,
         exerciseCount = exerciseList.size,
-        description = mapWorkoutDescription(description)
+        description = description
     )
 }
 
@@ -79,11 +48,11 @@ fun ExerciseDto.toEntity(workoutId: String): ExerciseEntity =
 fun WorkoutEntity.toDomain(exercises: List<ExerciseEntity> = emptyList()): Workout =
     Workout(
         id = id,
-        name = mapWorkoutName(name),
-        level = mapWorkoutLevel(level),
+        name = name,
+        level = level,
         durationMinutes = durationMinutes,
         exerciseCount = if (exercises.isNotEmpty()) exercises.size else exerciseCount,
-        description = mapWorkoutDescription(description),
+        description = description,
         exercises = exercises.map { it.toDomain() }
     )
 
@@ -103,11 +72,11 @@ fun ExerciseEntity.toDomain(): Exercise =
 fun Workout.toEntity(): WorkoutEntity =
     WorkoutEntity(
         id = id,
-        name = mapWorkoutName(name),
+        name = name,
         level = level,
         durationMinutes = durationMinutes,
         exerciseCount = exercises.size.takeIf { it > 0 } ?: exerciseCount,
-        description = mapWorkoutDescription(description)
+        description = description
     )
 
 fun Exercise.toEntity(workoutId: String): ExerciseEntity =
