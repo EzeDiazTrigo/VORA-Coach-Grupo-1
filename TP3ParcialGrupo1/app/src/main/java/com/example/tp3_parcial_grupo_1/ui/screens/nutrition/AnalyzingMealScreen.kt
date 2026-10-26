@@ -19,6 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tp3_parcial_grupo_1.R
+import com.example.tp3_parcial_grupo_1.ui.components.VoraOrb
 import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
 import kotlinx.coroutines.delay
 
@@ -76,37 +77,7 @@ fun AnalyzingMealScreen(
             Spacer(modifier = Modifier.height(36.dp))
 
             // Audio Orb
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier
-                    .size(140.dp)
-                    .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.secondary.copy(alpha = 0.2f))
-                    .border(2.dp, MaterialTheme.colorScheme.secondary, CircleShape)
-            ) {
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier
-                        .size(100.dp)
-                        .clip(CircleShape)
-                        .background(MaterialTheme.colorScheme.secondary)
-                ) {
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(4.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        repeat(5) {
-                            Box(
-                                modifier = Modifier
-                                    .width(3.dp)
-                                    .height((14 + it * 5).dp)
-                                    .clip(PillShape)
-                                    .background(MaterialTheme.colorScheme.primary)
-                            )
-                        }
-                    }
-                }
-            }
+            VoraOrb(size = 140.dp, glowAlpha = 0.4f, showRipple = true)
 
             Spacer(modifier = Modifier.height(28.dp))
 

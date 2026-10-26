@@ -15,7 +15,7 @@ import com.example.tp3_parcial_grupo_1.data.local.entity.WorkoutEntity
         ExerciseEntity::class,
         MealEntity::class
     ],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
