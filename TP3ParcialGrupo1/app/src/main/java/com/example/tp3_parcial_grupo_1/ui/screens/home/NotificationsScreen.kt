@@ -34,6 +34,9 @@ import com.example.tp3_parcial_grupo_1.ui.strings.HomeStrings
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 
+private val TypeIconSize = 20.dp
+private val UnreadDotSize = 6.dp
+
 @Composable
 fun NotificationsRoute(
     onNotificationOpen: (NotificationType) -> Unit,
@@ -106,7 +109,7 @@ private fun NotificationCard(item: NotificationItem, onClick: () -> Unit) {
             Icon(
                 painter = painterResource(item.type.iconRes()),
                 contentDescription = null,
-                modifier = Modifier.size(20.dp),
+                modifier = Modifier.size(TypeIconSize),
                 tint = MaterialTheme.colorScheme.primary
             )
             Column(
@@ -121,9 +124,9 @@ private fun NotificationCard(item: NotificationItem, onClick: () -> Unit) {
                     Text(item.category, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     Row(verticalAlignment = Alignment.Top) {
                         Text(item.timeAgo, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.outline)
-                        Box(modifier = Modifier.padding(start = MaterialTheme.spacing.xxs).size(6.dp)) {
+                        Box(modifier = Modifier.padding(start = MaterialTheme.spacing.xxs).size(UnreadDotSize)) {
                             if (item.isUnread) {
-                                Box(Modifier.size(6.dp).background(MaterialTheme.colorScheme.primary, CircleShape))
+                                Box(Modifier.size(UnreadDotSize).background(MaterialTheme.colorScheme.primary, CircleShape))
                             }
                         }
                     }

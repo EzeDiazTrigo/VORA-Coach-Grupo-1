@@ -59,7 +59,8 @@ fun BottomNavBar(
                     BottomNavTab(
                         item = item,
                         isSelected = item == selected,
-                        onClick = { if (item != selected) onSelect(item) },
+                        // También en la pestaña actual: AppNavHost la usa para volver a la pantalla inicial.
+                        onClick = { onSelect(item) },
                         modifier = Modifier.weight(1f)
                     )
                 }

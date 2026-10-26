@@ -27,7 +27,8 @@ import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
 import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 
-enum class AppButtonStyle { Primary, Accent, Outlined }
+// Secondary: menta, como «Try again» del Asistente.
+enum class AppButtonStyle { Primary, Secondary, Accent, Outlined }
 
 @Composable
 fun AppButton(
@@ -47,11 +48,7 @@ fun AppButton(
 ) {
     val colors = MaterialTheme.colorScheme
     val isEnabled = enabled && !isLoading
-    val actualTextColor = textColor ?: when (style) {
-        AppButtonStyle.Primary -> colors.onPrimary
-        AppButtonStyle.Accent -> colors.onTertiary
-        AppButtonStyle.Outlined -> colors.onPrimary
-    }
+    val actualTextColor = textColor ?: contentColorFor(style)
     val content: @Composable () -> Unit = {
         Row(
             horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm),
@@ -73,9 +70,8 @@ fun AppButton(
             }
         }
     }
-    val contentPadding = if (isCompact) PaddingValues(horizontal = 8.dp) else PaddingValues(horizontal = 16.dp, vertical = 8.dp)
-    val buttonModifier = if (fullWidth) modifier.fillMaxWidth().heightIn(min = 42.dp) else modifier.heightIn(min = 42.dp)
-
+    val contentPadding = if (isCompact) PaddingValues(horizontal = 8.dp) else ButtonDefaults.ContentPadding
+    val buttonModifier = (if (fullWidth) modifier.fillMaxWidth() else modifier).heightIn(min = 52.dp)
     when (style) {
         AppButtonStyle.Outlined -> OutlinedButton(
             onClick = onClick,
@@ -83,7 +79,7 @@ fun AppButton(
             enabled = isEnabled,
             shape = PillShape,
             contentPadding = contentPadding,
-            border = BorderStroke(1.dp, borderColor ?: colors.onPrimary.copy(alpha = 0.6f)),
+            border = BorderStroke(1.dp, borderColor ?: colors.outlineVariant),
             colors = ButtonDefaults.outlinedButtonColors(
                 containerColor = containerColor ?: Color.Unspecified,
                 contentColor = actualTextColor
@@ -97,12 +93,24 @@ fun AppButton(
             shape = PillShape,
             contentPadding = contentPadding,
             colors = ButtonDefaults.buttonColors(
-                containerColor = containerColor ?: if (style == AppButtonStyle.Accent) colors.tertiary else colors.primary,
+                containerColor = containerColor ?: when (style) {
+                    AppButtonStyle.Accent -> colors.tertiary
+                    AppButtonStyle.Secondary -> colors.secondary
+                    else -> colors.primary
+                },
                 contentColor = actualTextColor
             ),
             content = { content() }
         )
     }
+}
+
+@Composable
+private fun contentColorFor(style: AppButtonStyle) = when (style) {
+    AppButtonStyle.Primary -> MaterialTheme.colorScheme.onPrimary
+    AppButtonStyle.Secondary -> MaterialTheme.colorScheme.onSecondary
+    AppButtonStyle.Accent -> MaterialTheme.colorScheme.onTertiary
+    AppButtonStyle.Outlined -> MaterialTheme.colorScheme.primary
 }
 
 @Preview(showBackground = true)

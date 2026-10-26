@@ -31,10 +31,6 @@ private fun NavBackStackEntry.argumentSummary(arguments: List<NamedNavArgument>)
     }
 }
 
-fun NavGraphBuilder.coachPlaceholderGraph() {
-    placeholder(AppDestination.Coach, "Voice / 01 — Idle")
-}
-
 fun NavGraphBuilder.profilePlaceholderGraph(navController: NavController) {
     navigation(startDestination = AppDestination.Profile.route, route = AppDestination.ProfileGraph.route) {
         placeholder(AppDestination.Profile, "Profile / 01 — Dashboard") {

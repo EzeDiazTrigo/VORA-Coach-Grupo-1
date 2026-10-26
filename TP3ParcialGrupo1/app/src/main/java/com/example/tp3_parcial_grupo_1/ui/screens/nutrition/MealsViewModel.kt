@@ -48,7 +48,6 @@ class MealsViewModel @Inject constructor(
 
     init {
         val today = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
-        loadDefaultMealsIfDatabaseEmpty()
         observeMeals(today)
         if (mealIdArg > 0L) {
             loadMealDetail(mealIdArg)
@@ -64,22 +63,6 @@ class MealsViewModel @Inject constructor(
 
     fun setDate(date: String) {
         observeMeals(date)
-    }
-
-    private fun loadDefaultMealsIfDatabaseEmpty() {
-        viewModelScope.launch {
-            mealRepository.observeAllMeals().take(1).collect { allMeals ->
-                if (allMeals.isEmpty()) {
-                    val today = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
-                    val demoMeals = listOf(
-                        Meal(name = "Breakfast", date = today, type = MealType.BREAKFAST, calories = 420, protein = 25, carbs = 45, fat = 12, itemsSummary = "Greek yoghurt - berries - granola"),
-                        Meal(name = "Lunch", date = today, type = MealType.LUNCH, calories = 520, protein = 38, carbs = 54, fat = 14, itemsSummary = "Chicken - rice - vegetables"),
-                        Meal(name = "Snack", date = today, type = MealType.SNACK, calories = 240, protein = 20, carbs = 12, fat = 6, itemsSummary = "Protein shake")
-                    )
-                    demoMeals.forEach { mealRepository.insertMeal(it) }
-                }
-            }
-        }
     }
 
     private fun observeMeals(date: String) {

@@ -14,3 +14,6 @@ val AppShapes = Shapes(
 
 // Botones, chips y etiquetas del diseño usan radio 100.
 val PillShape = RoundedCornerShape(100.dp)
+
+// Grosor del borde sutil de tarjetas, botones y avatares.
+val HairlineWidth = 1.dp

@@ -41,6 +41,8 @@ import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 
+private val PasswordHintIconSize = 14.dp
+
 @Composable
 fun RegisterRoute(
     onSignedUp: () -> Unit,
@@ -142,7 +144,7 @@ fun RegisterScreen(
                         Icon(
                             Icons.Outlined.CheckCircle,
                             contentDescription = null,
-                            modifier = Modifier.size(14.dp),
+                            modifier = Modifier.size(PasswordHintIconSize),
                             tint = if (uiState.hasSecurePassword) MaterialTheme.extendedColors.success else MaterialTheme.colorScheme.outline
                         )
                         Text(AuthStrings.SecureCharacters, style = MaterialTheme.typography.bodySmall)
