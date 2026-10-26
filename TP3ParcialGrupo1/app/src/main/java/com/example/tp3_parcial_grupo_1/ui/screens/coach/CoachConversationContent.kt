@@ -31,6 +31,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -45,9 +46,8 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.tp3_parcial_grupo_1.R
-import com.example.tp3_parcial_grupo_1.data.demo.CoachAuthor
-import com.example.tp3_parcial_grupo_1.data.demo.CoachDemoData
-import com.example.tp3_parcial_grupo_1.data.demo.CoachMessage
+import com.example.tp3_parcial_grupo_1.model.CoachAuthor
+import com.example.tp3_parcial_grupo_1.model.CoachMessage
 import com.example.tp3_parcial_grupo_1.ui.components.InlineLoading
 import com.example.tp3_parcial_grupo_1.ui.components.VoraOrb
 import com.example.tp3_parcial_grupo_1.ui.strings.CoachStrings
@@ -87,7 +87,7 @@ internal fun CoachConversationContent(state: CoachUiState.Conversation, actions:
         ) {
             item(key = "date") {
                 Text(
-                    text = CoachDemoData.ConversationDate,
+                    text = state.dateLabel,
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.extendedColors.textSubtle,
                     modifier = Modifier.fillMaxWidth().padding(bottom = MaterialTheme.spacing.xs),
@@ -110,6 +110,9 @@ internal fun CoachConversationContent(state: CoachUiState.Conversation, actions:
                 }
             }
         }
+        state.sendError?.let { error ->
+            SendErrorBanner(message = error, onRetry = actions.onRetrySend)
+        }
         ChatInputBar(
             draft = state.draft,
             canSend = state.canSend,
@@ -118,6 +121,36 @@ internal fun CoachConversationContent(state: CoachUiState.Conversation, actions:
             onMicClick = actions.onMicClick,
             onAttach = actions.onDemoAction
         )
+    }
+}
+
+// Falla de POST /v1/coach/messages (RF05): el mensaje queda en el chat y se puede reintentar.
+@Composable
+private fun SendErrorBanner(message: String, onRetry: () -> Unit) {
+    val colors = MaterialTheme.colorScheme
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(colors.error.copy(alpha = 0.08f))
+            .padding(start = MaterialTheme.spacing.screen, end = MaterialTheme.spacing.sm),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(
+            painter = painterResource(R.drawable.ic_alert_circle),
+            contentDescription = null,
+            tint = colors.error,
+            modifier = Modifier.size(16.dp)
+        )
+        Spacer(Modifier.width(MaterialTheme.spacing.sm))
+        Text(
+            text = message,
+            style = MaterialTheme.typography.bodySmall,
+            color = colors.onSurface,
+            modifier = Modifier.weight(1f).padding(vertical = MaterialTheme.spacing.md)
+        )
+        TextButton(onClick = onRetry) {
+            Text(CoachStrings.RetrySend, style = MaterialTheme.typography.labelLarge, color = colors.primary)
+        }
     }
 }
 

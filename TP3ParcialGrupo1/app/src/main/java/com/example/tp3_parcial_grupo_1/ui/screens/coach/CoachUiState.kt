@@ -1,6 +1,6 @@
 package com.example.tp3_parcial_grupo_1.ui.screens.coach
 
-import com.example.tp3_parcial_grupo_1.data.demo.CoachMessage
+import com.example.tp3_parcial_grupo_1.model.CoachMessage
 import com.example.tp3_parcial_grupo_1.data.demo.LastConversation
 
 // Un estado por frame de «AI Voice Flow» en Figma; todos viven en el mismo destino.
@@ -27,7 +27,10 @@ sealed interface CoachUiState {
     data class Conversation(
         val messages: List<CoachMessage>,
         val draft: String,
-        val isVoraTyping: Boolean
+        val isVoraTyping: Boolean,
+        val dateLabel: String = "",
+        // Error al pedir la respuesta a POST /v1/coach/messages; el mensaje del usuario ya quedó guardado.
+        val sendError: String? = null
     ) : CoachUiState {
         val canSend: Boolean get() = draft.isNotBlank() && !isVoraTyping
     }

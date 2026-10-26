@@ -1,7 +1,11 @@
 package com.example.tp3_parcial_grupo_1.ui.screens.coach
 
-import com.example.tp3_parcial_grupo_1.data.demo.CoachAuthor
 import com.example.tp3_parcial_grupo_1.data.demo.CoachDemoData
+import com.example.tp3_parcial_grupo_1.data.repository.CoachRepository
+import com.example.tp3_parcial_grupo_1.data.repository.FakeCoachApi
+import com.example.tp3_parcial_grupo_1.data.repository.FakeCoachMessageDao
+import com.example.tp3_parcial_grupo_1.model.CoachAuthor
+import com.example.tp3_parcial_grupo_1.ui.strings.CoachStrings
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -24,6 +28,10 @@ class CoachViewModelTest {
 
     private val dispatcher = StandardTestDispatcher()
     private val scope = TestScope(dispatcher)
+    private val api = FakeCoachApi()
+    private val dao = FakeCoachMessageDao()
+
+    private fun newViewModel() = CoachViewModel(CoachRepository(api, dao))
 
     @Before
     fun setUp() = Dispatchers.setMain(dispatcher)
@@ -39,14 +47,14 @@ class CoachViewModelTest {
 
     @Test
     fun startsIdleWithSuggestions() {
-        val state = CoachViewModel().uiState.value
+        val state = newViewModel().uiState.value
         assertTrue(state is CoachUiState.Idle)
         assertEquals(CoachDemoData.suggestedQuestions, (state as CoachUiState.Idle).suggestions)
     }
 
     @Test
     fun micGoesThroughListeningProcessingAndReply() = scope.runTest {
-        val viewModel = CoachViewModel()
+        val viewModel = newViewModel()
 
         viewModel.onMicClick()
         runCurrent()
@@ -66,7 +74,7 @@ class CoachViewModelTest {
 
     @Test
     fun listeningTranscriptGrowsWordByWord() = scope.runTest {
-        val viewModel = CoachViewModel()
+        val viewModel = newViewModel()
         viewModel.onMicClick()
 
         advanceTimeBy(CoachViewModel.ListeningStartDelayMs + 1)
@@ -77,7 +85,7 @@ class CoachViewModelTest {
 
     @Test
     fun suggestionSkipsListening() = scope.runTest {
-        val viewModel = CoachViewModel()
+        val viewModel = newViewModel()
         val question = CoachDemoData.suggestedQuestions[2]
 
         viewModel.onSuggestionClick(question)
@@ -89,7 +97,7 @@ class CoachViewModelTest {
 
     @Test
     fun pauseStopsProgressAndResumeContinues() = scope.runTest {
-        val viewModel = CoachViewModel()
+        val viewModel = newViewModel()
         viewModel.onSuggestionClick(CoachDemoData.suggestedQuestions[0])
         advanceTimeBy(CoachViewModel.ProcessingDelayMs + 3 * CoachViewModel.SecondMs)
         runCurrent()
@@ -111,20 +119,18 @@ class CoachViewModelTest {
     }
 
     @Test
-    fun replyEndsInConversationWithTheNewExchange() = scope.runTest {
-        val viewModel = CoachViewModel()
+    fun replyEndsInConversationWithTheExchangeSavedInRoom() = scope.runTest {
+        val viewModel = newViewModel()
         val question = CoachDemoData.suggestedQuestions[3]
         viewModel.onSuggestionClick(question)
 
         advanceUntilIdle()
 
         val conversation = viewModel.uiState.value as CoachUiState.Conversation
-        val lastTwo = conversation.messages.takeLast(2)
-        assertEquals(CoachAuthor.User, lastTwo[0].author)
-        assertEquals(question, lastTwo[0].text)
-        assertEquals(CoachAuthor.Vora, lastTwo[1].author)
-        assertEquals(CoachDemoData.conversation.size + 2, conversation.messages.size)
-        assertEquals(conversation.messages.size, conversation.messages.map { it.id }.toSet().size)
+        assertEquals(listOf(CoachAuthor.User, CoachAuthor.Vora), conversation.messages.map { it.author })
+        assertEquals(question, conversation.messages.first().text)
+        assertEquals(2, dao.stored.size)
+        assertTrue(api.requests.isEmpty())
 
         viewModel.onBack()
         assertEquals(question, (viewModel.uiState.value as CoachUiState.Idle).lastConversation?.text)
@@ -132,7 +138,7 @@ class CoachViewModelTest {
 
     @Test
     fun typeInsteadOpensDemoConversation() {
-        val viewModel = CoachViewModel()
+        val viewModel = newViewModel()
         viewModel.onTypeInstead()
 
         val conversation = viewModel.uiState.value as CoachUiState.Conversation
@@ -141,36 +147,70 @@ class CoachViewModelTest {
     }
 
     @Test
-    fun sendingAddsUserMessageThenVoraReply() = scope.runTest {
-        val viewModel = CoachViewModel()
+    fun sendingStoresTheMessageAndTheRemoteReply() = scope.runTest {
+        val viewModel = newViewModel()
         viewModel.onTypeInstead()
         viewModel.onDraftChange("How am I doing?")
         assertTrue((viewModel.uiState.value as CoachUiState.Conversation).canSend)
 
         viewModel.onSend()
-        runCurrent()
-        val typing = viewModel.uiState.value as CoachUiState.Conversation
-        assertTrue(typing.isVoraTyping)
-        assertEquals("", typing.draft)
-        assertEquals("How am I doing?", typing.messages.last().text)
+        advanceUntilIdle()
 
-        advanceTimeBy(CoachViewModel.TypingDelayMs)
-        runCurrent()
         val replied = viewModel.uiState.value as CoachUiState.Conversation
         assertFalse(replied.isVoraTyping)
-        assertEquals(CoachAuthor.Vora, replied.messages.last().author)
-        assertEquals(CoachDemoData.replyFor("How am I doing?"), replied.messages.last().text)
+        assertEquals("", replied.draft)
+        assertEquals(listOf("How am I doing?", api.replyText), replied.messages.map { it.text })
+        assertEquals("How am I doing?", api.requests.single().text)
+        assertEquals(null, replied.sendError)
+    }
+
+    @Test
+    fun failedSendKeepsTheMessageAndRetryDoesNotDuplicateIt() = scope.runTest {
+        val viewModel = newViewModel()
+        viewModel.onTypeInstead()
+        api.scenario = FakeCoachApi.Scenario.Offline
+        viewModel.onDraftChange("Plan my week")
+        viewModel.onSend()
+        advanceUntilIdle()
+
+        val failed = viewModel.uiState.value as CoachUiState.Conversation
+        assertEquals(CoachStrings.SendErrorOffline, failed.sendError)
+        assertEquals(listOf("Plan my week"), failed.messages.map { it.text })
+
+        api.scenario = FakeCoachApi.Scenario.Normal
+        viewModel.onRetrySend()
+        advanceUntilIdle()
+
+        val recovered = viewModel.uiState.value as CoachUiState.Conversation
+        assertEquals(null, recovered.sendError)
+        assertEquals(listOf("Plan my week", api.replyText), recovered.messages.map { it.text })
+        assertEquals(2, api.requests.size)
+    }
+
+    @Test
+    fun serverErrorShowsItsCode() = scope.runTest {
+        val viewModel = newViewModel()
+        viewModel.onTypeInstead()
+        api.scenario = FakeCoachApi.Scenario.Error
+        viewModel.onDraftChange("Hello")
+        viewModel.onSend()
+        advanceUntilIdle()
+
+        assertEquals(CoachStrings.sendErrorServer(503), (viewModel.uiState.value as CoachUiState.Conversation).sendError)
     }
 
     @Test
     fun typedQuestionMatchesSuggestionIgnoringAccentsAndPunctuation() {
-        assertEquals(CoachDemoData.replyFor("How am I doing?"), CoachDemoData.replyFor("how am i doing"))
-        assertEquals(CoachDemoData.GenericReply, CoachDemoData.replyFor("hola"))
+        assertEquals(
+            CoachDemoData.exchangeFor("How am I doing?").reply,
+            CoachDemoData.exchangeFor("how am i doing").reply
+        )
+        assertEquals(CoachDemoData.lunch, CoachDemoData.exchangeFor("hola"))
     }
 
     @Test
     fun blankDraftIsNotSent() {
-        val viewModel = CoachViewModel()
+        val viewModel = newViewModel()
         viewModel.onTypeInstead()
         viewModel.onDraftChange("   ")
         viewModel.onSend()
@@ -181,7 +221,7 @@ class CoachViewModelTest {
 
     @Test
     fun finishingBeforeSpeakingShowsMicErrorAndRetryListensAgain() = scope.runTest {
-        val viewModel = CoachViewModel()
+        val viewModel = newViewModel()
         viewModel.onMicClick()
         runCurrent()
 
@@ -202,7 +242,7 @@ class CoachViewModelTest {
 
     @Test
     fun listeningToAMessageDoesNotDuplicateIt() = scope.runTest {
-        val viewModel = CoachViewModel()
+        val viewModel = newViewModel()
         viewModel.onTypeInstead()
         val voraMessage = CoachDemoData.conversation.first { it.audioSeconds != null }
 
@@ -217,7 +257,7 @@ class CoachViewModelTest {
 
     @Test
     fun backReturnsToIdleAndThenLeaves() = scope.runTest {
-        val viewModel = CoachViewModel()
+        val viewModel = newViewModel()
         viewModel.onMicClick()
         runCurrent()
 

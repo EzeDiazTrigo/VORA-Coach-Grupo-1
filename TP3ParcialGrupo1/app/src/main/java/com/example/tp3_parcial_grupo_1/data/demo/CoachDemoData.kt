@@ -1,5 +1,7 @@
 package com.example.tp3_parcial_grupo_1.data.demo
 
+import com.example.tp3_parcial_grupo_1.model.CoachAuthor
+import com.example.tp3_parcial_grupo_1.model.CoachMessage
 import java.text.Normalizer
 
 // Datos de demostración del Asistente VORA: no hay voz ni IA real (NAV05).
@@ -11,16 +13,6 @@ data class CoachExchange(
 )
 
 data class LastConversation(val text: String, val timeAgo: String)
-
-enum class CoachAuthor { User, Vora }
-
-data class CoachMessage(
-    val id: Long,
-    val author: CoachAuthor,
-    val text: String,
-    val time: String,
-    val audioSeconds: Int? = null
-)
 
 object CoachDemoData {
     val lunch = CoachExchange(
@@ -57,9 +49,6 @@ object CoachDemoData {
         )
     )
 
-    // Respuesta para preguntas escritas que no están en la demo.
-    const val GenericReply =
-        "I'm in demo mode, so I answer with examples. Try one of the suggested questions."
 
     val suggestedQuestions: List<String> = suggestions.map { it.question }
 
@@ -88,8 +77,6 @@ object CoachDemoData {
     )
 
     fun exchangeFor(question: String): CoachExchange = find(question) ?: lunch
-
-    fun replyFor(question: String): String = find(question)?.reply ?: GenericReply
 
     // «how am i doing» encuentra «How am I doing?»: se comparan sin tildes, signos ni mayúsculas.
     private fun find(question: String): CoachExchange? {

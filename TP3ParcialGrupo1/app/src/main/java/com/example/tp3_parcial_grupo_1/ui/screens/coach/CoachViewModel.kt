@@ -2,16 +2,16 @@ package com.example.tp3_parcial_grupo_1.ui.screens.coach
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.tp3_parcial_grupo_1.data.demo.CoachAuthor
 import com.example.tp3_parcial_grupo_1.data.demo.CoachDemoData
 import com.example.tp3_parcial_grupo_1.data.demo.CoachExchange
-import com.example.tp3_parcial_grupo_1.data.demo.CoachMessage
 import com.example.tp3_parcial_grupo_1.data.demo.LastConversation
+import com.example.tp3_parcial_grupo_1.data.repository.CoachMalformedReplyException
+import com.example.tp3_parcial_grupo_1.data.repository.CoachRepository
+import com.example.tp3_parcial_grupo_1.data.repository.CoachServiceException
+import com.example.tp3_parcial_grupo_1.model.CoachAuthor
+import com.example.tp3_parcial_grupo_1.model.CoachMessage
 import com.example.tp3_parcial_grupo_1.ui.strings.CoachStrings
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 import javax.inject.Inject
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -21,24 +21,38 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 /**
- * Simula el recorrido de voz (escucha → procesamiento → respuesta → conversación) con demoras,
- * sin micrófono ni servicio remoto. El estado vive acá para que la rotación no reinicie la simulación.
+ * Recorrido del Asistente. La voz (escucha → procesamiento → respuesta) sigue simulada con demoras;
+ * el chat escrito usa [CoachRepository]: historial en Room y respuestas de POST /v1/coach/messages.
+ * El estado vive acá para que la rotación no reinicie la simulación ni repita pedidos.
  */
 @HiltViewModel
-class CoachViewModel @Inject constructor() : ViewModel() {
+class CoachViewModel @Inject constructor(
+    private val repository: CoachRepository
+) : ViewModel() {
 
     private var lastConversation: LastConversation = CoachDemoData.lastConversation
     private var exchange: CoachExchange = CoachDemoData.lunch
-    private var messages: List<CoachMessage> = CoachDemoData.conversation
-    private var nextMessageId = messages.maxOf { it.id } + 1
+    private var history: List<CoachMessage> = emptyList()
     private var draft = ""
+    private var isVoraTyping = false
+    private var sendError: String? = null
+    private var pendingQuestion: String? = null
     private var simulation: Job? = null
 
-    // Una respuesta nueva se agrega al historial al terminar; una escuchada desde el chat, no.
-    private var appendReplyToConversation = true
+    // Una respuesta por voz nueva se guarda en el historial al terminar; una escuchada desde el chat, no.
+    private var saveReplyToHistory = true
 
     private val _uiState = MutableStateFlow<CoachUiState>(idleState())
     val uiState: StateFlow<CoachUiState> = _uiState.asStateFlow()
+
+    init {
+        viewModelScope.launch {
+            repository.observeMessages().collect { messages ->
+                history = messages
+                refreshConversation()
+            }
+        }
+    }
 
     fun onMicClick() = startListening(CoachDemoData.lunch)
 
@@ -82,8 +96,7 @@ class CoachViewModel @Inject constructor() : ViewModel() {
 
     fun onDraftChange(text: String) {
         draft = text
-        val conversation = _uiState.value as? CoachUiState.Conversation ?: return
-        _uiState.value = conversation.copy(draft = text)
+        refreshConversation()
     }
 
     fun onSend() {
@@ -91,22 +104,25 @@ class CoachViewModel @Inject constructor() : ViewModel() {
         if (!conversation.canSend) return
         val question = conversation.draft.trim()
         draft = ""
-        messages = messages + message(CoachAuthor.User, question)
         lastConversation = LastConversation(text = question, timeAgo = CoachStrings.JustNow)
-        simulation?.cancel()
-        simulation = viewModelScope.launch {
-            _uiState.value = CoachUiState.Conversation(messages, draft = "", isVoraTyping = true)
-            delay(TypingDelayMs)
-            messages = messages + message(CoachAuthor.Vora, CoachDemoData.replyFor(question), ReplyAudioSeconds)
-            showConversation()
+        viewModelScope.launch {
+            repository.addUserMessage(question)
+            requestReply(question)
         }
+    }
+
+    // Reintenta la última pregunta cuyo pedido falló, sin volver a guardarla.
+    fun onRetrySend() {
+        val question = pendingQuestion ?: return
+        if (isVoraTyping) return
+        viewModelScope.launch { requestReply(question) }
     }
 
     // «Escuchar respuesta» de un mensaje de VORA: reproduce ese mensaje sin duplicarlo en el chat.
     fun onListenToMessage(messageId: Long) {
-        val vora = messages.firstOrNull { it.id == messageId && it.author == CoachAuthor.Vora } ?: return
-        exchange = exchange.copy(reply = vora.text, replySeconds = vora.audioSeconds ?: ReplyAudioSeconds)
-        appendReplyToConversation = false
+        val vora = visibleMessages().firstOrNull { it.id == messageId && it.author == CoachAuthor.Vora } ?: return
+        exchange = exchange.copy(reply = vora.text, replySeconds = vora.audioSeconds ?: DefaultAudioSeconds)
+        saveReplyToHistory = false
         playReply(fromSecond = 0)
     }
 
@@ -115,6 +131,23 @@ class CoachViewModel @Inject constructor() : ViewModel() {
         if (_uiState.value is CoachUiState.Idle) return false
         goIdle()
         return true
+    }
+
+    private suspend fun requestReply(question: String) {
+        isVoraTyping = true
+        sendError = null
+        pendingQuestion = question
+        refreshConversation()
+        repository.requestReply(question)
+            .onSuccess { pendingQuestion = null }
+            .onFailure { sendError = it.toUserMessage() }
+        isVoraTyping = false
+        refreshConversation()
+    }
+
+    // Si el usuario salió del chat mientras VORA respondía, no se lo trae de vuelta.
+    private fun refreshConversation() {
+        if (_uiState.value is CoachUiState.Conversation) publishConversation()
     }
 
     private fun startListening(next: CoachExchange) {
@@ -139,7 +172,7 @@ class CoachViewModel @Inject constructor() : ViewModel() {
             _uiState.value = CoachUiState.Processing(transcript = exchange.question, step = exchange.processingStep)
             delay(ProcessingDelayMs)
             lastConversation = LastConversation(text = exchange.question, timeAgo = CoachStrings.JustNow)
-            appendReplyToConversation = true
+            saveReplyToHistory = true
             playReply(fromSecond = 0)
         }
     }
@@ -157,20 +190,31 @@ class CoachViewModel @Inject constructor() : ViewModel() {
                 )
                 delay(SecondMs)
             }
-            if (appendReplyToConversation) {
-                messages = messages +
-                    message(CoachAuthor.User, exchange.question) +
-                    message(CoachAuthor.Vora, exchange.reply, exchange.replySeconds)
-                appendReplyToConversation = false
+            if (saveReplyToHistory) {
+                saveReplyToHistory = false
+                repository.saveExchange(exchange.question, exchange.reply, exchange.replySeconds)
             }
             showConversation()
         }
     }
 
+    // Sin historial guardado se muestra la conversación de ejemplo del frame de Figma.
+    private fun visibleMessages(): List<CoachMessage> = history.ifEmpty { CoachDemoData.conversation }
+
+    private fun publishConversation() {
+        _uiState.value = CoachUiState.Conversation(
+            messages = visibleMessages(),
+            draft = draft,
+            isVoraTyping = isVoraTyping,
+            dateLabel = if (history.isEmpty()) CoachDemoData.ConversationDate else CoachStrings.Today,
+            sendError = sendError
+        )
+    }
+
     private fun showConversation() {
         simulation?.cancel()
         simulation = null
-        _uiState.value = CoachUiState.Conversation(messages, draft, isVoraTyping = false)
+        publishConversation()
     }
 
     private fun showMicError() {
@@ -190,13 +234,11 @@ class CoachViewModel @Inject constructor() : ViewModel() {
         lastConversation = lastConversation
     )
 
-    private fun message(author: CoachAuthor, text: String, audioSeconds: Int? = null) = CoachMessage(
-        id = nextMessageId++,
-        author = author,
-        text = text,
-        time = SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date()),
-        audioSeconds = audioSeconds
-    )
+    private fun Throwable.toUserMessage(): String = when (this) {
+        is CoachServiceException -> CoachStrings.sendErrorServer(code)
+        is CoachMalformedReplyException -> CoachStrings.SendErrorMalformed
+        else -> CoachStrings.SendErrorOffline
+    }
 
     companion object {
         const val ListeningStartDelayMs = 600L
@@ -204,7 +246,6 @@ class CoachViewModel @Inject constructor() : ViewModel() {
         const val ListeningEndDelayMs = 900L
         const val ProcessingDelayMs = 1_800L
         const val SecondMs = 1_000L
-        const val TypingDelayMs = 1_200L
-        const val ReplyAudioSeconds = 12
+        const val DefaultAudioSeconds = 12
     }
 }
