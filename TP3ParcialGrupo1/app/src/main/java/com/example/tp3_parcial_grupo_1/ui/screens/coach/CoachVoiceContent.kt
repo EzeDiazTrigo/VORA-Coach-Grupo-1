@@ -108,7 +108,7 @@ internal fun CoachProcessingContent(state: CoachUiState.Processing, actions: Coa
         }
     ) {
         Spacer(Modifier.height(50.dp))
-        VoraOrb(size = 150.dp, glowAlpha = 0.4f)
+        VoraOrb(size = 150.dp, glowAlpha = 0.35f)
         Spacer(Modifier.height(MaterialTheme.spacing.xxxl))
         Text(CoachStrings.Thinking, style = MaterialTheme.typography.labelLarge, color = colors.secondary)
         Spacer(Modifier.height(MaterialTheme.spacing.lg))

@@ -74,7 +74,7 @@ fun VoiceLoggingScreen(
             Spacer(modifier = Modifier.height(48.dp))
 
             // Pulsing Audio Orb
-            VoraOrb(size = 160.dp, glowAlpha = 0.45f, showRipple = true)
+            VoraOrb(size = 160.dp, glowAlpha = 0.3f, showRipple = true)
 
             Spacer(modifier = Modifier.height(32.dp))
 

@@ -195,7 +195,7 @@ fun PreWorkoutScreen(
                 ) {
                     Column {
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            VoraLogo(size = 18.dp)
+                            VoraLogo(size = 32.dp)
                             Spacer(modifier = Modifier.width(MaterialTheme.spacing.xs))
                             Text(
                                 text = "Need anything?",

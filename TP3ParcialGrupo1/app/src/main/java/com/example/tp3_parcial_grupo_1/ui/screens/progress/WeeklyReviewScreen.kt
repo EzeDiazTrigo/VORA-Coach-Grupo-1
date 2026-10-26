@@ -46,7 +46,6 @@ import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 
-private val HeaderOrbSize = 44.dp
 private val CheckContainerSize = 32.dp
 private val BulletSize = 6.dp
 private val ButtonMinHeight = 52.dp
@@ -137,7 +136,7 @@ private fun ReviewHeader(onBackClick: () -> Unit) {
             Text(ProgressStrings.WeeklyReviewTitle, style = MaterialTheme.typography.headlineMedium)
             Text(ProgressStrings.WeeklyReviewSubtitle, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.extendedColors.mint)
         }
-        ProgressOrb(size = HeaderOrbSize)
+        ProgressOrb()
     }
 }
 

@@ -77,7 +77,7 @@ fun AnalyzingMealScreen(
             Spacer(modifier = Modifier.height(36.dp))
 
             // Audio Orb
-            VoraOrb(size = 140.dp, glowAlpha = 0.4f, showRipple = true)
+            VoraOrb(size = 140.dp, glowAlpha = 0.3f, showRipple = true)
 
             Spacer(modifier = Modifier.height(28.dp))
 

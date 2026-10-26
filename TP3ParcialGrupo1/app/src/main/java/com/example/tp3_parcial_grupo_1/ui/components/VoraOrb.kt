@@ -39,6 +39,7 @@ enum class OrbVariant { Active, Muted }
 
 // Proporciones del componente vora-orb de Figma, relativas al tamaño del frame.
 private const val RingDiameter = 0.9f
+private const val RingAlpha = 0.8f
 private const val RingThickness = 0.054f
 private const val CoreDiameter = 0.75f
 private const val RippleDiameter = 1.15f
@@ -58,7 +59,10 @@ fun VoraOrb(
     glowAlpha: Float = 0.25f,
     showRipple: Boolean = false,
     @DrawableRes icon: Int? = R.drawable.ic_vora_waveform,
-    iconFraction: Float = IconSize
+    iconFraction: Float = IconSize,
+    ringFraction: Float = RingDiameter,
+    coreFraction: Float = CoreDiameter,
+    ringAlpha: Float = RingAlpha
 ) {
     val colors = MaterialTheme.colorScheme
     val extended = MaterialTheme.extendedColors
@@ -112,15 +116,15 @@ fun VoraOrb(
             }
 
             val ringThickness = side * RingThickness
-            val ringRadius = side * RingDiameter / 2
+            val ringRadius = side * ringFraction / 2
             drawCircle(
                 brush = Brush.horizontalGradient(ringColors, startX = c.x - ringRadius, endX = c.x + ringRadius),
                 radius = ringRadius - ringThickness / 2,
-                alpha = 0.8f,
+                alpha = ringAlpha,
                 style = Stroke(width = ringThickness)
             )
 
-            val coreRadius = side * CoreDiameter / 2
+            val coreRadius = side * coreFraction / 2
             drawCircle(
                 brush = Brush.linearGradient(
                     coreColors,

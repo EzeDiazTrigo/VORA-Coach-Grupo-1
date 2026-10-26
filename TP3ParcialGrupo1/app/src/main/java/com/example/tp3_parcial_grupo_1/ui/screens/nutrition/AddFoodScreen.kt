@@ -94,7 +94,7 @@ fun AddFoodScreen(
                         }
                     }
                     Spacer(modifier = Modifier.width(MaterialTheme.spacing.md))
-                    VoraOrb(size = 56.dp, glowAlpha = 0.3f)
+                    VoraOrb(size = 44.dp, glowAlpha = 0.3f, showRipple = true, icon = null)
                 }
             }
 

@@ -220,7 +220,7 @@ fun WorkoutDetailScreen(
                                 ) {
                                     Column {
                                         Row(verticalAlignment = Alignment.CenterVertically) {
-                                            VoraLogo(size = 18.dp)
+                                            VoraLogo(size = 16.dp)
                                             Spacer(modifier = Modifier.width(MaterialTheme.spacing.xs))
                                             Text(
                                                 text = "VORA COACH NOTE",

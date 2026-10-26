@@ -43,7 +43,6 @@ import com.example.tp3_parcial_grupo_1.ui.components.AppCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppCardStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
 import com.example.tp3_parcial_grupo_1.ui.components.VoraLogo
-import com.example.tp3_parcial_grupo_1.ui.components.VoraOrb
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
 import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
@@ -89,7 +88,7 @@ fun WorkoutCompleteScreen(
                 modifier = Modifier.size(120.dp),
                 contentAlignment = Alignment.Center
             ) {
-                VoraOrb(size = 120.dp, icon = null)
+                VoraLogo(size = 120.dp)
                 Image(
                     painter = painterResource(id = R.drawable.ic_badge_completed),
                     contentDescription = "Completed Badge",
@@ -198,7 +197,7 @@ fun WorkoutCompleteScreen(
             ) {
                 Column {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        VoraLogo(size = 18.dp)
+                        VoraLogo(size = 16.dp)
                         Spacer(modifier = Modifier.width(MaterialTheme.spacing.xs))
                         Text(
                             text = "VORA INSIGHT",

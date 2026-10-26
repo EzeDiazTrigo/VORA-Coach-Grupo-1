@@ -46,6 +46,7 @@ import com.example.tp3_parcial_grupo_1.R
 import com.example.tp3_parcial_grupo_1.data.demo.HomeDemoData
 import com.example.tp3_parcial_grupo_1.ui.components.AppButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
+import com.example.tp3_parcial_grupo_1.ui.components.VoraLogo
 import com.example.tp3_parcial_grupo_1.ui.components.AppCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppCardStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
@@ -162,7 +163,13 @@ private fun CoachPanel(onStartVoiceClick: () -> Unit, onStartWorkoutClick: () ->
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(HomeStrings.CoachName, style = MaterialTheme.typography.labelLarge, color = MaterialTheme.extendedColors.mint)
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm)
+            ) {
+                VoraLogo(size = 36.dp)
+                Text(HomeStrings.CoachName, style = MaterialTheme.typography.labelLarge, color = MaterialTheme.extendedColors.mint)
+            }
             Text(
                 HomeStrings.AiOnline,
                 style = MaterialTheme.typography.labelSmall,

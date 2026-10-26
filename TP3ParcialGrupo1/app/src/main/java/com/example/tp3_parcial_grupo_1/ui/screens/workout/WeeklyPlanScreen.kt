@@ -206,7 +206,7 @@ fun WeeklyPlanScreen(
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
 
-                        VoraLogo(size = 18.dp)
+                        VoraLogo(size = 24.dp)
                     }
 
                     Spacer(modifier = Modifier.height(MaterialTheme.spacing.sm))
@@ -263,7 +263,7 @@ fun WeeklyPlanScreen(
             AppCard(style = AppCardStyle.Panel) {
                 Column(modifier = Modifier.fillMaxWidth()) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        VoraLogo(size = 18.dp)
+                        VoraLogo(size = 20.dp)
                         Spacer(modifier = Modifier.width(MaterialTheme.spacing.xs))
                         Text(
                             text = "NEED TO ADJUST YOUR WEEK?",

@@ -283,7 +283,7 @@ fun ExerciseDetailsScreen(
                     .padding(MaterialTheme.spacing.md)
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    VoraLogo(size = 18.dp)
+                    VoraLogo(size = 24.dp)
                     Spacer(modifier = Modifier.width(MaterialTheme.spacing.sm))
                     Text(
                         text = fallbackGuide.voraPrompt,
