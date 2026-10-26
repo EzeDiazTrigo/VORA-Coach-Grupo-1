@@ -189,7 +189,7 @@ Pantallas propias sin frame en Figma: el formulario de carga manual de comidas (
 | Entrenamiento | 7 | **Funcional:** catálogo y detalle con Retrofit y caché en Room · Weekly Plan, Pre Workout, Active Workout, Exercise Details y Workout Complete: pendientes (placeholder) |
 | Nutrición | 8 | **Funcional:** carga manual, listado por fecha, eliminación con confirmación y total diario en Room · voz, foto y búsqueda simuladas |
 | Progreso | 6 | Demostración: datos de ejemplo identificados |
-| Perfil | 6 | Pendiente (placeholder) |
+| Perfil | 6 | Demostración: perfil local en memoria, editable entre pantallas; sin servidor |
 
 El detalle por pantalla (nombre en Figma, ruta, barra inferior y estado) está en el [inventario](docs/INVENTORY.md).
 
