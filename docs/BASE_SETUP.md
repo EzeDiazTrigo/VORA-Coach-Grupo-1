@@ -33,7 +33,7 @@ Fuente: la página «Sistema de diseño» del PDF de Figma.
 - **Solo tema claro, sin dynamic color:** Figma no define dark mode; el dynamic color pisaría la identidad verde y rompería la fidelidad con el diseño.
 - **`ExtendedColors`:** éxito, texto tenue y menta translúcida no existen en Material 3; se exponen con `MaterialTheme.extendedColors` para que las pantallas no usen literales.
 - **`MaterialTheme.spacing`:** las pantallas usan tokens y no dp sueltos.
-- **Fuente:** la escala usa `AppFontFamily` (fuente del sistema por ahora). Manrope se aplica cuando se agregue el `.ttf` exportado de Figma a `res/font/`, cambiando solo esa línea de `Type.kt`.
+- **Fuente:** la escala usa `AppFontFamily`, que carga Manrope 400/500/600/700 desde `res/font/` (`.ttf` exportados de Figma).
 - **Nombre:** `TP3ParcialGrupo1Theme` pasó a `AppTheme`.
 - El frame de Figma es de 390 px de ancho, con márgenes de 20 px.
 
@@ -57,6 +57,15 @@ Fuente: la página «Sistema de diseño» del PDF de Figma.
 - **Barra inferior**: no se incluye aquí; se agrega cuando exista el componente compartido.
 - **Provisorio**: el avatar usa las iniciales hasta contar con la foto exportada de Figma.
 
+### 7. Perfil
+- **Pantallas** (`ui/screens/profile/`): Dashboard, Editar perfil, Objetivos y preferencias, Preferencias nutricionales, Voz e IA y Configuración, cada una con su `Route`, `Screen` sin estado, `UiState`, `ViewModel` y `@Preview`. Los `Route` reciben lambdas de navegación.
+- **Perfil de demostración**: `ProfileRepository` (`@Singleton`, en memoria) guarda el perfil, las preferencias nutricionales y los ajustes de voz; los datos iniciales están en `data/demo/ProfileDemoData.kt`.
+- **Componentes nuevos**: `AppChip` (estilos menta, oscuro y contorno con check), `AppOptionCard`, `AppDropdownField`, `AppSwitchRow` y `AppSectionLabel` (rótulo de sección en mayúsculas). Las pantallas usan los íconos exportados de Figma y la foto `img_avatar_demo`.
+- **Validación**: `ProfileValidation.kt` (nombres, fecha con el formato del diseño, altura y peso) con tests.
+- **Navegación**: `profileGraph` (`navigation/ProfileGraph.kt`). Desde el Dashboard: engranaje y «Account» → Configuración, «Edit profile» → Editar perfil, «Your Goals» → Objetivos, «Your Preferences» → Pref. nutricionales, «Review preferences» → Voz e IA. «Connected data» y la fila de privacidad de Voz e IA informan «modo demostración». Cerrar sesión vuelve a Acceso y limpia el historial.
+
+**Por qué**: Dashboard y pantallas de edición comparten un único perfil, así que lo que se guarda en una se ve en las otras. Los ajustes de Voz e IA se aplican al instante porque el diseño no tiene botón de guardar. Los controles sin destino informan «modo demostración».
+
 ## Cómo se verificó
 - `./gradlew :app:assembleDebug` y `:app:testDebugUnitTest` verdes.
 - Se confirmó que existen las clases `Hilt_*`.
@@ -67,5 +76,3 @@ Fuente: la página «Sistema de diseño» del PDF de Figma.
 
 ## Pendiente
 - Conectar las lambdas de Acceso a las rutas de navegación.
-- Pantallas de Perfil.
-- Fuente Manrope: se incorpora cuando se exporte el `.ttf` de Figma a `res/font/` (hoy `AppFontFamily` usa la del sistema).

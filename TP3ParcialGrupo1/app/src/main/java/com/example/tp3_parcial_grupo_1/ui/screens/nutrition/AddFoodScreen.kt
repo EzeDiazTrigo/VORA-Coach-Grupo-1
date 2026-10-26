@@ -1,12 +1,9 @@
 package com.example.tp3_parcial_grupo_1.ui.screens.nutrition
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -16,10 +13,15 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.tp3_parcial_grupo_1.R
-import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
+import com.example.tp3_parcial_grupo_1.ui.components.AppButton
+import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
+import com.example.tp3_parcial_grupo_1.ui.components.AppCard
+import com.example.tp3_parcial_grupo_1.ui.components.AppCardStyle
+import com.example.tp3_parcial_grupo_1.ui.components.VoraOrb
+import com.example.tp3_parcial_grupo_1.ui.strings.NutritionStrings
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
+import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 
 @Composable
 fun AddFoodScreen(
@@ -38,7 +40,8 @@ fun AddFoodScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
                 .verticalScroll(rememberScrollState())
-                .padding(20.dp)
+                .padding(horizontal = MaterialTheme.spacing.screen, vertical = MaterialTheme.spacing.lg),
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.lg)
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -47,117 +50,84 @@ fun AddFoodScreen(
                 IconButton(onClick = onBackClick) {
                     Icon(painter = painterResource(id = R.drawable.ic_chevron_left), contentDescription = "Back", tint = MaterialTheme.colorScheme.onBackground)
                 }
-                Spacer(modifier = Modifier.width(8.dp))
+                Spacer(modifier = Modifier.width(MaterialTheme.spacing.sm))
                 Text(
-                    text = "Add Food",
+                    text = NutritionStrings.addFoodTitle,
                     style = MaterialTheme.typography.headlineMedium.copy(
                         color = MaterialTheme.colorScheme.onBackground,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 24.sp
+                        fontWeight = FontWeight.Bold
                     )
                 )
             }
 
-            Spacer(modifier = Modifier.height(20.dp))
-
-            // Talk to VORA Card (Dark Green)
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(RoundedCornerShape(20.dp))
-                    .background(MaterialTheme.colorScheme.primary)
-                    .padding(20.dp)
-            ) {
+            // Talk to VORA Card (Panel style)
+            AppCard(style = AppCardStyle.Panel) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Column(modifier = Modifier.weight(1f)) {
+                    Column(
+                        modifier = Modifier.weight(1f),
+                        verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm)
+                    ) {
                         Text(
-                            text = "Talk to VORA",
+                            text = NutritionStrings.talkToVora,
                             style = MaterialTheme.typography.titleMedium.copy(
-                                color = MaterialTheme.colorScheme.surface,
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 16.sp
+                                color = MaterialTheme.colorScheme.onPrimary,
+                                fontWeight = FontWeight.Bold
                             )
                         )
-                        Spacer(modifier = Modifier.height(4.dp))
                         Text(
-                            text = "\"I had grilled chicken breast with basmati rice.\"",
+                            text = NutritionStrings.talkToVoraDesc,
                             style = MaterialTheme.typography.bodySmall.copy(
-                                color = MaterialTheme.colorScheme.surface.copy(alpha = 0.8f),
-                                fontSize = 12.sp
+                                color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f)
                             )
                         )
-                        Spacer(modifier = Modifier.height(16.dp))
-                        Button(
-                            onClick = onNavigateToVoice,
-                            shape = PillShape,
-                            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary, contentColor = MaterialTheme.colorScheme.primary)
-                        ) {
-                            Text(text = "Start Voice Logging", fontWeight = FontWeight.SemiBold, fontSize = 13.sp)
+                        Box(modifier = Modifier.width(200.dp)) {
+                            AppButton(
+                                text = NutritionStrings.startVoiceLogging,
+                                onClick = onNavigateToVoice,
+                                style = AppButtonStyle.Accent,
+                                isCompact = true
+                            )
                         }
                     }
-                    Spacer(modifier = Modifier.width(12.dp))
-                    Box(
-                        modifier = Modifier
-                            .size(56.dp)
-                            .clip(CircleShape)
-                            .background(MaterialTheme.colorScheme.secondary),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .size(24.dp)
-                                .clip(CircleShape)
-                                .background(MaterialTheme.colorScheme.primary)
-                        )
-                    }
+                    Spacer(modifier = Modifier.width(MaterialTheme.spacing.md))
+                    VoraOrb(size = 56.dp, glowAlpha = 0.3f)
                 }
             }
 
-            Spacer(modifier = Modifier.height(20.dp))
-
             // Option Cards
-            AddOptionCard(
-                iconRes = R.drawable.ic_camera,
-                title = "Snap a Photo",
-                subtitle = "Vora estimates sizes and nutrition info.",
-                onClick = onNavigateToPhoto
-            )
-            Spacer(modifier = Modifier.height(12.dp))
-            AddOptionCard(
-                iconRes = R.drawable.ic_search,
-                title = "Search Database",
-                subtitle = "Search millions of global & local food items.",
-                onClick = onNavigateToReview
-            )
-            Spacer(modifier = Modifier.height(12.dp))
-            AddOptionCard(
-                iconRes = R.drawable.ic_pen,
-                title = "Log Manually",
-                subtitle = "Input weight, calories and macros yourself.",
-                onClick = onNavigateToManual
-            )
+            Column(verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md)) {
+                AddOptionCard(
+                    iconRes = R.drawable.ic_camera,
+                    title = NutritionStrings.snapAPhoto,
+                    subtitle = NutritionStrings.snapAPhotoDesc,
+                    onClick = onNavigateToPhoto
+                )
+                AddOptionCard(
+                    iconRes = R.drawable.ic_search,
+                    title = NutritionStrings.searchDatabase,
+                    subtitle = NutritionStrings.searchDatabaseDesc,
+                    onClick = onNavigateToReview
+                )
+                AddOptionCard(
+                    iconRes = R.drawable.ic_pen,
+                    title = NutritionStrings.logManually,
+                    subtitle = NutritionStrings.logManuallyDesc,
+                    onClick = onNavigateToManual
+                )
+            }
         }
     }
 }
 
 @Composable
 fun AddOptionCard(iconRes: Int, title: String, subtitle: String, onClick: () -> Unit) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable(onClick = onClick),
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
-    ) {
+    AppCard(onClick = onClick) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
+            modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Box(
@@ -167,24 +137,29 @@ fun AddOptionCard(iconRes: Int, title: String, subtitle: String, onClick: () -> 
                     .background(MaterialTheme.extendedColors.mintSoft),
                 contentAlignment = Alignment.Center
             ) {
-                Icon(painter = painterResource(id = iconRes), contentDescription = title, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(22.dp))
+                Icon(
+                    painter = painterResource(id = iconRes),
+                    contentDescription = title,
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(22.dp)
+                )
             }
-            Spacer(modifier = Modifier.width(16.dp))
-            Column(modifier = Modifier.weight(1f)) {
+            Spacer(modifier = Modifier.width(MaterialTheme.spacing.lg))
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(2.dp)
+            ) {
                 Text(
                     text = title,
                     style = MaterialTheme.typography.titleMedium.copy(
                         color = MaterialTheme.colorScheme.onBackground,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 15.sp
+                        fontWeight = FontWeight.Bold
                     )
                 )
-                Spacer(modifier = Modifier.height(2.dp))
                 Text(
                     text = subtitle,
                     style = MaterialTheme.typography.bodySmall.copy(
-                        color = MaterialTheme.extendedColors.textSubtle,
-                        fontSize = 12.sp
+                        color = MaterialTheme.extendedColors.textSubtle
                     )
                 )
             }

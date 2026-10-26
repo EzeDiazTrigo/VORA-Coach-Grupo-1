@@ -5,7 +5,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
@@ -23,7 +22,6 @@ import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -32,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import com.example.tp3_parcial_grupo_1.R
 import com.example.tp3_parcial_grupo_1.data.demo.ProgressDemoData
 import com.example.tp3_parcial_grupo_1.ui.components.AppCard
+import com.example.tp3_parcial_grupo_1.ui.components.VoraSymbol
 import com.example.tp3_parcial_grupo_1.ui.strings.ProgressStrings
 import com.example.tp3_parcial_grupo_1.ui.strings.Strings
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
@@ -41,9 +40,7 @@ import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 internal val ProgressBorderWidth = 1.dp
 internal val ProgressSmallIconSize = 16.dp
 private val HeaderButtonSize = 44.dp
-private val QuoteOrbSize = 40.dp
-private val OrbRingWidth = 3.dp
-private const val OrbRingAlpha = 0.6f
+private val QuoteOrbSize = 24.dp
 
 @Composable
 internal fun ProgressHeader(
@@ -122,13 +119,7 @@ internal fun StatStripCard(stats: List<SummaryStat>, horizontalAlignment: Alignm
 
 @Composable
 internal fun ProgressOrb(size: Dp = QuoteOrbSize) {
-    val extended = MaterialTheme.extendedColors
-    Box(
-        Modifier
-            .size(size)
-            .background(Brush.linearGradient(listOf(extended.mint, MaterialTheme.colorScheme.primary)), CircleShape)
-            .border(OrbRingWidth, MaterialTheme.colorScheme.tertiary.copy(alpha = OrbRingAlpha), CircleShape)
-    )
+    VoraSymbol(size = size)
 }
 
 @Composable
@@ -143,7 +134,7 @@ internal fun VoraQuoteCard(text: String) {
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md)
     ) {
-        ProgressOrb()
+        ProgressOrb(size = 24.dp)
         Text(ProgressStrings.quoted(text), style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.primary)
     }
 }

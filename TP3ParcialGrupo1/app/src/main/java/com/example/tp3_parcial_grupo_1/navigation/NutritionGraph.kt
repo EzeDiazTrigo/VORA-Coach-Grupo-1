@@ -74,12 +74,25 @@ fun NavGraphBuilder.nutritionGraph(navController: NavController) {
         composable(AppDestination.VoiceFoodLogging.route) {
             VoiceLoggingScreen(
                 onCloseClick = { navController.popBackStack() },
-                onDoneSpeaking = { navController.navigate(AppDestination.FoodAnalysis.route) }
+                onDoneSpeaking = { navController.navigate(AppDestination.FoodAnalysis.route) },
+                onTypeInsteadClick = {
+                    navController.navigate(AppDestination.ManualLog.route) {
+                        popUpTo(AppDestination.VoiceFoodLogging.route) { inclusive = true }
+                    }
+                }
             )
         }
         composable(AppDestination.FoodAnalysis.route) {
             AnalyzingMealScreen(
-                onCancelClick = { navController.popBackStack() }
+                onCancelClick = { navController.popBackStack() },
+                onAnalysisComplete = {
+                    val isStillAnalyzing = navController.currentDestination?.route == AppDestination.FoodAnalysis.route
+                    if (isStillAnalyzing) {
+                        navController.navigate(AppDestination.FoodConfirmation.route) {
+                            popUpTo(AppDestination.FoodAnalysis.route) { inclusive = true }
+                        }
+                    }
+                }
             )
         }
         composable(AppDestination.PhotoAnalysis.route) {
@@ -109,7 +122,6 @@ fun NavGraphBuilder.nutritionGraph(navController: NavController) {
                 viewModel = viewModel,
                 onNavigate = { route -> navController.navigate(route) { popUpTo(route) { inclusive = true } } },
                 onBackClick = { navController.popBackStack() },
-                onEditMeal = { navController.navigate(AppDestination.AddFood.route) },
                 onDeleteSuccess = { navController.popBackStack() }
             )
         }

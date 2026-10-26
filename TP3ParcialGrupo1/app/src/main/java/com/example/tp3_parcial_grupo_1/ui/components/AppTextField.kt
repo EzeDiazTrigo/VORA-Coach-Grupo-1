@@ -43,16 +43,21 @@ fun AppTextField(
     errorMessage: String? = null,
     keyboardType: KeyboardType = KeyboardType.Text,
     visualTransformation: VisualTransformation = VisualTransformation.None,
-    singleLine: Boolean = true
+    singleLine: Boolean = true,
+    uppercaseLabel: Boolean = false
 ) {
     val colors = MaterialTheme.colorScheme
     Column(modifier = modifier.fillMaxWidth()) {
-        Text(
-            text = label,
-            style = MaterialTheme.typography.labelMedium,
-            color = colors.onSurface,
-            modifier = Modifier.padding(bottom = MaterialTheme.spacing.xs)
-        )
+        if (uppercaseLabel) {
+            AppSectionLabel(label, modifier = Modifier.padding(bottom = MaterialTheme.spacing.xs))
+        } else if (label.isNotBlank()) {
+            Text(
+                text = label,
+                style = MaterialTheme.typography.labelMedium,
+                color = colors.onSurface,
+                modifier = Modifier.padding(bottom = MaterialTheme.spacing.xs)
+            )
+        }
         OutlinedTextField(
             value = value,
             onValueChange = onValueChange,

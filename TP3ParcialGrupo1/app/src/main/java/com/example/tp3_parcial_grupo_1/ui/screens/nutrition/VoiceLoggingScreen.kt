@@ -16,12 +16,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tp3_parcial_grupo_1.R
+import com.example.tp3_parcial_grupo_1.ui.components.VoraOrb
 import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
 
 @Composable
 fun VoiceLoggingScreen(
     onCloseClick: () -> Unit,
-    onDoneSpeaking: () -> Unit
+    onDoneSpeaking: () -> Unit,
+    onTypeInsteadClick: () -> Unit
 ) {
     Box(
         modifier = Modifier
@@ -72,37 +74,7 @@ fun VoiceLoggingScreen(
             Spacer(modifier = Modifier.height(48.dp))
 
             // Pulsing Audio Orb
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier
-                    .size(160.dp)
-                    .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.secondary.copy(alpha = 0.2f))
-                    .border(2.dp, MaterialTheme.colorScheme.secondary, CircleShape)
-            ) {
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier
-                        .size(120.dp)
-                        .clip(CircleShape)
-                        .background(MaterialTheme.colorScheme.secondary)
-                ) {
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(4.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        repeat(5) {
-                            Box(
-                                modifier = Modifier
-                                    .width(3.dp)
-                                    .height((16 + it * 6).dp)
-                                    .clip(PillShape)
-                                    .background(MaterialTheme.colorScheme.primary)
-                            )
-                        }
-                    }
-                }
-            }
+            VoraOrb(size = 160.dp, glowAlpha = 0.45f, showRipple = true)
 
             Spacer(modifier = Modifier.height(32.dp))
 
@@ -157,7 +129,7 @@ fun VoiceLoggingScreen(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            TextButton(onClick = onCloseClick) {
+            TextButton(onClick = onTypeInsteadClick) {
                 Text(
                     text = "Type instead",
                     style = MaterialTheme.typography.bodyMedium.copy(

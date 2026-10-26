@@ -53,6 +53,7 @@ Estado previsto: **funcional** (datos reales: Retrofit/Room) · **demostración*
 - **Selección coherente (NAV04):** el detalle de entrenamiento recibe su `workoutId`, la guía de ejercicio `workoutId` + `exerciseId` y el detalle de comida su `mealId`.
 - **Saltos entre áreas:** un acceso que lleva a otra área (Log breakfast, notificaciones, Start Workout, Get dinner ideas, View next week's plan) pasa primero por su tab y después abre la pantalla (`navigateInTab`), para que el tab quede marcado y atrás vuelva a su inicio.
 - **Pantallas sin frame en Figma:** «Log Manually» en Add Food abre un formulario propio de carga manual (`nutrition/manual_log`, sin barra inferior) que guarda en Room y vuelve al Dashboard.
+- **Asistente:** se abre desde Home («Start voice session») y desde la revisión semanal («Ask VORA»); no tiene barra inferior.
 - **Cerrar sesión:** desde Settings vuelve a Login y limpia el historial, incluido el que guarda cada tab.
 
 ## Asistente VORA (E)
