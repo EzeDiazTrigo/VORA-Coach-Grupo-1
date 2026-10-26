@@ -323,7 +323,7 @@ fun WeeklyPlanScreen(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, widthDp = 390, heightDp = 707)
 @Composable
 private fun WeeklyPlanScreenPreview() {
     AppTheme {

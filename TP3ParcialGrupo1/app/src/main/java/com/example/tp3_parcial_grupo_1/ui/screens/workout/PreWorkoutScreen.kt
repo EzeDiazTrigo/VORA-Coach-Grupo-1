@@ -1,5 +1,6 @@
 package com.example.tp3_parcial_grupo_1.ui.screens.workout
 
+import android.app.Activity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -22,15 +24,19 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.view.WindowCompat
 import com.example.tp3_parcial_grupo_1.R
+import com.example.tp3_parcial_grupo_1.model.Workout
 import com.example.tp3_parcial_grupo_1.ui.components.AppButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
 import com.example.tp3_parcial_grupo_1.ui.components.VoraSymbol
@@ -40,21 +46,40 @@ import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 
 @Composable
 fun PreWorkoutScreen(
-    workoutId: String,
+    workout: Workout? = null,
+    workoutId: String = "w01",
     onBackClick: () -> Unit,
     onBeginClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val view = LocalView.current
+    if (!view.isInEditMode) {
+        SideEffect {
+            val window = (view.context as Activity).window
+            window.statusBarColor = android.graphics.Color.parseColor("#123D35")
+            window.navigationBarColor = android.graphics.Color.parseColor("#123D35")
+            window.isNavigationBarContrastEnforced = false
+            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = false
+            WindowCompat.getInsetsController(window, view).isAppearanceLightNavigationBars = false
+        }
+    }
+
+    val workoutName = workout?.name ?: "Upper Body Strength"
+    val durationMinutes = workout?.durationMinutes ?: 42
+    val exerciseCount = if (workout?.exercises?.isNotEmpty() == true) workout.exercises.size else (workout?.exerciseCount ?: 5)
+
     Box(
         modifier = modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.primary)
-            .padding(horizontal = MaterialTheme.spacing.screen, vertical = MaterialTheme.spacing.lg)
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .verticalScroll(rememberScrollState())
+                .statusBarsPadding()
+                .padding(horizontal = MaterialTheme.spacing.screen, vertical = MaterialTheme.spacing.md)
+                .verticalScroll(rememberScrollState()),
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md)
         ) {
             // Top Header Row
             Row(
@@ -81,25 +106,23 @@ fun PreWorkoutScreen(
                 }
             }
 
-            Spacer(modifier = Modifier.height(MaterialTheme.spacing.md))
+            // Title Section (Dynamic workout name)
+            Column(modifier = Modifier.fillMaxWidth()) {
+                Text(
+                    text = workoutName,
+                    style = MaterialTheme.typography.headlineLarge,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onPrimary
+                )
 
-            // Title Section
-            Text(
-                text = "Upper Body Strength",
-                style = MaterialTheme.typography.headlineLarge,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onPrimary
-            )
+                Spacer(modifier = Modifier.height(4.dp))
 
-            Spacer(modifier = Modifier.height(4.dp))
-
-            Text(
-                text = "42 min • 5 exercises",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.extendedColors.mint
-            )
-
-            Spacer(modifier = Modifier.height(MaterialTheme.spacing.xl))
+                Text(
+                    text = "$durationMinutes min • $exerciseCount exercises",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.extendedColors.mint
+                )
+            }
 
             // Card 1: TODAY'S FOCUS (Has border)
             DarkWorkoutCard(hasBorder = true) {
@@ -124,8 +147,6 @@ fun PreWorkoutScreen(
                 )
             }
 
-            Spacer(modifier = Modifier.height(MaterialTheme.spacing.md))
-
             // Card 2: YOUR LAST SESSION (Has border)
             DarkWorkoutCard(hasBorder = true) {
                 Text(
@@ -136,7 +157,7 @@ fun PreWorkoutScreen(
                 )
                 Spacer(modifier = Modifier.height(MaterialTheme.spacing.xs))
                 Text(
-                    text = "Bench Press Volume",
+                    text = "$workoutName Volume",
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onPrimary
@@ -148,8 +169,6 @@ fun PreWorkoutScreen(
                     color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.85f)
                 )
             }
-
-            Spacer(modifier = Modifier.height(MaterialTheme.spacing.md))
 
             // Card 3: VORA'S COACH TIP (Has border)
             DarkWorkoutCard(hasBorder = true) {
@@ -166,8 +185,6 @@ fun PreWorkoutScreen(
                     color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.85f)
                 )
             }
-
-            Spacer(modifier = Modifier.height(MaterialTheme.spacing.md))
 
             // Card 4: Need anything? Mic Widget (No border)
             DarkWorkoutCard(hasBorder = false) {
@@ -212,7 +229,7 @@ fun PreWorkoutScreen(
                 }
             }
 
-            Spacer(modifier = Modifier.height(MaterialTheme.spacing.lg))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.xs))
 
             // Mint #65D6B0 Start Workout Button directly below cards
             AppButton(
@@ -223,7 +240,7 @@ fun PreWorkoutScreen(
                 textColor = Color(0xFF123D35)
             )
 
-            Spacer(modifier = Modifier.height(MaterialTheme.spacing.lg))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.md))
         }
     }
 }
@@ -248,10 +265,10 @@ private fun DarkWorkoutCard(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, widthDp = 390, heightDp = 676)
 @Composable
 private fun PreWorkoutScreenPreview() {
     AppTheme {
-        PreWorkoutScreen(workoutId = "w01", onBackClick = {}, onBeginClick = {})
+        PreWorkoutScreen(workout = null, workoutId = "w01", onBackClick = {}, onBeginClick = {})
     }
 }
