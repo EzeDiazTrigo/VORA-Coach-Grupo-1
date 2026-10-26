@@ -18,7 +18,8 @@ import com.example.tp3_parcial_grupo_1.data.local.entity.WorkoutEntity
         MealEntity::class,
         CoachMessageEntity::class
     ],
-    version = 2,
+    // v3: tabla coach_messages (historial del Asistente). La migración es destructiva (DatabaseModule).
+    version = 3,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
