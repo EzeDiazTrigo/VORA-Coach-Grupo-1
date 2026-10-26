@@ -185,7 +185,7 @@ Pantallas propias sin frame en Figma: el formulario de carga manual de comidas (
 |---|---|---|
 | Acceso | 2 | Demostración: validación local de los campos, sin Firebase |
 | Inicio | 2 | Demostración: datos de ejemplo (`data/demo/`) |
-| Asistente VORA | 6 estados | Demostración: conversación simulada, sin permiso de micrófono |
+| Asistente VORA | 6 estados | **Funcional (extra):** chat escrito con `POST /v1/coach/messages` (Retrofit) e historial en Room · voz simulada, sin permiso de micrófono |
 | Entrenamiento | 7 | **Funcional:** catálogo y detalle con Retrofit y caché en Room · Weekly Plan, Pre Workout, Active Workout, Exercise Details y Workout Complete: pendientes (placeholder) |
 | Nutrición | 8 | **Funcional:** carga manual, listado por fecha, eliminación con confirmación y total diario en Room · voz, foto y búsqueda simuladas |
 | Progreso | 6 | Demostración: datos de ejemplo identificados |
