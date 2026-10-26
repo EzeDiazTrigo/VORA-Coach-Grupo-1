@@ -1,6 +1,6 @@
 # QA visual — Figma vs app
 
-Verificación visual cruzada (E). Primera ronda: `main` al 23/10 + PR #20. Segunda ronda (26/10): `main` con #20, #22, #27, #28 y #29, en el emulador de referencia de Figma (390 × 844 dp). Referencia: los frames de Figma ([FIGMA.md](FIGMA.md)); las comparaciones lado a lado están en [comparisons/](comparisons/README.md).
+Verificación visual cruzada (E). Primera ronda: `main` al 23/10 + PR #20. Segunda ronda (26/10): `main` con #20, #22, #24, #25, #27, #28, #29 y #33, en el emulador de referencia de Figma (390 × 844 dp). Referencia: los frames de Figma ([FIGMA.md](FIGMA.md)); las comparaciones lado a lado están en [comparisons/](comparisons/README.md).
 
 Cada punto tiene dueño y prioridad: **alta** (se nota a simple vista en la demo o afecta varias pantallas), **media** (diferencia visible en una pantalla), **baja** (detalle). Marquen `[x]` cuando lo corrijan y referencien el commit.
 
@@ -44,8 +44,8 @@ Cada punto tiene dueño y prioridad: **alta** (se nota a simple vista en la demo
 
 ## Nutrition (D)
 
-- [ ] **Alta — Fila de macros del Dashboard (segunda ronda).** Con Manrope, «Protein 83g / 140g» y «Carbs 111g / 220g» no entran en su columna: el valor queda pegado al rótulo y «140g» / «220g» bajan a otra línea. En Figma cada columna es rótulo arriba y «104g/140g» abajo, en una sola línea (ver comparación 04).
-- [ ] **Media — Tarjeta «Tell Vora what you ate» (segunda ronda).** Falta el orbe antes del título (hay un punto) y los botones Voice / Photo / Search no tienen íconos (`ic_mic`, `ic_camera`, `ic_search`); Photo y Search en Figma son píldoras con fondo translúcido.
+- [ ] **Alta — Fila de macros del Dashboard (segunda ronda).** Sigue en `main` después de #33: con valores reales («83g / 140g», «111g / 220g») el valor queda pegado al rótulo y el objetivo baja a otra línea; con «0g» entra bien, por eso puede no verse con la base vacía. En Figma cada columna es rótulo arriba y «104g/140g» abajo, en una sola línea (ver comparación 04).
+- [ ] **Media — Tarjeta «Tell Vora what you ate» (segunda ronda).** El orbe ya está (#33). Faltan los íconos de los botones Voice / Photo / Search (`ic_mic`, `ic_camera`, `ic_search`); Photo y Search en Figma son píldoras con fondo translúcido.
 - [ ] **Media — Orbe** en Add Food («Talk to VORA»), Voice Logging y Analyzing Meal (ver transversal).
 - [ ] **Media — Add Food.** Las filas «Snap a Photo», «Search Database», «Log Manually» llevan flecha `ic_chevron_right` a la derecha.
 - [ ] **Media — Botones anclados abajo.** En Voice Logging y Analyzing Meal, «Done Speaking» / «Type instead» y «Cancel analysis» van debajo del contenido (como en Figma), no pegados al borde inferior.
@@ -76,11 +76,12 @@ Revisado el 25/10 sobre la rama del PR #27 (`feature/profile-screens`), en el em
 
 ## Workout (C) — segunda ronda
 
-Revisado el 26/10 en `main` (catálogo y detalle conectados en #22) contra el servidor publicado. Weekly Plan, Pre Workout, Active Workout, Exercise Details y Workout Complete están en los PR #24/#25, todavía abiertos.
+Revisado el 26/10 en `main` con #22, #24 y #25 (flujo completo) contra el servidor publicado.
 
-- [ ] **Alta — Dashboard.** El destino «Workout / 01 · Dashboard» muestra la lista del catálogo (título «Workouts», filtros All/Beginner/…, tarjetas por rutina), que cumple RF01 pero no es el frame de Figma: falta la tarjeta oscura «Ready for today?» con «Start Workout» y «Details», «VORA recommends», «This Week's Activity» y «Your Progress» (ver comparación 03). Propuesta: armar el Dashboard como en Figma tomando la primera rutina del catálogo para la tarjeta principal, y dejar la lista como sección debajo o en Weekly Plan, manteniendo el `workoutId` de cada una (NAV04).
-- [ ] **Baja — Encabezado.** Figma muestra «Workout Goal» arriba del título y el botón de calendario a la derecha.
-- Los textos de las rutinas vienen del servidor en español («Fuerza inicial»): es el contenido del mock, no un error de la app.
+- [x] **Alta — Dashboard.** Resuelto en #24/#25: tarjeta «Ready for today?» con «Start Workout» y «Details», «VORA recommends», «This Week's Activity» y «Your Progress» como en Figma (ver comparación 03). El catálogo de RF01 queda como sección «Workouts» debajo, con su `workoutId` por tarjeta (NAV04).
+- [x] **Baja — Encabezado.** «Workout Goal» y el botón de calendario ya están.
+- [ ] **Baja — This Week's Activity.** La app agrega un chevron a la derecha del título que no está en Figma.
+- La tarjeta principal muestra la primera rutina del servidor («Fuerza inicial», en español porque así viene del mock) en lugar de «Upper Body Strength»: es contenido real, no un error.
 
 ## Asistente VORA y barra inferior (E)
 
