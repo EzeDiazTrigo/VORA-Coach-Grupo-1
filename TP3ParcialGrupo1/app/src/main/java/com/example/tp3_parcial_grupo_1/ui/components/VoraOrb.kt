@@ -76,12 +76,18 @@ fun VoraOrb(
     }
     val rippleColor = colors.secondary
 
-    val pulse by rememberInfiniteTransition(label = "orbPulse").animateFloat(
-        initialValue = 0f,
-        targetValue = 1f,
-        animationSpec = infiniteRepeatable(tween(1400, easing = LinearEasing), RepeatMode.Reverse),
-        label = "orbPulseValue"
-    )
+    // La onda es lo único que se anima; sin ella el orbe queda quieto y no consume frames.
+    val pulse = if (showRipple) {
+        val transition by rememberInfiniteTransition(label = "orbPulse").animateFloat(
+            initialValue = 0f,
+            targetValue = 1f,
+            animationSpec = infiniteRepeatable(tween(1400, easing = LinearEasing), RepeatMode.Reverse),
+            label = "orbPulseValue"
+        )
+        transition
+    } else {
+        0f
+    }
 
     Box(modifier = modifier.size(size), contentAlignment = Alignment.Center) {
         Canvas(modifier = Modifier.fillMaxSize()) {

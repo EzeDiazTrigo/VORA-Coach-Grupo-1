@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.dp
 import com.example.tp3_parcial_grupo_1.R
 import com.example.tp3_parcial_grupo_1.data.demo.ProgressDemoData
 import com.example.tp3_parcial_grupo_1.ui.components.AppCard
-import com.example.tp3_parcial_grupo_1.ui.components.VoraSymbol
+import com.example.tp3_parcial_grupo_1.ui.components.VoraLogo
 import com.example.tp3_parcial_grupo_1.ui.strings.ProgressStrings
 import com.example.tp3_parcial_grupo_1.ui.strings.Strings
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
@@ -119,7 +119,7 @@ internal fun StatStripCard(stats: List<SummaryStat>, horizontalAlignment: Alignm
 
 @Composable
 internal fun ProgressOrb(size: Dp = QuoteOrbSize) {
-    VoraSymbol(size = size)
+    VoraLogo(size = size)
 }
 
 @Composable

@@ -25,6 +25,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.example.tp3_parcial_grupo_1.ui.components.AppButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
+import com.example.tp3_parcial_grupo_1.ui.components.VoraLogo
 import com.example.tp3_parcial_grupo_1.ui.strings.AuthStrings
 import com.example.tp3_parcial_grupo_1.ui.strings.Strings
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
@@ -33,7 +34,7 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Icon
 
-private val LogoSize = 56.dp
+private val LogoSize = 64.dp
 private val BiometricIconSize = 16.dp
 
 @Composable
@@ -43,13 +44,7 @@ fun AuthHeader(modifier: Modifier = Modifier) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xxs)
     ) {
-        // Marcador del logo; se reemplaza por el recurso exportado de Figma.
-        Box(
-            modifier = Modifier.size(LogoSize).background(MaterialTheme.extendedColors.mint, CircleShape),
-            contentAlignment = Alignment.Center
-        ) {
-            Text("AI", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.primary)
-        }
+        VoraLogo(size = LogoSize, showWaveform = true)
         Text(Strings.AppName, style = MaterialTheme.typography.headlineSmall, color = MaterialTheme.colorScheme.primary)
         Text(
             AuthStrings.Tagline,
