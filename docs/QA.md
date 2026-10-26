@@ -59,9 +59,22 @@ Cada punto tiene dueño y prioridad: **alta** (se nota a simple vista en la demo
 - Es el área más fiel: estructura, gráficos, colores y segmentos coinciden en las seis pantallas.
 - [ ] **Baja — Pesos de títulos** («Your progress», «Workout progress», etc.), ver transversal.
 
-## Workout (C) y Profile (A)
+## Profile (A) — segunda ronda
 
-- Pendiente: en `main` siguen siendo placeholders. Se revisan en la segunda ronda (Fase 3).
+Revisado el 25/10 sobre la rama del PR #27 (`feature/profile-screens`), en el emulador de referencia (390 × 844 dp). La estructura y el contenido de las seis pantallas coinciden con Figma; Settings es prácticamente idéntica. Todos los controles navegan o informan modo demostración (NAV03): «Connected Data» muestra el aviso, «Account» abre Settings, «Review preferences» abre Voice & AI.
+
+- [ ] **Media — Botón atrás.** Las cinco subpantallas usan la flecha de Material (←); en Figma es un botón circular de 32 dp con `ic_chevron_left` y borde, igual al del Asistente (`CoachHeader`).
+- [ ] **Media — Nutrition Preferences › Meal preferences.** En Figma es una tarjeta compacta de tres filas de texto (Meals per day / Preferred breakfast / Preferred dinner con su valor a la derecha); en la app son tres desplegables apilados.
+- [ ] **Media — Voice & AI › «Your control matters».** En Figma es una tarjeta menta clara con un enlace de texto «Privacy & permissions»; en la app es un panel verde oscuro con botón lima.
+- [ ] **Baja — Voice & AI.** El botón «Preview» en Figma es una píldora chica con `ic_sparkles`; los interruptores van en filas compactas dentro de una tarjeta (en la app las filas son más altas, con divisores).
+- [ ] **Baja — Your Goals.** En Figma el objetivo principal tiene dos opciones marcadas (Build strength e Improve fitness); la app permite una sola. Si se mantiene la selección simple, el Dashboard debería mostrar el mismo texto que Figma («Build strength & improve fitness») o el elegido, como hoy.
+- [ ] **Baja — Edit Profile.** El campo Gender en Figma no muestra el chevron de desplegable.
+- Datos de ejemplo distintos (alimentos marcados, Auto-play desactivado) no son diferencias de diseño.
+- La barra inferior de esta rama es la provisoria de Material porque la rama es anterior al PR #20; al mergear con `main` toma `BottomNavBar`.
+
+## Workout (C)
+
+- Pendiente: el catálogo y el detalle se conectan en el PR #22 y el resto del flujo en #24/#25. Se revisa cuando estén en `main`.
 
 ## Asistente VORA y barra inferior (E)
 
