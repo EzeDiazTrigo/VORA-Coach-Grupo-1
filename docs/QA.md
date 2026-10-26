@@ -1,12 +1,12 @@
 # QA visual — Figma vs app
 
-Primera ronda de verificación visual cruzada (Fase 2, E). Referencia: los frames de Figma ([FIGMA.md](FIGMA.md)); app: `main` al 23/10 + PR #20 (Asistente y barra inferior), corrida en el emulador Pixel 10 Pro.
+Verificación visual cruzada (E). Primera ronda: `main` al 23/10 + PR #20. Segunda ronda (26/10): `main` con #20, #22, #27, #28 y #29, en el emulador de referencia de Figma (390 × 844 dp). Referencia: los frames de Figma ([FIGMA.md](FIGMA.md)); las comparaciones lado a lado están en [comparisons/](comparisons/README.md).
 
 Cada punto tiene dueño y prioridad: **alta** (se nota a simple vista en la demo o afecta varias pantallas), **media** (diferencia visible en una pantalla), **baja** (detalle). Marquen `[x]` cuando lo corrijan y referencien el commit.
 
 ## Transversales (afectan a todas las pantallas)
 
-- [ ] **Alta · A — Manrope no está aplicada.** `Type.kt` sigue con `AppFontFamily = FontFamily.Default`; los `.ttf` ya están en `res/font/`. Es el cambio con más impacto en fidelidad (40 pts): todas las pantallas se ven con Roboto.
+- [x] **Alta · A — Manrope no está aplicada.** Resuelto en #29. `Type.kt` sigue con `AppFontFamily = FontFamily.Default`; los `.ttf` ya están en `res/font/`. Es el cambio con más impacto en fidelidad (40 pts): todas las pantallas se ven con Roboto.
   ```kotlin
   val AppFontFamily = FontFamily(
       Font(R.font.manrope_regular, FontWeight.Normal),
@@ -15,7 +15,7 @@ Cada punto tiene dueño y prioridad: **alta** (se nota a simple vista en la demo
       Font(R.font.manrope_bold, FontWeight.Bold)
   )
   ```
-- [ ] **Alta · todos — Pesos de títulos.** En Figma los títulos de pantalla y de sección son Regular/Medium («Today's Overview», «Notifications», «How can I support…», «Upper Body Strength»); en la app salen Bold/SemiBold y más grandes. Revisar después de aplicar Manrope: la jerarquía de Figma está en [FIGMA.md › Tipografía](FIGMA.md#tipografía).
+- [ ] **Media · todos — Pesos de títulos.** Mejoró mucho con Manrope (Home, Progress y el Asistente ya coinciden); queda revisar títulos puntuales como «Upper Body Strength» de Home y los de Nutrition. En Figma los títulos de pantalla y de sección son Regular/Medium («Today's Overview», «Notifications», «How can I support…», «Upper Body Strength»); en la app salen Bold/SemiBold y más grandes. Revisar después de aplicar Manrope: la jerarquía de Figma está en [FIGMA.md › Tipografía](FIGMA.md#tipografía).
 - [ ] **Media · A — Alturas de `AppButton`.** El mínimo de 52 dp agranda botones que en Figma son más bajos: «Start voice session» (44), botones de tarjeta como «Allow Access»/«Not Now» (38), «+ Add» de Dinner (24). Propuesta: un parámetro de tamaño (`Large` 52 / `Medium` 44 / `Small` 32) en lugar de `isCompact`, que hoy solo cambia el padding.
 - [ ] **Media · A, D — Orbe de VORA.** Donde Figma muestra el orbe se ven círculos planos. Usar `VoraOrb` (ya está en `ui/components`): logo de Acceso, panel de Home (orbe chico junto a «VORA Coach»), tarjeta «Talk to VORA» de Add Food, Voice Logging y Analyzing Meal.
 
@@ -44,6 +44,8 @@ Cada punto tiene dueño y prioridad: **alta** (se nota a simple vista en la demo
 
 ## Nutrition (D)
 
+- [ ] **Alta — Fila de macros del Dashboard (segunda ronda).** Con Manrope, «Protein 83g / 140g» y «Carbs 111g / 220g» no entran en su columna: el valor queda pegado al rótulo y «140g» / «220g» bajan a otra línea. En Figma cada columna es rótulo arriba y «104g/140g» abajo, en una sola línea (ver comparación 04).
+- [ ] **Media — Tarjeta «Tell Vora what you ate» (segunda ronda).** Falta el orbe antes del título (hay un punto) y los botones Voice / Photo / Search no tienen íconos (`ic_mic`, `ic_camera`, `ic_search`); Photo y Search en Figma son píldoras con fondo translúcido.
 - [ ] **Media — Orbe** en Add Food («Talk to VORA»), Voice Logging y Analyzing Meal (ver transversal).
 - [ ] **Media — Add Food.** Las filas «Snap a Photo», «Search Database», «Log Manually» llevan flecha `ic_chevron_right` a la derecha.
 - [ ] **Media — Botones anclados abajo.** En Voice Logging y Analyzing Meal, «Done Speaking» / «Type instead» y «Cancel analysis» van debajo del contenido (como en Figma), no pegados al borde inferior.
@@ -72,15 +74,19 @@ Revisado el 25/10 sobre la rama del PR #27 (`feature/profile-screens`), en el em
 - Datos de ejemplo distintos (alimentos marcados, Auto-play desactivado) no son diferencias de diseño.
 - La barra inferior de esta rama es la provisoria de Material porque la rama es anterior al PR #20; al mergear con `main` toma `BottomNavBar`.
 
-## Workout (C)
+## Workout (C) — segunda ronda
 
-- Pendiente: el catálogo y el detalle se conectan en el PR #22 y el resto del flujo en #24/#25. Se revisa cuando estén en `main`.
+Revisado el 26/10 en `main` (catálogo y detalle conectados en #22) contra el servidor publicado. Weekly Plan, Pre Workout, Active Workout, Exercise Details y Workout Complete están en los PR #24/#25, todavía abiertos.
+
+- [ ] **Alta — Dashboard.** El destino «Workout / 01 · Dashboard» muestra la lista del catálogo (título «Workouts», filtros All/Beginner/…, tarjetas por rutina), que cumple RF01 pero no es el frame de Figma: falta la tarjeta oscura «Ready for today?» con «Start Workout» y «Details», «VORA recommends», «This Week's Activity» y «Your Progress» (ver comparación 03). Propuesta: armar el Dashboard como en Figma tomando la primera rutina del catálogo para la tarjeta principal, y dejar la lista como sección debajo o en Weekly Plan, manteniendo el `workoutId` de cada una (NAV04).
+- [ ] **Baja — Encabezado.** Figma muestra «Workout Goal» arriba del título y el botón de calendario a la derecha.
+- Los textos de las rutinas vienen del servidor en español («Fuerza inicial»): es el contenido del mock, no un error de la app.
 
 ## Asistente VORA y barra inferior (E)
 
 - Las seis pantallas del Asistente y la barra inferior se compararon contra Figma al implementarlas (ver PR #9, #14 y #20).
 - [ ] **Media · E —** Alturas de los botones de la tarjeta de Error (depende de la transversal de `AppButton`).
-- [ ] **Media · E —** Fuente (depende de Manrope).
+- [x] **Media · E —** Fuente (resuelto con Manrope en #29; ver comparación 02).
 
 ## Rotación sin consultas duplicadas (RF07)
 
