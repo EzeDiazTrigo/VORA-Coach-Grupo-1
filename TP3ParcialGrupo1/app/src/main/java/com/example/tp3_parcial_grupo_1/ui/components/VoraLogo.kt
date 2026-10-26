@@ -8,7 +8,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.example.tp3_parcial_grupo_1.R
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
 
 /**
@@ -18,14 +17,9 @@ import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
 @Composable
 fun VoraLogo(
     modifier: Modifier = Modifier,
-    size: Dp = 18.dp,
-    showWaveform: Boolean = false
+    size: Dp = 18.dp
 ) {
-    VoraOrb(
-        size = size,
-        modifier = modifier,
-        icon = if (showWaveform) R.drawable.ic_vora_waveform else null
-    )
+    VoraOrb(size = size, modifier = modifier, icon = null)
 }
 
 @Preview(showBackground = true)
@@ -33,7 +27,7 @@ fun VoraLogo(
 private fun VoraLogoPreview() {
     AppTheme {
         Box(modifier = Modifier.background(androidx.compose.ui.graphics.Color.White).padding(8.dp)) {
-            VoraLogo(size = 64.dp, showWaveform = true)
+            VoraLogo(size = 64.dp)
         }
     }
 }

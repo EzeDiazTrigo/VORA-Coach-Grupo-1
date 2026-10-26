@@ -44,7 +44,7 @@ fun AuthHeader(modifier: Modifier = Modifier) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xxs)
     ) {
-        VoraLogo(size = LogoSize, showWaveform = true)
+        VoraLogo(size = LogoSize)
         Text(Strings.AppName, style = MaterialTheme.typography.headlineSmall, color = MaterialTheme.colorScheme.primary)
         Text(
             AuthStrings.Tagline,
