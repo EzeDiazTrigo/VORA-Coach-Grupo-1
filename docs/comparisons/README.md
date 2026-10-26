@@ -10,7 +10,15 @@ Las cinco comparaciones que pide la entrega, una por área y dueño:
 | 4 | Nutrition / 01 · Dashboard | `1:730` | D | `04-nutrition-dashboard.jpg` |
 | 5 | Progress / 02 · Dashboard | `1:1775` | B | `05-progress-dashboard.jpg` |
 
-**Estado:** las imágenes finales se generan cuando estén en `main` la barra inferior de Figma y el Asistente (#20), el catálogo de Workout conectado (#22) y Manrope (#29). Con `main` al 25/10 la comparación de Workout muestra un placeholder y todas las pantallas usan la fuente del sistema.
+**Estado:** generadas el 26/10 con `main` (incluye #20, #22, #27, #28 y #29), en el emulador de referencia de Figma (390 × 844 dp) contra el servidor publicado. Las diferencias que muestran están anotadas en [QA.md](../QA.md).
+
+| Comparación | Lectura rápida |
+|---|---|
+| ![](01-home-dashboard.jpg) | Home: estructura y contenido coinciden; faltan el orbe chico del panel de VORA y el punto de la campana. |
+| ![](02-voice-listening.jpg) | Asistente: coincide en composición, colores, orbe y tipografía. |
+| ![](03-workout-dashboard.jpg) | Workout: la app muestra el catálogo (RF01) en lugar del Dashboard de Figma. |
+| ![](04-nutrition-dashboard.jpg) | Nutrition: misma estructura; la fila de macros se desarma con Manrope y la tarjeta de VORA no tiene íconos. |
+| ![](05-progress-dashboard.jpg) | Progress: prácticamente idéntico. |
 
 ## Cómo generarlas
 

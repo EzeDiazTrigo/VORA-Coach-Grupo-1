@@ -203,7 +203,19 @@ Los textos visibles siguen el idioma del diseño de Figma (inglés), incluidos l
 
 ## Comparaciones visuales
 
-> Pendiente: cinco comparaciones Figma vs. app.
+Figma a la izquierda y la app a la derecha, a la misma escala (emulador en 390 × 844 dp, el tamaño de los frames). Cómo se generan y qué muestra cada una: [docs/comparisons](docs/comparisons/README.md); diferencias pendientes por dueño: [docs/QA.md](docs/QA.md).
+
+| Home / 01 · Dashboard | Voice / 02 · Listening |
+|---|---|
+| ![Home](docs/comparisons/01-home-dashboard.jpg) | ![Asistente](docs/comparisons/02-voice-listening.jpg) |
+
+| Workout / 01 · Dashboard | Nutrition / 01 · Dashboard |
+|---|---|
+| ![Workout](docs/comparisons/03-workout-dashboard.jpg) | ![Nutrition](docs/comparisons/04-nutrition-dashboard.jpg) |
+
+| Progress / 02 · Dashboard |
+|---|
+| ![Progress](docs/comparisons/05-progress-dashboard.jpg) |
 
 ## Uso de IA generativa
 
