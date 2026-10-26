@@ -36,10 +36,6 @@ private fun NavBackStackEntry.argumentSummary(arguments: List<NamedNavArgument>)
 
 private fun NavBackStackEntry.workoutId(): String = savedStateHandle.get<String>(NavArg.WorkoutId).orEmpty()
 
-fun NavGraphBuilder.coachPlaceholderGraph() {
-    placeholder(AppDestination.Coach, "Voice / 01 — Idle")
-}
-
 fun NavGraphBuilder.workoutPlaceholderScreens(navController: NavController) {
     placeholder(AppDestination.WeeklyPlan, "Workout / 02 — Weekly Plan")
     placeholder(AppDestination.PreWorkout, "Workout / 04 — Pre Workout", listOf(workoutIdArgument)) { entry ->

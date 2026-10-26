@@ -26,6 +26,8 @@ import com.example.tp3_parcial_grupo_1.ui.strings.Strings
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 
+private val BackButtonInset = 12.dp
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppScaffold(
@@ -50,7 +52,7 @@ fun AppScaffold(
                         if (onBack != null) {
                             IconButton(
                                 onClick = onBack,
-                                modifier = Modifier.padding(start = MaterialTheme.spacing.screen - 12.dp),
+                                modifier = Modifier.padding(start = MaterialTheme.spacing.screen - BackButtonInset),
                                 colors = IconButtonDefaults.iconButtonColors(containerColor = MaterialTheme.colorScheme.surface)
                             ) {
                                 Icon(Icons.AutoMirrored.Outlined.ArrowBack, contentDescription = Strings.Back)

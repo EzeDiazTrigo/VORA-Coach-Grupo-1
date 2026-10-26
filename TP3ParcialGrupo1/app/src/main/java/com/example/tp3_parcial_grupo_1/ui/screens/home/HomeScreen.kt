@@ -54,9 +54,15 @@ import com.example.tp3_parcial_grupo_1.ui.components.MacroProgressBar
 import com.example.tp3_parcial_grupo_1.ui.components.ProgressRing
 import com.example.tp3_parcial_grupo_1.ui.strings.HomeStrings
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
+import com.example.tp3_parcial_grupo_1.ui.theme.HairlineWidth
 import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
+
+private val AvatarSize = 48.dp
+private val SectionCardWidth = 110.dp
+private val CalendarIconSize = 16.dp
+private val StartWorkoutButtonWidth = 140.dp
 
 @Composable
 fun HomeRoute(
@@ -131,7 +137,7 @@ private fun HomeHeader(uiState: HomeUiState, onNotificationsClick: () -> Unit) {
             painter = painterResource(R.drawable.img_avatar_demo),
             contentDescription = null,
             contentScale = ContentScale.Crop,
-            modifier = Modifier.size(48.dp).clip(CircleShape)
+            modifier = Modifier.size(AvatarSize).clip(CircleShape)
         )
         Column(modifier = Modifier.weight(1f)) {
             Text(HomeStrings.Greeting, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
@@ -140,7 +146,7 @@ private fun HomeHeader(uiState: HomeUiState, onNotificationsClick: () -> Unit) {
         IconButton(
             onClick = onNotificationsClick,
             colors = IconButtonDefaults.iconButtonColors(containerColor = MaterialTheme.colorScheme.surface),
-            modifier = Modifier.border(1.dp, MaterialTheme.colorScheme.outlineVariant, CircleShape)
+            modifier = Modifier.border(HairlineWidth, MaterialTheme.colorScheme.outlineVariant, CircleShape)
         ) {
             Icon(painterResource(R.drawable.ic_bell), contentDescription = HomeStrings.NotificationsButton)
         }
@@ -198,7 +204,7 @@ private fun TipCard(tip: String) {
         modifier = Modifier
             .fillMaxWidth()
             .background(MaterialTheme.extendedColors.mintSoft, MaterialTheme.shapes.small)
-            .border(BorderStroke(1.dp, MaterialTheme.extendedColors.mint.copy(alpha = 0.5f)), MaterialTheme.shapes.small)
+            .border(BorderStroke(HairlineWidth, MaterialTheme.extendedColors.mint.copy(alpha = 0.5f)), MaterialTheme.shapes.small)
             .padding(MaterialTheme.spacing.lg),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md)
@@ -214,7 +220,7 @@ private fun OverviewRow(uiState: HomeUiState, onClick: () -> Unit) {
         modifier = Modifier.fillMaxWidth().height(IntrinsicSize.Max),
         horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md)
     ) {
-        AppCard(modifier = Modifier.width(110.dp).fillMaxHeight(), onClick = onClick) {
+        AppCard(modifier = Modifier.width(SectionCardWidth).fillMaxHeight(), onClick = onClick) {
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -286,7 +292,7 @@ private fun WorkoutCard(workout: RecommendedWorkout, onStartWorkoutClick: () -> 
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm)) {
-                Icon(painterResource(R.drawable.ic_calendar), contentDescription = null, modifier = Modifier.size(16.dp), tint = MaterialTheme.colorScheme.primary)
+                Icon(painterResource(R.drawable.ic_calendar), contentDescription = null, modifier = Modifier.size(CalendarIconSize), tint = MaterialTheme.colorScheme.primary)
                 Text(HomeStrings.RecommendedWorkout, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
             Text(HomeStrings.Today, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
@@ -312,7 +318,7 @@ private fun WorkoutCard(workout: RecommendedWorkout, onStartWorkoutClick: () -> 
                 text = HomeStrings.StartWorkout,
                 onClick = onStartWorkoutClick,
                 isCompact = true,
-                modifier = Modifier.width(140.dp)
+                modifier = Modifier.width(StartWorkoutButtonWidth)
             )
         }
     }
