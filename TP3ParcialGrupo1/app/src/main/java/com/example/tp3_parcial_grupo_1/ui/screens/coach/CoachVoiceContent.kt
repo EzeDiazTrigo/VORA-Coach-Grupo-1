@@ -45,22 +45,17 @@ import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 
 // Figma: Voice / 02 · Listening
 @Composable
-internal fun CoachListeningContent(
-    state: CoachUiState.Listening,
-    onBack: () -> Unit,
-    onFinishListening: () -> Unit,
-    onCancel: () -> Unit
-) {
+internal fun CoachListeningContent(state: CoachUiState.Listening, actions: CoachActions) {
     val colors = MaterialTheme.colorScheme
     DarkLayout(
         header = {
-            CoachHeader(title = CoachStrings.ListeningTitle, onBack = onBack, dark = true) {
+            CoachHeader(title = CoachStrings.ListeningTitle, onBack = actions.onBack, dark = true) {
                 LiveIndicator(text = CoachStrings.LiveAudio)
             }
         },
         bottom = {
             Surface(
-                onClick = onFinishListening,
+                onClick = actions.onFinishListening,
                 modifier = Modifier.size(80.dp),
                 shape = CircleShape,
                 color = colors.secondary,
@@ -72,7 +67,7 @@ internal fun CoachListeningContent(
                     modifier = Modifier.padding(26.dp)
                 )
             }
-            TextButton(onClick = onCancel) {
+            TextButton(onClick = actions.onCancel) {
                 Text(Strings.Cancel, style = MaterialTheme.typography.labelLarge, color = colors.secondary)
             }
         }
@@ -102,16 +97,12 @@ internal fun CoachListeningContent(
 
 // Figma: Voice / 03 · Processing
 @Composable
-internal fun CoachProcessingContent(
-    state: CoachUiState.Processing,
-    onBack: () -> Unit,
-    onCancel: () -> Unit
-) {
+internal fun CoachProcessingContent(state: CoachUiState.Processing, actions: CoachActions) {
     val colors = MaterialTheme.colorScheme
     DarkLayout(
-        header = { CoachHeader(title = CoachStrings.ProcessingTitle, onBack = onBack, dark = true) },
+        header = { CoachHeader(title = CoachStrings.ProcessingTitle, onBack = actions.onBack, dark = true) },
         bottom = {
-            TextButton(onClick = onCancel) {
+            TextButton(onClick = actions.onCancel) {
                 Text(Strings.Cancel, style = MaterialTheme.typography.labelLarge, color = colors.onPrimary.copy(alpha = 0.7f))
             }
         }
@@ -139,18 +130,11 @@ internal fun CoachProcessingContent(
 
 // Figma: Voice / 04 · Speaking
 @Composable
-internal fun CoachReplyContent(
-    state: CoachUiState.Reply,
-    onBack: () -> Unit,
-    onTogglePause: () -> Unit,
-    onReplay: () -> Unit,
-    onStop: () -> Unit,
-    onInterrupt: () -> Unit
-) {
+internal fun CoachReplyContent(state: CoachUiState.Reply, actions: CoachActions) {
     val colors = MaterialTheme.colorScheme
     DarkLayout(
         header = {
-            CoachHeader(title = CoachStrings.SpeakingTitle, onBack = onBack, dark = true) {
+            CoachHeader(title = CoachStrings.SpeakingTitle, onBack = actions.onBack, dark = true) {
                 StatusPill(text = CoachStrings.Speaking, dark = true)
             }
         },
@@ -174,21 +158,21 @@ internal fun CoachReplyContent(
             horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xl),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            PlaybackButton(R.drawable.ic_repeat_1, CoachStrings.Replay, onReplay)
+            PlaybackButton(R.drawable.ic_repeat_1, CoachStrings.Replay, actions.onReplay)
             PlaybackButton(
                 icon = if (state.isPaused) R.drawable.ic_play else R.drawable.ic_pause,
                 description = if (state.isPaused) CoachStrings.Resume else CoachStrings.Pause,
-                onClick = onTogglePause,
+                onClick = actions.onTogglePause,
                 size = 56.dp,
                 iconSize = 20.dp,
                 container = colors.secondary,
                 content = colors.primary
             )
-            PlaybackButton(R.drawable.ic_stop_circle, CoachStrings.Stop, onStop)
+            PlaybackButton(R.drawable.ic_stop_circle, CoachStrings.Stop, actions.onStop)
         }
         // En Figma el botón va debajo de los controles, no anclado al borde inferior.
         Spacer(Modifier.height(MaterialTheme.spacing.lg))
-        AppButton(text = CoachStrings.TapToInterrupt, onClick = onInterrupt, style = AppButtonStyle.Accent)
+        AppButton(text = CoachStrings.TapToInterrupt, onClick = actions.onInterrupt, style = AppButtonStyle.Accent)
         Spacer(Modifier.height(MaterialTheme.spacing.xl))
     }
 }

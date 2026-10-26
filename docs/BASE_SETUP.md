@@ -33,7 +33,7 @@ Fuente: la página «Sistema de diseño» del PDF de Figma.
 - **Solo tema claro, sin dynamic color:** Figma no define dark mode; el dynamic color pisaría la identidad verde y rompería la fidelidad con el diseño.
 - **`ExtendedColors`:** éxito, texto tenue y menta translúcida no existen en Material 3; se exponen con `MaterialTheme.extendedColors` para que las pantallas no usen literales.
 - **`MaterialTheme.spacing`:** las pantallas usan tokens y no dp sueltos.
-- **Fuente:** la escala usa `AppFontFamily` (fuente del sistema por ahora). Manrope se aplica cuando se agregue el `.ttf` exportado de Figma a `res/font/`, cambiando solo esa línea de `Type.kt`.
+- **Fuente:** la escala usa `AppFontFamily`, que carga Manrope 400/500/600/700 desde `res/font/` (`.ttf` exportados de Figma).
 - **Nombre:** `TP3ParcialGrupo1Theme` pasó a `AppTheme`.
 - El frame de Figma es de 390 px de ancho, con márgenes de 20 px.
 
@@ -76,4 +76,3 @@ Fuente: la página «Sistema de diseño» del PDF de Figma.
 
 ## Pendiente
 - Conectar las lambdas de Acceso a las rutas de navegación.
-- Fuente Manrope: se incorpora cuando se exporte el `.ttf` de Figma a `res/font/` (hoy `AppFontFamily` usa la del sistema).
