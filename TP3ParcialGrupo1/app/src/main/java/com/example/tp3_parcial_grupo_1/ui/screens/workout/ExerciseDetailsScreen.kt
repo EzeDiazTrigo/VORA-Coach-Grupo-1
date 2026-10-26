@@ -37,7 +37,7 @@ import com.example.tp3_parcial_grupo_1.model.Exercise
 import com.example.tp3_parcial_grupo_1.ui.components.AppButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
-import com.example.tp3_parcial_grupo_1.ui.components.VoraSymbol
+import com.example.tp3_parcial_grupo_1.ui.components.VoraLogo
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
@@ -283,7 +283,7 @@ fun ExerciseDetailsScreen(
                     .padding(MaterialTheme.spacing.md)
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    VoraSymbol(size = 18.dp)
+                    VoraLogo(size = 24.dp)
                     Spacer(modifier = Modifier.width(MaterialTheme.spacing.sm))
                     Text(
                         text = fallbackGuide.voraPrompt,

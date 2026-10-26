@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -31,9 +30,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -45,15 +42,11 @@ import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppCardStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
-import com.example.tp3_parcial_grupo_1.ui.components.VoraSymbol
+import com.example.tp3_parcial_grupo_1.ui.components.VoraLogo
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
 import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
-
-private val VoraLime = Color(0xFFC9E86A)
-private val VoraMint = Color(0xFF65D6B0)
-private val VoraGreen = Color(0xFF123D35)
 
 @Composable
 fun WorkoutCompleteScreen(
@@ -95,38 +88,12 @@ fun WorkoutCompleteScreen(
                 modifier = Modifier.size(120.dp),
                 contentAlignment = Alignment.Center
             ) {
-                // orb-ring: 107 x 107 (80% Opacity)
-                Box(
-                    modifier = Modifier
-                        .size(107.dp)
-                        .graphicsLayer(alpha = 0.8f)
-                        .clip(CircleShape)
-                        .background(
-                            Brush.linearGradient(
-                                colors = listOf(VoraLime, VoraMint, VoraGreen)
-                            )
-                        ),
-                    contentAlignment = Alignment.Center
-                ) {
-                    // orb-core: 90 x 90
-                    Box(
-                        modifier = Modifier
-                            .size(90.dp)
-                            .clip(CircleShape)
-                            .background(
-                                Brush.linearGradient(
-                                    colors = listOf(VoraMint, VoraGreen)
-                                )
-                            ),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.ic_badge_completed),
-                            contentDescription = "Completed Badge",
-                            modifier = Modifier.size(42.dp)
-                        )
-                    }
-                }
+                VoraLogo(size = 120.dp)
+                Image(
+                    painter = painterResource(id = R.drawable.ic_badge_completed),
+                    contentDescription = "Completed Badge",
+                    modifier = Modifier.size(42.dp)
+                )
             }
 
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.md))
@@ -230,7 +197,7 @@ fun WorkoutCompleteScreen(
             ) {
                 Column {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        VoraSymbol(size = 18.dp)
+                        VoraLogo(size = 16.dp)
                         Spacer(modifier = Modifier.width(MaterialTheme.spacing.xs))
                         Text(
                             text = "VORA INSIGHT",

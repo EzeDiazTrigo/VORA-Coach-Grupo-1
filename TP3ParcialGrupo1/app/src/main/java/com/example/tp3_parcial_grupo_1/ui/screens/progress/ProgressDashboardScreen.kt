@@ -36,7 +36,6 @@ import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 
-private val InsightOrbSize = 32.dp
 private val CategoryIconContainerSize = 44.dp
 private val PanelTagAlpha = 0.12f
 
@@ -126,7 +125,7 @@ private fun InsightCard(progress: PeriodProgress, onSeeWeeklyReviewClick: () -> 
     val colors = MaterialTheme.colorScheme
     AppCard(style = AppCardStyle.Panel) {
         Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-            ProgressOrb(InsightOrbSize)
+            ProgressOrb()
             Text(
                 ProgressStrings.VoraInsight,
                 style = MaterialTheme.typography.labelLarge,

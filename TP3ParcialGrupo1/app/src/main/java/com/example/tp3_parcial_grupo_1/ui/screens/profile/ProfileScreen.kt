@@ -43,7 +43,8 @@ import com.example.tp3_parcial_grupo_1.ui.components.AppCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppCardStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
 import com.example.tp3_parcial_grupo_1.ui.components.AppSectionLabel
-import com.example.tp3_parcial_grupo_1.ui.components.VoraOrb
+import com.example.tp3_parcial_grupo_1.ui.components.VoraLogo
+import com.example.tp3_parcial_grupo_1.ui.components.VoraLogoStyle
 import com.example.tp3_parcial_grupo_1.ui.strings.ProfileStrings
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
 import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
@@ -52,7 +53,7 @@ import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 
 private val BorderWidth = 1.dp
 private val AvatarSize = 72.dp
-private val OrbSize = 32.dp
+private val OrbSize = 40.dp
 private val LinkIconBoxSize = 40.dp
 private val LinkIconSize = 20.dp
 
@@ -228,7 +229,7 @@ private fun PersonalisationPanel(onReviewPreferencesClick: () -> Unit) {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md)
         ) {
-            VoraOrb(size = OrbSize)
+            VoraLogo(size = OrbSize, glowAlpha = 0.25f, style = VoraLogoStyle.Insight)
             Text(
                 ProfileStrings.PersonalisationTitle,
                 style = MaterialTheme.typography.labelLarge,

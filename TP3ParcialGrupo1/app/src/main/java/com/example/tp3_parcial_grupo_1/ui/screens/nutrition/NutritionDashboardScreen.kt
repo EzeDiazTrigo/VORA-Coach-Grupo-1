@@ -29,7 +29,7 @@ import com.example.tp3_parcial_grupo_1.ui.components.AppCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppCardStyle
 import com.example.tp3_parcial_grupo_1.ui.components.MacroProgressBar
 import com.example.tp3_parcial_grupo_1.ui.components.ProgressRing
-import com.example.tp3_parcial_grupo_1.ui.components.VoraOrb
+import com.example.tp3_parcial_grupo_1.ui.components.VoraLogo
 import com.example.tp3_parcial_grupo_1.ui.strings.NutritionStrings
 import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
@@ -303,7 +303,7 @@ fun NutritionDashboardScreen(
                 AppCard(style = AppCardStyle.Panel) {
                     Column(verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md)) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            VoraOrb(size = 28.dp, glowAlpha = 0.2f)
+                            VoraLogo(size = 28.dp, glowAlpha = 0.3f)
                             Spacer(modifier = Modifier.width(MaterialTheme.spacing.sm))
                             Text(
                                 text = NutritionStrings.tellVoraTitle,

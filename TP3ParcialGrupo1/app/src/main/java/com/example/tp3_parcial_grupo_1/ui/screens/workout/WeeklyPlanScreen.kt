@@ -33,7 +33,7 @@ import androidx.compose.ui.unit.dp
 import com.example.tp3_parcial_grupo_1.ui.components.AppCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppCardStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
-import com.example.tp3_parcial_grupo_1.ui.components.VoraSymbol
+import com.example.tp3_parcial_grupo_1.ui.components.VoraLogo
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
 import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
@@ -206,7 +206,7 @@ fun WeeklyPlanScreen(
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
 
-                        VoraSymbol(size = 18.dp)
+                        VoraLogo(size = 24.dp)
                     }
 
                     Spacer(modifier = Modifier.height(MaterialTheme.spacing.sm))
@@ -263,7 +263,7 @@ fun WeeklyPlanScreen(
             AppCard(style = AppCardStyle.Panel) {
                 Column(modifier = Modifier.fillMaxWidth()) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        VoraSymbol(size = 18.dp)
+                        VoraLogo(size = 20.dp)
                         Spacer(modifier = Modifier.width(MaterialTheme.spacing.xs))
                         Text(
                             text = "NEED TO ADJUST YOUR WEEK?",

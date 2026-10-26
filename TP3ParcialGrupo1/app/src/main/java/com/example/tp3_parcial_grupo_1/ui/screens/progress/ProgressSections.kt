@@ -30,7 +30,8 @@ import androidx.compose.ui.unit.dp
 import com.example.tp3_parcial_grupo_1.R
 import com.example.tp3_parcial_grupo_1.data.demo.ProgressDemoData
 import com.example.tp3_parcial_grupo_1.ui.components.AppCard
-import com.example.tp3_parcial_grupo_1.ui.components.VoraSymbol
+import com.example.tp3_parcial_grupo_1.ui.components.VoraLogo
+import com.example.tp3_parcial_grupo_1.ui.components.VoraLogoStyle
 import com.example.tp3_parcial_grupo_1.ui.strings.ProgressStrings
 import com.example.tp3_parcial_grupo_1.ui.strings.Strings
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
@@ -40,7 +41,7 @@ import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 internal val ProgressBorderWidth = 1.dp
 internal val ProgressSmallIconSize = 16.dp
 private val HeaderButtonSize = 44.dp
-private val QuoteOrbSize = 24.dp
+private val InsightOrbSize = 40.dp
 
 @Composable
 internal fun ProgressHeader(
@@ -118,8 +119,8 @@ internal fun StatStripCard(stats: List<SummaryStat>, horizontalAlignment: Alignm
 }
 
 @Composable
-internal fun ProgressOrb(size: Dp = QuoteOrbSize) {
-    VoraSymbol(size = size)
+internal fun ProgressOrb(size: Dp = InsightOrbSize) {
+    VoraLogo(size = size, glowAlpha = 0.25f, style = VoraLogoStyle.Insight)
 }
 
 @Composable
@@ -134,7 +135,7 @@ internal fun VoraQuoteCard(text: String) {
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md)
     ) {
-        ProgressOrb(size = 24.dp)
+        ProgressOrb()
         Text(ProgressStrings.quoted(text), style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.primary)
     }
 }
