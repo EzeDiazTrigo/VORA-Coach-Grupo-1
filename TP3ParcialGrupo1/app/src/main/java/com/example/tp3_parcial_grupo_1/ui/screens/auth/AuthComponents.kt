@@ -33,6 +33,9 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Icon
 
+private val LogoSize = 56.dp
+private val BiometricIconSize = 16.dp
+
 @Composable
 fun AuthHeader(modifier: Modifier = Modifier) {
     Column(
@@ -42,7 +45,7 @@ fun AuthHeader(modifier: Modifier = Modifier) {
     ) {
         // Marcador del logo; se reemplaza por el recurso exportado de Figma.
         Box(
-            modifier = Modifier.size(56.dp).background(MaterialTheme.extendedColors.mint, CircleShape),
+            modifier = Modifier.size(LogoSize).background(MaterialTheme.extendedColors.mint, CircleShape),
             contentAlignment = Alignment.Center
         ) {
             Text("AI", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.primary)
@@ -82,7 +85,7 @@ fun BiometricNote(modifier: Modifier = Modifier) {
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xs)
     ) {
-        Icon(Icons.Outlined.Face, contentDescription = null, modifier = Modifier.size(16.dp), tint = MaterialTheme.colorScheme.primary)
+        Icon(Icons.Outlined.Face, contentDescription = null, modifier = Modifier.size(BiometricIconSize), tint = MaterialTheme.colorScheme.primary)
         Text(AuthStrings.BiometricSignIn, style = MaterialTheme.typography.bodyMedium)
     }
 }

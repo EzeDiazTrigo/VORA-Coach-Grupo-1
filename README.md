@@ -95,7 +95,30 @@ com.example.tp3_parcial_grupo_1
 
 **Módulos de Hilt.** `NetworkModule` provee OkHttp, Retrofit y `WorkoutApi`; `DatabaseModule`, la base y los DAOs; `RepositoryModule` vincula `WorkoutRepository` con su implementación.
 
-> **Pendiente:** qué objetos construye Hilt y su relación con Dagger (RF08).
+### Hilt e inyección de dependencias (RF08)
+
+**Hilt es una capa sobre Dagger.** Dagger es el generador de código que resuelve el grafo de dependencias en tiempo de compilación: valida que cada objeto se pueda construir y genera las fábricas (`*_Factory`) y los componentes. Hilt le agrega lo específico de Android: los componentes estándar (`SingletonComponent`, `ActivityRetainedComponent`, `ViewModelComponent`, `ActivityComponent`…) y las anotaciones para engancharlos con `Application`, `Activity` y `ViewModel`. Así no se escriben `@Component` a mano: solo se declaran los módulos y qué objetos se inyectan. El procesamiento corre con KSP (`hilt-compiler`).
+
+**Qué se declara en el código**
+
+- `App` (`@HiltAndroidApp`): genera la clase base `Hilt_App` y el grafo completo `DaggerApp_HiltComponents_SingletonC`, con sus subcomponentes (`ActivityRetainedC`, `ActivityC`, `ViewModelC`…).
+- `MainActivity` (`@AndroidEntryPoint`): se engancha a ese grafo y aloja `AppNavHost`.
+- Cada `ViewModel` (`@HiltViewModel` + `@Inject constructor`) recibe sus repositorios por constructor. Las pantallas lo piden con `hiltViewModel()`, que usa la fábrica de Hilt; el `ViewModel` vive mientras exista su destino de navegación, por eso la rotación no lo recrea ni repite las consultas (RF07). `WorkoutDetailViewModel` y `MealsViewModel` reciben además el `SavedStateHandle` con el argumento de la ruta (`workoutId`, `mealId`).
+
+**Qué construye Hilt (grafo de la app)**
+
+| Objeto | Cómo se obtiene | Alcance |
+|---|---|---|
+| `OkHttpClient`, `Retrofit`, `WorkoutApi` | `@Provides` en `NetworkModule` | `@Singleton` |
+| `AppDatabase` | `@Provides` en `DatabaseModule` (`Room.databaseBuilder`) | `@Singleton` |
+| `WorkoutDao`, `ExerciseDao`, `MealDao` | `@Provides` en `DatabaseModule`, tomados de `AppDatabase` | — (`MealDao`: `@Singleton`) |
+| `WorkoutRepositoryImpl` como `WorkoutRepository` | `@Binds` en `RepositoryModule`; la clase tiene `@Inject constructor` | `@Singleton` |
+| `MealRepository` | `@Inject constructor` (no necesita módulo) | `@Singleton` |
+| `ViewModel`s | `@HiltViewModel` | uno por destino de navegación |
+
+Se usa `@Provides` para lo que no se puede construir con un constructor propio (Retrofit, OkHttp, Room y los DAO, que son de librerías) y `@Binds` para vincular una interfaz con su implementación.
+
+**Un ejemplo de la cadena.** Al abrir el catálogo de entrenamientos, `hiltViewModel()` construye `WorkoutListViewModel`; para eso Hilt crea `WorkoutRepositoryImpl`, que necesita `WorkoutDao`, `ExerciseDao`, `WorkoutApi` y `AppDatabase`; la API necesita `Retrofit`, que necesita `OkHttpClient`. Ninguna pantalla ni `ViewModel` construye esos objetos: llegan por constructor, y por eso los tests reemplazan el repositorio o la API por fakes sin tocar la UI.
 
 ## Inventario de pantallas
 
@@ -166,7 +189,7 @@ Pantallas propias sin frame en Figma: el formulario de carga manual de comidas (
 | Entrenamiento | 7 | **Funcional:** catálogo y detalle con Retrofit y caché en Room · Weekly Plan, Pre Workout, Active Workout, Exercise Details y Workout Complete: pendientes (placeholder) |
 | Nutrición | 8 | **Funcional:** carga manual, listado por fecha, eliminación con confirmación y total diario en Room · voz, foto y búsqueda simuladas |
 | Progreso | 6 | Demostración: datos de ejemplo identificados |
-| Perfil | 6 | Pendiente (placeholder) |
+| Perfil | 6 | Demostración: perfil local en memoria, editable entre pantallas; sin servidor |
 
 El detalle por pantalla (nombre en Figma, ruta, barra inferior y estado) está en el [inventario](docs/INVENTORY.md).
 
