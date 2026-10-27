@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
@@ -20,7 +19,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.tp3_parcial_grupo_1.ui.components.AppCard
@@ -34,9 +32,8 @@ import com.example.tp3_parcial_grupo_1.ui.components.VoraBrandMarkStyle
 import com.example.tp3_parcial_grupo_1.ui.strings.AuthStrings
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
+import com.example.tp3_parcial_grupo_1.ui.theme.iconSizes
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
-
-private val PasswordHintIconSize = 14.dp
 
 @Composable
 fun RegisterRoute(
@@ -144,8 +141,8 @@ fun RegisterScreen(
                         AppIcon(
                             AppIcons.CheckCircle,
                             contentDescription = null,
-                            size = PasswordHintIconSize,
-                            tint = if (uiState.hasSecurePassword) MaterialTheme.extendedColors.success else MaterialTheme.colorScheme.outline
+                            size = MaterialTheme.iconSizes.xs,
+                            tint = if (uiState.hasSecurePassword) MaterialTheme.extendedColors.brand.dark else MaterialTheme.colorScheme.outline
                         )
                         Text(AuthStrings.SecureCharacters, style = MaterialTheme.typography.bodySmall)
                     }
