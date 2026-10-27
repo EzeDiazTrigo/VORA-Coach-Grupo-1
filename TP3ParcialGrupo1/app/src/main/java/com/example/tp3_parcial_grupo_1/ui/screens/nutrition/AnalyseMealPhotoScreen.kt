@@ -71,7 +71,7 @@ fun AnalyseMealPhotoScreen(
                     modifier = Modifier
                         .align(Alignment.TopStart)
                         .padding(top = 32.dp, start = 24.dp)
-                        .clip(PillShape)
+                        .clip(RoundedCornerShape(6.dp))
                         .background(MaterialTheme.colorScheme.primary)
                         .padding(horizontal = 10.dp, vertical = 4.dp)
                 ) {
@@ -82,7 +82,7 @@ fun AnalyseMealPhotoScreen(
                     modifier = Modifier
                         .align(Alignment.BottomEnd)
                         .padding(bottom = 48.dp, end = 24.dp)
-                        .clip(PillShape)
+                        .clip(RoundedCornerShape(6.dp))
                         .background(MaterialTheme.colorScheme.primary)
                         .padding(horizontal = 10.dp, vertical = 4.dp)
                 ) {
@@ -143,7 +143,7 @@ fun AnalyseMealPhotoScreen(
                                 borderColor = MaterialTheme.colorScheme.outlineVariant,
                                 textStyle = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
                                 contentPadding = PaddingValues(horizontal = 10.dp, vertical = 6.dp),
-                                shape = RoundedCornerShape(6.dp)
+                                shape = RoundedCornerShape(4.dp)
                             )
                             AppTag(
                                 text = "C: 54g",
@@ -151,7 +151,7 @@ fun AnalyseMealPhotoScreen(
                                 contentColor = MaterialTheme.colorScheme.onBackground,
                                 textStyle = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
                                 contentPadding = PaddingValues(horizontal = 10.dp, vertical = 6.dp),
-                                shape = RoundedCornerShape(6.dp)
+                                shape = RoundedCornerShape(4.dp)
                             )
                             AppTag(
                                 text = "F: 14g",
@@ -159,7 +159,7 @@ fun AnalyseMealPhotoScreen(
                                 contentColor = MaterialTheme.colorScheme.onBackground,
                                 textStyle = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
                                 contentPadding = PaddingValues(horizontal = 10.dp, vertical = 6.dp),
-                                shape = RoundedCornerShape(6.dp)
+                                shape = RoundedCornerShape(4.dp)
                             )
                         }
                     }
