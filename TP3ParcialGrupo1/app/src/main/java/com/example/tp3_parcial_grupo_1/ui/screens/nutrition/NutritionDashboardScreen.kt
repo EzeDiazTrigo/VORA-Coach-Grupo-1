@@ -12,11 +12,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.tp3_parcial_grupo_1.model.Meal
 import com.example.tp3_parcial_grupo_1.model.MealType
 import com.example.tp3_parcial_grupo_1.ui.components.AppButton
@@ -200,6 +198,7 @@ fun NutritionDashboardScreen(
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         MacroProgressBar(
+                            stacked = true,
                             name = NutritionStrings.protein,
                             current = "${uiState.totalProtein}g",
                             goal = "140g",
@@ -208,6 +207,7 @@ fun NutritionDashboardScreen(
                             modifier = Modifier.weight(1f).padding(end = MaterialTheme.spacing.xs)
                         )
                         MacroProgressBar(
+                            stacked = true,
                             name = NutritionStrings.carbs,
                             current = "${uiState.totalCarbs}g",
                             goal = "220g",
@@ -216,6 +216,7 @@ fun NutritionDashboardScreen(
                             modifier = Modifier.weight(1f).padding(horizontal = MaterialTheme.spacing.xs)
                         )
                         MacroProgressBar(
+                            stacked = true,
                             name = NutritionStrings.fat,
                             current = "${uiState.totalFat}g",
                             goal = "65g",
@@ -298,7 +299,7 @@ fun NutritionDashboardScreen(
                         )
                         Row(
                             modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(6.dp)
+                            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm)
                         ) {
                             Box(modifier = Modifier.weight(1f)) {
                                 AppButton(
@@ -308,7 +309,7 @@ fun NutritionDashboardScreen(
                                     leadingIcon = AppIcons.Mic,
                                     isCompact = true,
                                     minHeight = AppButtonDefaults.SmallHeight,
-                                    textStyle = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.SemiBold, fontSize = 11.sp)
+                                    textStyle = MaterialTheme.typography.labelMedium
                                 )
                             }
                             Box(modifier = Modifier.weight(1f)) {
@@ -317,11 +318,11 @@ fun NutritionDashboardScreen(
                                     onClick = onNavigateToPhoto,
                                     style = AppButtonStyle.Primary,
                                     leadingIcon = AppIcons.Camera,
-                                    containerColor = Color.White.copy(alpha = 0.12f),
-                                    textColor = Color.White,
+                                    containerColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.12f),
+                                    textColor = MaterialTheme.colorScheme.onPrimary,
                                     isCompact = true,
                                     minHeight = AppButtonDefaults.SmallHeight,
-                                    textStyle = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.SemiBold, fontSize = 11.sp)
+                                    textStyle = MaterialTheme.typography.labelMedium
                                 )
                             }
                             Box(modifier = Modifier.weight(1f)) {
@@ -330,11 +331,11 @@ fun NutritionDashboardScreen(
                                     onClick = onNavigateToAddFood,
                                     style = AppButtonStyle.Primary,
                                     leadingIcon = AppIcons.Search,
-                                    containerColor = Color.White.copy(alpha = 0.12f),
-                                    textColor = Color.White,
+                                    containerColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.12f),
+                                    textColor = MaterialTheme.colorScheme.onPrimary,
                                     isCompact = true,
                                     minHeight = AppButtonDefaults.SmallHeight,
-                                    textStyle = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.SemiBold, fontSize = 11.sp)
+                                    textStyle = MaterialTheme.typography.labelMedium
                                 )
                             }
                         }

@@ -25,6 +25,7 @@ import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppTag
 import com.example.tp3_parcial_grupo_1.ui.components.AppTopBar
 import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
+import com.example.tp3_parcial_grupo_1.ui.strings.NutritionStrings
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 
@@ -44,7 +45,7 @@ fun AnalyseMealPhotoScreen(
                 .padding(20.dp)
         ) {
             AppTopBar(
-                title = "Analyse Meal",
+                title = NutritionStrings.analyseMeal,
                 navigation = { AppBackButton(onClick = onBackClick) },
                 titleStyle = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
                 titleColor = MaterialTheme.colorScheme.onBackground,
@@ -106,7 +107,7 @@ fun AnalyseMealPhotoScreen(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = "VORA ESTIMATE",
+                            text = NutritionStrings.voraEstimate,
                             style = MaterialTheme.typography.labelSmall.copy(
                                 color = MaterialTheme.extendedColors.textSubtle,
                                 fontSize = 10.sp,
@@ -114,7 +115,7 @@ fun AnalyseMealPhotoScreen(
                             )
                         )
                         Text(
-                            text = "Portions are estimated",
+                            text = NutritionStrings.portionsEstimated,
                             style = MaterialTheme.typography.bodySmall.copy(
                                 color = MaterialTheme.extendedColors.textSubtle,
                                 fontSize = 11.sp
@@ -138,9 +139,8 @@ fun AnalyseMealPhotoScreen(
                         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                             AppTag(
                                 text = "P: 38g",
-                                containerColor = MaterialTheme.colorScheme.background,
+                                containerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.08f),
                                 contentColor = MaterialTheme.colorScheme.onBackground,
-                                borderColor = MaterialTheme.colorScheme.outlineVariant,
                                 textStyle = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
                                 contentPadding = PaddingValues(horizontal = 10.dp, vertical = 6.dp),
                                 shape = RoundedCornerShape(4.dp)
@@ -155,7 +155,7 @@ fun AnalyseMealPhotoScreen(
                             )
                             AppTag(
                                 text = "F: 14g",
-                                containerColor = MaterialTheme.colorScheme.tertiary.copy(alpha = 0.15f),
+                                containerColor = MaterialTheme.colorScheme.tertiary.copy(alpha = 0.12f),
                                 contentColor = MaterialTheme.colorScheme.onBackground,
                                 textStyle = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
                                 contentPadding = PaddingValues(horizontal = 10.dp, vertical = 6.dp),
@@ -179,7 +179,7 @@ fun AnalyseMealPhotoScreen(
             Spacer(modifier = Modifier.height(24.dp))
 
             AppButton(
-                text = "Review & Add",
+                text = NutritionStrings.reviewAndAdd,
                 onClick = onReviewAndAdd,
                 style = AppButtonStyle.Primary,
                 minHeight = AppButtonDefaults.MediumHeight,
@@ -189,7 +189,7 @@ fun AnalyseMealPhotoScreen(
             Spacer(modifier = Modifier.height(12.dp))
 
             AppButton(
-                text = "Retake Photo",
+                text = NutritionStrings.retakePhoto,
                 onClick = onBackClick,
                 style = AppButtonStyle.Outlined,
                 textColor = MaterialTheme.colorScheme.onBackground,

@@ -106,8 +106,7 @@ fun AddFoodScreen(
                     subtitleStyle = MaterialTheme.typography.bodySmall,
                     subtitleColor = MaterialTheme.extendedColors.textSubtle,
                     spacing = MaterialTheme.spacing.lg,
-                    textSpacing = 2.dp,
-                    trailing = {}
+                    textSpacing = 2.dp
                 )
                 AppListRow(
                     icon = AppIcons.Search,
@@ -124,8 +123,7 @@ fun AddFoodScreen(
                     subtitleStyle = MaterialTheme.typography.bodySmall,
                     subtitleColor = MaterialTheme.extendedColors.textSubtle,
                     spacing = MaterialTheme.spacing.lg,
-                    textSpacing = 2.dp,
-                    trailing = {}
+                    textSpacing = 2.dp
                 )
                 AppListRow(
                     icon = AppIcons.Pen,
@@ -142,8 +140,7 @@ fun AddFoodScreen(
                     subtitleStyle = MaterialTheme.typography.bodySmall,
                     subtitleColor = MaterialTheme.extendedColors.textSubtle,
                     spacing = MaterialTheme.spacing.lg,
-                    textSpacing = 2.dp,
-                    trailing = {}
+                    textSpacing = 2.dp
                 )
             }
         }
