@@ -1,5 +1,7 @@
 package com.example.tp3_parcial_grupo_1.ui.screens.home
 
+import com.example.tp3_parcial_grupo_1.model.NotificationItem
+
 data class MacroProgress(val current: Int, val goal: Int) {
     val fraction: Float get() = if (goal == 0) 0f else (current.toFloat() / goal).coerceIn(0f, 1f)
 }
@@ -24,21 +26,6 @@ data class HomeUiState(
     val activeKcal: String,
     val workout: RecommendedWorkout,
     val message: String? = null
-)
-
-enum class NotificationType { Coach, Workout, Nutrition, Milestone }
-
-enum class NotificationGroup { Today, Yesterday }
-
-data class NotificationItem(
-    val id: Int,
-    val type: NotificationType,
-    val group: NotificationGroup,
-    val category: String,
-    val title: String,
-    val body: String,
-    val timeAgo: String,
-    val isUnread: Boolean
 )
 
 data class NotificationsUiState(val items: List<NotificationItem>) {
