@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.tp3_parcial_grupo_1.data.repository.WorkoutRepository
 import com.example.tp3_parcial_grupo_1.model.Workout
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -14,11 +15,19 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+private const val DefaultSets = 3
+private const val DefaultRestSeconds = 60
+private const val InitialRestSeconds = 78
+private const val AddedRestSeconds = 30
+private const val MinWeightKg = 2.5
+private const val OneSecondMs = 1_000L
+
 data class ActiveWorkoutUiState(
     val workout: Workout? = null,
-    val activeSetIndex: Int = 1, // 0: Set 1, 1: Set 2, 2: Set 3
+    val exerciseIndex: Int = 0,
+    val activeSetIndex: Int = 0,
     val weightKg: Double = 45.0,
-    val restTimeSeconds: Int = 78,
+    val restTimeSeconds: Int = InitialRestSeconds,
     val isLoading: Boolean = false
 )
 
@@ -33,9 +42,11 @@ class ActiveWorkoutViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(ActiveWorkoutUiState(isLoading = true))
     val uiState: StateFlow<ActiveWorkoutUiState> = _uiState.asStateFlow()
 
+    private var restJob: Job? = null
+
     init {
         loadWorkout()
-        startTimer()
+        startRest(InitialRestSeconds)
     }
 
     private fun loadWorkout() {
@@ -48,45 +59,50 @@ class ActiveWorkoutViewModel @Inject constructor(
         }
     }
 
-    private fun startTimer() {
-        viewModelScope.launch {
-            while (true) {
-                delay(1000L)
-                if (_uiState.value.restTimeSeconds > 0) {
-                    _uiState.update { state ->
-                        if (state.restTimeSeconds > 0) {
-                            state.copy(restTimeSeconds = state.restTimeSeconds - 1)
-                        } else {
-                            state
-                        }
-                    }
-                }
+    // El descanso cuenta hacia atrás de a un segundo y se detiene en cero.
+    private fun startRest(seconds: Int) {
+        restJob?.cancel()
+        _uiState.update { it.copy(restTimeSeconds = seconds) }
+        if (seconds <= 0) return
+        restJob = viewModelScope.launch {
+            repeat(seconds) {
+                delay(OneSecondMs)
+                _uiState.update { it.copy(restTimeSeconds = (it.restTimeSeconds - 1).coerceAtLeast(0)) }
             }
         }
     }
 
-    fun addRestTime(seconds: Int = 30) {
-        _uiState.update { it.copy(restTimeSeconds = it.restTimeSeconds + seconds) }
+    fun addRestTime(seconds: Int = AddedRestSeconds) {
+        startRest(_uiState.value.restTimeSeconds + seconds)
     }
 
-    fun skipRest() {
-        _uiState.update { it.copy(restTimeSeconds = 0) }
-    }
+    fun skipRest() = startRest(0)
 
     fun addWeight(delta: Double) {
-        _uiState.update { it.copy(weightKg = (it.weightKg + delta).coerceAtLeast(2.5)) }
+        _uiState.update { it.copy(weightKg = (it.weightKg + delta).coerceAtLeast(MinWeightKg)) }
     }
 
     fun selectSet(setIndex: Int) {
         _uiState.update { it.copy(activeSetIndex = setIndex) }
     }
 
+    // Termina la serie actual: pasa a la siguiente, luego al próximo ejercicio y, tras el último, cierra el entrenamiento.
     fun completeCurrentSet(onFinished: () -> Unit) {
-        val currentState = _uiState.value
-        if (currentState.activeSetIndex < 2) {
-            _uiState.update { it.copy(activeSetIndex = it.activeSetIndex + 1) }
-        } else {
-            onFinished()
+        val state = _uiState.value
+        val exercises = state.workout?.exercises.orEmpty()
+        val exercise = exercises.getOrNull(state.exerciseIndex)
+        val sets = exercise?.sets ?: DefaultSets
+        val rest = exercise?.restSeconds ?: DefaultRestSeconds
+        when {
+            state.activeSetIndex < sets - 1 -> {
+                _uiState.update { it.copy(activeSetIndex = it.activeSetIndex + 1) }
+                startRest(rest)
+            }
+            state.exerciseIndex < exercises.size - 1 -> {
+                _uiState.update { it.copy(exerciseIndex = it.exerciseIndex + 1, activeSetIndex = 0) }
+                startRest(rest)
+            }
+            else -> onFinished()
         }
     }
 }
