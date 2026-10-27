@@ -36,7 +36,7 @@ object CoachDemoData {
             replySeconds = 9
         ),
         CoachExchange(
-            question = "What should I eat for dinner?",
+            question = "What should I eat tonight?",
             processingStep = "Checking your protein goal…",
             reply = "You're 36 g short on protein. I'd suggest grilled chicken breast with roasted vegetables and a serving of Greek yogurt.",
             replySeconds = 18
@@ -53,7 +53,7 @@ object CoachDemoData {
     val suggestedQuestions: List<String> = suggestions.map { it.question }
 
     val lastConversation = LastConversation(
-        text = "Build me a 30-minute workout.",
+        text = "Create a 30-minute workout for me.",
         timeAgo = "2 hours ago"
     )
 

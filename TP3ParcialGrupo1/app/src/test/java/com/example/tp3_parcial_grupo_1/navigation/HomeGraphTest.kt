@@ -1,6 +1,6 @@
 package com.example.tp3_parcial_grupo_1.navigation
 
-import com.example.tp3_parcial_grupo_1.ui.screens.home.NotificationType
+import com.example.tp3_parcial_grupo_1.model.NotificationType
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

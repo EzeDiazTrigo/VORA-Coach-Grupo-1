@@ -1,12 +1,19 @@
 package com.example.tp3_parcial_grupo_1.ui.screens.home
 
+import com.example.tp3_parcial_grupo_1.data.repository.NotificationRepository
+import com.example.tp3_parcial_grupo_1.util.MainDispatcherRule
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
+import org.junit.Rule
 import org.junit.Test
 
 class NotificationsViewModelTest {
-    private val viewModel = NotificationsViewModel()
+    @get:Rule
+    val mainDispatcherRule = MainDispatcherRule()
+
+    // Lazy: el ViewModel debe crearse después de que la regla fije Dispatchers.Main.
+    private val viewModel by lazy { NotificationsViewModel(NotificationRepository()) }
 
     @Test
     fun `starts with unread notifications`() {

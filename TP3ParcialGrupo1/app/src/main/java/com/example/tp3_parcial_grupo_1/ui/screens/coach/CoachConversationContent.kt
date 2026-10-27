@@ -54,6 +54,8 @@ import com.example.tp3_parcial_grupo_1.ui.strings.CoachStrings
 import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
 import com.example.tp3_parcial_grupo_1.ui.theme.iconSizes
+import com.example.tp3_parcial_grupo_1.ui.theme.message
+import com.example.tp3_parcial_grupo_1.ui.theme.messageTime
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 
 // Botones de adjuntar y enviar a los lados del campo de texto.
@@ -173,11 +175,11 @@ private fun UserBubble(message: CoachMessage) {
         ) {
             Text(
                 text = message.text,
-                style = MaterialTheme.typography.bodyLarge,
+                style = MaterialTheme.typography.message,
                 color = colors.onPrimary,
                 modifier = Modifier.fillMaxWidth()
             )
-            Text(message.time, style = MaterialTheme.typography.bodySmall, color = colors.onPrimary.copy(alpha = 0.5f))
+            Text(message.time, style = MaterialTheme.typography.messageTime, color = colors.onPrimary.copy(alpha = 0.5f))
         }
     }
 }
@@ -198,7 +200,7 @@ private fun VoraBubble(message: CoachMessage, onListen: () -> Unit) {
                 modifier = Modifier.padding(MaterialTheme.spacing.lg),
                 verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md)
             ) {
-                Text(message.text, style = MaterialTheme.typography.bodyLarge, color = colors.onSurface)
+                Text(message.text, style = MaterialTheme.typography.message, color = colors.onSurface)
                 val audio = message.audioSeconds
                 if (audio != null) {
                     HorizontalDivider(color = colors.outlineVariant)
@@ -206,7 +208,7 @@ private fun VoraBubble(message: CoachMessage, onListen: () -> Unit) {
                 } else {
                     Text(
                         message.time,
-                        style = MaterialTheme.typography.bodySmall,
+                        style = MaterialTheme.typography.messageTime,
                         color = MaterialTheme.extendedColors.textSubtle
                     )
                 }
@@ -285,7 +287,7 @@ private fun ChatInputBar(
                         value = draft,
                         onValueChange = onDraftChange,
                         modifier = Modifier.weight(1f),
-                        textStyle = MaterialTheme.typography.bodyLarge.copy(color = colors.onSurface),
+                        textStyle = MaterialTheme.typography.message.copy(color = colors.onSurface),
                         cursorBrush = SolidColor(colors.primary),
                         maxLines = 4,
                         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Send),
@@ -294,7 +296,7 @@ private fun ChatInputBar(
                             if (draft.isEmpty()) {
                                 Text(
                                     CoachStrings.AskPlaceholder,
-                                    style = MaterialTheme.typography.bodyLarge,
+                                    style = MaterialTheme.typography.message,
                                     color = MaterialTheme.extendedColors.textSubtle
                                 )
                             }

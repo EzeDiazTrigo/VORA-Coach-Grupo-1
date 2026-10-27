@@ -1,5 +1,6 @@
 package com.example.tp3_parcial_grupo_1.ui.screens.auth
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -7,14 +8,21 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import com.example.tp3_parcial_grupo_1.ui.components.AppButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
@@ -24,42 +32,123 @@ import com.example.tp3_parcial_grupo_1.ui.components.VoraBrandMark
 import com.example.tp3_parcial_grupo_1.ui.components.VoraBrandMarkStyle
 import com.example.tp3_parcial_grupo_1.ui.strings.AuthStrings
 import com.example.tp3_parcial_grupo_1.ui.strings.Strings
+import com.example.tp3_parcial_grupo_1.ui.theme.HairlineWidth
+import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
+import com.example.tp3_parcial_grupo_1.ui.theme.chip
+import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
 import com.example.tp3_parcial_grupo_1.ui.theme.iconSizes
+import com.example.tp3_parcial_grupo_1.ui.theme.message
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 
+/**
+ * Logo, nombre y eslogan de Acceso. Login usa título de 24 sp, eslogan de 12 sp y subtítulo;
+ * Registro, título de 28 sp y eslogan de 11 sp, sin subtítulo.
+ */
 @Composable
-fun AuthHeader(modifier: Modifier = Modifier, markStyle: VoraBrandMarkStyle = VoraBrandMarkStyle.SignIn) {
+fun AuthHeader(
+    modifier: Modifier = Modifier,
+    markStyle: VoraBrandMarkStyle = VoraBrandMarkStyle.SignIn,
+    titleStyle: TextStyle = MaterialTheme.typography.headlineMedium,
+    taglineStyle: TextStyle = MaterialTheme.typography.chip.copy(fontWeight = FontWeight.SemiBold),
+    subtitle: String? = null
+) {
     Column(
         modifier = modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xxs)
     ) {
         VoraBrandMark(style = markStyle)
-        Text(Strings.AppName, style = MaterialTheme.typography.headlineSmall, color = MaterialTheme.colorScheme.primary)
-        Text(
-            AuthStrings.Tagline,
-            style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.primary
+        Text(Strings.AppName, style = titleStyle, color = MaterialTheme.colorScheme.primary)
+        Text(AuthStrings.Tagline, style = taglineStyle, color = MaterialTheme.colorScheme.primary)
+        subtitle?.let {
+            Text(
+                it,
+                style = MaterialTheme.typography.message,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                textAlign = TextAlign.Center
+            )
+        }
+    }
+}
+
+// Píldora «EN ⌄» de la barra superior de Acceso. La app solo tiene textos en inglés: por ahora informa el modo demostración.
+@Composable
+fun LanguagePill(onClick: () -> Unit, modifier: Modifier = Modifier) {
+    val contentColor = MaterialTheme.colorScheme.onSurfaceVariant
+    Surface(
+        onClick = onClick,
+        modifier = modifier.semantics { contentDescription = AuthStrings.LanguageSelector },
+        shape = PillShape,
+        color = MaterialTheme.colorScheme.surface,
+        contentColor = contentColor
+    ) {
+        Row(
+            modifier = Modifier.padding(horizontal = MaterialTheme.spacing.md, vertical = MaterialTheme.spacing.xs),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xs)
+        ) {
+            Text(AuthStrings.Language, style = MaterialTheme.typography.labelMedium)
+            AppIcon(AppIcons.ChevronDown, contentDescription = null, size = MaterialTheme.iconSizes.sm, tint = contentColor)
+        }
+    }
+}
+
+// Botón principal de Login y Registro: esquina de 16 dp y texto de 16 sp Bold, como en Figma.
+@Composable
+fun AuthSubmitButton(text: String, onClick: () -> Unit, modifier: Modifier = Modifier) {
+    AppButton(
+        text = text,
+        onClick = onClick,
+        modifier = modifier,
+        style = AppButtonStyle.Accent,
+        trailingIcon = AppIcons.ArrowRight,
+        shape = MaterialTheme.shapes.medium,
+        textStyle = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold)
+    )
+}
+
+private val SocialButtonHeight = 46.dp
+
+@Composable
+fun SocialButtonsRow(onClick: () -> Unit, modifier: Modifier = Modifier) {
+    val brand = MaterialTheme.extendedColors.brand
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md)
+    ) {
+        SocialButton(AppIcons.LogoApple, AuthStrings.Apple, onClick)
+        SocialButton(AppIcons.LogoGoogle, AuthStrings.Google, onClick)
+        SocialButton(
+            AppIcons.FaceId,
+            AuthStrings.Biometric,
+            onClick,
+            containerColor = brand.biometricContainer,
+            borderColor = brand.biometricBorder,
+            iconTint = brand.dark
         )
     }
 }
 
+// Botón de solo ícono: Figma no muestra texto, así que el nombre va en contentDescription.
 @Composable
-fun SocialButtonsRow(onClick: () -> Unit, modifier: Modifier = Modifier) {
-    Row(
-        modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm)
+private fun RowScope.SocialButton(
+    icon: AppIcons,
+    description: String,
+    onClick: () -> Unit,
+    containerColor: Color = MaterialTheme.colorScheme.surface,
+    borderColor: Color = MaterialTheme.colorScheme.outlineVariant,
+    iconTint: Color = MaterialTheme.colorScheme.primary
+) {
+    Surface(
+        onClick = onClick,
+        modifier = Modifier.weight(1f).height(SocialButtonHeight),
+        shape = MaterialTheme.shapes.medium,
+        color = containerColor,
+        border = BorderStroke(HairlineWidth, borderColor)
     ) {
-        SocialButton(AuthStrings.Apple, onClick)
-        SocialButton(AuthStrings.Google, onClick)
-        SocialButton(AuthStrings.Biometric, onClick)
-    }
-}
-
-@Composable
-private fun RowScope.SocialButton(text: String, onClick: () -> Unit) {
-    Box(modifier = Modifier.weight(1f)) {
-        AppButton(text = text, onClick = onClick, style = AppButtonStyle.Outlined, isCompact = true)
+        Box(contentAlignment = Alignment.Center) {
+            AppIcon(icon, contentDescription = description, size = MaterialTheme.iconSizes.xl, tint = iconTint)
+        }
     }
 }
 
@@ -70,8 +159,8 @@ fun BiometricNote(modifier: Modifier = Modifier) {
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xs)
     ) {
-        AppIcon(AppIcons.ShieldCheck, contentDescription = null, size = MaterialTheme.iconSizes.md, tint = MaterialTheme.colorScheme.primary)
-        Text(AuthStrings.BiometricSignIn, style = MaterialTheme.typography.bodyMedium)
+        AppIcon(AppIcons.ShieldCheck, contentDescription = null, size = MaterialTheme.iconSizes.md, tint = MaterialTheme.extendedColors.brand.shield)
+        Text(AuthStrings.BiometricSignIn, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
     }
 }
 
@@ -84,6 +173,18 @@ fun AuthTextLink(text: String, onClick: () -> Unit, modifier: Modifier = Modifie
         modifier = modifier,
         style = MaterialTheme.typography.bodySmall,
         underline = true,
+        contentPadding = PaddingValues(vertical = MaterialTheme.spacing.xs)
+    )
+}
+
+// «Forgot your password?» en la fila de la etiqueta del campo, como en Figma: 12 sp, sin subrayar.
+@Composable
+fun ForgotPasswordLink(onClick: () -> Unit, modifier: Modifier = Modifier) {
+    AppTextLink(
+        text = AuthStrings.ForgotPassword,
+        onClick = onClick,
+        modifier = modifier,
+        style = MaterialTheme.typography.chip.copy(fontWeight = FontWeight.Normal),
         contentPadding = PaddingValues(vertical = MaterialTheme.spacing.xs)
     )
 }
