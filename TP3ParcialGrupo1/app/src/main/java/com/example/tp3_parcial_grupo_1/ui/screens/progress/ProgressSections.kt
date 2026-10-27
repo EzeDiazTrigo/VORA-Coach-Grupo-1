@@ -27,6 +27,7 @@ import com.example.tp3_parcial_grupo_1.ui.components.AppIconButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppIconButtonDefaults
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
 import com.example.tp3_parcial_grupo_1.ui.components.AppNoticeCard
+import com.example.tp3_parcial_grupo_1.ui.components.AppStat
 import com.example.tp3_parcial_grupo_1.ui.components.AppTopBar
 import com.example.tp3_parcial_grupo_1.ui.components.VoraLogo
 import com.example.tp3_parcial_grupo_1.ui.components.VoraLogoStyle
@@ -76,16 +77,17 @@ internal fun StatStrip(
     Row(modifier = modifier.fillMaxWidth().height(IntrinsicSize.Min)) {
         stats.forEachIndexed { index, stat ->
             if (index > 0) VerticalDivider(color = dividerColor)
-            Column(
+            AppStat(
+                label = stat.label,
+                value = stat.value,
                 modifier = Modifier
                     .weight(1f)
                     .then(if (index > 0) Modifier.padding(start = MaterialTheme.spacing.md) else Modifier),
-                horizontalAlignment = horizontalAlignment,
-                verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xxs)
-            ) {
-                Text(stat.label, style = MaterialTheme.typography.bodySmall, color = labelColor)
-                Text(stat.value, style = MaterialTheme.typography.titleLarge)
-            }
+                labelStyle = MaterialTheme.typography.bodySmall,
+                labelColor = labelColor,
+                valueStyle = MaterialTheme.typography.titleLarge,
+                horizontalAlignment = horizontalAlignment
+            )
         }
     }
 }

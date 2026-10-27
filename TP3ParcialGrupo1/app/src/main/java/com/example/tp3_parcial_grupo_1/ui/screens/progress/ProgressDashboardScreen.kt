@@ -29,6 +29,7 @@ import com.example.tp3_parcial_grupo_1.ui.components.AppCardStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
+import com.example.tp3_parcial_grupo_1.ui.components.AppStat
 import com.example.tp3_parcial_grupo_1.ui.strings.ProgressStrings
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
 import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
@@ -100,21 +101,20 @@ private fun OverviewCard(progress: PeriodProgress) {
 
 @Composable
 private fun StatTile(stat: SummaryStat, modifier: Modifier = Modifier) {
-    Column(
+    AppStat(
+        label = stat.label,
+        value = stat.value,
         modifier = modifier
             .background(MaterialTheme.colorScheme.background, MaterialTheme.shapes.small)
             .padding(MaterialTheme.spacing.md),
-        verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xxs)
+        labelStyle = MaterialTheme.typography.bodySmall,
+        valueStyle = MaterialTheme.typography.titleLarge
     ) {
-        Text(stat.label, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xs)) {
-            Text(stat.value, style = MaterialTheme.typography.titleLarge)
-            if (stat.isStreak) {
-                AppIcon(AppIcons.Flame, contentDescription = null, tint = MaterialTheme.colorScheme.error, size = ProgressSmallIconSize)
-            }
-            stat.trend?.let {
-                Text(it, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.extendedColors.mint)
-            }
+        if (stat.isStreak) {
+            AppIcon(AppIcons.Flame, contentDescription = null, tint = MaterialTheme.colorScheme.error, size = ProgressSmallIconSize)
+        }
+        stat.trend?.let {
+            Text(it, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.extendedColors.mint)
         }
     }
 }

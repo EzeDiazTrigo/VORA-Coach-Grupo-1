@@ -23,6 +23,8 @@ import androidx.compose.ui.unit.sp
 import com.example.tp3_parcial_grupo_1.model.Meal
 import com.example.tp3_parcial_grupo_1.model.MealType
 import com.example.tp3_parcial_grupo_1.ui.components.AppBackButton
+import com.example.tp3_parcial_grupo_1.ui.components.AppStat
+import com.example.tp3_parcial_grupo_1.ui.components.AppStatDefaults
 import com.example.tp3_parcial_grupo_1.ui.components.AppTopBar
 import com.example.tp3_parcial_grupo_1.ui.strings.Strings
 import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
@@ -119,9 +121,33 @@ fun ReviewMealScreen(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        MacroTotalItem(label = "PROTEIN", value = "38g")
-                        MacroTotalItem(label = "CARBS", value = "54g")
-                        MacroTotalItem(label = "FAT", value = "14g")
+                        AppStat(
+                            label = "PROTEIN",
+                            value = "38g",
+                            labelStyle = AppStatDefaults.MacroLabelStyle,
+                            labelColor = MaterialTheme.colorScheme.secondary,
+                            valueStyle = AppStatDefaults.MacroValueStyle,
+                            valueColor = MaterialTheme.colorScheme.surface,
+                            spacing = 2.dp
+                        )
+                        AppStat(
+                            label = "CARBS",
+                            value = "54g",
+                            labelStyle = AppStatDefaults.MacroLabelStyle,
+                            labelColor = MaterialTheme.colorScheme.secondary,
+                            valueStyle = AppStatDefaults.MacroValueStyle,
+                            valueColor = MaterialTheme.colorScheme.surface,
+                            spacing = 2.dp
+                        )
+                        AppStat(
+                            label = "FAT",
+                            value = "14g",
+                            labelStyle = AppStatDefaults.MacroLabelStyle,
+                            labelColor = MaterialTheme.colorScheme.secondary,
+                            valueStyle = AppStatDefaults.MacroValueStyle,
+                            valueColor = MaterialTheme.colorScheme.surface,
+                            spacing = 2.dp
+                        )
                     }
                 }
             }
@@ -250,11 +276,3 @@ private fun QuantityStepButton(symbol: String, description: String, onClick: () 
     }
 }
 
-@Composable
-fun MacroTotalItem(label: String, value: String) {
-    Column {
-        Text(text = label, style = MaterialTheme.typography.labelSmall.copy(color = MaterialTheme.colorScheme.secondary, fontSize = 10.sp, fontWeight = FontWeight.Bold))
-        Spacer(modifier = Modifier.height(2.dp))
-        Text(text = value, style = MaterialTheme.typography.titleMedium.copy(color = MaterialTheme.colorScheme.surface, fontSize = 16.sp, fontWeight = FontWeight.Bold))
-    }
-}

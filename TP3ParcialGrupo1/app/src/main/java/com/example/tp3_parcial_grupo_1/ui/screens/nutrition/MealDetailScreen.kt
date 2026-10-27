@@ -19,6 +19,8 @@ import com.example.tp3_parcial_grupo_1.ui.components.AppBackButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
 import com.example.tp3_parcial_grupo_1.ui.components.AppNoticeCard
+import com.example.tp3_parcial_grupo_1.ui.components.AppStat
+import com.example.tp3_parcial_grupo_1.ui.components.AppStatDefaults
 import com.example.tp3_parcial_grupo_1.ui.components.AppTopBar
 import com.example.tp3_parcial_grupo_1.ui.strings.Strings
 import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
@@ -147,9 +149,33 @@ fun MealDetailScreen(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        DetailMacroItem(label = "PROTEIN", value = "${meal.protein}g")
-                        DetailMacroItem(label = "CARBS", value = "${meal.carbs}g")
-                        DetailMacroItem(label = "FAT", value = "${meal.fat}g")
+                        AppStat(
+                            label = "PROTEIN",
+                            value = "${meal.protein}g",
+                            labelStyle = AppStatDefaults.MacroLabelStyle,
+                            labelColor = MaterialTheme.extendedColors.textSubtle,
+                            valueStyle = AppStatDefaults.MacroValueStyle,
+                            valueColor = MaterialTheme.colorScheme.onBackground,
+                            spacing = 2.dp
+                        )
+                        AppStat(
+                            label = "CARBS",
+                            value = "${meal.carbs}g",
+                            labelStyle = AppStatDefaults.MacroLabelStyle,
+                            labelColor = MaterialTheme.extendedColors.textSubtle,
+                            valueStyle = AppStatDefaults.MacroValueStyle,
+                            valueColor = MaterialTheme.colorScheme.onBackground,
+                            spacing = 2.dp
+                        )
+                        AppStat(
+                            label = "FAT",
+                            value = "${meal.fat}g",
+                            labelStyle = AppStatDefaults.MacroLabelStyle,
+                            labelColor = MaterialTheme.extendedColors.textSubtle,
+                            valueStyle = AppStatDefaults.MacroValueStyle,
+                            valueColor = MaterialTheme.colorScheme.onBackground,
+                            spacing = 2.dp
+                        )
                     }
                 }
             }
@@ -211,11 +237,3 @@ fun MealDetailScreen(
     }
 }
 
-@Composable
-fun DetailMacroItem(label: String, value: String) {
-    Column {
-        Text(text = label, style = MaterialTheme.typography.labelSmall.copy(color = MaterialTheme.extendedColors.textSubtle, fontSize = 10.sp, fontWeight = FontWeight.Bold))
-        Spacer(modifier = Modifier.height(2.dp))
-        Text(text = value, style = MaterialTheme.typography.titleMedium.copy(color = MaterialTheme.colorScheme.onBackground, fontSize = 16.sp, fontWeight = FontWeight.Bold))
-    }
-}

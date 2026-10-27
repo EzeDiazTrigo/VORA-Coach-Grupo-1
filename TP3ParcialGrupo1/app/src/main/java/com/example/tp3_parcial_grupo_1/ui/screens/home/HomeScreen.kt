@@ -48,6 +48,7 @@ import com.example.tp3_parcial_grupo_1.ui.components.AppIconButtonDefaults
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
 import com.example.tp3_parcial_grupo_1.ui.components.AppNoticeCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
+import com.example.tp3_parcial_grupo_1.ui.components.AppStat
 import com.example.tp3_parcial_grupo_1.ui.components.GoalValueText
 import com.example.tp3_parcial_grupo_1.ui.components.MacroProgressBar
 import com.example.tp3_parcial_grupo_1.ui.components.ProgressRing
@@ -266,20 +267,12 @@ private fun OverviewRow(uiState: HomeUiState, onClick: () -> Unit) {
 private fun StatsCard(uiState: HomeUiState) {
     AppCard {
         Row(modifier = Modifier.fillMaxWidth().height(IntrinsicSize.Min)) {
-            StatItem(HomeStrings.Steps, uiState.steps, Modifier.weight(1f))
+            AppStat(HomeStrings.Steps, uiState.steps, Modifier.weight(1f))
             VerticalDivider(color = MaterialTheme.colorScheme.outlineVariant)
-            StatItem(HomeStrings.Distance, uiState.distance, Modifier.weight(1f).padding(start = MaterialTheme.spacing.md))
+            AppStat(HomeStrings.Distance, uiState.distance, Modifier.weight(1f).padding(start = MaterialTheme.spacing.md))
             VerticalDivider(color = MaterialTheme.colorScheme.outlineVariant)
-            StatItem(HomeStrings.ActiveKcal, uiState.activeKcal, Modifier.weight(1f).padding(start = MaterialTheme.spacing.md))
+            AppStat(HomeStrings.ActiveKcal, uiState.activeKcal, Modifier.weight(1f).padding(start = MaterialTheme.spacing.md))
         }
-    }
-}
-
-@Composable
-private fun StatItem(label: String, value: String, modifier: Modifier = Modifier) {
-    Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xxs)) {
-        Text(label, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-        Text(value, style = MaterialTheme.typography.titleSmall)
     }
 }
 

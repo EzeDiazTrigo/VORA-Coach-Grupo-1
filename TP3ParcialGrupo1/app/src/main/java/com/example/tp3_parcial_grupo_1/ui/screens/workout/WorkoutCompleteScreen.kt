@@ -40,6 +40,7 @@ import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
 import com.example.tp3_parcial_grupo_1.ui.components.AppNoticeCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
+import com.example.tp3_parcial_grupo_1.ui.components.AppStat
 import com.example.tp3_parcial_grupo_1.ui.components.VoraLogo
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
 import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
@@ -118,20 +119,15 @@ fun WorkoutCompleteScreen(
                     horizontalArrangement = Arrangement.SpaceEvenly,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text(
-                            text = "$durationMinutes min",
-                            style = MaterialTheme.typography.titleLarge,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.onSurface
-                        )
-                        Spacer(modifier = Modifier.height(2.dp))
-                        Text(
-                            text = "DURATION",
-                            style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
+                    AppStat(
+                        label = "DURATION",
+                        value = "$durationMinutes min",
+                        valueStyle = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
+                        valueColor = MaterialTheme.colorScheme.onSurface,
+                        spacing = 2.dp,
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        valueFirst = true
+                    )
 
                     VerticalDivider(
                         modifier = Modifier
@@ -140,20 +136,15 @@ fun WorkoutCompleteScreen(
                         color = MaterialTheme.colorScheme.outlineVariant
                     )
 
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text(
-                            text = "$totalExercises/$totalExercises",
-                            style = MaterialTheme.typography.titleLarge,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.onSurface
-                        )
-                        Spacer(modifier = Modifier.height(2.dp))
-                        Text(
-                            text = "EXERCISES",
-                            style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
+                    AppStat(
+                        label = "EXERCISES",
+                        value = "$totalExercises/$totalExercises",
+                        valueStyle = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
+                        valueColor = MaterialTheme.colorScheme.onSurface,
+                        spacing = 2.dp,
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        valueFirst = true
+                    )
 
                     VerticalDivider(
                         modifier = Modifier
@@ -162,20 +153,15 @@ fun WorkoutCompleteScreen(
                         color = MaterialTheme.colorScheme.outlineVariant
                     )
 
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text(
-                            text = "2,340 kg",
-                            style = MaterialTheme.typography.titleLarge,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.onSurface
-                        )
-                        Spacer(modifier = Modifier.height(2.dp))
-                        Text(
-                            text = "VOLUME",
-                            style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
+                    AppStat(
+                        label = "VOLUME",
+                        value = "2,340 kg",
+                        valueStyle = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
+                        valueColor = MaterialTheme.colorScheme.onSurface,
+                        spacing = 2.dp,
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        valueFirst = true
+                    )
                 }
             }
 

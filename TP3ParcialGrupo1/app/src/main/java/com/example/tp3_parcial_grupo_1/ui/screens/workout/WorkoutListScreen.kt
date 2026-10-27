@@ -49,6 +49,7 @@ import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
 import com.example.tp3_parcial_grupo_1.ui.components.AppNoticeCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
+import com.example.tp3_parcial_grupo_1.ui.components.AppStat
 import com.example.tp3_parcial_grupo_1.ui.components.VoraLogo
 import com.example.tp3_parcial_grupo_1.ui.strings.WorkoutStrings
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
@@ -385,20 +386,13 @@ fun WorkoutListScreen(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Column(modifier = Modifier.weight(1f)) {
-                            Text(
-                                text = "STREAK",
-                                style = MaterialTheme.typography.labelSmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-                            Spacer(modifier = Modifier.height(4.dp))
-                            Text(
-                                text = "4 Days",
-                                style = MaterialTheme.typography.titleMedium,
-                                fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.onSurface
-                            )
-                        }
+                        AppStat(
+                            label = "STREAK",
+                            value = "4 Days",
+                            modifier = Modifier.weight(1f),
+                            valueStyle = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                            valueColor = MaterialTheme.colorScheme.onSurface
+                        )
 
                         VerticalDivider(
                             modifier = Modifier
@@ -407,20 +401,13 @@ fun WorkoutListScreen(
                             color = MaterialTheme.colorScheme.outlineVariant
                         )
 
-                        Column(modifier = Modifier.weight(1.1f)) {
-                            Text(
-                                text = "WORKOUTS",
-                                style = MaterialTheme.typography.labelSmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-                            Spacer(modifier = Modifier.height(4.dp))
-                            Text(
-                                text = "3/5 complete",
-                                style = MaterialTheme.typography.titleMedium,
-                                fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.onSurface
-                            )
-                        }
+                        AppStat(
+                            label = "WORKOUTS",
+                            value = "3/5 complete",
+                            modifier = Modifier.weight(1.1f),
+                            valueStyle = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                            valueColor = MaterialTheme.colorScheme.onSurface
+                        )
 
                         VerticalDivider(
                             modifier = Modifier
@@ -429,20 +416,13 @@ fun WorkoutListScreen(
                             color = MaterialTheme.colorScheme.outlineVariant
                         )
 
-                        Column(modifier = Modifier.weight(1.2f)) {
-                            Text(
-                                text = "VOL. LIFTED",
-                                style = MaterialTheme.typography.labelSmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-                            Spacer(modifier = Modifier.height(4.dp))
-                            Text(
-                                text = "8,420 kg",
-                                style = MaterialTheme.typography.titleMedium,
-                                fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.onSurface
-                            )
-                        }
+                        AppStat(
+                            label = "VOL. LIFTED",
+                            value = "8,420 kg",
+                            modifier = Modifier.weight(1.2f),
+                            valueStyle = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                            valueColor = MaterialTheme.colorScheme.onSurface
+                        )
                     }
                 }
             }
