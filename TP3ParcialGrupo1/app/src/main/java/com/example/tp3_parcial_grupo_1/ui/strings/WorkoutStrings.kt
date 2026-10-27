@@ -17,6 +17,7 @@ object WorkoutStrings {
     const val NoWorkoutsFound = "No workouts found for this level."
     const val ErrorGeneric = "An error occurred while loading. Please try again."
     const val RestTimeLabel = "Rest"
+    const val NotAvailableOffline = "This workout isn't available offline yet. Connect to the internet and try again."
 
     // Dashboard
     const val WorkoutGoal = "Workout Goal"

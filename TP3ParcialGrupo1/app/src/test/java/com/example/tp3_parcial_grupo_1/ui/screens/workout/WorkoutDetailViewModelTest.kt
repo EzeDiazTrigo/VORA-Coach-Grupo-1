@@ -5,6 +5,7 @@ import com.example.tp3_parcial_grupo_1.data.repository.WorkoutRepository
 import com.example.tp3_parcial_grupo_1.model.Exercise
 import com.example.tp3_parcial_grupo_1.model.Workout
 import com.example.tp3_parcial_grupo_1.ui.strings.WorkoutStrings
+import java.io.IOException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -16,6 +17,8 @@ import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
@@ -57,8 +60,42 @@ class WorkoutDetailViewModelTest {
         assertFalse(viewModel.uiState.value.isLoading)
     }
 
+    @Test
+    fun `given no network and a detail never downloaded, when refreshing, then it is unavailable offline`() {
+        fakeRepository.networkDown = true
+        val neverDownloaded = WorkoutDetailViewModel(fakeRepository, SavedStateHandle(mapOf("workoutId" to "w99")))
+
+        val state = neverDownloaded.uiState.value
+        assertTrue(state.isUnavailableOffline)
+        assertNull(state.errorMessage)
+        assertNull(state.workout)
+        assertFalse(state.isLoading)
+    }
+
+    @Test
+    fun `given no network and a detail already downloaded, when refreshing, then the cached detail stays visible`() {
+        fakeRepository.networkDown = true
+        viewModel.refreshWorkoutDetail()
+
+        val state = viewModel.uiState.value
+        assertFalse(state.isUnavailableOffline)
+        assertEquals(WorkoutStrings.ErrorGeneric, state.errorMessage)
+        assertEquals("w01", state.workout?.id)
+    }
+
+    @Test
+    fun `given a server error and no cached detail, when refreshing, then it is a generic error and not an offline one`() {
+        fakeRepository.shouldFail = true
+        val neverDownloaded = WorkoutDetailViewModel(fakeRepository, SavedStateHandle(mapOf("workoutId" to "w99")))
+
+        val state = neverDownloaded.uiState.value
+        assertFalse(state.isUnavailableOffline)
+        assertEquals(WorkoutStrings.ErrorGeneric, state.errorMessage)
+    }
+
     private class FakeWorkoutRepository : WorkoutRepository {
         var shouldFail = false
+        var networkDown = false
         private val workout = Workout(
             id = "w01",
             name = "Fuerza",
@@ -80,6 +117,7 @@ class WorkoutDetailViewModelTest {
         }
 
         override suspend fun refreshWorkoutDetails(id: String): Result<Unit> {
+            if (networkDown) return Result.failure(IOException("Unable to resolve host"))
             return if (shouldFail) Result.failure(Exception("Detail error")) else Result.success(Unit)
         }
     }
