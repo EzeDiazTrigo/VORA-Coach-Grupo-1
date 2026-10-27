@@ -1,6 +1,5 @@
 package com.example.tp3_parcial_grupo_1.ui.screens.workout
 
-import android.app.Activity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -18,56 +17,73 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalView
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.view.WindowCompat
-import com.example.tp3_parcial_grupo_1.R
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.tp3_parcial_grupo_1.model.Workout
 import com.example.tp3_parcial_grupo_1.ui.components.AppButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppCardStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
+import com.example.tp3_parcial_grupo_1.ui.components.AppIconButton
+import com.example.tp3_parcial_grupo_1.ui.components.AppIconButtonDefaults
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
+import com.example.tp3_parcial_grupo_1.ui.components.LightSystemBarIcons
 import com.example.tp3_parcial_grupo_1.ui.components.VoraLogo
+import com.example.tp3_parcial_grupo_1.ui.strings.WorkoutStrings
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
+import com.example.tp3_parcial_grupo_1.ui.theme.iconSizes
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
+
+private val CloseButtonSize = 32.dp
+private val MicButtonSize = 44.dp
+private val CoachLogoSize = 32.dp
+private val TextGap = 2.dp
+
+@Composable
+fun PreWorkoutRoute(
+    onBackClick: () -> Unit,
+    onBeginClick: () -> Unit,
+    onMicClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    viewModel: WorkoutDetailViewModel = hiltViewModel()
+) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    PreWorkoutScreen(
+        workout = uiState.workout,
+        onBackClick = onBackClick,
+        onBeginClick = onBeginClick,
+        onMicClick = onMicClick,
+        modifier = modifier
+    )
+}
 
 @Composable
 fun PreWorkoutScreen(
-    workout: Workout? = null,
-    workoutId: String = "w01",
+    workout: Workout?,
+    modifier: Modifier = Modifier,
     onBackClick: () -> Unit = {},
     onBeginClick: () -> Unit = {},
-    onMicClick: () -> Unit = {},
-    modifier: Modifier = Modifier
+    onMicClick: () -> Unit = {}
 ) {
-    val view = LocalView.current
-    if (!view.isInEditMode) {
-        SideEffect {
-            val window = (view.context as Activity).window
-            window.statusBarColor = android.graphics.Color.parseColor("#123D35")
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = false
-        }
-    }
+    LightSystemBarIcons()
 
-    val workoutName = workout?.name ?: "Upper Body Strength"
-    val durationMinutes = workout?.durationMinutes ?: 42
-    val exerciseCount = if (workout?.exercises?.isNotEmpty() == true) workout.exercises.size else (workout?.exerciseCount ?: 5)
+    val workoutName = workout?.name.orEmpty()
+    val durationMinutes = workout?.durationMinutes ?: 0
+    val exerciseCount = workout?.exercises?.size?.takeIf { it > 0 } ?: workout?.exerciseCount ?: 0
 
     Box(
         modifier = modifier
@@ -89,25 +105,22 @@ fun PreWorkoutScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "GET READY",
+                    text = WorkoutStrings.GetReady,
                     style = MaterialTheme.typography.labelSmall,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.extendedColors.mint
                 )
 
-                IconButton(
+                AppIconButton(
+                    AppIcons.Close,
+                    contentDescription = WorkoutStrings.Close,
                     onClick = onBackClick,
-                    modifier = Modifier.size(32.dp)
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_close),
-                        contentDescription = "Close",
-                        tint = MaterialTheme.colorScheme.onPrimary
-                    )
-                }
+                    size = CloseButtonSize,
+                    colors = AppIconButtonDefaults.onDark()
+                )
             }
 
-            // Title Section (Dynamic workout name)
+            // Title Section (workout name from the API)
             Column(modifier = Modifier.fillMaxWidth()) {
                 Text(
                     text = workoutName,
@@ -116,78 +129,34 @@ fun PreWorkoutScreen(
                     color = MaterialTheme.colorScheme.onPrimary
                 )
 
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(MaterialTheme.spacing.xxs))
 
                 Text(
-                    text = "$durationMinutes min • $exerciseCount exercises",
+                    text = WorkoutStrings.durationAndExercises(durationMinutes, exerciseCount),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.extendedColors.mint
                 )
             }
 
-            // Card 1: TODAY'S FOCUS (Has border)
-            AppCard(style = AppCardStyle.Translucent, spacing = 0.dp) {
-                Text(
-                    text = "TODAY'S FOCUS",
-                    style = MaterialTheme.typography.labelSmall,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.tertiary
-                )
-                Spacer(modifier = Modifier.height(MaterialTheme.spacing.xs))
-                Text(
-                    text = "Controlled Repetitions",
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onPrimary
-                )
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = "Keep concentric lifts explosive and focus on a slow, 2-second eccentric return for maximal hypertrophy stimulus.",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.85f)
-                )
-            }
+            PreWorkoutNote(
+                label = WorkoutStrings.TodaysFocus,
+                title = WorkoutStrings.FocusTitle,
+                text = WorkoutStrings.FocusText
+            )
 
-            // Card 2: YOUR LAST SESSION (Has border)
-            AppCard(style = AppCardStyle.Translucent, spacing = 0.dp) {
-                Text(
-                    text = "YOUR LAST SESSION",
-                    style = MaterialTheme.typography.labelSmall,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.tertiary
-                )
-                Spacer(modifier = Modifier.height(MaterialTheme.spacing.xs))
-                Text(
-                    text = "$workoutName Volume",
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onPrimary
-                )
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = "Set 1: 40 kg × 10 • Set 2: 40 kg × 9 • Set 3: 37.5 kg × 10",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.85f)
-                )
-            }
+            PreWorkoutNote(
+                label = WorkoutStrings.YourLastSession,
+                title = WorkoutStrings.lastSessionVolume(workoutName),
+                text = WorkoutStrings.LastSessionSets
+            )
 
-            // Card 3: VORA'S COACH TIP (Has border)
-            AppCard(style = AppCardStyle.Translucent, spacing = 0.dp) {
-                Text(
-                    text = "VORA'S COACH TIP",
-                    style = MaterialTheme.typography.labelSmall,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.tertiary
-                )
-                Spacer(modifier = Modifier.height(MaterialTheme.spacing.xs))
-                Text(
-                    text = "\"Start slightly lighter on your first set. If your form feels exceptionally robust, increase the load.\"",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.85f)
-                )
-            }
+            PreWorkoutNote(
+                label = WorkoutStrings.CoachTip,
+                title = null,
+                text = WorkoutStrings.CoachTipText
+            )
 
-            // Card 4: Need anything? Mic Widget (No border)
+            // Need anything? Mic Widget (No border)
             AppCard(
                 style = AppCardStyle.Translucent,
                 spacing = 0.dp,
@@ -201,18 +170,18 @@ fun PreWorkoutScreen(
                 ) {
                     Column {
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            VoraLogo(size = 32.dp)
+                            VoraLogo(size = CoachLogoSize)
                             Spacer(modifier = Modifier.width(MaterialTheme.spacing.xs))
                             Text(
-                                text = "Need anything?",
+                                text = WorkoutStrings.NeedAnything,
                                 style = MaterialTheme.typography.titleMedium,
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.extendedColors.mint
                             )
                         }
-                        Spacer(modifier = Modifier.height(2.dp))
+                        Spacer(modifier = Modifier.height(TextGap))
                         Text(
-                            text = "\"Recommend a chest warm-up\"",
+                            text = WorkoutStrings.RecommendWarmup,
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.85f)
                         )
@@ -220,31 +189,31 @@ fun PreWorkoutScreen(
 
                     Box(
                         modifier = Modifier
-                            .size(44.dp)
+                            .size(MicButtonSize)
                             .clip(CircleShape)
                             .background(MaterialTheme.colorScheme.tertiary)
-                            .clickable { onMicClick() },
+                            .clickable(onClick = onMicClick),
                         contentAlignment = Alignment.Center
                     ) {
                         AppIcon(
                             AppIcons.Mic,
-                            contentDescription = "Voice Assistant",
+                            contentDescription = WorkoutStrings.VoiceAssistant,
                             tint = MaterialTheme.colorScheme.onTertiary,
-                            size = 20.dp
+                            size = MaterialTheme.iconSizes.xl
                         )
                     }
                 }
             }
 
-            Spacer(modifier = Modifier.height(MaterialTheme.spacing.xs))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.xxs))
 
-            // Mint #65D6B0 Start Workout Button directly below cards
+            // Mint Start Workout button directly below the cards
             AppButton(
-                text = "Start Workout",
+                text = WorkoutStrings.StartWorkout,
                 onClick = onBeginClick,
                 style = AppButtonStyle.Accent,
-                containerColor = Color(0xFF65D6B0),
-                textColor = Color(0xFF123D35)
+                containerColor = MaterialTheme.extendedColors.mint,
+                textColor = MaterialTheme.colorScheme.primary
             )
 
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.md))
@@ -252,10 +221,38 @@ fun PreWorkoutScreen(
     }
 }
 
+// Tarjeta translúcida con etiqueta, título opcional y texto: las tres primeras de Pre Workout.
+@Composable
+private fun PreWorkoutNote(label: String, title: String?, text: String) {
+    AppCard(style = AppCardStyle.Translucent, spacing = 0.dp) {
+        Text(
+            text = label,
+            style = MaterialTheme.typography.labelSmall,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.tertiary
+        )
+        Spacer(modifier = Modifier.height(MaterialTheme.spacing.xs))
+        if (title != null) {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onPrimary
+            )
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.xxs))
+        }
+        Text(
+            text = text,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.85f)
+        )
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 private fun PreWorkoutScreenPreview() {
     AppTheme {
-        PreWorkoutScreen(workout = null, workoutId = "w01", onBackClick = {}, onBeginClick = {})
+        PreWorkoutScreen(workout = Workout("w01", "Upper Body Strength", "Intermediate", 42, 5))
     }
 }

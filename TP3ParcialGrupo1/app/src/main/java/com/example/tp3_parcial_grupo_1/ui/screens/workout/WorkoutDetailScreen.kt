@@ -22,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -44,12 +45,15 @@ import com.example.tp3_parcial_grupo_1.ui.components.AppNoticeCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
 import com.example.tp3_parcial_grupo_1.ui.components.AppTopBar
 import com.example.tp3_parcial_grupo_1.ui.components.VoraLogo
+import com.example.tp3_parcial_grupo_1.ui.strings.Strings
 import com.example.tp3_parcial_grupo_1.ui.strings.WorkoutStrings
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
 import com.example.tp3_parcial_grupo_1.ui.theme.iconSizes
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
+import kotlinx.coroutines.launch
 
 private val HeaderButtonSize = 40.dp
+private val TextGap = 2.dp
 
 @Composable
 fun WorkoutDetailRoute(
@@ -61,6 +65,7 @@ fun WorkoutDetailRoute(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
 
     LaunchedEffect(uiState.errorMessage) {
         uiState.errorMessage?.let { msg ->
@@ -77,6 +82,7 @@ fun WorkoutDetailRoute(
             uiState.workout?.id?.let { onStartWorkoutClick(it) }
         },
         onExerciseClick = onExerciseClick,
+        onEditWorkoutClick = { scope.launch { snackbarHostState.showSnackbar(Strings.DemoMode) } },
         onRetryClick = viewModel::refreshWorkoutDetail,
         modifier = modifier
     )
@@ -90,6 +96,7 @@ fun WorkoutDetailScreen(
     onBackClick: () -> Unit,
     onStartWorkoutClick: () -> Unit,
     onExerciseClick: (String) -> Unit,
+    onEditWorkoutClick: () -> Unit,
     onRetryClick: () -> Unit
 ) {
     val workout = uiState.workout
@@ -142,7 +149,7 @@ fun WorkoutDetailScreen(
                     ) {
                         // Centered Top Header Bar
                         AppTopBar(
-                            title = "Workout Overview",
+                            title = WorkoutStrings.WorkoutOverview,
                             modifier = Modifier.padding(vertical = MaterialTheme.spacing.xs),
                             titleStyle = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                             titleColor = MaterialTheme.colorScheme.onSurface,
@@ -187,10 +194,10 @@ fun WorkoutDetailScreen(
                                         color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
 
-                                    Spacer(modifier = Modifier.height(4.dp))
+                                    Spacer(modifier = Modifier.height(MaterialTheme.spacing.xxs))
 
                                     Text(
-                                        text = workout.description ?: "Focus: Chest • Back • Shoulders • Arms",
+                                        text = workout.description ?: WorkoutStrings.DefaultWorkoutFocus,
                                         style = MaterialTheme.typography.bodyMedium,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
@@ -200,8 +207,8 @@ fun WorkoutDetailScreen(
                             // Coach Note Box
                             item {
                                 AppNoticeCard(
-                                    text = "Based on your last session, VORA suggests keeping the same weights and focusing on controlled repetitions today.",
-                                    title = "VORA COACH NOTE",
+                                    text = WorkoutStrings.CoachNoteBody,
+                                    title = WorkoutStrings.CoachNoteTitle,
                                     leading = { VoraLogo(size = 16.dp) },
                                     shape = MaterialTheme.shapes.large,
                                     borderColor = null,
@@ -233,13 +240,13 @@ fun WorkoutDetailScreen(
                                 .padding(vertical = MaterialTheme.spacing.md)
                         ) {
                             AppButton(
-                                text = "Start Workout",
+                                text = WorkoutStrings.StartWorkout,
                                 onClick = onStartWorkoutClick,
                                 style = AppButtonStyle.Primary
                             )
                             AppButton(
-                                text = "Edit workout",
-                                onClick = { },
+                                text = WorkoutStrings.EditWorkout,
+                                onClick = onEditWorkoutClick,
                                 style = AppButtonStyle.Outlined,
                                 textColor = MaterialTheme.colorScheme.primary,
                                 borderColor = MaterialTheme.colorScheme.primary
@@ -292,7 +299,7 @@ private fun NumberedExerciseItem(
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onSurface
                 )
-                Spacer(modifier = Modifier.height(2.dp))
+                Spacer(modifier = Modifier.height(TextGap))
                 Text(
                     text = "${exercise.sets} × ${exercise.reps}  •  Rest ${exercise.restSeconds}s",
                     style = MaterialTheme.typography.bodyMedium,
@@ -329,6 +336,7 @@ private fun WorkoutDetailScreenPreview() {
             onBackClick = {},
             onStartWorkoutClick = {},
             onExerciseClick = {},
+            onEditWorkoutClick = {},
             onRetryClick = {}
         )
     }
