@@ -63,7 +63,9 @@ fun AppNavHost(
 private val fullScreenRoutes = setOf(
     AppDestination.Coach.route,
     AppDestination.PreWorkout.route,
-    AppDestination.ActiveWorkout.route
+    AppDestination.ActiveWorkout.route,
+    AppDestination.VoiceFoodLogging.route,
+    AppDestination.FoodAnalysis.route
 )
 
 internal fun drawsBehindSystemBars(route: String?): Boolean = route in fullScreenRoutes

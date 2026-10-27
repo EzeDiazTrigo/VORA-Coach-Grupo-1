@@ -25,6 +25,8 @@ import com.example.tp3_parcial_grupo_1.ui.components.AppNoticeCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppStat
 import com.example.tp3_parcial_grupo_1.ui.components.AppStatDefaults
 import com.example.tp3_parcial_grupo_1.ui.components.AppTopBar
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.tp3_parcial_grupo_1.ui.strings.NutritionStrings
 import com.example.tp3_parcial_grupo_1.ui.strings.Strings
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
 import com.example.tp3_parcial_grupo_1.ui.theme.iconSizes
@@ -35,34 +37,10 @@ import kotlinx.coroutines.launch
 fun MealDetailScreen(
     viewModel: MealsViewModel,
     onBackClick: () -> Unit,
-    onDeleteSuccess: () -> Unit
+    onMealDuplicated: () -> Unit
 ) {
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val meal = uiState.currentMealDetail ?: uiState.meals.firstOrNull() ?: Meal(name = "Lunch", date = "", type = com.example.tp3_parcial_grupo_1.model.MealType.LUNCH, calories = 520, protein = 38, carbs = 54, fat = 14, itemsSummary = "Chicken - rice - vegetables")
-
-    var showDeleteDialog by remember { mutableStateOf(false) }
-
-    if (showDeleteDialog) {
-        AlertDialog(
-            onDismissRequest = { showDeleteDialog = false },
-            title = { Text("Delete Meal") },
-            text = { Text("Are you sure you want to delete ${meal.name}?") },
-            confirmButton = {
-                TextButton(onClick = {
-                    viewModel.deleteMeal(meal.id)
-                    showDeleteDialog = false
-                    onDeleteSuccess()
-                }) {
-                    Text("Delete", color = MaterialTheme.colorScheme.error)
-                }
-            },
-            dismissButton = {
-                TextButton(onClick = { showDeleteDialog = false }) {
-                    Text("Cancel")
-                }
-            }
-        )
-    }
 
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
@@ -216,7 +194,7 @@ fun MealDetailScreen(
             Spacer(modifier = Modifier.height(24.dp))
 
             AppButton(
-                text = "Edit Meal",
+                text = NutritionStrings.editMeal,
                 onClick = showDemoNotice,
                 style = AppButtonStyle.Outlined,
                 textColor = MaterialTheme.colorScheme.onBackground,
@@ -228,11 +206,11 @@ fun MealDetailScreen(
             Spacer(modifier = Modifier.height(12.dp))
 
             AppButton(
-                text = "Delete Meal",
-                onClick = { showDeleteDialog = true },
-                style = AppButtonStyle.Primary,
-                containerColor = MaterialTheme.colorScheme.error,
-                textColor = MaterialTheme.colorScheme.onError,
+                text = NutritionStrings.duplicateMeal,
+                onClick = { viewModel.duplicateMeal(meal.id, onMealDuplicated) },
+                style = AppButtonStyle.Outlined,
+                textColor = MaterialTheme.colorScheme.onBackground,
+                containerColor = MaterialTheme.colorScheme.surface,
                 minHeight = AppButtonDefaults.MediumHeight,
                 textStyle = AppButtonDefaults.BoldTextStyle
             )

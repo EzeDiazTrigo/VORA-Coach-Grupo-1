@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
@@ -14,6 +15,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
@@ -29,7 +31,9 @@ import com.example.tp3_parcial_grupo_1.ui.components.AppButtonDefaults
 import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppStat
 import com.example.tp3_parcial_grupo_1.ui.components.AppStatDefaults
+import com.example.tp3_parcial_grupo_1.ui.components.AppStepButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppTopBar
+import com.example.tp3_parcial_grupo_1.ui.strings.NutritionStrings
 import com.example.tp3_parcial_grupo_1.ui.strings.Strings
 import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
@@ -62,7 +66,7 @@ fun ReviewMealScreen(
                 .padding(20.dp)
         ) {
             AppTopBar(
-                title = "Review Meal",
+                title = NutritionStrings.reviewMeal,
                 navigation = { AppBackButton(onClick = onBackClick) },
                 titleStyle = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
                 titleColor = MaterialTheme.colorScheme.onBackground,
@@ -80,7 +84,7 @@ fun ReviewMealScreen(
             Spacer(modifier = Modifier.height(8.dp))
             TextButton(onClick = showDemoNotice) {
                 Text(
-                    text = "+ Add Ingredient",
+                    text = NutritionStrings.addIngredient,
                     style = MaterialTheme.typography.bodyMedium.copy(
                         color = MaterialTheme.colorScheme.primary,
                         fontWeight = FontWeight.Bold,
@@ -106,10 +110,10 @@ fun ReviewMealScreen(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = "MEAL TOTALS",
-                            style = MaterialTheme.typography.labelSmall.copy(
-                                color = MaterialTheme.extendedColors.textSubtle,
-                                fontSize = 10.sp,
+                            text = NutritionStrings.mealTotals,
+                            style = MaterialTheme.typography.labelMedium.copy(
+                                color = MaterialTheme.colorScheme.secondary,
+                                fontSize = 13.sp,
                                 fontWeight = FontWeight.Bold
                             )
                         )
@@ -122,6 +126,11 @@ fun ReviewMealScreen(
                             )
                         )
                     }
+                    Spacer(modifier = Modifier.height(16.dp))
+                    HorizontalDivider(
+                        color = MaterialTheme.colorScheme.surface.copy(alpha = 0.15f),
+                        thickness = 1.dp
+                    )
                     Spacer(modifier = Modifier.height(16.dp))
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -161,7 +170,7 @@ fun ReviewMealScreen(
             Spacer(modifier = Modifier.height(24.dp))
 
             AppButton(
-                text = "Add to Lunch",
+                text = NutritionStrings.addToLunch,
                 onClick = {
                     val meal = Meal(
                         name = "Lunch",
@@ -182,7 +191,7 @@ fun ReviewMealScreen(
             Spacer(modifier = Modifier.height(12.dp))
 
             AppButton(
-                text = "Save without logging",
+                text = NutritionStrings.saveWithoutLogging,
                 onClick = onBackClick,
                 style = AppButtonStyle.Outlined,
                 textColor = MaterialTheme.colorScheme.onBackground,
@@ -234,26 +243,18 @@ fun ReviewIngredientCard(name: String, quantity: String, calories: String, onDem
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Surface(
-                        shape = PillShape,
-                        color = MaterialTheme.colorScheme.background,
-                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
-                        ) {
-                            QuantityStepButton(symbol = "—", description = "Decrease quantity", onClick = onDemoClick)
-                            Spacer(modifier = Modifier.width(12.dp))
-                            Text(text = quantity, fontSize = 12.sp, fontWeight = FontWeight.Bold)
-                            Spacer(modifier = Modifier.width(12.dp))
-                            QuantityStepButton(symbol = "+", description = "Increase quantity", onClick = onDemoClick)
-                        }
+                        AppStepButton(symbol = "-", contentDescription = "Decrease quantity", onClick = onDemoClick)
+                        Text(text = quantity, style = MaterialTheme.typography.labelLarge)
+                        AppStepButton(symbol = "+", contentDescription = "Increase quantity", onClick = onDemoClick)
                     }
                 }
                 TextButton(onClick = onDemoClick) {
                     Text(
-                        text = "Remove",
+                        text = NutritionStrings.remove,
                         style = MaterialTheme.typography.bodySmall.copy(
                             color = MaterialTheme.colorScheme.error,
                             fontWeight = FontWeight.SemiBold,
@@ -266,16 +267,4 @@ fun ReviewIngredientCard(name: String, quantity: String, calories: String, onDem
     }
 }
 
-@Composable
-private fun QuantityStepButton(symbol: String, description: String, onClick: () -> Unit) {
-    Box(
-        modifier = Modifier
-            .minimumInteractiveComponentSize()
-            .clickable(role = Role.Button, onClick = onClick)
-            .semantics { contentDescription = description },
-        contentAlignment = Alignment.Center
-    ) {
-        Text(text = symbol, fontSize = 12.sp, fontWeight = FontWeight.Bold)
-    }
-}
 
