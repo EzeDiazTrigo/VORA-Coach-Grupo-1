@@ -41,6 +41,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.tp3_parcial_grupo_1.R
 import com.example.tp3_parcial_grupo_1.data.demo.HomeDemoData
 import com.example.tp3_parcial_grupo_1.ui.components.AppButton
+import com.example.tp3_parcial_grupo_1.ui.components.AppButtonDefaults
 import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppCardStyle
@@ -61,6 +62,7 @@ import com.example.tp3_parcial_grupo_1.ui.components.ProgressRing
 import com.example.tp3_parcial_grupo_1.ui.components.VoraLogo
 import com.example.tp3_parcial_grupo_1.ui.strings.HomeStrings
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
+import com.example.tp3_parcial_grupo_1.ui.theme.chip
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 import java.util.Locale
@@ -205,13 +207,26 @@ private fun CoachPanel(onStartVoiceClick: () -> Unit, onStartWorkoutClick: () ->
             text = HomeStrings.StartVoiceSession,
             onClick = onStartVoiceClick,
             style = AppButtonStyle.Accent,
-            leadingIcon = AppIcons.Mic
+            leadingIcon = AppIcons.Mic,
+            minHeight = AppButtonDefaults.MediumHeight,
+            contentAlignment = Alignment.Start
         )
         Row(horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm)) {
-            AppPillButton(HomeStrings.StartMyWorkout, onStartWorkoutClick, style = AppPillStyle.OnDark, contentPadding = PanelChipPadding)
-            AppPillButton(HomeStrings.LogBreakfast, onLogMealClick, style = AppPillStyle.OnDark, contentPadding = PanelChipPadding)
+            PanelChip(HomeStrings.StartMyWorkout, onStartWorkoutClick)
+            PanelChip(HomeStrings.LogBreakfast, onLogMealClick)
         }
     }
+}
+
+@Composable
+private fun PanelChip(text: String, onClick: () -> Unit) {
+    AppPillButton(
+        text = text,
+        onClick = onClick,
+        style = AppPillStyle.OnDark,
+        textStyle = MaterialTheme.typography.chip,
+        contentPadding = PanelChipPadding
+    )
 }
 
 @Composable
