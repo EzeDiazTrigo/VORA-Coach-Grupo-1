@@ -43,3 +43,15 @@ private val MessageStyle = style(14, FontWeight.Normal)
 
 val Typography.message: TextStyle
     get() = MessageStyle
+
+// Hora de cada mensaje del Asistente: 10 sp.
+private val MessageTimeStyle = style(10, FontWeight.Normal)
+
+val Typography.messageTime: TextStyle
+    get() = MessageTimeStyle
+
+// Chips de acción del panel de Inicio («Start my workout», «Log breakfast»): 12 sp Medium.
+private val ChipStyle = style(12, FontWeight.Medium)
+
+val Typography.chip: TextStyle
+    get() = ChipStyle

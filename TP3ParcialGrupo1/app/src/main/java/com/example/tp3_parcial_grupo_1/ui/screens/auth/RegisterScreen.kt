@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
@@ -19,26 +18,22 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.tp3_parcial_grupo_1.ui.components.AppButton
-import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
 import com.example.tp3_parcial_grupo_1.ui.components.AppTextField
+import com.example.tp3_parcial_grupo_1.ui.components.LabeledDivider
 import com.example.tp3_parcial_grupo_1.ui.components.PasswordTextField
 import com.example.tp3_parcial_grupo_1.ui.components.VoraBrandMarkStyle
 import com.example.tp3_parcial_grupo_1.ui.strings.AuthStrings
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
+import com.example.tp3_parcial_grupo_1.ui.theme.iconSizes
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
-
-private val PasswordHintIconSize = 14.dp
 
 @Composable
 fun RegisterRoute(
@@ -94,6 +89,7 @@ fun RegisterScreen(
     AppScaffold(
         modifier = modifier.fillMaxSize(),
         onBack = onBackClick,
+        actions = { LanguagePill(onDemoNoticeClick, Modifier.padding(end = MaterialTheme.spacing.lg)) },
         snackbarHostState = snackbarHostState
     ) { padding ->
         Column(
@@ -103,7 +99,11 @@ fun RegisterScreen(
                 .padding(horizontal = MaterialTheme.spacing.screen, vertical = MaterialTheme.spacing.lg),
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xl)
         ) {
-            AuthHeader(markStyle = VoraBrandMarkStyle.SignUp)
+            AuthHeader(
+                markStyle = VoraBrandMarkStyle.SignUp,
+                titleStyle = MaterialTheme.typography.headlineLarge,
+                taglineStyle = MaterialTheme.typography.labelSmall
+            )
             AppCard {
                 AppTextField(
                     value = uiState.fullName,
@@ -141,26 +141,15 @@ fun RegisterScreen(
                         AppIcon(
                             AppIcons.CheckCircle,
                             contentDescription = null,
-                            size = PasswordHintIconSize,
-                            tint = if (uiState.hasSecurePassword) MaterialTheme.extendedColors.success else MaterialTheme.colorScheme.outline
+                            size = MaterialTheme.iconSizes.xs,
+                            tint = if (uiState.hasSecurePassword) MaterialTheme.extendedColors.brand.dark else MaterialTheme.colorScheme.outline
                         )
                         Text(AuthStrings.SecureCharacters, style = MaterialTheme.typography.bodySmall)
                     }
                     AuthTextLink(AuthStrings.PasswordHelp, onDemoNoticeClick)
                 }
-                AppButton(
-                    text = AuthStrings.SignUp,
-                    onClick = onSignUpClick,
-                    style = AppButtonStyle.Accent,
-                    trailingIcon = AppIcons.ArrowRight
-                )
-                Text(
-                    AuthStrings.OrSignUpWith,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth()
-                )
+                AuthSubmitButton(AuthStrings.SignUp, onSignUpClick)
+                LabeledDivider(AuthStrings.OrSignUpWith)
                 SocialButtonsRow(onClick = onDemoNoticeClick)
             }
             Column(

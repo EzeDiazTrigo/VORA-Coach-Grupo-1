@@ -4,7 +4,7 @@ object CoachStrings {
     const val Title = "VORA Coach"
     const val Online = "ONLINE"
     const val IdleHeadline = "How can I help?"
-    const val IdleSubtitle = "Talk naturally about your training, nutrition or progress."
+    const val IdleSubtitle = "Talk naturally about your workout, nutrition or progress."
     const val SuggestedQuestions = "SUGGESTED QUESTIONS"
     const val LastConversation = "LAST CONVERSATION"
     const val JustNow = "Just now"

@@ -1,6 +1,8 @@
 package com.example.tp3_parcial_grupo_1.ui.components
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
@@ -14,7 +16,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -37,19 +41,23 @@ fun AppTextField(
     keyboardType: KeyboardType = KeyboardType.Text,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     singleLine: Boolean = true,
-    uppercaseLabel: Boolean = false
+    uppercaseLabel: Boolean = false,
+    labelAction: (@Composable () -> Unit)? = null,
+    shape: Shape = MaterialTheme.shapes.small
 ) {
     val colors = MaterialTheme.colorScheme
     Column(modifier = modifier.fillMaxWidth()) {
         if (uppercaseLabel) {
             AppSectionLabel(label, modifier = Modifier.padding(bottom = MaterialTheme.spacing.xs))
         } else if (label.isNotBlank()) {
-            Text(
-                text = label,
-                style = MaterialTheme.typography.labelMedium,
-                color = colors.onSurface,
-                modifier = Modifier.padding(bottom = MaterialTheme.spacing.xs)
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(bottom = MaterialTheme.spacing.xs),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(text = label, style = MaterialTheme.typography.labelMedium, color = colors.onSurface)
+                labelAction?.invoke()
+            }
         }
         OutlinedTextField(
             value = value,
@@ -64,7 +72,7 @@ fun AppTextField(
             singleLine = singleLine,
             keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
             visualTransformation = visualTransformation,
-            shape = MaterialTheme.shapes.small,
+            shape = shape,
             colors = OutlinedTextFieldDefaults.colors(
                 focusedContainerColor = colors.surface,
                 unfocusedContainerColor = colors.surface,
@@ -83,7 +91,9 @@ fun PasswordTextField(
     label: String,
     modifier: Modifier = Modifier,
     placeholder: String? = null,
-    errorMessage: String? = null
+    errorMessage: String? = null,
+    labelAction: (@Composable () -> Unit)? = null,
+    shape: Shape = MaterialTheme.shapes.small
 ) {
     var isVisible by rememberSaveable { mutableStateOf(false) }
     AppTextField(
@@ -106,7 +116,9 @@ fun PasswordTextField(
         },
         errorMessage = errorMessage,
         keyboardType = KeyboardType.Password,
-        visualTransformation = if (isVisible) VisualTransformation.None else PasswordVisualTransformation()
+        visualTransformation = if (isVisible) VisualTransformation.None else PasswordVisualTransformation(),
+        labelAction = labelAction,
+        shape = shape
     )
 }
 
@@ -116,7 +128,7 @@ private fun AppTextFieldPreview() {
     AppTheme {
         Column(
             modifier = Modifier.padding(MaterialTheme.spacing.screen),
-            verticalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(MaterialTheme.spacing.lg)
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.lg)
         ) {
             AppTextField(value = "alex.morgan@email.com", onValueChange = {}, label = "Email Address", leadingIcon = AppIcons.FieldMail)
             AppTextField(value = "", onValueChange = {}, label = "Full Name", placeholder = "Alex Morgan")

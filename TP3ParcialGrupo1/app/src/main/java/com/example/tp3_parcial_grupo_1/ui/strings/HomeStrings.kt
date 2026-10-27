@@ -26,6 +26,7 @@ object HomeStrings {
     const val GroupToday = "TODAY"
     const val GroupYesterday = "YESTERDAY"
     const val NotificationsButton = "Notifications"
+    const val NotificationsButtonUnread = "Notifications, unread"
 
     fun estimatedVolume(kg: String) = "Estimated Vol: $kg kg"
     fun workoutMeta(minutes: Int, exercises: Int, level: String) = "$minutes min • $exercises exercises • $level"

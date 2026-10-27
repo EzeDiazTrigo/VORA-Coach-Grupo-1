@@ -9,7 +9,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -17,16 +16,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.tp3_parcial_grupo_1.ui.components.AppButton
-import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
 import com.example.tp3_parcial_grupo_1.ui.components.AppTextField
+import com.example.tp3_parcial_grupo_1.ui.components.LabeledDivider
 import com.example.tp3_parcial_grupo_1.ui.components.PasswordTextField
 import com.example.tp3_parcial_grupo_1.ui.strings.AuthStrings
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
@@ -63,7 +60,6 @@ fun LoginRoute(
         onSignInClick = viewModel::onSignInClick,
         onSignUpClick = onSignUpClick,
         onDemoNoticeClick = viewModel::onDemoNoticeClick,
-        onEnterDemoClick = onSignedIn,
         modifier = modifier
     )
 }
@@ -77,10 +73,15 @@ fun LoginScreen(
     onSignInClick: () -> Unit,
     onSignUpClick: () -> Unit,
     onDemoNoticeClick: () -> Unit,
-    onEnterDemoClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    AppScaffold(modifier = modifier.fillMaxSize(), snackbarHostState = snackbarHostState) { padding ->
+    // Login es la pantalla inicial: no hay a dónde volver, así que la barra solo muestra el idioma.
+    AppScaffold(
+        modifier = modifier.fillMaxSize(),
+        snackbarHostState = snackbarHostState,
+        showTopBar = true,
+        actions = { LanguagePill(onDemoNoticeClick, Modifier.padding(end = MaterialTheme.spacing.lg)) }
+    ) { padding ->
         Column(
             modifier = Modifier
                 .padding(padding)
@@ -88,7 +89,7 @@ fun LoginScreen(
                 .padding(horizontal = MaterialTheme.spacing.screen, vertical = MaterialTheme.spacing.xl),
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xl)
         ) {
-            AuthHeader()
+            AuthHeader(subtitle = AuthStrings.Subtitle)
             AppCard {
                 AppTextField(
                     value = uiState.email,
@@ -97,29 +98,20 @@ fun LoginScreen(
                     placeholder = AuthStrings.EmailPlaceholder,
                     leadingIcon = AppIcons.FieldMail,
                     errorMessage = uiState.emailError,
-                    keyboardType = KeyboardType.Email
+                    keyboardType = KeyboardType.Email,
+                    shape = MaterialTheme.shapes.medium
                 )
                 PasswordTextField(
                     value = uiState.password,
                     onValueChange = onPasswordChange,
                     label = AuthStrings.Password,
                     placeholder = AuthStrings.PasswordPlaceholder,
-                    errorMessage = uiState.passwordError
+                    errorMessage = uiState.passwordError,
+                    labelAction = { ForgotPasswordLink(onDemoNoticeClick) },
+                    shape = MaterialTheme.shapes.medium
                 )
-                AuthTextLink(AuthStrings.ForgotPassword, onDemoNoticeClick, Modifier.align(Alignment.End))
-                AppButton(
-                    text = AuthStrings.SignIn,
-                    onClick = onSignInClick,
-                    style = AppButtonStyle.Accent,
-                    trailingIcon = AppIcons.ArrowRight
-                )
-                Text(
-                    AuthStrings.OrContinueWith,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth()
-                )
+                AuthSubmitButton(AuthStrings.SignIn, onSignInClick)
+                LabeledDivider(AuthStrings.OrContinueWith)
                 SocialButtonsRow(onClick = onDemoNoticeClick)
             }
             Column(
@@ -129,11 +121,6 @@ fun LoginScreen(
             ) {
                 BiometricNote()
                 AuthFooterLink(AuthStrings.NoAccount, AuthStrings.NoAccountLink, onSignUpClick)
-                AppButton(
-                    text = AuthStrings.EnterDemoMode,
-                    onClick = onEnterDemoClick,
-                    style = AppButtonStyle.Outlined
-                )
             }
         }
     }
@@ -147,7 +134,7 @@ private fun LoginScreenPreview() {
             uiState = LoginUiState(),
             snackbarHostState = remember { SnackbarHostState() },
             onEmailChange = {}, onPasswordChange = {}, onSignInClick = {},
-            onSignUpClick = {}, onDemoNoticeClick = {}, onEnterDemoClick = {}
+            onSignUpClick = {}, onDemoNoticeClick = {}
         )
     }
 }
@@ -160,7 +147,7 @@ private fun LoginScreenErrorPreview() {
             uiState = LoginUiState(email = "alex", emailError = AuthStrings.EmailInvalid, passwordError = AuthStrings.PasswordRequired),
             snackbarHostState = remember { SnackbarHostState() },
             onEmailChange = {}, onPasswordChange = {}, onSignInClick = {},
-            onSignUpClick = {}, onDemoNoticeClick = {}, onEnterDemoClick = {}
+            onSignUpClick = {}, onDemoNoticeClick = {}
         )
     }
 }
