@@ -1,6 +1,5 @@
 package com.example.tp3_parcial_grupo_1.ui.screens.coach
 
-import android.app.Activity
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.fadeIn
@@ -28,22 +27,20 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.view.WindowCompat
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.tp3_parcial_grupo_1.R
 import com.example.tp3_parcial_grupo_1.data.demo.CoachDemoData
+import com.example.tp3_parcial_grupo_1.ui.components.LightSystemBarIcons
 import com.example.tp3_parcial_grupo_1.ui.strings.CoachStrings
 import com.example.tp3_parcial_grupo_1.ui.strings.Strings
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
@@ -84,7 +81,7 @@ fun CoachRoute(
     val scope = rememberCoroutineScope()
 
     BackHandler(enabled = uiState !is CoachUiState.Idle) { viewModel.onBack() }
-    LightStatusBarIcons(enabled = uiState.isDark)
+    LightSystemBarIcons(enabled = uiState.isDark)
 
     val actions = remember(viewModel) {
         CoachActions(
@@ -165,22 +162,6 @@ fun CoachScreen(
 // Escuchando, Procesando y Respuesta usan el fondo verde oscuro de Figma.
 private val CoachUiState.isDark: Boolean
     get() = this is CoachUiState.Listening || this is CoachUiState.Processing || this is CoachUiState.Reply
-
-@Composable
-private fun LightStatusBarIcons(enabled: Boolean) {
-    val view = LocalView.current
-    if (view.isInEditMode) return
-    DisposableEffect(enabled) {
-        val window = (view.context as Activity).window
-        val controller = WindowCompat.getInsetsController(window, view)
-        controller.isAppearanceLightStatusBars = !enabled
-        controller.isAppearanceLightNavigationBars = !enabled
-        onDispose {
-            controller.isAppearanceLightStatusBars = true
-            controller.isAppearanceLightNavigationBars = true
-        }
-    }
-}
 
 // Encabezado de Figma: botón circular de 32 dp con chevron, título y un indicador a la derecha.
 @Composable

@@ -21,6 +21,14 @@ private val Attention = Color(0xFFD95D5D)
 private val Success = Color(0xFF27AE60)
 private val MintSoft = Color(0x1F65D6B0)
 
+// Marca de acceso (Login y Registro): Figma usa una paleta esmeralda propia para el orbe.
+private val BrandDark = Color(0xFF0E382F)
+private val BrandSoft = Color(0xFF86EFAC)
+private val BrandEmerald = Color(0xFF34D399)
+private val BrandMintText = Color(0xFF6EE7B7)
+private val BrandLime = Color(0xFFCCE65E)
+private val BrandShadow = Color(0xFF064E3B)
+
 val AppColorScheme = lightColorScheme(
     primary = Green,
     onPrimary = Surface,
@@ -49,7 +57,18 @@ data class ExtendedColors(
     val textSubtle: Color = TextSubtle,
     val success: Color = Success,
     val mintSoft: Color = MintSoft,
-    val mint: Color = Mint
+    val mint: Color = Mint,
+    val brand: BrandColors = BrandColors()
+)
+
+// Colores del logo de Login y Registro (VoraBrandMark); no se usan en el resto de la app.
+data class BrandColors(
+    val dark: Color = BrandDark,
+    val soft: Color = BrandSoft,
+    val emerald: Color = BrandEmerald,
+    val mintText: Color = BrandMintText,
+    val lime: Color = BrandLime,
+    val shadow: Color = BrandShadow
 )
 
 val LocalExtendedColors = staticCompositionLocalOf { ExtendedColors() }

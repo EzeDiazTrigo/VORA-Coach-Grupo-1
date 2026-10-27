@@ -10,6 +10,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
@@ -27,14 +28,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
-
-// Colores propios de la marca de acceso en Figma; no forman parte de la paleta de la app.
-private val BrandDark = Color(0xFF0E382F)
-private val BrandSoft = Color(0xFF86EFAC)
-private val BrandEmerald = Color(0xFF34D399)
-private val BrandMintText = Color(0xFF6EE7B7)
-private val BrandLime = Color(0xFFCCE65E)
-private val BrandShadow = Color(0xFF064E3B)
+import com.example.tp3_parcial_grupo_1.ui.theme.BrandColors
+import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
 
 private val SignInSize = 64.dp
 private val SignUpSize = 56.dp
@@ -59,6 +54,8 @@ fun VoraBrandMark(
 
 @Composable
 private fun SignInMark(modifier: Modifier) {
+    val brand = MaterialTheme.extendedColors.brand
+    val gradient = remember(brand) { signInGradient(brand) }
     Box(modifier = modifier.size(SignInSize)) {
         Box(
             modifier = Modifier
@@ -66,7 +63,7 @@ private fun SignInMark(modifier: Modifier) {
                 // Anillo blanco de 4 dp que Figma dibuja como sombra con spread.
                 .drawBehind { drawCircle(Color.White, radius = size.minDimension / 2 + 4.dp.toPx()) }
                 .shadow(8.dp, CircleShape, ambientColor = Color.Black.copy(alpha = 0.1f), spotColor = Color.Black.copy(alpha = 0.1f))
-                .background(SignInGradient, CircleShape),
+                .background(gradient, CircleShape),
             contentAlignment = Alignment.Center
         ) {
             Box(Modifier.size(20.dp).background(Color.White.copy(alpha = 0.3f), CircleShape))
@@ -74,13 +71,15 @@ private fun SignInMark(modifier: Modifier) {
         AiBadge(
             modifier = Modifier.offset(39.dp, 47.dp),
             borderColor = Color.White,
-            textColor = BrandMintText
+            textColor = brand.mintText
         )
     }
 }
 
 @Composable
 private fun SignUpMark(modifier: Modifier) {
+    val brand = MaterialTheme.extendedColors.brand
+    val gradient = remember(brand) { signUpGradient(brand) }
     Box(
         modifier = modifier
             .size(SignUpSize)
@@ -88,7 +87,7 @@ private fun SignUpMark(modifier: Modifier) {
             .drawBehind {
                 drawCircle(
                     brush = Brush.radialGradient(
-                        colors = listOf(BrandEmerald.copy(alpha = 0.3f), BrandEmerald.copy(alpha = 0f)),
+                        colors = listOf(brand.emerald.copy(alpha = 0.3f), brand.emerald.copy(alpha = 0f)),
                         center = center,
                         radius = 40.dp.toPx()
                     ),
@@ -99,8 +98,8 @@ private fun SignUpMark(modifier: Modifier) {
         Box(
             modifier = Modifier
                 .size(SignUpSize)
-                .shadow(8.dp, CircleShape, ambientColor = BrandShadow.copy(alpha = 0.2f), spotColor = BrandShadow.copy(alpha = 0.2f))
-                .background(SignUpGradient, CircleShape),
+                .shadow(8.dp, CircleShape, ambientColor = brand.shadow.copy(alpha = 0.2f), spotColor = brand.shadow.copy(alpha = 0.2f))
+                .background(gradient, CircleShape),
             contentAlignment = Alignment.Center
         ) {
             Box(Modifier.size(20.dp).background(Color.White.copy(alpha = 0.3f), CircleShape), contentAlignment = Alignment.Center) {
@@ -109,8 +108,8 @@ private fun SignUpMark(modifier: Modifier) {
         }
         AiBadge(
             modifier = Modifier.offset(33.dp, 39.dp),
-            borderColor = BrandShadow.copy(alpha = 0.3f),
-            textColor = BrandLime,
+            borderColor = brand.shadow.copy(alpha = 0.3f),
+            textColor = brand.lime,
             elevated = true
         )
     }
@@ -122,7 +121,7 @@ private fun AiBadge(modifier: Modifier, borderColor: Color, textColor: Color, el
         modifier = modifier
             .size(width = 29.dp, height = 21.dp)
             .then(if (elevated) Modifier.shadow(2.dp, CircleShape, ambientColor = Color.Black.copy(alpha = 0.05f), spotColor = Color.Black.copy(alpha = 0.05f)) else Modifier)
-            .background(BrandDark, CircleShape)
+            .background(MaterialTheme.extendedColors.brand.dark, CircleShape)
             .border(1.dp, borderColor, CircleShape),
         contentAlignment = Alignment.Center
     ) {
@@ -140,21 +139,21 @@ private fun AiBadge(modifier: Modifier, borderColor: Color, textColor: Color, el
 }
 
 // Degradado radial con centro al 35 % (arriba a la izquierda) y radio hasta la esquina opuesta.
-private val SignInGradient = object : ShaderBrush() {
+private fun signInGradient(brand: BrandColors) = object : ShaderBrush() {
     override fun createShader(size: Size): Shader = RadialGradientShader(
         center = Offset(size.width * 0.349f, size.height * 0.349f),
         radius = size.width * 0.919f,
-        colors = listOf(BrandSoft, BrandEmerald, BrandDark),
+        colors = listOf(brand.soft, brand.emerald, brand.dark),
         colorStops = listOf(0f, 0.45f, 1f)
     )
 }
 
 // Degradado lineal a 45°, de la esquina inferior izquierda a la superior derecha.
-private val SignUpGradient = object : ShaderBrush() {
+private fun signUpGradient(brand: BrandColors) = object : ShaderBrush() {
     override fun createShader(size: Size): Shader = LinearGradientShader(
         from = Offset(0f, size.height),
         to = Offset(size.width, 0f),
-        colors = listOf(BrandDark, BrandEmerald, BrandLime),
+        colors = listOf(brand.dark, brand.emerald, brand.lime),
         colorStops = listOf(0f, 0.5f, 1f)
     )
 }

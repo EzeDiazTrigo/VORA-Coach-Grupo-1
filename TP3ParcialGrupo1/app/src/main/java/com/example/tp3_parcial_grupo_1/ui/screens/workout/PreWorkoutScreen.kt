@@ -1,6 +1,5 @@
 package com.example.tp3_parcial_grupo_1.ui.screens.workout
 
-import android.app.Activity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -14,7 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -24,19 +23,17 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.view.WindowCompat
 import com.example.tp3_parcial_grupo_1.R
 import com.example.tp3_parcial_grupo_1.model.Workout
+import com.example.tp3_parcial_grupo_1.ui.components.LightSystemBarIcons
 import com.example.tp3_parcial_grupo_1.ui.components.AppButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
 import com.example.tp3_parcial_grupo_1.ui.components.VoraLogo
@@ -52,17 +49,7 @@ fun PreWorkoutScreen(
     onBeginClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val view = LocalView.current
-    if (!view.isInEditMode) {
-        SideEffect {
-            val window = (view.context as Activity).window
-            window.statusBarColor = android.graphics.Color.parseColor("#123D35")
-            window.navigationBarColor = android.graphics.Color.parseColor("#123D35")
-            window.isNavigationBarContrastEnforced = false
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = false
-            WindowCompat.getInsetsController(window, view).isAppearanceLightNavigationBars = false
-        }
-    }
+    LightSystemBarIcons()
 
     val workoutName = workout?.name ?: "Upper Body Strength"
     val durationMinutes = workout?.durationMinutes ?: 42
@@ -76,7 +63,7 @@ fun PreWorkoutScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .statusBarsPadding()
+                .safeDrawingPadding()
                 .padding(horizontal = MaterialTheme.spacing.screen, vertical = MaterialTheme.spacing.md)
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md)
@@ -231,13 +218,11 @@ fun PreWorkoutScreen(
 
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.xs))
 
-            // Mint #65D6B0 Start Workout Button directly below cards
+            // Botón menta de inicio, debajo de las tarjetas
             AppButton(
                 text = "Start Workout",
                 onClick = onBeginClick,
-                style = AppButtonStyle.Accent,
-                containerColor = Color(0xFF65D6B0),
-                textColor = Color(0xFF123D35)
+                style = AppButtonStyle.Secondary
             )
 
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.md))
