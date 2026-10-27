@@ -28,6 +28,8 @@ private val BrandEmerald = Color(0xFF34D399)
 private val BrandMintText = Color(0xFF6EE7B7)
 private val BrandLime = Color(0xFFCCE65E)
 private val BrandShadow = Color(0xFF064E3B)
+private val BrandBiometricContainer = Color(0xFFECFDF5)
+private val BrandBiometricBorder = Color(0xFFA7F3D0)
 
 val AppColorScheme = lightColorScheme(
     primary = Green,
@@ -61,14 +63,16 @@ data class ExtendedColors(
     val brand: BrandColors = BrandColors()
 )
 
-// Colores del logo de Login y Registro (VoraBrandMark); no se usan en el resto de la app.
+// Colores del logo y del botón biométrico de Login y Registro; no se usan en el resto de la app.
 data class BrandColors(
     val dark: Color = BrandDark,
     val soft: Color = BrandSoft,
     val emerald: Color = BrandEmerald,
     val mintText: Color = BrandMintText,
     val lime: Color = BrandLime,
-    val shadow: Color = BrandShadow
+    val shadow: Color = BrandShadow,
+    val biometricContainer: Color = BrandBiometricContainer,
+    val biometricBorder: Color = BrandBiometricBorder
 )
 
 val LocalExtendedColors = staticCompositionLocalOf { ExtendedColors() }
