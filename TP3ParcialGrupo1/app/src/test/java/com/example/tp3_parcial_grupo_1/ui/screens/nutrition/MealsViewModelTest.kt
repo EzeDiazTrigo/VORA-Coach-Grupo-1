@@ -107,4 +107,17 @@ class MealsViewModelTest {
         assertEquals(2, fakeDao.meals.size)
         assertEquals(1, duplicated)
     }
+
+    @Test
+    fun `given saved meals, when deleteMeal is called, then only that meal is removed`() = runTest {
+        fakeDao.meals.add(MealEntity(id = 1L, name = "Breakfast", date = "2026-10-26", type = "BREAKFAST", calories = 400, protein = 20, carbs = 30, fat = 10, itemsSummary = ""))
+        fakeDao.meals.add(MealEntity(id = 2L, name = "Lunch", date = "2026-10-26", type = "LUNCH", calories = 520, protein = 38, carbs = 54, fat = 14, itemsSummary = ""))
+        savedStateHandle = SavedStateHandle()
+
+        val viewModel = MealsViewModel(mealRepository, savedStateHandle)
+        viewModel.deleteMeal(1L)
+        testScheduler.advanceUntilIdle()
+
+        assertEquals(listOf(2L), fakeDao.meals.map { it.id })
+    }
 }

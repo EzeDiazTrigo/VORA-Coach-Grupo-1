@@ -1,6 +1,8 @@
 package com.example.tp3_parcial_grupo_1.ui.components
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -16,6 +18,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
@@ -35,11 +38,14 @@ enum class AppCardStyle { Surface, Panel, Translucent }
 
 private const val TranslucentAlpha = 0.12f
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun AppCard(
     modifier: Modifier = Modifier,
     style: AppCardStyle = AppCardStyle.Surface,
     onClick: (() -> Unit)? = null,
+    onLongClick: (() -> Unit)? = null,
+    onLongClickLabel: String? = null,
     shape: Shape? = null,
     contentPadding: PaddingValues? = null,
     spacing: Dp = MaterialTheme.spacing.md,
@@ -75,7 +81,19 @@ fun AppCard(
             content = content
         )
     }
-    if (onClick != null) {
+    if (onClick != null && onLongClick != null) {
+        // Card(onClick) no tiene toque largo: se recorta a la forma de la tarjeta para que el efecto no se salga.
+        Card(
+            modifier = modifier
+                .fillMaxWidth()
+                .clip(cardShape)
+                .combinedClickable(onClick = onClick, onLongClick = onLongClick, onLongClickLabel = onLongClickLabel),
+            shape = cardShape,
+            colors = cardColors,
+            border = border,
+            content = inner
+        )
+    } else if (onClick != null) {
         Card(onClick = onClick, modifier = modifier.fillMaxWidth(), shape = cardShape, colors = cardColors, border = border, content = inner)
     } else {
         Card(modifier = modifier.fillMaxWidth(), shape = cardShape, colors = cardColors, border = border, content = inner)

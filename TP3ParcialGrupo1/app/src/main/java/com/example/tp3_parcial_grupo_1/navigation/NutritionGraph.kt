@@ -45,7 +45,9 @@ fun NavGraphBuilder.nutritionGraph(navController: NavController) {
             TodaysMealsScreen(
                 uiState = uiState,
                 onBackClick = { navController.popBackStack() },
-                onAddDinner = { navController.navigate(AppDestination.AddFood.route) }
+                onAddDinner = { navController.navigate(AppDestination.AddFood.route) },
+                onMealClick = { mealId -> navController.navigate(AppDestination.MealDetails.createRoute(mealId)) },
+                onDeleteMeal = viewModel::deleteMeal
             )
         }
         composable(AppDestination.AddFood.route) {
