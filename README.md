@@ -90,6 +90,8 @@ com.example.tp3_parcial_grupo_1
 
 `WorkoutRepositoryImpl` separa lectura y actualización: las pantallas observan Room como `Flow` (`getWorkouts()`, `getWorkoutById()`), y `refreshWorkouts()` / `refreshWorkoutDetails()` piden los datos al servidor y actualizan la caché en una transacción. Si la red falla, devuelven `Result.failure` y la caché queda como estaba, así que lo ya descargado se sigue viendo sin conexión (RF02) y la pantalla avisa el error (con opción de reintentar cuando todavía no hay nada guardado).
 
+**Detalle de workout sin conexión (RF02).** Un detalle ya consultado se ve desde Room. Si nunca se descargó y no hay red, la pantalla dice que ese entrenamiento todavía no está disponible sin conexión y ofrece reintentar; un error del servidor (404, 503) sigue mostrando el mensaje genérico.
+
 **Nutrición (Room).** `MealRepository` trabaja sobre `MealDao`: observa las comidas de una fecha como `Flow`, agrega, elimina y duplica (`duplicateMeal`). `MealEntity` se convierte en `Meal` con `toDomain()` / `fromDomain()`. El total del día lo calcula `MealsViewModel` a partir de la lista observada, así que cambia al agregar o eliminar una comida.
 
 **Base de datos.** `AppDatabase` (`vora_database`, versión 3) reúne `WorkoutEntity`, `ExerciseEntity`, `MealEntity` y `CoachMessageEntity`. Room exporta el esquema de cada versión en `app/schemas/`.
@@ -182,7 +184,7 @@ Pantallas propias sin frame en Figma: el formulario de carga manual de comidas (
   - **Progreso:** el Dashboard abre Workout Progress, Nutrition Progress y Health Trends desde sus accesos, y *See weekly review* abre la revisión semanal. En la revisión, atrás y *Done* vuelven a la pantalla anterior, *Ask VORA* abre el Asistente, *Get dinner ideas* el tab Nutrition y *View next week's plan* el plan semanal. *Start Workout* de Today's Overview abre el tab Workout, igual que en Home.
   - **Asistente:** se abre desde Home (*Start voice session*) y desde la revisión semanal (*Ask VORA*). Atrás desde cualquier estado vuelve a *Idle*, y desde *Idle* sale del Asistente.
   - **Workout:** cada día de *This Week's Activity* abre *Weekly Plan* en esa fecha (`workout/weekly_plan?date=AAAA-MM-DD`; sin fecha, hoy). Weekly Plan muestra el workout del día y debajo todos los demás, cada uno con su detalle. El micrófono de Pre Workout abre el Asistente, y *Ask Vora* de Exercise Details lo abre con la pregunta escrita (`coach?prompt=…`).
-  - **Nutrición:** Add Food ofrece voz, foto y carga manual. Guardar una comida (desde la carga manual o desde la revisión del análisis) vuelve al Dashboard de Nutrition con el total del día actualizado.
+  - **Nutrición:** para eliminar una comida se la mantiene presionada en el Dashboard o en Today's Meals y se confirma en el diálogo (Figma no tiene un botón de eliminar: el detalle de la comida ofrece *Edit Meal* y *Duplicate Meal*). Add Food ofrece voz, foto y carga manual. Guardar una comida (desde la carga manual o desde la revisión del análisis) vuelve al Dashboard de Nutrition con el total del día actualizado.
 - **Saltos entre áreas:** un acceso que lleva a otra área (Log breakfast, notificaciones, Get dinner ideas, View next week's plan) pasa primero por su tab y después abre la pantalla, para que el tab quede marcado y atrás vuelva a su inicio. Tocar el tab en el que ya estás vuelve a su pantalla inicial.
 
 ## Estado por funcionalidad
@@ -193,7 +195,7 @@ Pantallas propias sin frame en Figma: el formulario de carga manual de comidas (
 | Inicio | 2 | Demostración: datos de ejemplo (`data/demo/`) |
 | Asistente VORA | 6 estados | **Funcional (extra):** chat escrito con `POST /v1/coach/messages` (Retrofit) e historial en Room · voz simulada, sin permiso de micrófono |
 | Entrenamiento | 7 | **Funcional:** catálogo y detalle con Retrofit y caché en Room · Weekly Plan, Pre Workout, Active Workout, Exercise Details y Workout Complete leen el workout de la caché (las estadísticas de la semana y el volumen son de demostración) |
-| Nutrición | 8 | **Funcional:** carga manual, listado por fecha, eliminación con confirmación desde el Dashboard, duplicado desde el detalle y total diario en Room · voz, foto y búsqueda simuladas |
+| Nutrición | 8 | **Funcional:** carga manual, listado por fecha, eliminación con confirmación (mantener presionada una comida en el Dashboard o en Today's Meals), duplicado desde el detalle y total diario en Room · voz, foto y búsqueda simuladas |
 | Progreso | 6 | Demostración: datos de ejemplo identificados |
 | Perfil | 6 | **Funcional (local):** perfil, metas (varias), preferencias de nutrición y ajustes de voz editables entre pantallas y guardados en el dispositivo con DataStore · sin servidor |
 
@@ -209,7 +211,7 @@ Los textos visibles siguen el idioma del diseño de Figma (inglés), incluidos l
 
 ## Comparaciones visuales
 
-Figma a la izquierda y la app a la derecha, a la misma escala (emulador en 390 × 844 dp, el tamaño de los frames). Cómo se generan y qué muestra cada una: [docs/comparisons](docs/comparisons/README.md); diferencias pendientes por dueño: [docs/QA.md](docs/QA.md).
+Figma a la izquierda y la app a la derecha, a la misma escala (emulador en 390 × 844 dp, el tamaño de los frames). Regeneradas el 27/10 con `main` después de las fases 1 a 5. Cómo se generan y qué muestra cada una: [docs/comparisons](docs/comparisons/README.md); diferencias pendientes por dueño: [docs/QA.md](docs/QA.md).
 
 | Home / 01 · Dashboard | Voice / 02 · Listening |
 |---|---|
@@ -225,4 +227,16 @@ Figma a la izquierda y la app a la derecha, a la misma escala (emulador en 390 �
 
 ## Uso de IA generativa
 
-> Pendiente: declaración redactada por el equipo.
+Se usó un asistente de IA generativa (Claude Code, de Anthropic) como apoyo de desarrollo en este repositorio.
+
+**Para qué se usó**
+- Escribir y refactorizar código de la app y sus tests: componentes compartidos, pantallas de Workout, Nutrition, Progress y Profile, navegación, persistencia del perfil y migraciones de Room.
+- Revisar pull requests contra el plan de diferencias con Figma, resolver conflictos de merge y verificar que `main` compile.
+- Armar las comparaciones visuales y redactar documentación (README, inventario y notas de QA).
+
+**Para qué no**
+- El diseño es el de Figma del docente; la IA no lo modificó.
+- Las decisiones de producto y arquitectura las tomó el equipo. El código se revisó, se probó en el emulador y se integró mediante pull requests.
+- Los datos de demostración son de ejemplo y se identifican como tales (`data/demo/`); la API de entrenamientos es la del servidor del docente.
+
+Cada integrante debe poder explicar el código que entregó.

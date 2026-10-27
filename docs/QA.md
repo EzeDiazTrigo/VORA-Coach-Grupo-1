@@ -52,7 +52,7 @@ Cada punto tiene dueño y prioridad: **alta** (se nota a simple vista en la demo
 - [ ] **Baja — Voice Logging.** «Listening…» en Figma es menta (`secondary`), en la app es blanco.
 - [ ] **Baja — Formato de calorías.** Figma usa separador de miles («1,420»); la app muestra «1180».
 - [ ] **Baja — Dinner «+ Add».** En Figma es una píldora chica; en la app ocupa 52 dp de alto (ver alturas de `AppButton`).
-- [ ] **Baja — Meal Details.** Figma tiene «Edit Meal» y «Duplicate Meal»; la app tiene «Edit Meal» y «Delete Meal». Delete es necesario para RF04; si se quiere fidelidad, sumar «Duplicate Meal» como acción de demostración.
+- [x] **Baja — Meal Details.** Figma tiene «Edit Meal» y «Duplicate Meal»; la app los tiene. Para RF04 la comida se elimina con un toque largo en el Dashboard o en Today's Meals (diálogo de confirmación).
 - Today's Meals muestra una línea por comida en lugar del desglose de ingredientes de Figma: es consecuencia de que los datos vienen de Room (RF03/RF04), no hace falta cambiarlo.
 - Photo Analysis, Review Meal y el Dashboard coinciden en estructura y colores.
 

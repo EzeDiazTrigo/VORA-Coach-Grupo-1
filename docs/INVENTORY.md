@@ -32,7 +32,7 @@ Estado previsto: **funcional** (datos reales: Retrofit/Room) · **demostración*
 | 22 | Nutrition / 05 — Food Analysis | `nutrition/food_analysis` | no | demostración | D |
 | 23 | Nutrition / 06 — Photo Analysis | `nutrition/photo_analysis` | sí | demostración | D |
 | 24 | Nutrition / 07 — Food Confirmation | `nutrition/food_confirmation` | sí | funcional (guarda en Room) | D |
-| 25 | Nutrition / 08 — Meal Details | `nutrition/meal/{mealId}` | sí | funcional (detalle y eliminación en Room) | D |
+| 25 | Nutrition / 08 — Meal Details | `nutrition/meal/{mealId}` | sí | funcional (detalle y duplicado en Room; la comida se elimina con un toque largo en el Dashboard o en Today's Meals) | D |
 | 26 | Progress / 01 — Today's Overview | `progress/todays_overview` | sí | demostración | B |
 | 27 | Progress / 02 — Dashboard | `progress/dashboard` | sí | demostración | B |
 | 28 | Progress / 03 — Workout Progress | `progress/workout` | sí | demostración | B |
