@@ -19,6 +19,7 @@ import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
 import com.example.tp3_parcial_grupo_1.ui.components.VoraOrb
+import com.example.tp3_parcial_grupo_1.ui.strings.NutritionStrings
 
 @Composable
 fun VoiceLoggingScreen(
@@ -30,6 +31,7 @@ fun VoiceLoggingScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.primary)
+            .safeDrawingPadding()
             .padding(20.dp)
     ) {
         Column(
@@ -53,7 +55,7 @@ fun VoiceLoggingScreen(
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = "Voice Logging",
+                        text = NutritionStrings.voiceLogging,
                         style = MaterialTheme.typography.bodyMedium.copy(
                             color = MaterialTheme.colorScheme.surface,
                             fontWeight = FontWeight.Medium,
@@ -80,7 +82,7 @@ fun VoiceLoggingScreen(
             Spacer(modifier = Modifier.height(32.dp))
 
             Text(
-                text = "Listening...",
+                text = NutritionStrings.listening,
                 style = MaterialTheme.typography.headlineLarge.copy(
                     color = MaterialTheme.colorScheme.surface,
                     fontWeight = FontWeight.Bold,
@@ -89,7 +91,7 @@ fun VoiceLoggingScreen(
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "\"Keep talking. I'm listening.\"",
+                text = NutritionStrings.keepTalking,
                 style = MaterialTheme.typography.bodyMedium.copy(
                     color = MaterialTheme.colorScheme.surface.copy(alpha = 0.7f),
                     fontSize = 13.sp
@@ -117,10 +119,10 @@ fun VoiceLoggingScreen(
                 )
             }
 
-            Spacer(modifier = Modifier.weight(1f))
+            Spacer(modifier = Modifier.height(32.dp))
 
             AppButton(
-                text = "Done Speaking",
+                text = NutritionStrings.doneSpeaking,
                 onClick = onDoneSpeaking,
                 style = AppButtonStyle.Secondary,
                 minHeight = AppButtonDefaults.MediumHeight,
@@ -131,7 +133,7 @@ fun VoiceLoggingScreen(
 
             TextButton(onClick = onTypeInsteadClick) {
                 Text(
-                    text = "Type instead",
+                    text = NutritionStrings.typeInstead,
                     style = MaterialTheme.typography.bodyMedium.copy(
                         color = MaterialTheme.colorScheme.surface.copy(alpha = 0.8f),
                         fontSize = 13.sp,

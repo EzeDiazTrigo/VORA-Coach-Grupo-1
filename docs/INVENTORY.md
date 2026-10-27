@@ -48,7 +48,7 @@ Estado previsto: **funcional** (datos reales: Retrofit/Room) · **demostración*
 
 ## Navegación general
 
-- **Inicio:** la app arranca en Login. Entrar (o el modo demostración) lleva a Home y saca Acceso del historial: atrás desde Home cierra la app.
+- **Inicio:** la app arranca en Login, sin botón Volver porque es la pantalla inicial. *Sign In* con cualquier mail válido y una contraseña de 8 caracteres o más entra en modo demostración, lleva a Home y saca Acceso del historial: atrás desde Home cierra la app. La píldora «EN» de Login y Registro, los botones de Apple, Google y biometría, «Forgot your password?» y «Recover» informan «modo demostración».
 - **Barra inferior:** Home, Workout, Nutrition, Progress y Profile. Se muestra solo en las pantallas que la tienen en Figma (columna «Barra inferior»). Cada tab conserva la última pantalla visitada; tocar el tab en el que ya estás vuelve a su pantalla inicial, y atrás desde un tab vuelve a Home. El tab Progress abre el Dashboard; Today's Overview se abre desde la sección «Today's Overview» de Home.
 - **Selección coherente (NAV04):** el detalle de entrenamiento recibe su `workoutId`, la guía de ejercicio `workoutId` + `exerciseId` y el detalle de comida su `mealId`.
 - **Saltos entre áreas:** un acceso que lleva a otra área (Log breakfast, notificaciones, Start Workout, Get dinner ideas, View next week's plan) pasa primero por su tab y después abre la pantalla (`navigateInTab`), para que el tab quede marcado y atrás vuelva a su inicio.

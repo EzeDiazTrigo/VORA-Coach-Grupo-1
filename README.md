@@ -168,7 +168,7 @@ Pantallas propias sin frame en Figma: el formulario de carga manual de comidas (
 
 ## Navegación
 
-- La app arranca en **Login**. Iniciar sesión, registrarse o entrar en modo demostración lleva a Home y saca Acceso del historial: atrás desde Home cierra la app. Cerrar sesión desde Settings vuelve a Login y limpia el historial.
+- La app arranca en **Login**. El acceso es de demostración: *Sign In* con cualquier mail válido y una contraseña de 8 caracteres o más entra sin servidor. Iniciar sesión o registrarse lleva a Home y saca Acceso del historial: atrás desde Home cierra la app. Cerrar sesión desde Settings vuelve a Login y limpia el historial.
 - **Barra inferior:** Home, Workout, Nutrition, Progress y Profile. Se muestra solo en las pantallas que la tienen en Figma, cada tab conserva la última pantalla visitada y atrás desde otro tab vuelve a Home.
 - **Selección coherente:** el detalle de entrenamiento recibe su `workoutId`, la guía de ejercicio `workoutId` y `exerciseId`, y el detalle de comida su `mealId`.
 - **Recorridos que Figma no define:** el diseño no tiene interacciones de prototipo, así que donde no hay un control explícito el equipo eligió el destino:

@@ -4,8 +4,8 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import com.example.tp3_parcial_grupo_1.model.NotificationType
 import com.example.tp3_parcial_grupo_1.ui.screens.home.HomeRoute
-import com.example.tp3_parcial_grupo_1.ui.screens.home.NotificationType
 import com.example.tp3_parcial_grupo_1.ui.screens.home.NotificationsRoute
 
 fun NotificationType.destinationRoute(): String = when (this) {

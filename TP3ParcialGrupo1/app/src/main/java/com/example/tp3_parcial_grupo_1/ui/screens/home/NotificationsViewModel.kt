@@ -1,25 +1,25 @@
 package com.example.tp3_parcial_grupo_1.ui.screens.home
 
 import androidx.lifecycle.ViewModel
-import com.example.tp3_parcial_grupo_1.data.demo.HomeDemoData
+import androidx.lifecycle.viewModelScope
+import com.example.tp3_parcial_grupo_1.data.repository.NotificationRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 @HiltViewModel
-class NotificationsViewModel @Inject constructor() : ViewModel() {
+class NotificationsViewModel @Inject constructor(
+    private val repository: NotificationRepository
+) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(NotificationsUiState(HomeDemoData.notifications))
-    val uiState: StateFlow<NotificationsUiState> = _uiState.asStateFlow()
+    val uiState: StateFlow<NotificationsUiState> = repository.notifications
+        .map(::NotificationsUiState)
+        .stateIn(viewModelScope, SharingStarted.Eagerly, NotificationsUiState(repository.notifications.value))
 
-    fun onMarkAllAsReadClick() = _uiState.update { state ->
-        state.copy(items = state.items.map { it.copy(isUnread = false) })
-    }
+    fun onMarkAllAsReadClick() = repository.markAllAsRead()
 
-    fun onNotificationClick(id: Int) = _uiState.update { state ->
-        state.copy(items = state.items.map { if (it.id == id) it.copy(isUnread = false) else it })
-    }
+    fun onNotificationClick(id: Int) = repository.markAsRead(id)
 }

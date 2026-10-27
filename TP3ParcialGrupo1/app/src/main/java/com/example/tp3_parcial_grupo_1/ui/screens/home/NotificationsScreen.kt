@@ -24,6 +24,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.tp3_parcial_grupo_1.data.demo.HomeDemoData
+import com.example.tp3_parcial_grupo_1.model.NotificationGroup
+import com.example.tp3_parcial_grupo_1.model.NotificationItem
+import com.example.tp3_parcial_grupo_1.model.NotificationType
 import com.example.tp3_parcial_grupo_1.ui.components.AppCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcons

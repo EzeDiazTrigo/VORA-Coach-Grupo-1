@@ -35,4 +35,10 @@ class MealRepository @Inject constructor(
     suspend fun deleteMeal(id: Long) {
         mealDao.deleteById(id)
     }
+
+    suspend fun duplicateMeal(id: Long): Long? {
+        val entity = mealDao.getById(id) ?: return null
+        val copy = entity.copy(id = 0L)
+        return mealDao.insert(copy)
+    }
 }

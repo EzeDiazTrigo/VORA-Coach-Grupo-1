@@ -1,10 +1,10 @@
 package com.example.tp3_parcial_grupo_1.data.demo
 
+import com.example.tp3_parcial_grupo_1.model.NotificationGroup
+import com.example.tp3_parcial_grupo_1.model.NotificationItem
+import com.example.tp3_parcial_grupo_1.model.NotificationType
 import com.example.tp3_parcial_grupo_1.ui.screens.home.HomeUiState
 import com.example.tp3_parcial_grupo_1.ui.screens.home.MacroProgress
-import com.example.tp3_parcial_grupo_1.ui.screens.home.NotificationGroup
-import com.example.tp3_parcial_grupo_1.ui.screens.home.NotificationItem
-import com.example.tp3_parcial_grupo_1.ui.screens.home.NotificationType
 import com.example.tp3_parcial_grupo_1.ui.screens.home.RecommendedWorkout
 
 // Datos de demostración: no provienen de ningún servidor.

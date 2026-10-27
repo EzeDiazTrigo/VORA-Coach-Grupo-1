@@ -10,6 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.example.tp3_parcial_grupo_1.model.Meal
 import com.example.tp3_parcial_grupo_1.model.MealType
 import com.example.tp3_parcial_grupo_1.ui.components.AppBackButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppButton
@@ -65,7 +66,7 @@ fun TodaysMealsScreen(
                 DetailedMealCard(
                     mealTitle = meal.name,
                     totalCalories = "${meal.calories} kcal",
-                    items = listOf(Triple(meal.itemsSummary.ifBlank { meal.type.displayName() }, "", "${meal.calories} kcal"))
+                    items = meal.ingredientRows()
                 )
             }
 
@@ -161,5 +162,15 @@ fun DetailedMealCard(mealTitle: String, totalCalories: String, items: List<Tripl
                 Spacer(modifier = Modifier.height(MaterialTheme.spacing.xs))
             }
         }
+    }
+}
+
+// «Chicken - rice - vegetables» se lista ingrediente por ingrediente; sin ingredientes cargados queda el tipo de comida con las calorías.
+private fun Meal.ingredientRows(): List<Triple<String, String, String>> {
+    val ingredients = itemsSummary.split(" - ").map(String::trim).filter(String::isNotEmpty)
+    return if (ingredients.size > 1) {
+        ingredients.map { Triple(it, "", "") }
+    } else {
+        listOf(Triple(ingredients.firstOrNull() ?: type.displayName(), "", "$calories kcal"))
     }
 }

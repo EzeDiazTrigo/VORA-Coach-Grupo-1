@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import com.example.tp3_parcial_grupo_1.data.local.dao.MealDao
 import com.example.tp3_parcial_grupo_1.data.local.entity.MealEntity
 import com.example.tp3_parcial_grupo_1.data.repository.MealRepository
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -17,11 +18,13 @@ import org.junit.Test
 class FakeMealDao : MealDao {
     var meals = mutableListOf<MealEntity>()
     var mealToReturn: MealEntity? = null
+    var insertGate: CompletableDeferred<Unit>? = null
 
     override fun observeByDate(date: String): Flow<List<MealEntity>> = flowOf(meals.filter { it.date == date })
     override fun observeAll(): Flow<List<MealEntity>> = flowOf(meals)
     override suspend fun getById(id: Long): MealEntity? = mealToReturn ?: meals.find { it.id == id }
     override suspend fun insert(meal: MealEntity): Long {
+        insertGate?.await()
         meals.add(meal)
         return meal.id
     }
@@ -72,5 +75,36 @@ class MealsViewModelTest {
 
         assertEquals(5L, viewModel.uiState.value.currentMealDetail?.id)
         assertEquals("Lunch", viewModel.uiState.value.currentMealDetail?.name)
+    }
+
+    @Test
+    fun `given an existing meal, when duplicateMeal is called, then a copy is inserted`() = runTest {
+        val testEntity = MealEntity(id = 1L, name = "Breakfast", date = "2026-10-26", type = "BREAKFAST", calories = 400, protein = 20, carbs = 30, fat = 10, itemsSummary = "")
+        fakeDao.meals.add(testEntity)
+        savedStateHandle = SavedStateHandle()
+
+        val viewModel = MealsViewModel(mealRepository, savedStateHandle)
+        viewModel.duplicateMeal(1L)
+        testScheduler.advanceUntilIdle()
+
+        assertEquals(2, fakeDao.meals.size)
+        assertEquals("Breakfast", fakeDao.meals.last().name)
+    }
+
+    @Test
+    fun `given a duplicate in progress, when duplicateMeal is called again, then only one copy is inserted`() = runTest {
+        fakeDao.meals.add(MealEntity(id = 1L, name = "Breakfast", date = "2026-10-26", type = "BREAKFAST", calories = 400, protein = 20, carbs = 30, fat = 10, itemsSummary = ""))
+        fakeDao.insertGate = CompletableDeferred()
+        savedStateHandle = SavedStateHandle()
+        var duplicated = 0
+
+        val viewModel = MealsViewModel(mealRepository, savedStateHandle)
+        viewModel.duplicateMeal(1L) { duplicated++ }
+        viewModel.duplicateMeal(1L) { duplicated++ }
+        fakeDao.insertGate?.complete(Unit)
+        testScheduler.advanceUntilIdle()
+
+        assertEquals(2, fakeDao.meals.size)
+        assertEquals(1, duplicated)
     }
 }
