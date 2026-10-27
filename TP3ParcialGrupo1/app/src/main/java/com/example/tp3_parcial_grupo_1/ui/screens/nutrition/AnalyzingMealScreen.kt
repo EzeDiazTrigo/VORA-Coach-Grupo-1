@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.sp
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
 import com.example.tp3_parcial_grupo_1.ui.components.VoraOrb
-import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
+import com.example.tp3_parcial_grupo_1.ui.strings.NutritionStrings
 import kotlinx.coroutines.delay
 
 private const val AnalysisDurationMillis = 3_000L
@@ -56,7 +56,7 @@ fun AnalyzingMealScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "VORA AI",
+                    text = NutritionStrings.voraAi,
                     style = MaterialTheme.typography.titleMedium.copy(
                         color = MaterialTheme.colorScheme.surface,
                         fontWeight = FontWeight.Bold,
@@ -82,7 +82,7 @@ fun AnalyzingMealScreen(
             Spacer(modifier = Modifier.height(28.dp))
 
             Text(
-                text = "Analyzing Meal...",
+                text = NutritionStrings.analyzingMeal,
                 style = MaterialTheme.typography.headlineLarge.copy(
                     color = MaterialTheme.colorScheme.surface,
                     fontWeight = FontWeight.Bold,
@@ -102,7 +102,7 @@ fun AnalyzingMealScreen(
             ) {
                 Column {
                     Text(
-                        text = "CAPTURED INPUT",
+                        text = NutritionStrings.capturedInput,
                         style = MaterialTheme.typography.labelSmall.copy(
                             color = MaterialTheme.colorScheme.secondary,
                             fontSize = 10.sp,
@@ -139,7 +139,7 @@ fun AnalyzingMealScreen(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
-                    text = "Cancel analysis",
+                    text = NutritionStrings.cancelAnalysis,
                     style = MaterialTheme.typography.bodyMedium.copy(
                         color = MaterialTheme.colorScheme.surface.copy(alpha = 0.8f),
                         fontSize = 14.sp,
@@ -147,15 +147,7 @@ fun AnalyzingMealScreen(
                     )
                 )
             }
-            Spacer(modifier = Modifier.height(12.dp))
-            Box(
-                modifier = Modifier
-                    .width(134.dp)
-                    .height(4.dp)
-                    .clip(PillShape)
-                    .background(MaterialTheme.colorScheme.surface)
-            )
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(16.dp))
         }
     }
 }
