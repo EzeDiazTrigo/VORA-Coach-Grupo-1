@@ -19,7 +19,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -31,6 +30,7 @@ import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
 import com.example.tp3_parcial_grupo_1.ui.components.AppTextField
+import com.example.tp3_parcial_grupo_1.ui.components.LabeledDivider
 import com.example.tp3_parcial_grupo_1.ui.components.PasswordTextField
 import com.example.tp3_parcial_grupo_1.ui.components.VoraBrandMarkStyle
 import com.example.tp3_parcial_grupo_1.ui.strings.AuthStrings
@@ -159,13 +159,7 @@ fun RegisterScreen(
                     style = AppButtonStyle.Accent,
                     trailingIcon = AppIcons.ArrowRight
                 )
-                Text(
-                    AuthStrings.OrSignUpWith,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth()
-                )
+                LabeledDivider(AuthStrings.OrSignUpWith)
                 SocialButtonsRow(onClick = onDemoNoticeClick)
             }
             Column(

@@ -17,7 +17,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -27,6 +26,7 @@ import com.example.tp3_parcial_grupo_1.ui.components.AppCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
 import com.example.tp3_parcial_grupo_1.ui.components.AppTextField
+import com.example.tp3_parcial_grupo_1.ui.components.LabeledDivider
 import com.example.tp3_parcial_grupo_1.ui.components.PasswordTextField
 import com.example.tp3_parcial_grupo_1.ui.strings.AuthStrings
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
@@ -119,13 +119,7 @@ fun LoginScreen(
                     style = AppButtonStyle.Accent,
                     trailingIcon = AppIcons.ArrowRight
                 )
-                Text(
-                    AuthStrings.OrContinueWith,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth()
-                )
+                LabeledDivider(AuthStrings.OrContinueWith)
                 SocialButtonsRow(onClick = onDemoNoticeClick)
             }
             Column(
