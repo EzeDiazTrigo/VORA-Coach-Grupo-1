@@ -29,7 +29,6 @@ object AuthStrings {
     const val HasAccountLink = "Sign In"
     const val AccountIssues = "Having account issues? "
     const val AccountIssuesLink = "Recover"
-    const val EnterDemoMode = "Enter demo mode"
 
     const val EmailRequired = "Enter your email."
     const val EmailInvalid = "Enter a valid email address."

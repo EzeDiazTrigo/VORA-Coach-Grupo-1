@@ -19,8 +19,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.tp3_parcial_grupo_1.ui.components.AppButton
-import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
@@ -62,7 +60,6 @@ fun LoginRoute(
         onSignInClick = viewModel::onSignInClick,
         onSignUpClick = onSignUpClick,
         onDemoNoticeClick = viewModel::onDemoNoticeClick,
-        onEnterDemoClick = onSignedIn,
         modifier = modifier
     )
 }
@@ -76,7 +73,6 @@ fun LoginScreen(
     onSignInClick: () -> Unit,
     onSignUpClick: () -> Unit,
     onDemoNoticeClick: () -> Unit,
-    onEnterDemoClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     // Login es la pantalla inicial: no hay a dónde volver, así que la barra solo muestra el idioma.
@@ -125,11 +121,6 @@ fun LoginScreen(
             ) {
                 BiometricNote()
                 AuthFooterLink(AuthStrings.NoAccount, AuthStrings.NoAccountLink, onSignUpClick)
-                AppButton(
-                    text = AuthStrings.EnterDemoMode,
-                    onClick = onEnterDemoClick,
-                    style = AppButtonStyle.Outlined
-                )
             }
         }
     }
@@ -143,7 +134,7 @@ private fun LoginScreenPreview() {
             uiState = LoginUiState(),
             snackbarHostState = remember { SnackbarHostState() },
             onEmailChange = {}, onPasswordChange = {}, onSignInClick = {},
-            onSignUpClick = {}, onDemoNoticeClick = {}, onEnterDemoClick = {}
+            onSignUpClick = {}, onDemoNoticeClick = {}
         )
     }
 }
@@ -156,7 +147,7 @@ private fun LoginScreenErrorPreview() {
             uiState = LoginUiState(email = "alex", emailError = AuthStrings.EmailInvalid, passwordError = AuthStrings.PasswordRequired),
             snackbarHostState = remember { SnackbarHostState() },
             onEmailChange = {}, onPasswordChange = {}, onSignInClick = {},
-            onSignUpClick = {}, onDemoNoticeClick = {}, onEnterDemoClick = {}
+            onSignUpClick = {}, onDemoNoticeClick = {}
         )
     }
 }
