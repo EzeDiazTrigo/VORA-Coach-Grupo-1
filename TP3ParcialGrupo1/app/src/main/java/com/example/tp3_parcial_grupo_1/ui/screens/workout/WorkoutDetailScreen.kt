@@ -15,8 +15,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -28,25 +26,29 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.tp3_parcial_grupo_1.model.Exercise
 import com.example.tp3_parcial_grupo_1.model.Workout
+import com.example.tp3_parcial_grupo_1.ui.components.AppBackButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppCardStyle
-import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
-import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
+import com.example.tp3_parcial_grupo_1.ui.components.AppIconButtonDefaults
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
+import com.example.tp3_parcial_grupo_1.ui.components.AppTopBar
 import com.example.tp3_parcial_grupo_1.ui.components.VoraLogo
 import com.example.tp3_parcial_grupo_1.ui.strings.WorkoutStrings
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
+import com.example.tp3_parcial_grupo_1.ui.theme.iconSizes
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
+
+// Botones circulares del encabezado (volver y ayuda).
+private val HeaderButtonSize = 40.dp
 
 @Composable
 fun WorkoutDetailRoute(
@@ -138,37 +140,24 @@ fun WorkoutDetailScreen(
                             .padding(horizontal = MaterialTheme.spacing.screen)
                     ) {
                         // Centered Top Header Bar
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(vertical = MaterialTheme.spacing.xs),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            IconButton(
-                                onClick = onBackClick,
-                                colors = IconButtonDefaults.iconButtonColors(
-                                    containerColor = MaterialTheme.colorScheme.surface
-                                ),
-                                modifier = Modifier.size(40.dp)
-                            ) {
-                                AppIcon(
-                                    AppIcons.ChevronLeft,
-                                    contentDescription = "Back",
-                                    tint = MaterialTheme.colorScheme.onSurface,
-                                    size = 20.dp
+                        AppTopBar(
+                            title = "Workout Overview",
+                            modifier = Modifier.padding(vertical = MaterialTheme.spacing.xs),
+                            titleStyle = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                            titleColor = MaterialTheme.colorScheme.onSurface,
+                            centerTitle = true,
+                            spacing = 0.dp,
+                            navigation = {
+                                AppBackButton(
+                                    onClick = onBackClick,
+                                    size = HeaderButtonSize,
+                                    iconSize = MaterialTheme.iconSizes.xl,
+                                    colors = AppIconButtonDefaults.surface()
                                 )
                             }
-
-                            Text(
-                                text = "Workout Overview",
-                                style = MaterialTheme.typography.titleMedium,
-                                fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.onSurface,
-                                textAlign = TextAlign.Center,
-                                modifier = Modifier.weight(1f)
-                            )
-
-                            Spacer(modifier = Modifier.width(40.dp))
+                        ) {
+                            // Mismo ancho que el botón de volver para que el título quede centrado.
+                            Spacer(modifier = Modifier.width(HeaderButtonSize))
                         }
 
                         Spacer(modifier = Modifier.height(MaterialTheme.spacing.xs))

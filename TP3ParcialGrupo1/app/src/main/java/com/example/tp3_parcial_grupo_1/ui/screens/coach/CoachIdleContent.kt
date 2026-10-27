@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -27,7 +26,8 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import com.example.tp3_parcial_grupo_1.data.demo.LastConversation
 import com.example.tp3_parcial_grupo_1.ui.components.AppCard
-import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
+import com.example.tp3_parcial_grupo_1.ui.components.AppIconButton
+import com.example.tp3_parcial_grupo_1.ui.components.AppIconButtonColors
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
 import com.example.tp3_parcial_grupo_1.ui.components.VoraOrb
 import com.example.tp3_parcial_grupo_1.ui.strings.CoachStrings
@@ -150,20 +150,15 @@ private fun MicControl(onMicClick: () -> Unit, onTypeInstead: () -> Unit) {
             .padding(top = MaterialTheme.spacing.lg, bottom = MaterialTheme.spacing.md),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Surface(
+        AppIconButton(
+            AppIcons.Mic,
+            contentDescription = CoachStrings.Microphone,
             onClick = onMicClick,
-            modifier = Modifier.size(72.dp),
-            shape = CircleShape,
-            color = MaterialTheme.colorScheme.primary,
-            contentColor = MaterialTheme.colorScheme.onPrimary,
+            size = 72.dp,
+            iconSize = 28.dp,
+            colors = AppIconButtonColors(MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.onPrimary),
             shadowElevation = 6.dp
-        ) {
-            AppIcon(
-                AppIcons.Mic,
-                contentDescription = CoachStrings.Microphone,
-                modifier = Modifier.padding(22.dp)
-            )
-        }
+        )
         Spacer(Modifier.height(MaterialTheme.spacing.sm))
         Text(
             text = CoachStrings.TapToTalk,

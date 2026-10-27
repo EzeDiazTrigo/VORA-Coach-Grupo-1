@@ -32,14 +32,16 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.tp3_parcial_grupo_1.data.demo.ProgressDemoData
+import com.example.tp3_parcial_grupo_1.ui.components.AppBackButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
+import com.example.tp3_parcial_grupo_1.ui.components.AppIconButtonColors
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
+import com.example.tp3_parcial_grupo_1.ui.components.AppTopBar
 import com.example.tp3_parcial_grupo_1.ui.strings.ProgressStrings
-import com.example.tp3_parcial_grupo_1.ui.strings.Strings
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
 import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
@@ -118,25 +120,20 @@ fun WeeklyReviewScreen(
 @Composable
 private fun ReviewHeader(onBackClick: () -> Unit) {
     val colors = MaterialTheme.colorScheme
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.lg)
-    ) {
-        CircleIconButton(
-            AppIcons.ChevronLeft,
-            Strings.Back,
-            onBackClick,
-            containerColor = colors.onPrimary.copy(alpha = PanelAlpha),
-            contentColor = colors.onPrimary,
-            borderColor = null
-        )
-        Column(modifier = Modifier.weight(1f)) {
-            Text(ProgressStrings.WeeklyReviewTitle, style = MaterialTheme.typography.headlineMedium)
-            Text(ProgressStrings.WeeklyReviewSubtitle, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.extendedColors.mint)
-        }
-        ProgressOrb()
-    }
+    AppTopBar(
+        title = ProgressStrings.WeeklyReviewTitle,
+        subtitle = ProgressStrings.WeeklyReviewSubtitle,
+        subtitleColor = MaterialTheme.extendedColors.mint,
+        spacing = MaterialTheme.spacing.lg,
+        navigation = {
+            AppBackButton(
+                onClick = onBackClick,
+                size = HeaderButtonSize,
+                colors = AppIconButtonColors(colors.onPrimary.copy(alpha = PanelAlpha), colors.onPrimary)
+            )
+        },
+        trailing = { ProgressOrb() }
+    )
 }
 
 @Composable

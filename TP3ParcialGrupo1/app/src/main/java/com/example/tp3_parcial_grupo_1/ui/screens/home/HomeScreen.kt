@@ -19,8 +19,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -47,6 +45,8 @@ import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppCardStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
+import com.example.tp3_parcial_grupo_1.ui.components.AppIconButton
+import com.example.tp3_parcial_grupo_1.ui.components.AppIconButtonDefaults
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
 import com.example.tp3_parcial_grupo_1.ui.components.GoalValueText
@@ -145,13 +145,12 @@ private fun HomeHeader(uiState: HomeUiState, onNotificationsClick: () -> Unit) {
             Text(HomeStrings.Greeting, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
             Text(uiState.userName, style = MaterialTheme.typography.titleMedium)
         }
-        IconButton(
+        AppIconButton(
+            AppIcons.Bell,
+            contentDescription = HomeStrings.NotificationsButton,
             onClick = onNotificationsClick,
-            colors = IconButtonDefaults.iconButtonColors(containerColor = MaterialTheme.colorScheme.surface),
-            modifier = Modifier.border(HairlineWidth, MaterialTheme.colorScheme.outlineVariant, CircleShape)
-        ) {
-            AppIcon(AppIcons.Bell, contentDescription = HomeStrings.NotificationsButton)
-        }
+            colors = AppIconButtonDefaults.outlined()
+        )
     }
 }
 

@@ -2,7 +2,6 @@ package com.example.tp3_parcial_grupo_1.ui.screens.profile
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,8 +13,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -38,6 +35,8 @@ import com.example.tp3_parcial_grupo_1.data.demo.ProfileDemoData
 import com.example.tp3_parcial_grupo_1.ui.components.AppCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppCardStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
+import com.example.tp3_parcial_grupo_1.ui.components.AppIconButton
+import com.example.tp3_parcial_grupo_1.ui.components.AppIconButtonDefaults
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
 import com.example.tp3_parcial_grupo_1.ui.components.AppPillButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppPillStyle
@@ -152,15 +151,13 @@ fun ProfileScreen(
 
 @Composable
 private fun SettingsButton(onClick: () -> Unit) {
-    IconButton(
+    AppIconButton(
+        AppIcons.Settings,
+        contentDescription = ProfileStrings.SettingsButton,
         onClick = onClick,
-        colors = IconButtonDefaults.iconButtonColors(containerColor = MaterialTheme.colorScheme.surface),
-        modifier = Modifier
-            .padding(end = MaterialTheme.spacing.sm)
-            .border(BorderWidth, MaterialTheme.colorScheme.outlineVariant, CircleShape)
-    ) {
-        AppIcon(AppIcons.Settings, contentDescription = ProfileStrings.SettingsButton)
-    }
+        modifier = Modifier.padding(end = MaterialTheme.spacing.sm),
+        colors = AppIconButtonDefaults.outlined()
+    )
 }
 
 @Composable

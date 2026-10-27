@@ -25,7 +25,6 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -45,13 +44,20 @@ import androidx.compose.ui.unit.dp
 import com.example.tp3_parcial_grupo_1.model.CoachAuthor
 import com.example.tp3_parcial_grupo_1.model.CoachMessage
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
+import com.example.tp3_parcial_grupo_1.ui.components.AppIconButton
+import com.example.tp3_parcial_grupo_1.ui.components.AppIconButtonColors
+import com.example.tp3_parcial_grupo_1.ui.components.AppIconButtonDefaults
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
 import com.example.tp3_parcial_grupo_1.ui.components.InlineLoading
 import com.example.tp3_parcial_grupo_1.ui.components.VoraOrb
 import com.example.tp3_parcial_grupo_1.ui.strings.CoachStrings
 import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
+import com.example.tp3_parcial_grupo_1.ui.theme.iconSizes
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
+
+// Botones de adjuntar y enviar a los lados del campo de texto.
+private val ComposerButtonSize = 40.dp
 
 private val BubbleCorner = 20.dp
 private val BubbleTail = 4.dp
@@ -259,19 +265,14 @@ private fun ChatInputBar(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md)
             ) {
-                Surface(
+                AppIconButton(
+                    AppIcons.Plus,
+                    contentDescription = CoachStrings.Attach,
                     onClick = onAttach,
-                    modifier = Modifier
-                        .size(40.dp)
-                        .semantics { contentDescription = CoachStrings.Attach },
-                    shape = CircleShape,
-                    color = colors.background,
-                    contentColor = colors.onSurfaceVariant
-                ) {
-                    Box(contentAlignment = Alignment.Center) {
-                        AppIcon(AppIcons.Plus, contentDescription = null, size = 18.dp)
-                    }
-                }
+                    size = ComposerButtonSize,
+                    iconSize = MaterialTheme.iconSizes.lg,
+                    colors = AppIconButtonColors(colors.background, colors.onSurfaceVariant)
+                )
                 Row(
                     modifier = Modifier
                         .weight(1f)
@@ -300,30 +301,24 @@ private fun ChatInputBar(
                             field()
                         }
                     )
-                    IconButton(onClick = onMicClick) {
-                        AppIcon(
-                            AppIcons.Mic,
-                            contentDescription = CoachStrings.Talk,
-                            tint = MaterialTheme.extendedColors.textSubtle,
-                            size = 18.dp
-                        )
-                    }
+                    AppIconButton(
+                        AppIcons.Mic,
+                        contentDescription = CoachStrings.Talk,
+                        onClick = onMicClick,
+                        iconSize = MaterialTheme.iconSizes.lg,
+                        colors = AppIconButtonDefaults.plain(MaterialTheme.extendedColors.textSubtle)
+                    )
                 }
-                Surface(
+                AppIconButton(
+                    AppIcons.Send,
+                    contentDescription = CoachStrings.Send,
                     onClick = onSend,
-                    enabled = canSend,
-                    modifier = Modifier
-                        .size(40.dp)
-                        .alpha(if (canSend) 1f else 0.5f)
-                        .semantics { contentDescription = CoachStrings.Send },
-                    shape = CircleShape,
-                    color = colors.primary,
-                    contentColor = colors.onPrimary
-                ) {
-                    Box(contentAlignment = Alignment.Center) {
-                        AppIcon(AppIcons.Send, contentDescription = null, size = 18.dp)
-                    }
-                }
+                    modifier = Modifier.alpha(if (canSend) 1f else 0.5f),
+                    size = ComposerButtonSize,
+                    iconSize = MaterialTheme.iconSizes.lg,
+                    colors = AppIconButtonColors(colors.primary, colors.onPrimary),
+                    enabled = canSend
+                )
             }
         }
     }

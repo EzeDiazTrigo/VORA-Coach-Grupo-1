@@ -4,12 +4,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -22,11 +17,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.tp3_parcial_grupo_1.ui.strings.Strings
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 
 private val BackButtonInset = 12.dp
+private val BackButtonSize = 40.dp
+private val BackButtonTouchInset = (MinTouchTarget - BackButtonSize) / 2
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -50,13 +46,15 @@ fun AppScaffold(
                     },
                     navigationIcon = {
                         if (onBack != null) {
-                            IconButton(
+                            // Círculo blanco de 40 dp dentro de un área de 48 dp, alineado al margen de la pantalla.
+                            AppBackButton(
                                 onClick = onBack,
-                                modifier = Modifier.padding(start = MaterialTheme.spacing.screen - BackButtonInset),
-                                colors = IconButtonDefaults.iconButtonColors(containerColor = MaterialTheme.colorScheme.surface)
-                            ) {
-                                Icon(Icons.AutoMirrored.Outlined.ArrowBack, contentDescription = Strings.Back)
-                            }
+                                modifier = Modifier
+                                    .padding(start = MaterialTheme.spacing.screen - BackButtonInset)
+                                    .padding(BackButtonTouchInset),
+                                size = BackButtonSize,
+                                colors = AppIconButtonDefaults.surface()
+                            )
                         }
                     },
                     actions = actions,

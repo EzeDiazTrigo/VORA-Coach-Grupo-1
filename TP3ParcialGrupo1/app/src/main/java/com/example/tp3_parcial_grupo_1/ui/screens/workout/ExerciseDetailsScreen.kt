@@ -16,8 +16,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,20 +26,26 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.tp3_parcial_grupo_1.R
 import com.example.tp3_parcial_grupo_1.model.Exercise
+import com.example.tp3_parcial_grupo_1.ui.components.AppBackButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
-import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
+import com.example.tp3_parcial_grupo_1.ui.components.AppIconButton
+import com.example.tp3_parcial_grupo_1.ui.components.AppIconButtonDefaults
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
+import com.example.tp3_parcial_grupo_1.ui.components.AppTopBar
 import com.example.tp3_parcial_grupo_1.ui.components.VoraLogo
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
+import com.example.tp3_parcial_grupo_1.ui.theme.iconSizes
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
+
+// Botones circulares del encabezado (volver y ayuda).
+private val HeaderButtonSize = 40.dp
 
 data class ExerciseGuideData(
     val title: String,
@@ -153,50 +157,30 @@ fun ExerciseDetailsScreen(
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md)
         ) {
             // Centered Top Header Bar
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = MaterialTheme.spacing.xs),
-                verticalAlignment = Alignment.CenterVertically
+            AppTopBar(
+                title = "Exercise Guide",
+                modifier = Modifier.padding(vertical = MaterialTheme.spacing.xs),
+                titleStyle = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                titleColor = MaterialTheme.colorScheme.onSurface,
+                centerTitle = true,
+                spacing = 0.dp,
+                navigation = {
+                    AppBackButton(
+                        onClick = onBackClick,
+                        size = HeaderButtonSize,
+                        iconSize = MaterialTheme.iconSizes.xl,
+                        colors = AppIconButtonDefaults.surface()
+                    )
+                }
             ) {
-                IconButton(
-                    onClick = onBackClick,
-                    colors = IconButtonDefaults.iconButtonColors(
-                        containerColor = MaterialTheme.colorScheme.surface
-                    ),
-                    modifier = Modifier.size(40.dp)
-                ) {
-                    AppIcon(
-                        AppIcons.ChevronLeft,
-                        contentDescription = "Back",
-                        tint = MaterialTheme.colorScheme.onSurface,
-                        size = 20.dp
-                    )
-                }
-
-                Text(
-                    text = "Exercise Guide",
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.weight(1f)
-                )
-
-                IconButton(
+                AppIconButton(
+                    AppIcons.HelpCircle,
+                    contentDescription = "Help",
                     onClick = { },
-                    colors = IconButtonDefaults.iconButtonColors(
-                        containerColor = MaterialTheme.colorScheme.surface
-                    ),
-                    modifier = Modifier.size(40.dp)
-                ) {
-                    AppIcon(
-                        AppIcons.HelpCircle,
-                        contentDescription = "Help",
-                        tint = MaterialTheme.colorScheme.onSurface,
-                        size = 20.dp
-                    )
-                }
+                    size = HeaderButtonSize,
+                    iconSize = MaterialTheme.iconSizes.xl,
+                    colors = AppIconButtonDefaults.surface()
+                )
             }
 
             // Exercise Title Header

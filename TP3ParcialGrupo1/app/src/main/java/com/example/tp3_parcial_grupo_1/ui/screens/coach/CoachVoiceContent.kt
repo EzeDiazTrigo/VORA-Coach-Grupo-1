@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -32,7 +31,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.tp3_parcial_grupo_1.ui.components.AppButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
-import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
+import com.example.tp3_parcial_grupo_1.ui.components.AppIconButton
+import com.example.tp3_parcial_grupo_1.ui.components.AppIconButtonColors
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
 import com.example.tp3_parcial_grupo_1.ui.components.InlineLoading
 import com.example.tp3_parcial_grupo_1.ui.components.VoraOrb
@@ -52,19 +52,14 @@ internal fun CoachListeningContent(state: CoachUiState.Listening, actions: Coach
             }
         },
         bottom = {
-            Surface(
+            AppIconButton(
+                AppIcons.Mic,
+                contentDescription = CoachStrings.StopListening,
                 onClick = actions.onFinishListening,
-                modifier = Modifier.size(80.dp),
-                shape = CircleShape,
-                color = colors.secondary,
-                contentColor = colors.primary
-            ) {
-                AppIcon(
-                    AppIcons.Mic,
-                    contentDescription = CoachStrings.StopListening,
-                    modifier = Modifier.padding(26.dp)
-                )
-            }
+                size = 80.dp,
+                iconSize = 28.dp,
+                colors = AppIconButtonColors(colors.secondary, colors.primary)
+            )
             TextButton(onClick = actions.onCancel) {
                 Text(Strings.Cancel, style = MaterialTheme.typography.labelLarge, color = colors.secondary)
             }
@@ -212,17 +207,14 @@ private fun PlaybackButton(
     container: Color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.1f),
     content: Color = MaterialTheme.colorScheme.onPrimary
 ) {
-    Surface(
+    AppIconButton(
+        icon = icon,
+        contentDescription = description,
         onClick = onClick,
-        modifier = Modifier.size(size),
-        shape = CircleShape,
-        color = container,
-        contentColor = content
-    ) {
-        Box(contentAlignment = Alignment.Center) {
-            AppIcon(icon, contentDescription = description, size = iconSize)
-        }
-    }
+        size = size,
+        iconSize = iconSize,
+        colors = AppIconButtonColors(container, content)
+    )
 }
 
 // Estructura común de las pantallas oscuras: encabezado, contenido desplazable y controles abajo (opcionales).

@@ -7,16 +7,16 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tp3_parcial_grupo_1.model.Meal
 import com.example.tp3_parcial_grupo_1.model.MealType
-import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
-import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
+import com.example.tp3_parcial_grupo_1.ui.components.AppBackButton
+import com.example.tp3_parcial_grupo_1.ui.components.AppTopBar
 import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
+import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 import com.example.tp3_parcial_grupo_1.utils.validateMeal
 import java.text.SimpleDateFormat
 import java.util.*
@@ -47,20 +47,13 @@ fun ManualLogScreen(
                 .padding(20.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                IconButton(onClick = onBackClick) {
-                    AppIcon(AppIcons.ChevronLeft, contentDescription = "Back", tint = MaterialTheme.colorScheme.onBackground)
-                }
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = "Log Manually",
-                    style = MaterialTheme.typography.headlineMedium.copy(
-                        color = MaterialTheme.colorScheme.onBackground,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 24.sp
-                    )
-                )
-            }
+            AppTopBar(
+                title = "Log Manually",
+                navigation = { AppBackButton(onClick = onBackClick) },
+                titleStyle = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
+                titleColor = MaterialTheme.colorScheme.onBackground,
+                spacing = MaterialTheme.spacing.sm
+            )
 
             OutlinedTextField(
                 value = name,

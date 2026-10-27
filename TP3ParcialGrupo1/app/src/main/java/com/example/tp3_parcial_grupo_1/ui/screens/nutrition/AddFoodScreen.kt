@@ -12,12 +12,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.example.tp3_parcial_grupo_1.ui.components.AppBackButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppCardStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
+import com.example.tp3_parcial_grupo_1.ui.components.AppTopBar
 import com.example.tp3_parcial_grupo_1.ui.components.VoraOrb
 import com.example.tp3_parcial_grupo_1.ui.strings.NutritionStrings
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
@@ -42,22 +44,13 @@ fun AddFoodScreen(
                 .padding(horizontal = MaterialTheme.spacing.screen, vertical = MaterialTheme.spacing.lg),
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.lg)
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                IconButton(onClick = onBackClick) {
-                    AppIcon(AppIcons.ChevronLeft, contentDescription = "Back", tint = MaterialTheme.colorScheme.onBackground)
-                }
-                Spacer(modifier = Modifier.width(MaterialTheme.spacing.sm))
-                Text(
-                    text = NutritionStrings.addFoodTitle,
-                    style = MaterialTheme.typography.headlineMedium.copy(
-                        color = MaterialTheme.colorScheme.onBackground,
-                        fontWeight = FontWeight.Bold
-                    )
-                )
-            }
+            AppTopBar(
+                title = NutritionStrings.addFoodTitle,
+                navigation = { AppBackButton(onClick = onBackClick) },
+                titleStyle = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
+                titleColor = MaterialTheme.colorScheme.onBackground,
+                spacing = MaterialTheme.spacing.sm
+            )
 
             // Talk to VORA Card (Panel style)
             AppCard(style = AppCardStyle.Panel) {
