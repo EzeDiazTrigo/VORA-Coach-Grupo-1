@@ -1,6 +1,5 @@
 package com.example.tp3_parcial_grupo_1.ui.screens.home
 
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -13,7 +12,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -21,14 +19,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.tp3_parcial_grupo_1.R
 import com.example.tp3_parcial_grupo_1.data.demo.HomeDemoData
 import com.example.tp3_parcial_grupo_1.ui.components.AppCard
+import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
+import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
 import com.example.tp3_parcial_grupo_1.ui.strings.HomeStrings
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
@@ -106,10 +104,10 @@ fun NotificationsScreen(
 private fun NotificationCard(item: NotificationItem, onClick: () -> Unit) {
     AppCard(onClick = onClick) {
         Row(horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.lg)) {
-            Icon(
-                painter = painterResource(item.type.iconRes()),
+            AppIcon(
+                item.type.icon(),
                 contentDescription = null,
-                modifier = Modifier.size(TypeIconSize),
+                size = TypeIconSize,
                 tint = MaterialTheme.colorScheme.primary
             )
             Column(
@@ -138,12 +136,11 @@ private fun NotificationCard(item: NotificationItem, onClick: () -> Unit) {
     }
 }
 
-@DrawableRes
-private fun NotificationType.iconRes(): Int = when (this) {
-    NotificationType.Coach -> R.drawable.ic_sparkles
-    NotificationType.Workout -> R.drawable.ic_dumbbell
-    NotificationType.Nutrition -> R.drawable.ic_apple
-    NotificationType.Milestone -> R.drawable.ic_flame
+private fun NotificationType.icon(): AppIcons = when (this) {
+    NotificationType.Coach -> AppIcons.Sparkles
+    NotificationType.Workout -> AppIcons.Dumbbell
+    NotificationType.Nutrition -> AppIcons.Apple
+    NotificationType.Milestone -> AppIcons.Flame
 }
 
 @Preview(showBackground = true, widthDp = 390, heightDp = 800)

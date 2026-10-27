@@ -1,9 +1,5 @@
 package com.example.tp3_parcial_grupo_1.ui.components
 
-import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Icon
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.Icons
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -17,11 +13,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
 import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
+import com.example.tp3_parcial_grupo_1.ui.theme.iconSizes
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 
 private val ChipBorderWidth = 1.dp
-
-private val CheckIconSize = 16.dp
 
 // Mint: selección única con relleno menta; Dark: relleno verde oscuro; Outlined: selección múltiple con borde menta y check.
 enum class AppChipStyle { Mint, Dark, Outlined }
@@ -50,7 +45,7 @@ fun AppChip(
         modifier = modifier,
         shape = PillShape,
         trailingIcon = if (style == AppChipStyle.Outlined && selected) {
-            { Icon(Icons.Filled.Check, contentDescription = null, modifier = Modifier.size(CheckIconSize)) }
+            { AppIcon(AppIcons.Check, contentDescription = null, size = MaterialTheme.iconSizes.md) }
         } else {
             null
         },

@@ -7,7 +7,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.tp3_parcial_grupo_1.R
 import com.example.tp3_parcial_grupo_1.ui.strings.ComponentStrings
 import com.example.tp3_parcial_grupo_1.ui.strings.Strings
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
@@ -23,7 +22,7 @@ fun ErrorState(
 ) {
     Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         StateMessage(
-            icon = R.drawable.ic_alert_circle,
+            icon = AppIcons.AlertCircle,
             iconTint = MaterialTheme.colorScheme.error,
             iconBackground = MaterialTheme.colorScheme.error.copy(alpha = 0.1f),
             title = title,

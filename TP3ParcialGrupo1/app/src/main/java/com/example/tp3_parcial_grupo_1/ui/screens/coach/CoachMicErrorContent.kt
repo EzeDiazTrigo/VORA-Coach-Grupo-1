@@ -14,22 +14,21 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
-import com.example.tp3_parcial_grupo_1.R
 import com.example.tp3_parcial_grupo_1.ui.components.AppButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppCard
+import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
+import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
 import com.example.tp3_parcial_grupo_1.ui.components.OrbVariant
 import com.example.tp3_parcial_grupo_1.ui.components.VoraOrb
 import com.example.tp3_parcial_grupo_1.ui.strings.CoachStrings
@@ -54,7 +53,7 @@ internal fun CoachMicErrorContent(actions: CoachActions) {
                 size = 120.dp,
                 variant = OrbVariant.Muted,
                 glowAlpha = 0.1f,
-                icon = R.drawable.ic_vora_retry,
+                icon = AppIcons.VoraRetry,
                 iconFraction = 0.28f
             )
             Spacer(Modifier.height(spacing.xxl))
@@ -108,11 +107,11 @@ private fun MicAccessCard(onAllow: () -> Unit, onNotNow: () -> Unit) {
                     .background(colors.error.copy(alpha = 0.12f), CircleShape),
                 contentAlignment = Alignment.Center
             ) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_mic),
+                AppIcon(
+                    AppIcons.Mic,
                     contentDescription = null,
                     tint = colors.error,
-                    modifier = Modifier.size(18.dp)
+                    size = 18.dp
                 )
             }
             Text(

@@ -18,7 +18,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -28,16 +27,16 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.tp3_parcial_grupo_1.R
 import com.example.tp3_parcial_grupo_1.data.demo.ProgressDemoData
 import com.example.tp3_parcial_grupo_1.ui.components.AppButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppCard
+import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
+import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
 import com.example.tp3_parcial_grupo_1.ui.strings.ProgressStrings
 import com.example.tp3_parcial_grupo_1.ui.strings.Strings
@@ -108,7 +107,7 @@ fun WeeklyReviewScreen(
                     text = ProgressStrings.AskVora,
                     onClick = onAskVoraClick,
                     style = AppButtonStyle.Accent,
-                    leadingIcon = painterResource(R.drawable.ic_mic)
+                    leadingIcon = AppIcons.Mic
                 )
                 DoneButton(onDoneClick)
             }
@@ -125,7 +124,7 @@ private fun ReviewHeader(onBackClick: () -> Unit) {
         horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.lg)
     ) {
         CircleIconButton(
-            R.drawable.ic_chevron_left,
+            AppIcons.ChevronLeft,
             Strings.Back,
             onBackClick,
             containerColor = colors.onPrimary.copy(alpha = PanelAlpha),
@@ -176,11 +175,11 @@ private fun WinRow(win: ReviewHighlight) {
             modifier = Modifier.size(CheckContainerSize).background(onPrimary.copy(alpha = PanelAlpha), CircleShape),
             contentAlignment = Alignment.Center
         ) {
-            Icon(
-                painterResource(R.drawable.ic_check),
+            AppIcon(
+                AppIcons.Check,
                 contentDescription = null,
                 tint = MaterialTheme.extendedColors.mint,
-                modifier = Modifier.size(ProgressSmallIconSize)
+                size = ProgressSmallIconSize
             )
         }
         Column(verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xxs)) {
@@ -195,7 +194,7 @@ private fun ImprovementPanel(improvement: ReviewHighlight, onDinnerIdeasClick: (
     val colors = MaterialTheme.colorScheme
     ReviewPanel {
         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md)) {
-            Icon(painterResource(R.drawable.ic_alert_circle), contentDescription = null, tint = colors.tertiary)
+            AppIcon(AppIcons.AlertCircle, contentDescription = null, tint = colors.tertiary)
             Text(improvement.title, style = MaterialTheme.typography.titleMedium)
         }
         Text(improvement.description, style = MaterialTheme.typography.bodyLarge, color = colors.onPrimary.copy(alpha = MutedTextAlpha))

@@ -8,23 +8,21 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
 import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
+import com.example.tp3_parcial_grupo_1.ui.theme.iconSizes
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 
 // Secondary: menta, como «Try again» del Asistente.
@@ -38,8 +36,8 @@ fun AppButton(
     style: AppButtonStyle = AppButtonStyle.Primary,
     enabled: Boolean = true,
     isLoading: Boolean = false,
-    leadingIcon: Painter? = null,
-    trailingIcon: ImageVector? = null,
+    leadingIcon: AppIcons? = null,
+    trailingIcon: AppIcons? = null,
     isCompact: Boolean = false,
     fullWidth: Boolean = true,
     textColor: Color? = null,
@@ -62,11 +60,11 @@ fun AppButton(
                 )
             }
             if (leadingIcon != null) {
-                Icon(leadingIcon, contentDescription = null, modifier = Modifier.size(18.dp), tint = actualTextColor)
+                AppIcon(leadingIcon, contentDescription = null, size = MaterialTheme.iconSizes.lg, tint = actualTextColor)
             }
             Text(text, style = MaterialTheme.typography.labelLarge, maxLines = 1, color = actualTextColor)
             if (trailingIcon != null) {
-                Icon(trailingIcon, contentDescription = null, modifier = Modifier.size(18.dp), tint = actualTextColor)
+                AppIcon(trailingIcon, contentDescription = null, size = MaterialTheme.iconSizes.lg, tint = actualTextColor)
             }
         }
     }

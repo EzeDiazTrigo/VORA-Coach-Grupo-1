@@ -1,6 +1,5 @@
 package com.example.tp3_parcial_grupo_1.ui.components
 
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,32 +10,31 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.tp3_parcial_grupo_1.R
+import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
+import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
 import com.example.tp3_parcial_grupo_1.ui.strings.ComponentStrings
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 
 // Pestañas de la barra inferior de Figma. La navegación (rutas, back stack) la resuelve AppNavHost.
-enum class BottomNavItem(val label: String, @DrawableRes val icon: Int) {
-    Home(ComponentStrings.NavHome, R.drawable.ic_home),
-    Workout(ComponentStrings.NavWorkout, R.drawable.ic_dumbbell),
-    Nutrition(ComponentStrings.NavNutrition, R.drawable.ic_apple),
-    Progress(ComponentStrings.NavProgress, R.drawable.ic_chart_line),
-    Profile(ComponentStrings.NavProfile, R.drawable.ic_user)
+enum class BottomNavItem(val label: String, val icon: AppIcons) {
+    Home(ComponentStrings.NavHome, AppIcons.Home),
+    Workout(ComponentStrings.NavWorkout, AppIcons.Dumbbell),
+    Nutrition(ComponentStrings.NavNutrition, AppIcons.Apple),
+    Progress(ComponentStrings.NavProgress, AppIcons.ChartLine),
+    Profile(ComponentStrings.NavProfile, AppIcons.User)
 }
 
 @Composable
@@ -84,11 +82,11 @@ private fun BottomNavTab(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xxs)
     ) {
-        Icon(
-            painter = painterResource(item.icon),
+        AppIcon(
+            item.icon,
             contentDescription = null,
             tint = color,
-            modifier = Modifier.size(20.dp)
+            size = 20.dp
         )
         Text(
             text = item.label,

@@ -1,6 +1,5 @@
 package com.example.tp3_parcial_grupo_1.ui.screens.profile
 
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -17,7 +16,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.SnackbarHostState
@@ -29,14 +27,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.tp3_parcial_grupo_1.R
 import com.example.tp3_parcial_grupo_1.ui.components.AppCard
+import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
+import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
 import com.example.tp3_parcial_grupo_1.ui.components.AppSectionLabel
 import com.example.tp3_parcial_grupo_1.ui.strings.ProfileStrings
@@ -109,41 +107,41 @@ fun SettingsScreen(
             SettingsGroup(
                 label = ProfileStrings.Account,
                 rows = listOf(
-                    SettingsRowData(R.drawable.ic_user, uiState.fullName, uiState.email),
-                    SettingsRowData(R.drawable.ic_star, ProfileStrings.PremiumName, ProfileStrings.PremiumRenewal),
-                    SettingsRowData(R.drawable.ic_edit, ProfileStrings.ManageAccount)
+                    SettingsRowData(AppIcons.User, uiState.fullName, uiState.email),
+                    SettingsRowData(AppIcons.Star, ProfileStrings.PremiumName, ProfileStrings.PremiumRenewal),
+                    SettingsRowData(AppIcons.Edit, ProfileStrings.ManageAccount)
                 ),
                 onRowClick = onDemoNoticeClick
             )
             SettingsGroup(
                 label = ProfileStrings.AppPreferencesLabel,
                 rows = listOf(
-                    SettingsRowData(R.drawable.ic_bell, ProfileStrings.NotificationsRow, ProfileStrings.NotificationsRowSubtitle),
-                    SettingsRowData(R.drawable.ic_compass, ProfileStrings.UnitsRow, ProfileStrings.UnitsRowSubtitle),
-                    SettingsRowData(R.drawable.ic_eye, ProfileStrings.AppearanceRow, ProfileStrings.AppearanceRowSubtitle)
+                    SettingsRowData(AppIcons.Bell, ProfileStrings.NotificationsRow, ProfileStrings.NotificationsRowSubtitle),
+                    SettingsRowData(AppIcons.Compass, ProfileStrings.UnitsRow, ProfileStrings.UnitsRowSubtitle),
+                    SettingsRowData(AppIcons.Eye, ProfileStrings.AppearanceRow, ProfileStrings.AppearanceRowSubtitle)
                 ),
                 onRowClick = onDemoNoticeClick
             )
             SettingsGroup(
                 label = ProfileStrings.ConnectedData,
                 rows = listOf(
-                    SettingsRowData(R.drawable.ic_activity, ProfileStrings.HealthRow, ProfileStrings.HealthRowSubtitle)
+                    SettingsRowData(AppIcons.Activity, ProfileStrings.HealthRow, ProfileStrings.HealthRowSubtitle)
                 ),
                 onRowClick = onDemoNoticeClick
             )
             SettingsGroup(
                 label = ProfileStrings.PrivacySecurityLabel,
                 rows = listOf(
-                    SettingsRowData(R.drawable.ic_lock, ProfileStrings.PrivacyPolicyRow),
-                    SettingsRowData(R.drawable.ic_shield, ProfileStrings.PermissionsRow)
+                    SettingsRowData(AppIcons.Lock, ProfileStrings.PrivacyPolicyRow),
+                    SettingsRowData(AppIcons.Shield, ProfileStrings.PermissionsRow)
                 ),
                 onRowClick = onDemoNoticeClick
             )
             SettingsGroup(
                 label = ProfileStrings.SupportLabel,
                 rows = listOf(
-                    SettingsRowData(R.drawable.ic_help_circle, ProfileStrings.HelpCentreRow),
-                    SettingsRowData(R.drawable.ic_mail, ProfileStrings.ContactSupportRow)
+                    SettingsRowData(AppIcons.HelpCircle, ProfileStrings.HelpCentreRow),
+                    SettingsRowData(AppIcons.Mail, ProfileStrings.ContactSupportRow)
                 ),
                 onRowClick = onDemoNoticeClick
             )
@@ -181,7 +179,7 @@ fun SettingsScreen(
     }
 }
 
-private data class SettingsRowData(@DrawableRes val iconRes: Int, val title: String, val subtitle: String? = null)
+private data class SettingsRowData(val icon: AppIcons, val title: String, val subtitle: String? = null)
 
 @Composable
 private fun SettingsGroup(label: String, rows: List<SettingsRowData>, onRowClick: () -> Unit) {
@@ -203,10 +201,10 @@ private fun SettingsRow(row: SettingsRowData, onClick: () -> Unit) {
                 modifier = Modifier.size(RowIconBoxSize).background(MaterialTheme.colorScheme.background, CircleShape),
                 contentAlignment = Alignment.Center
             ) {
-                Icon(
-                    painterResource(row.iconRes),
+                AppIcon(
+                    row.icon,
                     contentDescription = null,
-                    modifier = Modifier.size(RowIconSize),
+                    size = RowIconSize,
                     tint = MaterialTheme.colorScheme.primary
                 )
             }
@@ -223,8 +221,8 @@ private fun SettingsRow(row: SettingsRowData, onClick: () -> Unit) {
                     )
                 }
             }
-            Icon(
-                painterResource(R.drawable.ic_chevron_right),
+            AppIcon(
+                AppIcons.ChevronRight,
                 contentDescription = null,
                 tint = MaterialTheme.extendedColors.textSubtle
             )

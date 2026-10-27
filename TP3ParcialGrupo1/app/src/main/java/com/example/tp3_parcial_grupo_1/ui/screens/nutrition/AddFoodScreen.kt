@@ -10,14 +10,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.example.tp3_parcial_grupo_1.R
 import com.example.tp3_parcial_grupo_1.ui.components.AppButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppCardStyle
+import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
+import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
 import com.example.tp3_parcial_grupo_1.ui.components.VoraOrb
 import com.example.tp3_parcial_grupo_1.ui.strings.NutritionStrings
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
@@ -47,7 +47,7 @@ fun AddFoodScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 IconButton(onClick = onBackClick) {
-                    Icon(painter = painterResource(id = R.drawable.ic_chevron_left), contentDescription = "Back", tint = MaterialTheme.colorScheme.onBackground)
+                    AppIcon(AppIcons.ChevronLeft, contentDescription = "Back", tint = MaterialTheme.colorScheme.onBackground)
                 }
                 Spacer(modifier = Modifier.width(MaterialTheme.spacing.sm))
                 Text(
@@ -100,19 +100,19 @@ fun AddFoodScreen(
             // Option Cards
             Column(verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md)) {
                 AddOptionCard(
-                    iconRes = R.drawable.ic_camera,
+                    icon = AppIcons.Camera,
                     title = NutritionStrings.snapAPhoto,
                     subtitle = NutritionStrings.snapAPhotoDesc,
                     onClick = onNavigateToPhoto
                 )
                 AddOptionCard(
-                    iconRes = R.drawable.ic_search,
+                    icon = AppIcons.Search,
                     title = NutritionStrings.searchDatabase,
                     subtitle = NutritionStrings.searchDatabaseDesc,
                     onClick = onNavigateToReview
                 )
                 AddOptionCard(
-                    iconRes = R.drawable.ic_pen,
+                    icon = AppIcons.Pen,
                     title = NutritionStrings.logManually,
                     subtitle = NutritionStrings.logManuallyDesc,
                     onClick = onNavigateToManual
@@ -123,7 +123,7 @@ fun AddFoodScreen(
 }
 
 @Composable
-fun AddOptionCard(iconRes: Int, title: String, subtitle: String, onClick: () -> Unit) {
+fun AddOptionCard(icon: AppIcons, title: String, subtitle: String, onClick: () -> Unit) {
     AppCard(onClick = onClick) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -136,11 +136,11 @@ fun AddOptionCard(iconRes: Int, title: String, subtitle: String, onClick: () -> 
                     .background(MaterialTheme.extendedColors.mintSoft),
                 contentAlignment = Alignment.Center
             ) {
-                Icon(
-                    painter = painterResource(id = iconRes),
+                AppIcon(
+                    icon,
                     contentDescription = title,
                     tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(22.dp)
+                    size = 22.dp
                 )
             }
             Spacer(modifier = Modifier.width(MaterialTheme.spacing.lg))

@@ -1,6 +1,5 @@
 package com.example.tp3_parcial_grupo_1.ui.screens.progress
 
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -13,7 +12,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -23,13 +21,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.example.tp3_parcial_grupo_1.R
 import com.example.tp3_parcial_grupo_1.data.demo.ProgressDemoData
 import com.example.tp3_parcial_grupo_1.ui.components.AppCard
+import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
+import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
 import com.example.tp3_parcial_grupo_1.ui.components.VoraLogo
 import com.example.tp3_parcial_grupo_1.ui.components.VoraLogoStyle
 import com.example.tp3_parcial_grupo_1.ui.strings.ProgressStrings
@@ -55,20 +53,20 @@ internal fun ProgressHeader(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.lg)
     ) {
-        CircleIconButton(R.drawable.ic_chevron_left, Strings.Back, onBackClick)
+        CircleIconButton(AppIcons.ChevronLeft, Strings.Back, onBackClick)
         Column(modifier = Modifier.weight(1f)) {
             Text(title, style = MaterialTheme.typography.headlineMedium)
             subtitle?.let {
                 Text(it, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
         }
-        CircleIconButton(R.drawable.ic_more_horizontal, ProgressStrings.MoreOptions, onMoreClick)
+        CircleIconButton(AppIcons.MoreHorizontal, ProgressStrings.MoreOptions, onMoreClick)
     }
 }
 
 @Composable
 internal fun CircleIconButton(
-    @DrawableRes iconRes: Int,
+    icon: AppIcons,
     contentDescription: String,
     onClick: () -> Unit,
     containerColor: Color = MaterialTheme.colorScheme.surface,
@@ -82,7 +80,7 @@ internal fun CircleIconButton(
             .size(HeaderButtonSize)
             .then(if (borderColor != null) Modifier.border(ProgressBorderWidth, borderColor, CircleShape) else Modifier)
     ) {
-        Icon(painterResource(iconRes), contentDescription = contentDescription)
+        AppIcon(icon, contentDescription = contentDescription)
     }
 }
 
@@ -153,7 +151,7 @@ internal fun ProgressLink(text: String, color: Color, onClick: () -> Unit) {
         horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xs)
     ) {
         Text(text, style = MaterialTheme.typography.labelLarge, color = color)
-        Icon(painterResource(R.drawable.ic_arrow_right), contentDescription = null, tint = color, modifier = Modifier.size(ProgressSmallIconSize))
+        AppIcon(AppIcons.ArrowRight, contentDescription = null, tint = color, size = ProgressSmallIconSize)
     }
 }
 

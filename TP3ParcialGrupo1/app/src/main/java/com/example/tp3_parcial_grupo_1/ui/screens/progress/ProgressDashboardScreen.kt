@@ -13,22 +13,21 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.tp3_parcial_grupo_1.R
 import com.example.tp3_parcial_grupo_1.data.demo.ProgressDemoData
 import com.example.tp3_parcial_grupo_1.ui.components.AppCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppCardStyle
+import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
+import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
 import com.example.tp3_parcial_grupo_1.ui.strings.ProgressStrings
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
@@ -111,7 +110,7 @@ private fun StatTile(stat: SummaryStat, modifier: Modifier = Modifier) {
         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xs)) {
             Text(stat.value, style = MaterialTheme.typography.titleLarge)
             if (stat.isStreak) {
-                Icon(painterResource(R.drawable.ic_flame), contentDescription = null, tint = MaterialTheme.colorScheme.error, modifier = Modifier.size(ProgressSmallIconSize))
+                AppIcon(AppIcons.Flame, contentDescription = null, tint = MaterialTheme.colorScheme.error, size = ProgressSmallIconSize)
             }
             stat.trend?.let {
                 Text(it, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.extendedColors.mint)
@@ -156,7 +155,7 @@ private fun CategoryCard(summary: CategorySummary, onClick: () -> Unit) {
                     .background(MaterialTheme.colorScheme.background, CircleShape),
                 contentAlignment = Alignment.Center
             ) {
-                Icon(painterResource(summary.category.iconRes()), contentDescription = null, tint = MaterialTheme.colorScheme.primary)
+                AppIcon(summary.category.icon(), contentDescription = null, tint = MaterialTheme.colorScheme.primary)
             }
             Column(
                 modifier = Modifier.weight(1f).padding(start = MaterialTheme.spacing.md),
@@ -166,7 +165,7 @@ private fun CategoryCard(summary: CategorySummary, onClick: () -> Unit) {
                 Text(summary.subtitle, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
             Text(ProgressStrings.View, style = MaterialTheme.typography.labelMedium)
-            Icon(painterResource(R.drawable.ic_chevron_right), contentDescription = null, modifier = Modifier.size(ProgressSmallIconSize))
+            AppIcon(AppIcons.ChevronRight, contentDescription = null, size = ProgressSmallIconSize)
         }
     }
 }
@@ -183,7 +182,7 @@ private fun ActiveGoalCard(goal: ActiveGoal) {
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xs)
     ) {
         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm)) {
-            Icon(painterResource(R.drawable.ic_target), contentDescription = null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(ProgressSmallIconSize))
+            AppIcon(AppIcons.Target, contentDescription = null, tint = MaterialTheme.colorScheme.primary, size = ProgressSmallIconSize)
             Text(ProgressStrings.ActiveGoal, style = MaterialTheme.typography.labelMedium, modifier = Modifier.weight(1f))
             Text(ProgressStrings.complete(goal.percentComplete), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.primary)
         }
@@ -192,10 +191,10 @@ private fun ActiveGoalCard(goal: ActiveGoal) {
     }
 }
 
-private fun ProgressCategory.iconRes(): Int = when (this) {
-    ProgressCategory.Workout -> R.drawable.ic_dumbbell
-    ProgressCategory.Nutrition -> R.drawable.ic_apple
-    ProgressCategory.Activity -> R.drawable.ic_chart_line
+private fun ProgressCategory.icon(): AppIcons = when (this) {
+    ProgressCategory.Workout -> AppIcons.Dumbbell
+    ProgressCategory.Nutrition -> AppIcons.Apple
+    ProgressCategory.Activity -> AppIcons.ChartLine
 }
 
 @Preview(showBackground = true, widthDp = 390, heightDp = 1200)

@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -26,7 +25,6 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -38,16 +36,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.example.tp3_parcial_grupo_1.R
 import com.example.tp3_parcial_grupo_1.model.CoachAuthor
 import com.example.tp3_parcial_grupo_1.model.CoachMessage
+import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
+import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
 import com.example.tp3_parcial_grupo_1.ui.components.InlineLoading
 import com.example.tp3_parcial_grupo_1.ui.components.VoraOrb
 import com.example.tp3_parcial_grupo_1.ui.strings.CoachStrings
@@ -135,11 +133,11 @@ private fun SendErrorBanner(message: String, onRetry: () -> Unit) {
             .padding(start = MaterialTheme.spacing.screen, end = MaterialTheme.spacing.sm),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Icon(
-            painter = painterResource(R.drawable.ic_alert_circle),
+        AppIcon(
+            AppIcons.AlertCircle,
             contentDescription = null,
             tint = colors.error,
-            modifier = Modifier.size(16.dp)
+            size = 16.dp
         )
         Spacer(Modifier.width(MaterialTheme.spacing.sm))
         Text(
@@ -226,11 +224,11 @@ private fun ListenRow(seconds: Int, onClick: () -> Unit) {
                 .background(MaterialTheme.extendedColors.mintSoft, CircleShape),
             contentAlignment = Alignment.Center
         ) {
-            Icon(
-                painter = painterResource(R.drawable.ic_play),
+            AppIcon(
+                AppIcons.Play,
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(12.dp)
+                size = 12.dp
             )
         }
         Text(
@@ -271,7 +269,7 @@ private fun ChatInputBar(
                     contentColor = colors.onSurfaceVariant
                 ) {
                     Box(contentAlignment = Alignment.Center) {
-                        Icon(painterResource(R.drawable.ic_plus), contentDescription = null, modifier = Modifier.size(18.dp))
+                        AppIcon(AppIcons.Plus, contentDescription = null, size = 18.dp)
                     }
                 }
                 Row(
@@ -303,11 +301,11 @@ private fun ChatInputBar(
                         }
                     )
                     IconButton(onClick = onMicClick) {
-                        Icon(
-                            painterResource(R.drawable.ic_mic),
+                        AppIcon(
+                            AppIcons.Mic,
                             contentDescription = CoachStrings.Talk,
                             tint = MaterialTheme.extendedColors.textSubtle,
-                            modifier = Modifier.size(18.dp)
+                            size = 18.dp
                         )
                     }
                 }
@@ -323,7 +321,7 @@ private fun ChatInputBar(
                     contentColor = colors.onPrimary
                 ) {
                     Box(contentAlignment = Alignment.Center) {
-                        Icon(painterResource(R.drawable.ic_send), contentDescription = null, modifier = Modifier.size(18.dp))
+                        AppIcon(AppIcons.Send, contentDescription = null, size = 18.dp)
                     }
                 }
             }

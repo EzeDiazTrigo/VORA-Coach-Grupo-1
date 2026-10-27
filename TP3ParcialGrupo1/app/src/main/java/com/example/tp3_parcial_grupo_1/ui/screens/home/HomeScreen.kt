@@ -4,13 +4,13 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -19,13 +19,12 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.VerticalDivider
-import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
+import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -41,24 +40,26 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import java.util.Locale
 import com.example.tp3_parcial_grupo_1.R
 import com.example.tp3_parcial_grupo_1.data.demo.HomeDemoData
 import com.example.tp3_parcial_grupo_1.ui.components.AppButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
-import com.example.tp3_parcial_grupo_1.ui.components.VoraLogo
 import com.example.tp3_parcial_grupo_1.ui.components.AppCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppCardStyle
+import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
+import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
 import com.example.tp3_parcial_grupo_1.ui.components.GoalValueText
 import com.example.tp3_parcial_grupo_1.ui.components.MacroProgressBar
 import com.example.tp3_parcial_grupo_1.ui.components.ProgressRing
+import com.example.tp3_parcial_grupo_1.ui.components.VoraLogo
 import com.example.tp3_parcial_grupo_1.ui.strings.HomeStrings
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
 import com.example.tp3_parcial_grupo_1.ui.theme.HairlineWidth
 import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
+import java.util.Locale
 
 private val AvatarSize = 48.dp
 private val SectionCardWidth = 110.dp
@@ -149,7 +150,7 @@ private fun HomeHeader(uiState: HomeUiState, onNotificationsClick: () -> Unit) {
             colors = IconButtonDefaults.iconButtonColors(containerColor = MaterialTheme.colorScheme.surface),
             modifier = Modifier.border(HairlineWidth, MaterialTheme.colorScheme.outlineVariant, CircleShape)
         ) {
-            Icon(painterResource(R.drawable.ic_bell), contentDescription = HomeStrings.NotificationsButton)
+            AppIcon(AppIcons.Bell, contentDescription = HomeStrings.NotificationsButton)
         }
     }
 }
@@ -184,7 +185,7 @@ private fun CoachPanel(onStartVoiceClick: () -> Unit, onStartWorkoutClick: () ->
             text = HomeStrings.StartVoiceSession,
             onClick = onStartVoiceClick,
             style = AppButtonStyle.Accent,
-            leadingIcon = painterResource(R.drawable.ic_mic)
+            leadingIcon = AppIcons.Mic
         )
         Row(horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm)) {
             PanelChip(HomeStrings.StartMyWorkout, onStartWorkoutClick)
@@ -216,7 +217,7 @@ private fun TipCard(tip: String) {
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md)
     ) {
-        Icon(painterResource(R.drawable.ic_sparkles), contentDescription = null, tint = MaterialTheme.colorScheme.primary)
+        AppIcon(AppIcons.Sparkles, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
         Text(tip, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.primary)
     }
 }
@@ -299,7 +300,7 @@ private fun WorkoutCard(workout: RecommendedWorkout, onStartWorkoutClick: () -> 
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm)) {
-                Icon(painterResource(R.drawable.ic_calendar), contentDescription = null, modifier = Modifier.size(CalendarIconSize), tint = MaterialTheme.colorScheme.primary)
+                AppIcon(AppIcons.Calendar, contentDescription = null, size = CalendarIconSize, tint = MaterialTheme.colorScheme.primary)
                 Text(HomeStrings.RecommendedWorkout, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
             Text(HomeStrings.Today, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)

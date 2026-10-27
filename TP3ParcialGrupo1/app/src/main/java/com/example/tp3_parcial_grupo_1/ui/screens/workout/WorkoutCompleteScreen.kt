@@ -1,6 +1,5 @@
 package com.example.tp3_parcial_grupo_1.ui.screens.workout
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -30,17 +29,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.tp3_parcial_grupo_1.R
 import com.example.tp3_parcial_grupo_1.model.Workout
 import com.example.tp3_parcial_grupo_1.ui.components.AppButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppCardStyle
+import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
+import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
 import com.example.tp3_parcial_grupo_1.ui.components.VoraLogo
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
@@ -89,11 +87,7 @@ fun WorkoutCompleteScreen(
                 contentAlignment = Alignment.Center
             ) {
                 VoraLogo(size = 120.dp)
-                Image(
-                    painter = painterResource(id = R.drawable.ic_badge_completed),
-                    contentDescription = "Completed Badge",
-                    modifier = Modifier.size(42.dp)
-                )
+                AppIcon(AppIcons.BadgeCompleted, contentDescription = "Completed Badge", size = 42.dp)
             }
 
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.md))

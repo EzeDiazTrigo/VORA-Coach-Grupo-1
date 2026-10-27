@@ -1,6 +1,5 @@
 package com.example.tp3_parcial_grupo_1.ui.screens.coach
 
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -18,7 +17,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -28,14 +26,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.example.tp3_parcial_grupo_1.R
 import com.example.tp3_parcial_grupo_1.ui.components.AppButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
+import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
+import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
 import com.example.tp3_parcial_grupo_1.ui.components.InlineLoading
 import com.example.tp3_parcial_grupo_1.ui.components.VoraOrb
 import com.example.tp3_parcial_grupo_1.ui.strings.CoachStrings
@@ -61,8 +59,8 @@ internal fun CoachListeningContent(state: CoachUiState.Listening, actions: Coach
                 color = colors.secondary,
                 contentColor = colors.primary
             ) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_mic),
+                AppIcon(
+                    AppIcons.Mic,
                     contentDescription = CoachStrings.StopListening,
                     modifier = Modifier.padding(26.dp)
                 )
@@ -158,9 +156,9 @@ internal fun CoachReplyContent(state: CoachUiState.Reply, actions: CoachActions)
             horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xl),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            PlaybackButton(R.drawable.ic_repeat_1, CoachStrings.Replay, actions.onReplay)
+            PlaybackButton(AppIcons.Repeat, CoachStrings.Replay, actions.onReplay)
             PlaybackButton(
-                icon = if (state.isPaused) R.drawable.ic_play else R.drawable.ic_pause,
+                icon = if (state.isPaused) AppIcons.Play else AppIcons.Pause,
                 description = if (state.isPaused) CoachStrings.Resume else CoachStrings.Pause,
                 onClick = actions.onTogglePause,
                 size = 56.dp,
@@ -168,7 +166,7 @@ internal fun CoachReplyContent(state: CoachUiState.Reply, actions: CoachActions)
                 container = colors.secondary,
                 content = colors.primary
             )
-            PlaybackButton(R.drawable.ic_stop_circle, CoachStrings.Stop, actions.onStop)
+            PlaybackButton(AppIcons.StopCircle, CoachStrings.Stop, actions.onStop)
         }
         // En Figma el botón va debajo de los controles, no anclado al borde inferior.
         Spacer(Modifier.height(MaterialTheme.spacing.lg))
@@ -206,7 +204,7 @@ private fun ReplyProgress(state: CoachUiState.Reply) {
 
 @Composable
 private fun PlaybackButton(
-    @DrawableRes icon: Int,
+    icon: AppIcons,
     description: String,
     onClick: () -> Unit,
     size: Dp = 40.dp,
@@ -222,7 +220,7 @@ private fun PlaybackButton(
         contentColor = content
     ) {
         Box(contentAlignment = Alignment.Center) {
-            Icon(painterResource(icon), contentDescription = description, modifier = Modifier.size(iconSize))
+            AppIcon(icon, contentDescription = description, size = iconSize)
         }
     }
 }

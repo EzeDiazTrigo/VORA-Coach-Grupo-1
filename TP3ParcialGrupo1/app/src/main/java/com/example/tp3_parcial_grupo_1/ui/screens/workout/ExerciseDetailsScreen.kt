@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -36,6 +35,8 @@ import com.example.tp3_parcial_grupo_1.R
 import com.example.tp3_parcial_grupo_1.model.Exercise
 import com.example.tp3_parcial_grupo_1.ui.components.AppButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
+import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
+import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
 import com.example.tp3_parcial_grupo_1.ui.components.VoraLogo
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
@@ -165,11 +166,11 @@ fun ExerciseDetailsScreen(
                     ),
                     modifier = Modifier.size(40.dp)
                 ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_chevron_left),
+                    AppIcon(
+                        AppIcons.ChevronLeft,
                         contentDescription = "Back",
                         tint = MaterialTheme.colorScheme.onSurface,
-                        modifier = Modifier.size(20.dp)
+                        size = 20.dp
                     )
                 }
 
@@ -189,11 +190,11 @@ fun ExerciseDetailsScreen(
                     ),
                     modifier = Modifier.size(40.dp)
                 ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_help_circle),
+                    AppIcon(
+                        AppIcons.HelpCircle,
                         contentDescription = "Help",
                         tint = MaterialTheme.colorScheme.onSurface,
-                        modifier = Modifier.size(20.dp)
+                        size = 20.dp
                     )
                 }
             }

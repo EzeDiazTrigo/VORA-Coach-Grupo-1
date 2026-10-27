@@ -1,6 +1,5 @@
 package com.example.tp3_parcial_grupo_1.ui.components
 
-import androidx.annotation.DrawableRes
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
@@ -15,7 +14,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -25,11 +23,11 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.example.tp3_parcial_grupo_1.R
+import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
+import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
@@ -58,7 +56,7 @@ fun VoraOrb(
     variant: OrbVariant = OrbVariant.Active,
     glowAlpha: Float = 0.25f,
     showRipple: Boolean = false,
-    @DrawableRes icon: Int? = R.drawable.ic_vora_waveform,
+    icon: AppIcons? = AppIcons.VoraWaveform,
     iconFraction: Float = IconSize,
     ringFraction: Float = RingDiameter,
     coreFraction: Float = CoreDiameter,
@@ -135,11 +133,11 @@ fun VoraOrb(
             )
         }
         if (icon != null) {
-            Icon(
-                painter = painterResource(icon),
+            AppIcon(
+                icon,
                 contentDescription = null,
                 tint = colors.onPrimary,
-                modifier = Modifier.size(size * iconFraction)
+                size = size * iconFraction
             )
         }
     }
@@ -162,7 +160,7 @@ private fun VoraOrbPreview() {
             ) {
                 VoraOrb(size = 140.dp, glowAlpha = 0.45f, showRipple = true)
             }
-            VoraOrb(size = 120.dp, variant = OrbVariant.Muted, glowAlpha = 0.1f, icon = R.drawable.ic_vora_retry, iconFraction = 0.28f)
+            VoraOrb(size = 120.dp, variant = OrbVariant.Muted, glowAlpha = 0.1f, icon = AppIcons.VoraRetry, iconFraction = 0.28f)
         }
     }
 }

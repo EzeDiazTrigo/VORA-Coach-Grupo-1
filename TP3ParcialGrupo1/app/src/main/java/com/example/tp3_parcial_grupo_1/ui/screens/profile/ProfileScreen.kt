@@ -1,8 +1,5 @@
 package com.example.tp3_parcial_grupo_1.ui.screens.profile
 
-import com.example.tp3_parcial_grupo_1.ui.components.AppPillStyle
-import com.example.tp3_parcial_grupo_1.ui.components.AppPillButton
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -17,7 +14,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -41,6 +37,10 @@ import com.example.tp3_parcial_grupo_1.R
 import com.example.tp3_parcial_grupo_1.data.demo.ProfileDemoData
 import com.example.tp3_parcial_grupo_1.ui.components.AppCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppCardStyle
+import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
+import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
+import com.example.tp3_parcial_grupo_1.ui.components.AppPillButton
+import com.example.tp3_parcial_grupo_1.ui.components.AppPillStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
 import com.example.tp3_parcial_grupo_1.ui.components.AppSectionLabel
 import com.example.tp3_parcial_grupo_1.ui.components.VoraLogo
@@ -122,26 +122,26 @@ fun ProfileScreen(
             SnapshotCard(uiState)
             PersonalisationPanel(onReviewPreferencesClick = onVoiceAiClick)
             ProfileLink(
-                iconRes = R.drawable.ic_target,
+                icon = AppIcons.Target,
                 title = ProfileStrings.YourGoals,
                 subtitle = uiState.goal,
                 onClick = onGoalsClick
             )
             ProfileLink(
-                iconRes = R.drawable.ic_sliders,
+                icon = AppIcons.Sliders,
                 title = ProfileStrings.YourPreferences,
                 subtitle = ProfileStrings.YourPreferencesSubtitle,
                 onClick = onPreferencesClick
             )
             ProfileLink(
-                iconRes = R.drawable.ic_activity,
+                icon = AppIcons.Activity,
                 title = ProfileStrings.ConnectedData,
                 subtitle = ProfileStrings.ConnectedDataSubtitle,
                 onClick = onConnectedDataClick,
                 badge = if (uiState.isDataSynced) ProfileStrings.Synced else null
             )
             ProfileLink(
-                iconRes = R.drawable.ic_lock,
+                icon = AppIcons.Lock,
                 title = ProfileStrings.Account,
                 subtitle = ProfileStrings.AccountSubtitle,
                 onClick = onAccountClick
@@ -159,7 +159,7 @@ private fun SettingsButton(onClick: () -> Unit) {
             .padding(end = MaterialTheme.spacing.sm)
             .border(BorderWidth, MaterialTheme.colorScheme.outlineVariant, CircleShape)
     ) {
-        Icon(painterResource(R.drawable.ic_settings), contentDescription = ProfileStrings.SettingsButton)
+        AppIcon(AppIcons.Settings, contentDescription = ProfileStrings.SettingsButton)
     }
 }
 
@@ -252,7 +252,7 @@ private fun PersonalisationPanel(onReviewPreferencesClick: () -> Unit) {
 
 @Composable
 private fun ProfileLink(
-    @DrawableRes iconRes: Int,
+    icon: AppIcons,
     title: String,
     subtitle: String,
     onClick: () -> Unit,
@@ -268,10 +268,10 @@ private fun ProfileLink(
                 modifier = Modifier.size(LinkIconBoxSize).background(MaterialTheme.colorScheme.background, CircleShape),
                 contentAlignment = Alignment.Center
             ) {
-                Icon(
-                    painterResource(iconRes),
+                AppIcon(
+                    icon,
                     contentDescription = null,
-                    modifier = Modifier.size(LinkIconSize),
+                    size = LinkIconSize,
                     tint = MaterialTheme.colorScheme.primary
                 )
             }
@@ -292,8 +292,8 @@ private fun ProfileLink(
                         .padding(horizontal = MaterialTheme.spacing.md, vertical = MaterialTheme.spacing.xs)
                 )
             }
-            Icon(
-                painterResource(R.drawable.ic_chevron_right),
+            AppIcon(
+                AppIcons.ChevronRight,
                 contentDescription = null,
                 tint = MaterialTheme.extendedColors.textSubtle
             )
