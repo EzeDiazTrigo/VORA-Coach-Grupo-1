@@ -26,6 +26,11 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object DatabaseModule {
 
+    // Estrategia de migración: solo las versiones 1 y 2 (desarrollo, nunca publicadas) se recrean desde cero.
+    // Desde la 3 en adelante un cambio de esquema exige una Migration explícita (schemas/ guarda cada versión);
+    // si falta, Room falla en lugar de borrar las comidas, el historial del Asistente y los workouts guardados.
+    private val UnreleasedVersions = intArrayOf(1, 2)
+
     @Provides
     @Singleton
     fun provideAppDatabase(
@@ -35,7 +40,7 @@ object DatabaseModule {
             context,
             AppDatabase::class.java,
             AppDatabase.DATABASE_NAME
-        ).fallbackToDestructiveMigration(dropAllTables = true)
+        ).fallbackToDestructiveMigrationFrom(true, *UnreleasedVersions)
             .addCallback(DemoMealsCallback)
             .build()
     }

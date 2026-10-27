@@ -56,6 +56,11 @@ android {
     }
 }
 
+// Room exporta el esquema de cada versión: es la base para escribir y probar las migraciones.
+ksp {
+    arg("room.schemaLocation", "$projectDir/schemas")
+}
+
 dependencies {
     coreLibraryDesugaring(libs.desugar.jdk.libs)
     implementation(platform(libs.androidx.compose.bom))

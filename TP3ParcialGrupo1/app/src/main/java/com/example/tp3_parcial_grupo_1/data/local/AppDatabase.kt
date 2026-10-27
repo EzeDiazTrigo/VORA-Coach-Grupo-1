@@ -18,9 +18,10 @@ import com.example.tp3_parcial_grupo_1.data.local.entity.WorkoutEntity
         MealEntity::class,
         CoachMessageEntity::class
     ],
-    // v3: tabla coach_messages (historial del Asistente). La migración es destructiva (DatabaseModule).
+    // v3: tabla coach_messages (historial del Asistente). Para subir de versión hay que escribir una Migration
+    // y dejar el esquema exportado en app/schemas (ver la estrategia en DatabaseModule).
     version = 3,
-    exportSchema = false
+    exportSchema = true
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun workoutDao(): WorkoutDao
