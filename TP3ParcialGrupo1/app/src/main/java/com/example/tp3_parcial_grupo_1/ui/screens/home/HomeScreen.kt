@@ -47,6 +47,7 @@ import com.example.tp3_parcial_grupo_1.ui.components.AppIconButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppIconButtonDefaults
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
 import com.example.tp3_parcial_grupo_1.ui.components.AppNoticeCard
+import com.example.tp3_parcial_grupo_1.ui.components.AppPanelHeader
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
 import com.example.tp3_parcial_grupo_1.ui.components.AppStat
 import com.example.tp3_parcial_grupo_1.ui.components.GoalValueText
@@ -157,23 +158,16 @@ private fun HomeHeader(uiState: HomeUiState, onNotificationsClick: () -> Unit) {
 private fun CoachPanel(onStartVoiceClick: () -> Unit, onStartWorkoutClick: () -> Unit, onLogMealClick: () -> Unit) {
     val colors = MaterialTheme.colorScheme
     AppCard(style = AppCardStyle.Panel) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
+        AppPanelHeader(
+            title = HomeStrings.CoachName,
+            orb = { VoraLogo(size = 36.dp) },
+            spacing = MaterialTheme.spacing.sm
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm)
-            ) {
-                VoraLogo(size = 36.dp)
-                Text(HomeStrings.CoachName, style = MaterialTheme.typography.labelLarge, color = MaterialTheme.extendedColors.mint)
-            }
             Text(
                 HomeStrings.AiOnline,
                 style = MaterialTheme.typography.labelSmall,
                 modifier = Modifier
-                    .background(Color.White.copy(alpha = 0.12f), PillShape)
+                    .background(colors.onPrimary.copy(alpha = 0.12f), PillShape)
                     .padding(horizontal = MaterialTheme.spacing.md, vertical = MaterialTheme.spacing.xs)
             )
         }

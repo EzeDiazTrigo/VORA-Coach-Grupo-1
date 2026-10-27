@@ -1,11 +1,11 @@
 package com.example.tp3_parcial_grupo_1.ui.screens.coach
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -31,6 +30,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.tp3_parcial_grupo_1.ui.components.AppButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
+import com.example.tp3_parcial_grupo_1.ui.components.AppCard
+import com.example.tp3_parcial_grupo_1.ui.components.AppCardStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppIconButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppIconButtonColors
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
@@ -68,7 +69,7 @@ internal fun CoachListeningContent(state: CoachUiState.Listening, actions: Coach
         Spacer(Modifier.height(MaterialTheme.spacing.xxxl))
         VoraOrb(size = 170.dp, glowAlpha = 0.45f, showRipple = true)
         Spacer(Modifier.height(MaterialTheme.spacing.xxxl))
-        DarkCard {
+        CoachDarkCard {
             Text(CoachStrings.LiveTranscript, style = MaterialTheme.typography.labelSmall, color = colors.secondary)
             Text(
                 text = CoachStrings.quoted(state.transcript.trimEnd('.') + "…"),
@@ -105,7 +106,7 @@ internal fun CoachProcessingContent(state: CoachUiState.Processing, actions: Coa
         Spacer(Modifier.height(MaterialTheme.spacing.xxxl))
         Text(CoachStrings.Thinking, style = MaterialTheme.typography.labelLarge, color = colors.secondary)
         Spacer(Modifier.height(MaterialTheme.spacing.lg))
-        DarkCard(shape = MaterialTheme.shapes.medium, contentPadding = 18.dp) {
+        CoachDarkCard(shape = MaterialTheme.shapes.medium, contentPadding = 18.dp) {
             Text(
                 text = CoachStrings.quoted(state.transcript),
                 style = MaterialTheme.typography.bodyLarge,
@@ -136,7 +137,7 @@ internal fun CoachReplyContent(state: CoachUiState.Reply, actions: CoachActions)
         Spacer(Modifier.height(MaterialTheme.spacing.xxl))
         VoraOrb(size = 140.dp, glowAlpha = 0.4f, showRipple = true)
         Spacer(Modifier.height(MaterialTheme.spacing.xxl))
-        DarkCard {
+        CoachDarkCard {
             Text(
                 text = CoachStrings.quoted(state.reply),
                 style = MaterialTheme.typography.titleSmall,
@@ -248,23 +249,21 @@ private fun DarkLayout(
 }
 
 // Tarjeta translúcida de las pantallas oscuras (transcripción, respuesta).
+
+// Tarjeta translúcida del Asistente: Figma la dibuja más tenue (8 % y borde al 10 %) que la de Workout.
 @Composable
-private fun DarkCard(
+private fun CoachDarkCard(
     shape: Shape = MaterialTheme.shapes.large,
     contentPadding: Dp = MaterialTheme.spacing.screen,
     content: @Composable ColumnScope.() -> Unit
 ) {
     val onPrimary = MaterialTheme.colorScheme.onPrimary
-    Surface(
-        modifier = Modifier.fillMaxWidth(),
+    AppCard(
+        style = AppCardStyle.Translucent,
         shape = shape,
-        color = onPrimary.copy(alpha = 0.08f),
-        border = BorderStroke(1.dp, onPrimary.copy(alpha = 0.1f))
-    ) {
-        Column(
-            modifier = Modifier.padding(contentPadding),
-            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md),
-            content = content
-        )
-    }
+        contentPadding = PaddingValues(contentPadding),
+        containerColor = onPrimary.copy(alpha = 0.08f),
+        borderColor = onPrimary.copy(alpha = 0.1f),
+        content = content
+    )
 }

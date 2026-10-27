@@ -27,6 +27,7 @@ import com.example.tp3_parcial_grupo_1.ui.components.AppCardStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
 import com.example.tp3_parcial_grupo_1.ui.components.AppListRow
+import com.example.tp3_parcial_grupo_1.ui.components.AppPanelHeader
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
 import com.example.tp3_parcial_grupo_1.ui.components.AppStat
 import com.example.tp3_parcial_grupo_1.ui.strings.ProgressStrings
@@ -135,14 +136,7 @@ private fun StatTile(stat: SummaryStat, modifier: Modifier = Modifier) {
 private fun InsightCard(progress: PeriodProgress, onSeeWeeklyReviewClick: () -> Unit) {
     val colors = MaterialTheme.colorScheme
     AppCard(style = AppCardStyle.Panel) {
-        Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-            ProgressOrb()
-            Text(
-                ProgressStrings.VoraInsight,
-                style = MaterialTheme.typography.labelLarge,
-                color = MaterialTheme.extendedColors.mint,
-                modifier = Modifier.weight(1f).padding(start = MaterialTheme.spacing.md)
-            )
+        AppPanelHeader(title = ProgressStrings.VoraInsight, orb = { ProgressOrb() }) {
             Text(
                 progress.insightTag,
                 style = MaterialTheme.typography.labelSmall,

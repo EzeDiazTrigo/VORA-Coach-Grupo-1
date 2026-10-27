@@ -24,6 +24,7 @@ import com.example.tp3_parcial_grupo_1.ui.components.AppCardStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
 import com.example.tp3_parcial_grupo_1.ui.components.AppNoticeCard
+import com.example.tp3_parcial_grupo_1.ui.components.AppPanelHeader
 import com.example.tp3_parcial_grupo_1.ui.components.MacroProgressBar
 import com.example.tp3_parcial_grupo_1.ui.components.ProgressRing
 import com.example.tp3_parcial_grupo_1.ui.components.VoraLogo
@@ -279,17 +280,13 @@ fun NutritionDashboardScreen(
                 // Tell Vora what you ate Card (Panel style)
                 AppCard(style = AppCardStyle.Panel) {
                     Column(verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md)) {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            VoraLogo(size = 28.dp, glowAlpha = 0.3f)
-                            Spacer(modifier = Modifier.width(MaterialTheme.spacing.sm))
-                            Text(
-                                text = NutritionStrings.tellVoraTitle,
-                                style = MaterialTheme.typography.titleMedium.copy(
-                                    color = MaterialTheme.colorScheme.onPrimary,
-                                    fontWeight = FontWeight.Bold
-                                )
-                            )
-                        }
+                        AppPanelHeader(
+                            title = NutritionStrings.tellVoraTitle,
+                            orb = { VoraLogo(size = 28.dp, glowAlpha = 0.3f) },
+                            titleStyle = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                            titleColor = MaterialTheme.colorScheme.onPrimary,
+                            spacing = MaterialTheme.spacing.sm
+                        )
                         Text(
                             text = NutritionStrings.tellVoraSubtitle,
                             style = MaterialTheme.typography.bodyMedium.copy(

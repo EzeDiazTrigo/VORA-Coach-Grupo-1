@@ -38,6 +38,7 @@ import com.example.tp3_parcial_grupo_1.ui.components.AppIconButtonDefaults
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
 import com.example.tp3_parcial_grupo_1.ui.components.AppListRow
 import com.example.tp3_parcial_grupo_1.ui.components.AppListRowDefaults
+import com.example.tp3_parcial_grupo_1.ui.components.AppPanelHeader
 import com.example.tp3_parcial_grupo_1.ui.components.AppPillButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppPillStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
@@ -47,7 +48,6 @@ import com.example.tp3_parcial_grupo_1.ui.components.VoraLogoStyle
 import com.example.tp3_parcial_grupo_1.ui.strings.ProfileStrings
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
 import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
-import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 
 private val BorderWidth = 1.dp
@@ -222,17 +222,10 @@ private fun SnapshotRow(label: String, value: String) {
 @Composable
 private fun PersonalisationPanel(onReviewPreferencesClick: () -> Unit) {
     AppCard(style = AppCardStyle.Panel) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md)
-        ) {
-            VoraLogo(size = OrbSize, glowAlpha = 0.25f, style = VoraLogoStyle.Insight)
-            Text(
-                ProfileStrings.PersonalisationTitle,
-                style = MaterialTheme.typography.labelLarge,
-                color = MaterialTheme.extendedColors.mint
-            )
-        }
+        AppPanelHeader(
+            title = ProfileStrings.PersonalisationTitle,
+            orb = { VoraLogo(size = OrbSize, glowAlpha = 0.25f, style = VoraLogoStyle.Insight) }
+        )
         Text(ProfileStrings.PersonalisationHeadline, style = MaterialTheme.typography.titleSmall)
         Text(
             ProfileStrings.PersonalisationBody,

@@ -1,11 +1,9 @@
 package com.example.tp3_parcial_grupo_1.ui.screens.workout
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -32,6 +30,8 @@ import androidx.compose.ui.unit.dp
 import com.example.tp3_parcial_grupo_1.model.Workout
 import com.example.tp3_parcial_grupo_1.ui.components.AppButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
+import com.example.tp3_parcial_grupo_1.ui.components.AppCard
+import com.example.tp3_parcial_grupo_1.ui.components.AppCardStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
 import com.example.tp3_parcial_grupo_1.ui.components.LightSystemBarIcons
@@ -111,7 +111,7 @@ fun PreWorkoutScreen(
             }
 
             // Card 1: TODAY'S FOCUS (Has border)
-            DarkWorkoutCard(hasBorder = true) {
+            AppCard(style = AppCardStyle.Translucent, spacing = 0.dp) {
                 Text(
                     text = "TODAY'S FOCUS",
                     style = MaterialTheme.typography.labelSmall,
@@ -134,7 +134,7 @@ fun PreWorkoutScreen(
             }
 
             // Card 2: YOUR LAST SESSION (Has border)
-            DarkWorkoutCard(hasBorder = true) {
+            AppCard(style = AppCardStyle.Translucent, spacing = 0.dp) {
                 Text(
                     text = "YOUR LAST SESSION",
                     style = MaterialTheme.typography.labelSmall,
@@ -157,7 +157,7 @@ fun PreWorkoutScreen(
             }
 
             // Card 3: VORA'S COACH TIP (Has border)
-            DarkWorkoutCard(hasBorder = true) {
+            AppCard(style = AppCardStyle.Translucent, spacing = 0.dp) {
                 Text(
                     text = "VORA'S COACH TIP",
                     style = MaterialTheme.typography.labelSmall,
@@ -173,7 +173,7 @@ fun PreWorkoutScreen(
             }
 
             // Card 4: Need anything? Mic Widget (No border)
-            DarkWorkoutCard(hasBorder = false) {
+            AppCard(style = AppCardStyle.Translucent, spacing = 0.dp, borderColor = Color.Transparent) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -226,26 +226,6 @@ fun PreWorkoutScreen(
 
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.md))
         }
-    }
-}
-
-@Composable
-private fun DarkWorkoutCard(
-    hasBorder: Boolean = true,
-    content: @Composable ColumnScope.() -> Unit
-) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(MaterialTheme.shapes.large)
-            .background(MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.12f))
-            .then(
-                if (hasBorder) Modifier.border(1.dp, Color.White.copy(alpha = 0.1216f), MaterialTheme.shapes.large)
-                else Modifier
-            )
-            .padding(MaterialTheme.spacing.lg)
-    ) {
-        Column(content = content)
     }
 }
 

@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -36,6 +37,7 @@ import com.example.tp3_parcial_grupo_1.ui.components.AppBackButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppCard
+import com.example.tp3_parcial_grupo_1.ui.components.AppCardStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
 import com.example.tp3_parcial_grupo_1.ui.components.AppIconButtonColors
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
@@ -141,13 +143,12 @@ private fun ReviewHeader(onBackClick: () -> Unit) {
 @Composable
 private fun ReviewPanel(content: @Composable ColumnScope.() -> Unit) {
     val onPrimary = MaterialTheme.colorScheme.onPrimary
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(onPrimary.copy(alpha = PanelAlpha), MaterialTheme.shapes.extraLarge)
-            .border(ProgressBorderWidth, onPrimary.copy(alpha = PanelBorderAlpha), MaterialTheme.shapes.extraLarge)
-            .padding(MaterialTheme.spacing.screen),
-        verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md),
+    AppCard(
+        style = AppCardStyle.Translucent,
+        shape = MaterialTheme.shapes.extraLarge,
+        contentPadding = PaddingValues(MaterialTheme.spacing.screen),
+        containerColor = onPrimary.copy(alpha = PanelAlpha),
+        borderColor = onPrimary.copy(alpha = PanelBorderAlpha),
         content = content
     )
 }
