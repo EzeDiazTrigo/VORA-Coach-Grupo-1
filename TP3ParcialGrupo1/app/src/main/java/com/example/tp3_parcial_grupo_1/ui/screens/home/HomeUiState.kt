@@ -25,6 +25,7 @@ data class HomeUiState(
     val distance: String,
     val activeKcal: String,
     val workout: RecommendedWorkout,
+    val hasUnreadNotifications: Boolean = false,
     val message: String? = null
 )
 

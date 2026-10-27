@@ -1,7 +1,10 @@
 package com.example.tp3_parcial_grupo_1.ui.screens.home
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
@@ -10,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -61,7 +65,14 @@ import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 import java.util.Locale
 
-private val AvatarSize = 48.dp
+private val AvatarSize = 40.dp
+private val BellButtonSize = 40.dp
+private val BellIconSize = 20.dp
+private val UnreadDotSize = 8.dp
+private val UnreadDotBorder = 1.5.dp
+
+// Figma pinta el punto sobre el extremo superior derecho del ícono de la campana.
+private val UnreadDotOffset = 6.dp
 private val SectionCardWidth = 110.dp
 private val CalendarIconSize = 16.dp
 private val StartWorkoutButtonWidth = 140.dp
@@ -145,12 +156,31 @@ private fun HomeHeader(uiState: HomeUiState, onNotificationsClick: () -> Unit) {
             Text(HomeStrings.Greeting, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
             Text(uiState.userName, style = MaterialTheme.typography.titleMedium)
         }
+        NotificationsBell(hasUnread = uiState.hasUnreadNotifications, onClick = onNotificationsClick)
+    }
+}
+
+@Composable
+private fun NotificationsBell(hasUnread: Boolean, onClick: () -> Unit) {
+    val description = if (hasUnread) HomeStrings.NotificationsButtonUnread else HomeStrings.NotificationsButton
+    Box(contentAlignment = Alignment.Center) {
         AppIconButton(
             AppIcons.Bell,
-            contentDescription = HomeStrings.NotificationsButton,
-            onClick = onNotificationsClick,
+            contentDescription = description,
+            onClick = onClick,
+            size = BellButtonSize,
+            iconSize = BellIconSize,
             colors = AppIconButtonDefaults.outlined()
         )
+        if (hasUnread) {
+            Box(
+                modifier = Modifier
+                    .offset(x = UnreadDotOffset, y = -UnreadDotOffset)
+                    .size(UnreadDotSize)
+                    .background(MaterialTheme.extendedColors.mint, CircleShape)
+                    .border(UnreadDotBorder, MaterialTheme.colorScheme.surface, CircleShape)
+            )
+        }
     }
 }
 
@@ -304,7 +334,7 @@ private fun format(value: Int) = String.format(Locale.US, "%,d", value)
 private fun HomeScreenPreview() {
     AppTheme {
         HomeScreen(
-            uiState = HomeDemoData.dashboard,
+            uiState = HomeDemoData.dashboard.copy(hasUnreadNotifications = true),
             snackbarHostState = remember { SnackbarHostState() },
             onNotificationsClick = {}, onStartVoiceClick = {}, onStartWorkoutClick = {}, onLogMealClick = {},
             onTodaysOverviewClick = {}
