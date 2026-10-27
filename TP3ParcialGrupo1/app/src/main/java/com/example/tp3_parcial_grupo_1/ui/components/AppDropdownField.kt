@@ -13,6 +13,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
 import com.example.tp3_parcial_grupo_1.ui.theme.iconSizes
@@ -37,8 +40,13 @@ fun AppDropdownField(
             uppercaseLabel = uppercaseLabel,
             trailingIcon = { AppIcon(AppIcons.ChevronDown, contentDescription = null, size = MaterialTheme.iconSizes.sm) }
         )
-        // Captura el toque para abrir el menú en lugar de editar el texto.
-        Box(Modifier.matchParentSize().clickable { expanded = true })
+        // Captura el toque para abrir el menú en lugar de editar el texto; el lector de pantalla lee etiqueta y valor.
+        Box(
+            Modifier
+                .matchParentSize()
+                .semantics { contentDescription = "$label, $selected" }
+                .clickable(role = Role.DropdownList) { expanded = true }
+        )
         DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
             options.forEach { option ->
                 DropdownMenuItem(
