@@ -56,32 +56,32 @@ object DatabaseModule {
         return database.mealDao()
     }
 
-    // onCreate corre solo cuando se crea el archivo de la base: borrar comidas no vuelve a sembrar la demo.
-    // Una versión nueva con migración destructiva recrea la base sin pasar por onCreate, así que también se siembra ahí.
+    // La demo se siembra una sola vez por base: una marca en el encabezado de SQLite (application_id, que Room no usa)
+    // evita que borrar todas las comidas las vuelva a traer. Una migración destructiva conserva el archivo,
+    // así que ahí se borra la marca para sembrar de nuevo. Se siembra en onOpen y no en onDestructiveMigration
+    // porque en ese momento las tablas todavía no existen.
+    private const val DEMO_SEEDED_MARK = 0x564F5241
+
     private object DemoMealsCallback : RoomDatabase.Callback() {
-        override fun onCreate(db: SupportSQLiteDatabase) {
-            seedDemoMeals(db)
+        override fun onDestructiveMigration(db: SupportSQLiteDatabase) {
+            db.execSQL("PRAGMA application_id = 0")
         }
 
         override fun onOpen(db: SupportSQLiteDatabase) {
-            super.onOpen(db)
-            try {
-                db.query("SELECT COUNT(*) FROM meals").use { cursor ->
-                    if (cursor.moveToFirst() && cursor.getInt(0) == 0) {
-                        seedDemoMeals(db)
-                    }
-                }
-            } catch (_: Exception) {
-                // Table might not exist yet if opened before table creation
-            }
+            if (db.queryInt("PRAGMA application_id") == DEMO_SEEDED_MARK) return
+            if (db.queryInt("SELECT COUNT(*) FROM meals") == 0) seedDemoMeals(db)
+            db.execSQL("PRAGMA application_id = $DEMO_SEEDED_MARK")
         }
+
+        private fun SupportSQLiteDatabase.queryInt(sql: String): Int =
+            query(sql).use { cursor -> if (cursor.moveToFirst()) cursor.getInt(0) else 0 }
 
         private fun seedDemoMeals(db: SupportSQLiteDatabase) {
             val today = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
             NutritionDemoData.meals(today).map(MealEntity::fromDomain).forEach { meal ->
                 db.insert(
                     "meals",
-                    OnConflictStrategy.IGNORE,
+                    OnConflictStrategy.NONE,
                     contentValuesOf(
                         "name" to meal.name,
                         "date" to meal.date,
