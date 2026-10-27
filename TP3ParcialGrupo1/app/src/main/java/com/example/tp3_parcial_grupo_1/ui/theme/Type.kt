@@ -55,3 +55,9 @@ private val ChipStyle = style(12, FontWeight.Medium)
 
 val Typography.chip: TextStyle
     get() = ChipStyle
+
+// Etiquetas en mayúsculas de las tarjetas de Nutrition («TOTAL CALORIES», «CAPTURED INPUT»): 10 sp.
+private val MicroStyle = style(10, FontWeight.SemiBold)
+
+val Typography.micro: TextStyle
+    get() = MicroStyle

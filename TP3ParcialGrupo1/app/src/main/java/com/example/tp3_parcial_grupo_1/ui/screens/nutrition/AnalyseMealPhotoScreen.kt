@@ -1,5 +1,6 @@
 package com.example.tp3_parcial_grupo_1.ui.screens.nutrition
 
+import com.example.tp3_parcial_grupo_1.data.demo.AnalysedMeal
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -16,7 +17,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.tp3_parcial_grupo_1.R
 import com.example.tp3_parcial_grupo_1.ui.components.AppBackButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppButton
@@ -27,6 +27,8 @@ import com.example.tp3_parcial_grupo_1.ui.components.AppTopBar
 import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
 import com.example.tp3_parcial_grupo_1.ui.strings.NutritionStrings
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
+import com.example.tp3_parcial_grupo_1.ui.theme.chip
+import com.example.tp3_parcial_grupo_1.ui.theme.micro
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 
 @Composable
@@ -42,7 +44,7 @@ fun AnalyseMealPhotoScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
                 .verticalScroll(rememberScrollState())
-                .padding(20.dp)
+                .padding(MaterialTheme.spacing.screen)
         ) {
             AppTopBar(
                 title = NutritionStrings.analyseMeal,
@@ -52,7 +54,7 @@ fun AnalyseMealPhotoScreen(
                 spacing = MaterialTheme.spacing.sm
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.lg))
 
             // Photo Preview Box with bounding tags
             Box(
@@ -63,7 +65,7 @@ fun AnalyseMealPhotoScreen(
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.img_meal_demo),
-                    contentDescription = "Meal Photo",
+                    contentDescription = NutritionStrings.mealPhoto,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier.fillMaxSize()
                 )
@@ -71,27 +73,27 @@ fun AnalyseMealPhotoScreen(
                 Box(
                     modifier = Modifier
                         .align(Alignment.TopStart)
-                        .padding(top = 32.dp, start = 24.dp)
+                        .padding(top = MaterialTheme.spacing.xxl, start = MaterialTheme.spacing.xl)
                         .clip(RoundedCornerShape(6.dp))
                         .background(MaterialTheme.colorScheme.primary)
-                        .padding(horizontal = 10.dp, vertical = 4.dp)
+                        .padding(horizontal = 10.dp, vertical = MaterialTheme.spacing.xxs)
                 ) {
-                    Text(text = "Grilled Chicken (~180g)", color = MaterialTheme.colorScheme.surface, fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                    Text(text = NutritionStrings.photoTagChicken, color = MaterialTheme.colorScheme.surface, style = MaterialTheme.typography.labelSmall)
                 }
 
                 Box(
                     modifier = Modifier
                         .align(Alignment.BottomEnd)
-                        .padding(bottom = 48.dp, end = 24.dp)
+                        .padding(bottom = 48.dp, end = MaterialTheme.spacing.xl)
                         .clip(RoundedCornerShape(6.dp))
                         .background(MaterialTheme.colorScheme.primary)
-                        .padding(horizontal = 10.dp, vertical = 4.dp)
+                        .padding(horizontal = 10.dp, vertical = MaterialTheme.spacing.xxs)
                 ) {
-                    Text(text = "Basmati Rice (~150g)", color = MaterialTheme.colorScheme.surface, fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                    Text(text = NutritionStrings.photoTagRice, color = MaterialTheme.colorScheme.surface, style = MaterialTheme.typography.labelSmall)
                 }
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.lg))
 
             // VORA Estimate Card
             Card(
@@ -100,7 +102,7 @@ fun AnalyseMealPhotoScreen(
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
                 border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
             ) {
-                Column(modifier = Modifier.padding(16.dp)) {
+                Column(modifier = Modifier.padding(MaterialTheme.spacing.lg)) {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
@@ -108,57 +110,54 @@ fun AnalyseMealPhotoScreen(
                     ) {
                         Text(
                             text = NutritionStrings.voraEstimate,
-                            style = MaterialTheme.typography.labelSmall.copy(
+                            style = MaterialTheme.typography.micro.copy(
                                 color = MaterialTheme.extendedColors.textSubtle,
-                                fontSize = 10.sp,
                                 fontWeight = FontWeight.Bold
                             )
                         )
                         Text(
                             text = NutritionStrings.portionsEstimated,
                             style = MaterialTheme.typography.bodySmall.copy(
-                                color = MaterialTheme.extendedColors.textSubtle,
-                                fontSize = 11.sp
-                            )
+                                color = MaterialTheme.extendedColors.textSubtle
+)
                         )
                     }
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(MaterialTheme.spacing.sm))
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = "520 kcal",
-                            style = MaterialTheme.typography.headlineMedium.copy(
+                            text = NutritionStrings.caloriesValue(AnalysedMeal.calories),
+                            style = MaterialTheme.typography.headlineLarge.copy(
                                 color = MaterialTheme.colorScheme.onBackground,
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 28.sp
-                            )
+                                fontWeight = FontWeight.Bold
+)
                         )
-                        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Row(horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm)) {
                             AppTag(
-                                text = "P: 38g",
+                                text = NutritionStrings.macroChip("P", AnalysedMeal.protein),
                                 containerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.08f),
                                 contentColor = MaterialTheme.colorScheme.onBackground,
                                 textStyle = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
-                                contentPadding = PaddingValues(horizontal = 10.dp, vertical = 6.dp),
+                                contentPadding = PaddingValues(horizontal = 10.dp, vertical = MaterialTheme.spacing.xs),
                                 shape = RoundedCornerShape(4.dp)
                             )
                             AppTag(
-                                text = "C: 54g",
+                                text = NutritionStrings.macroChip("C", AnalysedMeal.carbs),
                                 containerColor = MaterialTheme.extendedColors.mintSoft,
                                 contentColor = MaterialTheme.colorScheme.onBackground,
                                 textStyle = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
-                                contentPadding = PaddingValues(horizontal = 10.dp, vertical = 6.dp),
+                                contentPadding = PaddingValues(horizontal = 10.dp, vertical = MaterialTheme.spacing.xs),
                                 shape = RoundedCornerShape(4.dp)
                             )
                             AppTag(
-                                text = "F: 14g",
+                                text = NutritionStrings.macroChip("F", AnalysedMeal.fat),
                                 containerColor = MaterialTheme.colorScheme.tertiary.copy(alpha = 0.12f),
                                 contentColor = MaterialTheme.colorScheme.onBackground,
                                 textStyle = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
-                                contentPadding = PaddingValues(horizontal = 10.dp, vertical = 6.dp),
+                                contentPadding = PaddingValues(horizontal = 10.dp, vertical = MaterialTheme.spacing.xs),
                                 shape = RoundedCornerShape(4.dp)
                             )
                         }
@@ -166,17 +165,16 @@ fun AnalyseMealPhotoScreen(
                 }
             }
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.md))
 
             Text(
-                text = "\"Portions and quantities can be refined in the next step before saving.\"",
-                style = MaterialTheme.typography.bodySmall.copy(
-                    color = MaterialTheme.extendedColors.textSubtle,
-                    fontSize = 12.sp
-                )
+                text = NutritionStrings.refineNote,
+                style = MaterialTheme.typography.chip.copy(
+                    color = MaterialTheme.extendedColors.textSubtle
+)
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.xl))
 
             AppButton(
                 text = NutritionStrings.reviewAndAdd,
@@ -186,7 +184,7 @@ fun AnalyseMealPhotoScreen(
                 textStyle = AppButtonDefaults.BoldTextStyle
             )
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.md))
 
             AppButton(
                 text = NutritionStrings.retakePhoto,

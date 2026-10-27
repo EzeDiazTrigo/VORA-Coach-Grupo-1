@@ -43,7 +43,7 @@ fun TodaysMealsScreen(
                 AppTopBar(
                     title = NutritionStrings.todaysMeals,
                     navigation = { AppBackButton(onClick = onBackClick) },
-                    eyebrow = "TIMELINE",
+                    eyebrow = NutritionStrings.timeline,
                     titleStyle = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
                     titleColor = MaterialTheme.colorScheme.onBackground,
                     spacing = MaterialTheme.spacing.xs
@@ -55,7 +55,7 @@ fun TodaysMealsScreen(
                     ) {
                         Text(
                             text = "${uiState.totalCalories} kcal",
-                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+                            modifier = Modifier.padding(horizontal = MaterialTheme.spacing.md, vertical = MaterialTheme.spacing.xs),
                             style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Bold)
                         )
                     }
@@ -81,14 +81,14 @@ fun TodaysMealsScreen(
                             verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md)
                         ) {
                             Text(
-                                text = "Dinner is not logged yet",
+                                text = NutritionStrings.dinnerNotLogged,
                                 style = MaterialTheme.typography.bodyMedium.copy(
                                     color = MaterialTheme.extendedColors.textSubtle
                                 )
                             )
                             Box(modifier = Modifier.width(160.dp)) {
                                 AppButton(
-                                    text = "+ Add Dinner",
+                                    text = NutritionStrings.addDinner,
                                     onClick = onAddDinner,
                                     style = AppButtonStyle.Primary,
                                     isCompact = true

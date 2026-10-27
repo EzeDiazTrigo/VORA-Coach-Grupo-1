@@ -1,5 +1,6 @@
 package com.example.tp3_parcial_grupo_1.ui.screens.nutrition
 
+import com.example.tp3_parcial_grupo_1.ui.strings.NutritionStrings
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -10,7 +11,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.tp3_parcial_grupo_1.model.Meal
 import com.example.tp3_parcial_grupo_1.model.MealType
 import com.example.tp3_parcial_grupo_1.ui.components.AppBackButton
@@ -45,11 +45,11 @@ fun ManualLogScreen(
                 .fillMaxSize()
                 .padding(padding)
                 .verticalScroll(rememberScrollState())
-                .padding(20.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+                .padding(MaterialTheme.spacing.screen),
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.lg)
         ) {
             AppTopBar(
-                title = "Log Manually",
+                title = NutritionStrings.logManually,
                 navigation = { AppBackButton(onClick = onBackClick) },
                 titleStyle = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
                 titleColor = MaterialTheme.colorScheme.onBackground,
@@ -59,7 +59,7 @@ fun ManualLogScreen(
             OutlinedTextField(
                 value = name,
                 onValueChange = { name = it },
-                label = { Text("Meal Name (e.g. Chicken & Rice)") },
+                label = { Text(NutritionStrings.mealNameLabel) },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
                 shape = RoundedCornerShape(12.dp)
@@ -68,7 +68,7 @@ fun ManualLogScreen(
             OutlinedTextField(
                 value = date,
                 onValueChange = { date = it },
-                label = { Text("Date (yyyy-MM-dd)") },
+                label = { Text(NutritionStrings.dateLabel) },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
                 shape = RoundedCornerShape(12.dp)
@@ -77,20 +77,20 @@ fun ManualLogScreen(
             // Meal Type Selector
             Column(modifier = Modifier.fillMaxWidth()) {
                 Text(
-                    text = "Meal Type",
+                    text = NutritionStrings.mealTypeLabel,
                     style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.SemiBold)
                 )
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(MaterialTheme.spacing.xxs))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm)
                 ) {
                     MealType.entries.forEach { type ->
                         val isSelected = selectedType == type
                         FilterChip(
                             selected = isSelected,
                             onClick = { selectedType = type },
-                            label = { Text(type.displayName(), fontSize = 11.sp) }
+                            label = { Text(type.displayName(), style = MaterialTheme.typography.bodySmall) }
                         )
                     }
                 }
@@ -99,7 +99,7 @@ fun ManualLogScreen(
             OutlinedTextField(
                 value = calories,
                 onValueChange = { calories = it },
-                label = { Text("Calories (kcal)") },
+                label = { Text(NutritionStrings.caloriesLabel) },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
                 shape = RoundedCornerShape(12.dp)
@@ -107,12 +107,12 @@ fun ManualLogScreen(
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm)
             ) {
                 OutlinedTextField(
                     value = protein,
                     onValueChange = { protein = it },
-                    label = { Text("Protein (g)") },
+                    label = { Text(NutritionStrings.proteinGramsLabel) },
                     modifier = Modifier.weight(1f),
                     singleLine = true,
                     shape = RoundedCornerShape(12.dp)
@@ -120,7 +120,7 @@ fun ManualLogScreen(
                 OutlinedTextField(
                     value = carbs,
                     onValueChange = { carbs = it },
-                    label = { Text("Carbs (g)") },
+                    label = { Text(NutritionStrings.carbsGramsLabel) },
                     modifier = Modifier.weight(1f),
                     singleLine = true,
                     shape = RoundedCornerShape(12.dp)
@@ -128,7 +128,7 @@ fun ManualLogScreen(
                 OutlinedTextField(
                     value = fat,
                     onValueChange = { fat = it },
-                    label = { Text("Fat (g)") },
+                    label = { Text(NutritionStrings.fatGramsLabel) },
                     modifier = Modifier.weight(1f),
                     singleLine = true,
                     shape = RoundedCornerShape(12.dp)
@@ -143,10 +143,10 @@ fun ManualLogScreen(
                 )
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.lg))
 
             AppButton(
-                text = "Save Meal",
+                text = NutritionStrings.saveMeal,
                 onClick = {
                     val validation = validateMeal(name, calories, protein, carbs, fat)
                     if (validation.isValid) {

@@ -38,3 +38,30 @@ object NutritionDemoData {
         )
     )
 }
+
+// La comida que «analiza» la IA en Analyse Meal y Review Meal (Figma: 520 kcal, P 38 g, C 54 g, F 14 g).
+object AnalysedMeal {
+    data class Ingredient(val name: String, val quantity: String, val calories: Int)
+
+    const val calories = 520
+    const val protein = 38
+    const val carbs = 54
+    const val fat = 14
+
+    val ingredients = listOf(
+        Ingredient("Grilled Chicken Breast", "180g", 280),
+        Ingredient("Basmati Rice", "150g", 190),
+        Ingredient("Mixed Steamed Vegetables", "100g", 50)
+    )
+
+    fun asLunch(date: String) = Meal(
+        name = "Lunch",
+        date = date,
+        type = MealType.LUNCH,
+        calories = calories,
+        protein = protein,
+        carbs = carbs,
+        fat = fat,
+        itemsSummary = "Grilled Chicken - Basmati Rice - Vegetables"
+    )
+}

@@ -35,6 +35,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.tp3_parcial_grupo_1.data.demo.WorkoutDemoData
 import com.example.tp3_parcial_grupo_1.model.Workout
 import com.example.tp3_parcial_grupo_1.ui.components.AppButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
@@ -376,7 +377,7 @@ fun WorkoutListScreen(
                                 ) {
                                     AppStat(
                                         label = WorkoutStrings.Streak,
-                                        value = WorkoutStrings.StreakValue,
+                                        value = WorkoutStrings.streakDays(WorkoutDemoData.StreakDays),
                                         modifier = Modifier.weight(0.9f),
                                         valueStyle = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                                         valueColor = MaterialTheme.colorScheme.onSurface
@@ -391,7 +392,7 @@ fun WorkoutListScreen(
 
                                     AppStat(
                                         label = WorkoutStrings.WorkoutsLabel,
-                                        value = WorkoutStrings.WorkoutsValue,
+                                        value = WorkoutStrings.workoutsComplete(WorkoutDemoData.CompletedWorkouts, WorkoutDemoData.PlannedWorkouts),
                                         modifier = Modifier.weight(1.3f),
                                         valueStyle = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
                                         valueColor = MaterialTheme.colorScheme.onSurface
@@ -406,7 +407,7 @@ fun WorkoutListScreen(
 
                                     AppStat(
                                         label = WorkoutStrings.VolumeLifted,
-                                        value = WorkoutStrings.VolumeLiftedValue,
+                                        value = WorkoutStrings.kilos(WorkoutDemoData.WeeklyVolumeKg),
                                         modifier = Modifier.weight(1.1f),
                                         valueStyle = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                                         valueColor = MaterialTheme.colorScheme.onSurface

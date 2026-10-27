@@ -13,7 +13,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.tp3_parcial_grupo_1.model.Meal
 import com.example.tp3_parcial_grupo_1.ui.components.AppBackButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppButton
@@ -30,6 +29,7 @@ import com.example.tp3_parcial_grupo_1.ui.strings.NutritionStrings
 import com.example.tp3_parcial_grupo_1.ui.strings.Strings
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
 import com.example.tp3_parcial_grupo_1.ui.theme.iconSizes
+import com.example.tp3_parcial_grupo_1.ui.theme.micro
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 import kotlinx.coroutines.launch
 
@@ -55,7 +55,7 @@ fun MealDetailScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
                 .verticalScroll(rememberScrollState())
-                .padding(20.dp)
+                .padding(MaterialTheme.spacing.screen)
         ) {
             AppTopBar(
                 title = meal.name,
@@ -65,15 +65,14 @@ fun MealDetailScreen(
                 spacing = MaterialTheme.spacing.xxs
             ) {
                 Text(
-                    text = "13:12",
-                    style = MaterialTheme.typography.bodySmall.copy(
-                        color = MaterialTheme.extendedColors.textSubtle,
-                        fontSize = 13.sp
-                    )
+                    text = NutritionStrings.mealTime,
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        color = MaterialTheme.extendedColors.textSubtle
+)
                 )
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.lg))
 
             // Total Calories & Ring Card
             Card(
@@ -82,7 +81,7 @@ fun MealDetailScreen(
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
                 border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
             ) {
-                Column(modifier = Modifier.padding(16.dp)) {
+                Column(modifier = Modifier.padding(MaterialTheme.spacing.lg)) {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
@@ -90,21 +89,19 @@ fun MealDetailScreen(
                     ) {
                         Column {
                             Text(
-                                text = "TOTAL CALORIES",
-                                style = MaterialTheme.typography.labelSmall.copy(
+                                text = NutritionStrings.totalCalories,
+                                style = MaterialTheme.typography.micro.copy(
                                     color = MaterialTheme.extendedColors.textSubtle,
-                                    fontSize = 10.sp,
                                     fontWeight = FontWeight.Bold
                                 )
                             )
-                            Spacer(modifier = Modifier.height(4.dp))
+                            Spacer(modifier = Modifier.height(MaterialTheme.spacing.xxs))
                             Text(
-                                text = "${meal.calories} kcal",
+                                text = NutritionStrings.caloriesValue(meal.calories),
                                 style = MaterialTheme.typography.headlineLarge.copy(
                                     color = MaterialTheme.colorScheme.onBackground,
-                                    fontWeight = FontWeight.Bold,
-                                    fontSize = 28.sp
-                                )
+                                    fontWeight = FontWeight.Bold
+)
                             )
                         }
                         Box(
@@ -121,16 +118,16 @@ fun MealDetailScreen(
                         }
                     }
 
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(MaterialTheme.spacing.lg))
                     HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant, thickness = 1.dp)
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(MaterialTheme.spacing.lg))
 
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         AppStat(
-                            label = "PROTEIN",
+                            label = NutritionStrings.protein.uppercase(),
                             value = "${meal.protein}g",
                             labelStyle = AppStatDefaults.MacroLabelStyle,
                             labelColor = MaterialTheme.extendedColors.textSubtle,
@@ -139,7 +136,7 @@ fun MealDetailScreen(
                             spacing = 2.dp
                         )
                         AppStat(
-                            label = "CARBS",
+                            label = NutritionStrings.carbs.uppercase(),
                             value = "${meal.carbs}g",
                             labelStyle = AppStatDefaults.MacroLabelStyle,
                             labelColor = MaterialTheme.extendedColors.textSubtle,
@@ -148,7 +145,7 @@ fun MealDetailScreen(
                             spacing = 2.dp
                         )
                         AppStat(
-                            label = "FAT",
+                            label = NutritionStrings.fat.uppercase(),
                             value = "${meal.fat}g",
                             labelStyle = AppStatDefaults.MacroLabelStyle,
                             labelColor = MaterialTheme.extendedColors.textSubtle,
@@ -160,11 +157,11 @@ fun MealDetailScreen(
                 }
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.lg))
 
             // Advice Banner
             AppNoticeCard(
-                text = "Great protein choice. You're now 36g away from your daily protein target.",
+                text = NutritionStrings.proteinAdvice,
                 leading = {
                     AppIcon(AppIcons.Sparkles, contentDescription = null, size = MaterialTheme.iconSizes.xl, tint = MaterialTheme.colorScheme.primary)
                 },
@@ -172,18 +169,17 @@ fun MealDetailScreen(
                 spacing = 10.dp
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.xl))
 
             Text(
-                text = "Ingredients",
-                style = MaterialTheme.typography.titleLarge.copy(
+                text = NutritionStrings.ingredients,
+                style = MaterialTheme.typography.titleMedium.copy(
                     color = MaterialTheme.colorScheme.onBackground,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 18.sp
-                )
+                    fontWeight = FontWeight.Bold
+)
             )
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.md))
 
             DetailedMealCard(
                 mealTitle = "",
@@ -191,7 +187,7 @@ fun MealDetailScreen(
                 items = listOf(Triple(meal.itemsSummary.ifBlank { meal.name }, "", "${meal.calories} kcal"))
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.xl))
 
             AppButton(
                 text = NutritionStrings.editMeal,
@@ -203,7 +199,7 @@ fun MealDetailScreen(
                 textStyle = AppButtonDefaults.BoldTextStyle
             )
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.md))
 
             AppButton(
                 text = NutritionStrings.duplicateMeal,

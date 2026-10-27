@@ -1,5 +1,7 @@
 package com.example.tp3_parcial_grupo_1.ui.strings
 
+import java.util.Locale
+
 object WorkoutStrings {
     const val Title = "Workouts"
     const val Subtitle = "Choose a routine for your training session today."
@@ -31,11 +33,8 @@ object WorkoutStrings {
     const val YourProgress = "Your Progress"
     const val ViewProgress = "View progress"
     const val Streak = "STREAK"
-    const val StreakValue = "4 Days"
     const val WorkoutsLabel = "WORKOUTS"
-    const val WorkoutsValue = "3/5 complete"
     const val VolumeLifted = "VOL. LIFTED"
-    const val VolumeLiftedValue = "8,420 kg"
 
     // Weekly Plan
     const val YourPlan = "Your Plan"
@@ -82,7 +81,6 @@ object WorkoutStrings {
     const val Duration = "DURATION"
     const val Exercises = "EXERCISES"
     const val Volume = "VOLUME"
-    const val VolumeValue = "2,340 kg"
     const val VoraInsight = "VORA INSIGHT"
     const val InsightFallback = "Strong work today. Keep this controlled tempo next time."
     const val RateDifficulty = "Rate this workout difficulty"
@@ -102,6 +100,9 @@ object WorkoutStrings {
     const val ProFormCues = "PRO FORM CUES"
     const val BackToWorkout = "Back to Workout"
 
+    fun streakDays(days: Int) = "$days Days"
+    fun workoutsComplete(done: Int, planned: Int) = "$done/$planned complete"
+    fun kilos(value: Int) = String.format(Locale.US, "%,d kg", value)
     fun exercisesCount(count: Int) = "$count exercises"
     fun minutesCount(minutes: Int) = "$minutes min"
     fun setsReps(sets: Int, reps: Int) = "$sets sets x $reps reps"

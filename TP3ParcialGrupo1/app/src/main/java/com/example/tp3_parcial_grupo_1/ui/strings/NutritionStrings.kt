@@ -47,4 +47,48 @@ object NutritionStrings {
     val analyzingMeal = "Analyzing Meal..."
     val capturedInput = "CAPTURED INPUT"
     val cancelAnalysis = "Cancel analysis"
+
+    // Meal Details
+    val mealTime = "13:12"
+    val totalCalories = "TOTAL CALORIES"
+    val proteinAdvice = "Great protein choice. You're now 36g away from your daily protein target."
+    val ingredients = "Ingredients"
+
+    // Log Manually
+    val mealNameLabel = "Meal Name (e.g. Chicken & Rice)"
+    val dateLabel = "Date (yyyy-MM-dd)"
+    val mealTypeLabel = "Meal Type"
+    val caloriesLabel = "Calories (kcal)"
+    val proteinGramsLabel = "Protein (g)"
+    val carbsGramsLabel = "Carbs (g)"
+    val fatGramsLabel = "Fat (g)"
+    val saveMeal = "Save Meal"
+
+    // Dashboard y Today's Meals
+    val delete = "Delete"
+    val cancel = "Cancel"
+    val calendar = "Calendar"
+    val onTrackTip = "You're on track today. A protein-rich dinner would help you reach your target."
+    val dinner = "Dinner"
+    val notLoggedYet = "Not logged yet"
+    val timeline = "TIMELINE"
+    val dinnerNotLogged = "Dinner is not logged yet"
+    val addDinner = "+ Add Dinner"
+    fun deleteMealConfirm(name: String?) = "Are you sure you want to delete $name?"
+
+    // Pantallas de IA
+    val close = "Close"
+    val capturedInputText = "\"Grilled chicken, rice and mixed vegetables\""
+    val identifyingFoods = "Identifying foods..."
+    val estimatingPortions = "Estimating portions..."
+    val calculatingNutrition = "Calculating nutrition..."
+    val voiceTranscript = "\"I had grilled chicken with rice and some mixed vegetables for lunch.\""
+    val mealPhoto = "Meal Photo"
+    val photoTagChicken = "Grilled Chicken (~180g)"
+    val photoTagRice = "Basmati Rice (~150g)"
+    val refineNote = "\"Portions and quantities can be refined in the next step before saving.\""
+    val decreaseQuantity = "Decrease quantity"
+    val increaseQuantity = "Increase quantity"
+    fun caloriesValue(kcal: Int) = "$kcal kcal"
+    fun macroChip(letter: String, grams: Int) = "$letter: ${grams}g"
 }

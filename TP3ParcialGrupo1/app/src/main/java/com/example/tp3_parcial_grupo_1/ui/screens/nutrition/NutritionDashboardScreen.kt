@@ -71,18 +71,18 @@ fun NutritionDashboardScreen(
         AlertDialog(
             onDismissRequest = { mealToDelete = null },
             title = { Text(NutritionStrings.title) },
-            text = { Text("Are you sure you want to delete ${mealToDelete?.name}?") },
+            text = { Text(NutritionStrings.deleteMealConfirm(mealToDelete?.name)) },
             confirmButton = {
                 TextButton(onClick = {
                     mealToDelete?.let { onDeleteMeal(it.id) }
                     mealToDelete = null
                 }) {
-                    Text("Delete", color = MaterialTheme.colorScheme.error)
+                    Text(NutritionStrings.delete, color = MaterialTheme.colorScheme.error)
                 }
             },
             dismissButton = {
                 TextButton(onClick = { mealToDelete = null }) {
-                    Text("Cancel")
+                    Text(NutritionStrings.cancel)
                 }
             }
         )
@@ -132,7 +132,7 @@ fun NutritionDashboardScreen(
                     ) {
                         AppIcon(
                             AppIcons.Calendar,
-                            contentDescription = "Calendar",
+                            contentDescription = NutritionStrings.calendar,
                             tint = MaterialTheme.colorScheme.onBackground,
                             size = 20.dp
                         )
@@ -231,7 +231,7 @@ fun NutritionDashboardScreen(
             item {
                 // Advice Banner
                 AppNoticeCard(
-                    text = "You're on track today. A protein-rich dinner would help you reach your target.",
+                    text = NutritionStrings.onTrackTip,
                     leading = {
                         AppIcon(AppIcons.Sparkles, contentDescription = null, size = MaterialTheme.iconSizes.xl, tint = MaterialTheme.colorScheme.primary)
                     }
@@ -392,7 +392,7 @@ fun DinnerCard(onAddDinner: () -> Unit) {
         ) {
             Column {
                 Text(
-                    text = "Dinner",
+                    text = NutritionStrings.dinner,
                     style = MaterialTheme.typography.titleMedium.copy(
                         color = MaterialTheme.colorScheme.onBackground,
                         fontWeight = FontWeight.Bold
@@ -400,7 +400,7 @@ fun DinnerCard(onAddDinner: () -> Unit) {
                 )
                 Spacer(modifier = Modifier.height(2.dp))
                 Text(
-                    text = "Not logged yet",
+                    text = NutritionStrings.notLoggedYet,
                     style = MaterialTheme.typography.bodySmall.copy(
                         color = MaterialTheme.extendedColors.textSubtle
                     )
