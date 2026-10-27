@@ -207,7 +207,15 @@ Los textos visibles siguen el idioma del diseño de Figma (inglés), incluidos l
 
 ## Video de demostración
 
-> Pendiente.
+[Ver el video](docs/demo/vora-coach-demo.mp4) (3 min 41 s, sin audio). Sigue el recorrido mínimo de la demostración final:
+
+1. **Recorrido:** Acceso, Home, Notificaciones, Asistente (estados simulados), Progress y Profile, con regreso y barra inferior.
+2. **Workout:** plan semanal, dos entrenamientos distintos con su propio detalle, Pre Workout, entrenamiento activo con descanso y pantalla final.
+3. **Room:** registrar una comida con la carga manual (el total del día sube), cerrar y abrir la app (la comida sigue) y eliminarla con confirmación (el total baja).
+4. **Sin conexión:** con el Wi-Fi y los datos apagados, un detalle ya descargado se abre desde Room y la pantalla avisa el error de carga.
+5. **Código:** el cierre remite a este README (ViewModel, repositorios e Hilt) y al historial de commits de cada integrante.
+
+El servidor publicado no respondía el día de la grabación, así que el catálogo y los detalles de Workout se ven desde la caché de Room.
 
 ## Comparaciones visuales
 
@@ -227,14 +235,17 @@ Figma a la izquierda y la app a la derecha, a la misma escala (emulador en 390 �
 
 ## Uso de IA generativa
 
-Se usó un asistente de IA generativa (Claude Code, de Anthropic) como apoyo de desarrollo en este repositorio.
+Se usaron tres herramientas de IA generativa como apoyo de desarrollo: Claude Code (Anthropic), Gemini (Google) y GitHub Copilot.
 
-**Para qué se usó**
+**Claude Code: para qué se usó**
 - Escribir y refactorizar código de la app y sus tests: componentes compartidos, pantallas de Workout, Nutrition, Progress y Profile, navegación, persistencia del perfil y migraciones de Room.
 - Revisar pull requests contra el plan de diferencias con Figma, resolver conflictos de merge y verificar que `main` compile.
 - Armar las comparaciones visuales y redactar documentación (README, inventario y notas de QA).
 
-**Para qué no**
+**Gemini y GitHub Copilot**
+- Se usaron como apoyo durante el desarrollo, además de Claude Code.
+
+**Para qué no se usó ninguna**
 - El diseño es el de Figma del docente; la IA no lo modificó.
 - Las decisiones de producto y arquitectura las tomó el equipo. El código se revisó, se probó en el emulador y se integró mediante pull requests.
 - Los datos de demostración son de ejemplo y se identifican como tales (`data/demo/`); la API de entrenamientos es la del servidor del docente.
