@@ -14,8 +14,9 @@ import androidx.compose.ui.unit.sp
 import com.example.tp3_parcial_grupo_1.model.Meal
 import com.example.tp3_parcial_grupo_1.model.MealType
 import com.example.tp3_parcial_grupo_1.ui.components.AppBackButton
+import com.example.tp3_parcial_grupo_1.ui.components.AppButton
+import com.example.tp3_parcial_grupo_1.ui.components.AppButtonDefaults
 import com.example.tp3_parcial_grupo_1.ui.components.AppTopBar
-import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 import com.example.tp3_parcial_grupo_1.utils.validateMeal
 import java.text.SimpleDateFormat
@@ -144,7 +145,8 @@ fun ManualLogScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            Button(
+            AppButton(
+                text = "Save Meal",
                 onClick = {
                     val validation = validateMeal(name, calories, protein, carbs, fat)
                     if (validation.isValid) {
@@ -163,12 +165,9 @@ fun ManualLogScreen(
                         errorMessage = validation.errorMessage
                     }
                 },
-                modifier = Modifier.fillMaxWidth(),
-                shape = PillShape,
-                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
-            ) {
-                Text("Save Meal", fontWeight = FontWeight.Bold, fontSize = 15.sp)
-            }
+                minHeight = AppButtonDefaults.MediumHeight,
+                textStyle = AppButtonDefaults.BoldTextStyle
+            )
         }
     }
 }

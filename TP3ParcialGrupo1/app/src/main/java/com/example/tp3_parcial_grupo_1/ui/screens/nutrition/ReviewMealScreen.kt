@@ -23,6 +23,9 @@ import androidx.compose.ui.unit.sp
 import com.example.tp3_parcial_grupo_1.model.Meal
 import com.example.tp3_parcial_grupo_1.model.MealType
 import com.example.tp3_parcial_grupo_1.ui.components.AppBackButton
+import com.example.tp3_parcial_grupo_1.ui.components.AppButton
+import com.example.tp3_parcial_grupo_1.ui.components.AppButtonDefaults
+import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppStat
 import com.example.tp3_parcial_grupo_1.ui.components.AppStatDefaults
 import com.example.tp3_parcial_grupo_1.ui.components.AppTopBar
@@ -154,7 +157,8 @@ fun ReviewMealScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            Button(
+            AppButton(
+                text = "Add to Lunch",
                 onClick = {
                     val meal = Meal(
                         name = "Lunch",
@@ -168,24 +172,20 @@ fun ReviewMealScreen(
                     )
                     onSaveMeal(meal)
                 },
-                modifier = Modifier.fillMaxWidth(),
-                shape = PillShape,
-                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary, contentColor = MaterialTheme.colorScheme.surface)
-            ) {
-                Text(text = "Add to Lunch", fontWeight = FontWeight.Bold, fontSize = 15.sp)
-            }
+                minHeight = AppButtonDefaults.MediumHeight,
+                textStyle = AppButtonDefaults.BoldTextStyle
+            )
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            OutlinedButton(
+            AppButton(
+                text = "Save without logging",
                 onClick = onBackClick,
-                modifier = Modifier.fillMaxWidth(),
-                shape = PillShape,
-                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
-                colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.onBackground)
-            ) {
-                Text(text = "Save without logging", fontWeight = FontWeight.Bold, fontSize = 15.sp)
-            }
+                style = AppButtonStyle.Outlined,
+                textColor = MaterialTheme.colorScheme.onBackground,
+                minHeight = AppButtonDefaults.MediumHeight,
+                textStyle = AppButtonDefaults.BoldTextStyle
+            )
         }
     }
 }

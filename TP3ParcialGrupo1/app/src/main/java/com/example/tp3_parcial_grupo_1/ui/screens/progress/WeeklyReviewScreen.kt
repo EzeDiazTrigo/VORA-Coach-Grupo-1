@@ -1,8 +1,6 @@
 package com.example.tp3_parcial_grupo_1.ui.screens.progress
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,18 +8,14 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -48,13 +42,11 @@ import com.example.tp3_parcial_grupo_1.ui.components.AppTextLink
 import com.example.tp3_parcial_grupo_1.ui.components.AppTopBar
 import com.example.tp3_parcial_grupo_1.ui.strings.ProgressStrings
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
-import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 
 private val CheckContainerSize = 32.dp
 private val BulletSize = 6.dp
-private val ButtonMinHeight = 52.dp
 private const val PanelAlpha = 0.06f
 private const val PanelBorderAlpha = 0.14f
 private const val MutedTextAlpha = 0.72f
@@ -222,15 +214,14 @@ private fun RecommendationsCard(recommendations: List<String>, onNextWeekPlanCli
 @Composable
 private fun DoneButton(onDoneClick: () -> Unit) {
     val onPrimary = MaterialTheme.colorScheme.onPrimary
-    OutlinedButton(
+    AppButton(
+        text = ProgressStrings.Done,
         onClick = onDoneClick,
-        modifier = Modifier.fillMaxWidth().heightIn(min = ButtonMinHeight),
-        shape = PillShape,
-        border = BorderStroke(ProgressBorderWidth, onPrimary.copy(alpha = PanelBorderAlpha)),
-        colors = ButtonDefaults.outlinedButtonColors(containerColor = onPrimary.copy(alpha = PanelAlpha), contentColor = onPrimary)
-    ) {
-        Text(ProgressStrings.Done, style = MaterialTheme.typography.labelLarge)
-    }
+        style = AppButtonStyle.Outlined,
+        textColor = onPrimary,
+        borderColor = onPrimary.copy(alpha = PanelBorderAlpha),
+        containerColor = onPrimary.copy(alpha = PanelAlpha)
+    )
 }
 
 @Preview(showBackground = true, widthDp = 390, heightDp = 1400)

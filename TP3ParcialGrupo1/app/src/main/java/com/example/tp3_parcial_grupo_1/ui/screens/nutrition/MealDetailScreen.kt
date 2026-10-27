@@ -16,6 +16,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tp3_parcial_grupo_1.model.Meal
 import com.example.tp3_parcial_grupo_1.ui.components.AppBackButton
+import com.example.tp3_parcial_grupo_1.ui.components.AppButton
+import com.example.tp3_parcial_grupo_1.ui.components.AppButtonDefaults
+import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
 import com.example.tp3_parcial_grupo_1.ui.components.AppNoticeCard
@@ -23,7 +26,6 @@ import com.example.tp3_parcial_grupo_1.ui.components.AppStat
 import com.example.tp3_parcial_grupo_1.ui.components.AppStatDefaults
 import com.example.tp3_parcial_grupo_1.ui.components.AppTopBar
 import com.example.tp3_parcial_grupo_1.ui.strings.Strings
-import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
 import com.example.tp3_parcial_grupo_1.ui.theme.iconSizes
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
@@ -213,26 +215,27 @@ fun MealDetailScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            Button(
+            AppButton(
+                text = "Edit Meal",
                 onClick = showDemoNotice,
-                modifier = Modifier.fillMaxWidth(),
-                shape = PillShape,
-                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.surface, contentColor = MaterialTheme.colorScheme.onBackground),
-                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
-            ) {
-                Text(text = "Edit Meal", fontWeight = FontWeight.Bold, fontSize = 15.sp)
-            }
+                style = AppButtonStyle.Outlined,
+                textColor = MaterialTheme.colorScheme.onBackground,
+                containerColor = MaterialTheme.colorScheme.surface,
+                minHeight = AppButtonDefaults.MediumHeight,
+                textStyle = AppButtonDefaults.BoldTextStyle
+            )
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            Button(
+            AppButton(
+                text = "Delete Meal",
                 onClick = { showDeleteDialog = true },
-                modifier = Modifier.fillMaxWidth(),
-                shape = PillShape,
-                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error, contentColor = MaterialTheme.colorScheme.surface)
-            ) {
-                Text(text = "Delete Meal", fontWeight = FontWeight.Bold, fontSize = 15.sp)
-            }
+                style = AppButtonStyle.Primary,
+                containerColor = MaterialTheme.colorScheme.error,
+                textColor = MaterialTheme.colorScheme.onError,
+                minHeight = AppButtonDefaults.MediumHeight,
+                textStyle = AppButtonDefaults.BoldTextStyle
+            )
         }
     }
 }

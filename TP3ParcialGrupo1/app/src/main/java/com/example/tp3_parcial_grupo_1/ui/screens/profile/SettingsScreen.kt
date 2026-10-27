@@ -1,18 +1,14 @@
 package com.example.tp3_parcial_grupo_1.ui.screens.profile
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -26,18 +22,19 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.tp3_parcial_grupo_1.ui.components.AppButton
+import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
 import com.example.tp3_parcial_grupo_1.ui.components.AppListRow
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
 import com.example.tp3_parcial_grupo_1.ui.components.AppSection
+import com.example.tp3_parcial_grupo_1.ui.components.MinTouchTarget
 import com.example.tp3_parcial_grupo_1.ui.strings.ProfileStrings
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
-import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 
 private val BorderWidth = 1.dp
-private val LogOutMinHeight = 48.dp
 
 @Composable
 fun SettingsRoute(
@@ -136,15 +133,14 @@ fun SettingsScreen(
                 ),
                 onRowClick = onDemoNoticeClick
             )
-            OutlinedButton(
+            AppButton(
+                text = ProfileStrings.LogOut,
                 onClick = onLogOutClick,
-                modifier = Modifier.fillMaxWidth().heightIn(min = LogOutMinHeight),
-                shape = PillShape,
-                border = BorderStroke(BorderWidth, MaterialTheme.colorScheme.error),
-                colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.error)
-            ) {
-                Text(ProfileStrings.LogOut, style = MaterialTheme.typography.labelLarge)
-            }
+                style = AppButtonStyle.Outlined,
+                textColor = MaterialTheme.colorScheme.error,
+                borderColor = MaterialTheme.colorScheme.error,
+                minHeight = MinTouchTarget
+            )
             Text(
                 ProfileStrings.AppVersion,
                 style = MaterialTheme.typography.bodySmall,

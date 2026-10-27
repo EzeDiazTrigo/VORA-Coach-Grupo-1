@@ -19,6 +19,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tp3_parcial_grupo_1.R
 import com.example.tp3_parcial_grupo_1.ui.components.AppBackButton
+import com.example.tp3_parcial_grupo_1.ui.components.AppButton
+import com.example.tp3_parcial_grupo_1.ui.components.AppButtonDefaults
+import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppTag
 import com.example.tp3_parcial_grupo_1.ui.components.AppTopBar
 import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
@@ -174,26 +177,24 @@ fun AnalyseMealPhotoScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            Button(
+            AppButton(
+                text = "Review & Add",
                 onClick = onReviewAndAdd,
-                modifier = Modifier.fillMaxWidth(),
-                shape = PillShape,
-                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary, contentColor = MaterialTheme.colorScheme.surface)
-            ) {
-                Text(text = "Review & Add", fontWeight = FontWeight.Bold, fontSize = 15.sp)
-            }
+                style = AppButtonStyle.Primary,
+                minHeight = AppButtonDefaults.MediumHeight,
+                textStyle = AppButtonDefaults.BoldTextStyle
+            )
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            OutlinedButton(
+            AppButton(
+                text = "Retake Photo",
                 onClick = onBackClick,
-                modifier = Modifier.fillMaxWidth(),
-                shape = PillShape,
-                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
-                colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.onBackground)
-            ) {
-                Text(text = "Retake Photo", fontWeight = FontWeight.Bold, fontSize = 15.sp)
-            }
+                style = AppButtonStyle.Outlined,
+                textColor = MaterialTheme.colorScheme.onBackground,
+                minHeight = AppButtonDefaults.MediumHeight,
+                textStyle = AppButtonDefaults.BoldTextStyle
+            )
         }
     }
 }

@@ -13,10 +13,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.tp3_parcial_grupo_1.ui.components.AppButton
+import com.example.tp3_parcial_grupo_1.ui.components.AppButtonDefaults
+import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
 import com.example.tp3_parcial_grupo_1.ui.components.VoraOrb
-import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
 
 @Composable
 fun VoiceLoggingScreen(
@@ -117,14 +119,13 @@ fun VoiceLoggingScreen(
 
             Spacer(modifier = Modifier.weight(1f))
 
-            Button(
+            AppButton(
+                text = "Done Speaking",
                 onClick = onDoneSpeaking,
-                modifier = Modifier.fillMaxWidth(),
-                shape = PillShape,
-                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary, contentColor = MaterialTheme.colorScheme.primary)
-            ) {
-                Text(text = "Done Speaking", fontWeight = FontWeight.Bold, fontSize = 15.sp)
-            }
+                style = AppButtonStyle.Secondary,
+                minHeight = AppButtonDefaults.MediumHeight,
+                textStyle = AppButtonDefaults.BoldTextStyle
+            )
 
             Spacer(modifier = Modifier.height(12.dp))
 
