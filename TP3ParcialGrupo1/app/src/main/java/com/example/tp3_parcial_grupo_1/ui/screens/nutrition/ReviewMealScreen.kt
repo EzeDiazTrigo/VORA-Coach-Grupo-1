@@ -14,6 +14,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -42,7 +43,9 @@ fun ReviewMealScreen(
     onBackClick: () -> Unit,
     onSaveMeal: (Meal) -> Unit
 ) {
-    val currentDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+    // El idioma se lee de la configuración para que Compose recomponga si cambia.
+    val locale = LocalConfiguration.current.locales[0]
+    val currentDate = remember(locale) { SimpleDateFormat("yyyy-MM-dd", locale).format(Date()) }
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
     val showDemoNotice: () -> Unit = { scope.launch { snackbarHostState.showSnackbar(Strings.DemoMode) } }
