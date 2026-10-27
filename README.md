@@ -92,11 +92,11 @@ com.example.tp3_parcial_grupo_1
 
 **Nutrición (Room).** `MealRepository` trabaja sobre `MealDao`: observa las comidas de una fecha como `Flow`, agrega y elimina. `MealEntity` se convierte en `Meal` con `toDomain()` / `fromDomain()`. El total del día lo calcula `MealsViewModel` a partir de la lista observada, así que cambia al agregar o eliminar una comida.
 
-**Perfil y preferencias (DataStore).** `ProfileRepository` expone el perfil, las preferencias de nutrición y los ajustes de voz como `StateFlow` y guarda cada cambio con DataStore (JSON con Gson, una clave por sección: `profile_v1`, `nutrition_preferences_v1` y `voice_settings_v1`). Arrancan con los datos de `data/demo/ProfileDemoData`, cargan lo guardado al abrir la app y, si un dato guardado no se puede leer, lo ignoran. Las metas y las prioridades de nutrición admiten varias opciones (`Set`), con al menos una.
-
 **Base de datos.** `AppDatabase` (`vora_database`, versión 1) reúne `WorkoutEntity`, `ExerciseEntity` y `MealEntity`.
 
 **Módulos de Hilt.** `NetworkModule` provee OkHttp, Retrofit y `WorkoutApi`; `DatabaseModule`, la base y los DAOs; `RepositoryModule` vincula `WorkoutRepository` con su implementación.
+
+**Perfil y preferencias (DataStore).** `ProfileRepository` expone el perfil, las preferencias de nutrición y los ajustes de voz como `StateFlow` y guarda cada cambio con DataStore (JSON con Gson, una clave por sección: `profile_v1`, `nutrition_preferences_v1` y `voice_settings_v1`). Arrancan con los datos de `data/demo/ProfileDemoData`, cargan lo guardado al abrir la app y, si un dato guardado no se puede leer, lo ignoran. Las metas y las prioridades de nutrición admiten varias opciones (`Set`), con al menos una.
 
 ### Hilt e inyección de dependencias (RF08)
 
