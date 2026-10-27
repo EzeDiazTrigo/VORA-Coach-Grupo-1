@@ -161,6 +161,18 @@ fun AuthTextLink(text: String, onClick: () -> Unit, modifier: Modifier = Modifie
     )
 }
 
+// «Forgot your password?» en la fila de la etiqueta del campo, como en Figma: 12 sp, sin subrayar.
+@Composable
+fun ForgotPasswordLink(onClick: () -> Unit, modifier: Modifier = Modifier) {
+    AppTextLink(
+        text = AuthStrings.ForgotPassword,
+        onClick = onClick,
+        modifier = modifier,
+        style = MaterialTheme.typography.chip.copy(fontWeight = FontWeight.Normal),
+        contentPadding = PaddingValues(vertical = MaterialTheme.spacing.xs)
+    )
+}
+
 // Frase con enlace del pie de Login y Registro («Don't have an account? Sign up here»).
 @Composable
 fun AuthFooterLink(text: String, linkText: String, onClick: () -> Unit, modifier: Modifier = Modifier) {

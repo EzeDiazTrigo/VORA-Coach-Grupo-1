@@ -110,9 +110,9 @@ fun LoginScreen(
                     onValueChange = onPasswordChange,
                     label = AuthStrings.Password,
                     placeholder = AuthStrings.PasswordPlaceholder,
-                    errorMessage = uiState.passwordError
+                    errorMessage = uiState.passwordError,
+                    labelAction = { ForgotPasswordLink(onDemoNoticeClick) }
                 )
-                AuthTextLink(AuthStrings.ForgotPassword, onDemoNoticeClick, Modifier.align(Alignment.End))
                 AppButton(
                     text = AuthStrings.SignIn,
                     onClick = onSignInClick,
