@@ -24,10 +24,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableDoubleStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -48,22 +50,30 @@ import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
 import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
+import kotlinx.coroutines.delay
 
 @Composable
 fun ActiveWorkoutScreen(
     workout: Workout? = null,
     currentExerciseIndex: Int = 1,
     workoutId: String = "w01",
-    onBackClick: () -> Unit,
-    onExerciseClick: (String) -> Unit,
-    onFinishWorkoutClick: () -> Unit,
+    onBackClick: () -> Unit = {},
+    onExerciseClick: (String) -> Unit = {},
+    onFinishWorkoutClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     LightSystemBarIcons()
 
-    var activeSetIndex by remember { mutableIntStateOf(1) } // 0: Set 1, 1: Set 2, 2: Set 3
-    var weightKg by remember { mutableDoubleStateOf(45.0) }
-    var restTimeSeconds by remember { mutableIntStateOf(78) }
+    var activeSetIndex by rememberSaveable { mutableIntStateOf(1) } // 0: Set 1, 1: Set 2, 2: Set 3
+    var weightKg by rememberSaveable { mutableDoubleStateOf(45.0) }
+    var restTimeSeconds by rememberSaveable { mutableIntStateOf(78) }
+
+    LaunchedEffect(restTimeSeconds) {
+        if (restTimeSeconds > 0) {
+            delay(1000L)
+            restTimeSeconds--
+        }
+    }
 
     val exercises = workout?.exercises.orEmpty()
     val totalExercises = if (exercises.isNotEmpty()) exercises.size else (workout?.exerciseCount ?: 5)
@@ -77,6 +87,10 @@ fun ActiveWorkoutScreen(
         val mins = restTimeSeconds / 60
         val secs = restTimeSeconds % 60
         String.format("%02d:%02d", mins, secs)
+    }
+
+    val formattedWeight = remember(weightKg) {
+        if (weightKg % 1.0 == 0.0) "${weightKg.toInt()} kg" else "$weightKg kg"
     }
 
     Box(
@@ -256,7 +270,7 @@ fun ActiveWorkoutScreen(
                         }
 
                         Text(
-                            text = "${weightKg.toInt()} kg",
+                            text = formattedWeight,
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onPrimary

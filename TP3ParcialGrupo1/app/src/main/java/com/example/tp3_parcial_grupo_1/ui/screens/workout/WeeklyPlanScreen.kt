@@ -38,6 +38,7 @@ import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
 import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
+import java.time.LocalDate
 
 data class DayItem(
     val dayName: String,
@@ -46,21 +47,29 @@ data class DayItem(
 
 @Composable
 fun WeeklyPlanScreen(
+    initialDayNumber: String = "8",
     onBackClick: () -> Unit,
     onWorkoutSelect: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var selectedDayNumber by remember { mutableStateOf("8") }
+    val today = remember { LocalDate.now() }
+    val startOfWeek = remember(today) { today.minusDays((today.dayOfWeek.value - 1).toLong()) }
 
-    val days = listOf(
-        DayItem("MON", "7"),
-        DayItem("TUE", "8"),
-        DayItem("WED", "9"),
-        DayItem("THU", "10"),
-        DayItem("FRI", "11"),
-        DayItem("SAT", "12"),
-        DayItem("SUN", "13")
-    )
+    val days = remember(startOfWeek) {
+        listOf(
+            DayItem("MON", startOfWeek.dayOfMonth.toString()),
+            DayItem("TUE", startOfWeek.plusDays(1).dayOfMonth.toString()),
+            DayItem("WED", startOfWeek.plusDays(2).dayOfMonth.toString()),
+            DayItem("THU", startOfWeek.plusDays(3).dayOfMonth.toString()),
+            DayItem("FRI", startOfWeek.plusDays(4).dayOfMonth.toString()),
+            DayItem("SAT", startOfWeek.plusDays(5).dayOfMonth.toString()),
+            DayItem("SUN", startOfWeek.plusDays(6).dayOfMonth.toString())
+        )
+    }
+
+    var selectedDayNumber by remember(initialDayNumber) {
+        mutableStateOf(if (days.any { it.dayNumber == initialDayNumber }) initialDayNumber else today.dayOfMonth.toString())
+    }
 
     AppScaffold(
         onBack = onBackClick,
@@ -89,12 +98,12 @@ fun WeeklyPlanScreen(
 
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.xs))
 
-            // Days Carousel
+            // Days Carousel (with explicit item key)
             LazyRow(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                items(days) { day ->
+                items(days, key = { it.dayNumber }) { day ->
                     val isSelected = day.dayNumber == selectedDayNumber
                     Box(
                         modifier = Modifier

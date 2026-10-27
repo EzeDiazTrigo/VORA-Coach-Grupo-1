@@ -19,14 +19,19 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.tp3_parcial_grupo_1.R
 import com.example.tp3_parcial_grupo_1.model.Exercise
 import com.example.tp3_parcial_grupo_1.ui.components.AppBackButton
@@ -43,7 +48,6 @@ import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
 import com.example.tp3_parcial_grupo_1.ui.theme.iconSizes
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 
-// Botones circulares del encabezado (volver y ayuda).
 private val HeaderButtonSize = 40.dp
 
 data class ExerciseGuideData(
@@ -122,6 +126,22 @@ private fun getExerciseGuideData(exerciseId: String): ExerciseGuideData {
             voraPrompt = "Ask Vora: \"Explain grip variations\""
         )
     }
+}
+
+@Composable
+fun ExerciseDetailsRoute(
+    onBackClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    viewModel: ExerciseDetailsViewModel = hiltViewModel()
+) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    ExerciseDetailsScreen(
+        exercise = uiState.exercise,
+        exerciseId = viewModel.exerciseId,
+        onBackClick = onBackClick,
+        modifier = modifier
+    )
 }
 
 @Composable

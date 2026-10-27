@@ -7,7 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
 import com.example.tp3_parcial_grupo_1.ui.screens.workout.ActiveWorkoutScreen
-import com.example.tp3_parcial_grupo_1.ui.screens.workout.ExerciseDetailsScreen
+import com.example.tp3_parcial_grupo_1.ui.screens.workout.ExerciseDetailsRoute
 import com.example.tp3_parcial_grupo_1.ui.screens.workout.PreWorkoutScreen
 import com.example.tp3_parcial_grupo_1.ui.screens.workout.WeeklyPlanScreen
 import com.example.tp3_parcial_grupo_1.ui.screens.workout.WorkoutCompleteScreen
@@ -40,8 +40,10 @@ fun NavGraphBuilder.workoutGraph(navController: NavController) {
             )
         }
 
-        composable(AppDestination.WeeklyPlan.route) {
+        composable(AppDestination.WeeklyPlan.route) { entry ->
+            val dayNumber = entry.savedStateHandle.get<String>("dayNumber") ?: "8"
             WeeklyPlanScreen(
+                initialDayNumber = dayNumber,
                 onBackClick = { navController.popBackStack() },
                 onWorkoutSelect = { workoutId ->
                     navController.navigate(AppDestination.WorkoutDetail.createRoute(workoutId))
@@ -99,10 +101,8 @@ fun NavGraphBuilder.workoutGraph(navController: NavController) {
         composable(
             route = AppDestination.ExerciseDetails.route,
             arguments = listOf(workoutIdArgument, exerciseIdArgument)
-        ) { entry ->
-            val exerciseId = entry.arguments?.getString(NavArg.ExerciseId).orEmpty()
-            ExerciseDetailsScreen(
-                exerciseId = exerciseId,
+        ) {
+            ExerciseDetailsRoute(
                 onBackClick = { navController.popBackStack() }
             )
         }
