@@ -115,7 +115,7 @@ fun NavGraphBuilder.nutritionGraph(navController: NavController) {
             MealDetailScreen(
                 viewModel = viewModel,
                 onBackClick = { navController.popBackStack() },
-                onDeleteSuccess = { navController.popBackStack() }
+                onMealDuplicated = { navController.popBackStack(AppDestination.Nutrition.route, false) }
             )
         }
     }

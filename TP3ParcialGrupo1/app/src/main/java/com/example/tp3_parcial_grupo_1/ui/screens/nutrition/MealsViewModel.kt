@@ -45,6 +45,7 @@ class MealsViewModel @Inject constructor(
     val uiState: StateFlow<MealUiState> = _uiState.asStateFlow()
 
     private var mealsJob: Job? = null
+    private var duplicateJob: Job? = null
 
     init {
         val today = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
@@ -100,7 +101,8 @@ class MealsViewModel @Inject constructor(
     }
 
     fun duplicateMeal(id: Long, onDuplicated: () -> Unit = {}) {
-        viewModelScope.launch {
+        if (duplicateJob?.isActive == true) return
+        duplicateJob = viewModelScope.launch {
             mealRepository.duplicateMeal(id)
             onDuplicated()
         }

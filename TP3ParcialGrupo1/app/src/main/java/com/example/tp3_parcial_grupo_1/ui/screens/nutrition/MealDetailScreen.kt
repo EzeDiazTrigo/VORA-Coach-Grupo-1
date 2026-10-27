@@ -25,6 +25,8 @@ import com.example.tp3_parcial_grupo_1.ui.components.AppNoticeCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppStat
 import com.example.tp3_parcial_grupo_1.ui.components.AppStatDefaults
 import com.example.tp3_parcial_grupo_1.ui.components.AppTopBar
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.tp3_parcial_grupo_1.ui.strings.NutritionStrings
 import com.example.tp3_parcial_grupo_1.ui.strings.Strings
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
 import com.example.tp3_parcial_grupo_1.ui.theme.iconSizes
@@ -35,9 +37,9 @@ import kotlinx.coroutines.launch
 fun MealDetailScreen(
     viewModel: MealsViewModel,
     onBackClick: () -> Unit,
-    onDeleteSuccess: () -> Unit
+    onMealDuplicated: () -> Unit
 ) {
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val meal = uiState.currentMealDetail ?: uiState.meals.firstOrNull() ?: Meal(name = "Lunch", date = "", type = com.example.tp3_parcial_grupo_1.model.MealType.LUNCH, calories = 520, protein = 38, carbs = 54, fat = 14, itemsSummary = "Chicken - rice - vegetables")
 
     val snackbarHostState = remember { SnackbarHostState() }
@@ -192,7 +194,7 @@ fun MealDetailScreen(
             Spacer(modifier = Modifier.height(24.dp))
 
             AppButton(
-                text = "Edit Meal",
+                text = NutritionStrings.editMeal,
                 onClick = showDemoNotice,
                 style = AppButtonStyle.Outlined,
                 textColor = MaterialTheme.colorScheme.onBackground,
@@ -204,12 +206,8 @@ fun MealDetailScreen(
             Spacer(modifier = Modifier.height(12.dp))
 
             AppButton(
-                text = "Duplicate Meal",
-                onClick = {
-                    viewModel.duplicateMeal(meal.id) {
-                        onBackClick()
-                    }
-                },
+                text = NutritionStrings.duplicateMeal,
+                onClick = { viewModel.duplicateMeal(meal.id, onMealDuplicated) },
                 style = AppButtonStyle.Outlined,
                 textColor = MaterialTheme.colorScheme.onBackground,
                 containerColor = MaterialTheme.colorScheme.surface,
