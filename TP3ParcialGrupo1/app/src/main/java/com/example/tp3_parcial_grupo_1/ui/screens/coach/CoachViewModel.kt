@@ -1,5 +1,6 @@
 package com.example.tp3_parcial_grupo_1.ui.screens.coach
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tp3_parcial_grupo_1.data.demo.CoachDemoData
@@ -27,7 +28,8 @@ import kotlinx.coroutines.launch
  */
 @HiltViewModel
 class CoachViewModel @Inject constructor(
-    private val repository: CoachRepository
+    private val repository: CoachRepository,
+    savedStateHandle: SavedStateHandle = SavedStateHandle()
 ) : ViewModel() {
 
     private var lastConversation: LastConversation = CoachDemoData.lastConversation
@@ -46,6 +48,11 @@ class CoachViewModel @Inject constructor(
     val uiState: StateFlow<CoachUiState> = _uiState.asStateFlow()
 
     init {
+        // «Ask Vora» desde un ejercicio abre el chat con la pregunta escrita, lista para enviar.
+        savedStateHandle.get<String>("prompt")?.takeIf { it.isNotBlank() }?.let { prompt ->
+            draft = prompt
+            showConversation()
+        }
         viewModelScope.launch {
             repository.observeMessages().collect { messages ->
                 history = messages
