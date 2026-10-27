@@ -19,8 +19,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -32,20 +30,19 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.tp3_parcial_grupo_1.R
 import com.example.tp3_parcial_grupo_1.model.Workout
 import com.example.tp3_parcial_grupo_1.ui.components.AppButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppCardStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
+import com.example.tp3_parcial_grupo_1.ui.components.AppIconButton
+import com.example.tp3_parcial_grupo_1.ui.components.AppIconButtonDefaults
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
 import com.example.tp3_parcial_grupo_1.ui.components.AppNoticeCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
@@ -58,9 +55,21 @@ import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
 import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
-import java.util.Calendar
+import java.time.LocalDate
 
 private val MediumIconSize = 20.dp
+private val CalendarButtonSize = 44.dp
+private val CalendarIconSize = 22.dp
+private val ActionHeight = 43.dp
+private val DayCircleSize = 36.dp
+private val LogoSize = 20.dp
+private const val OnPanelAlpha = 0.15f
+private const val OnPanelBorderAlpha = 0.6f
+
+private enum class DayStatus { Done, Fit, Rest }
+
+// Estado de ejemplo de la semana de Figma, de lunes a domingo.
+private val DayStatuses = listOf(DayStatus.Done, DayStatus.Done, DayStatus.Rest, DayStatus.Done, DayStatus.Fit, DayStatus.Rest, DayStatus.Rest)
 
 @Composable
 fun WorkoutListRoute(
@@ -107,8 +116,8 @@ fun WorkoutListScreen(
     onViewProgressClick: () -> Unit,
     onRetryClick: () -> Unit
 ) {
-    val currentCalendar = remember { Calendar.getInstance() }
-    val todayDayNum = remember(currentCalendar) { currentCalendar.get(Calendar.DAY_OF_MONTH).toString() }
+    val today = remember { LocalDate.now() }
+    val week = remember(today) { weekOf(today) }
 
     AppScaffold(
         onBack = onBackClick,
@@ -165,32 +174,26 @@ fun WorkoutListScreen(
                         ) {
                             Column {
                                 Text(
-                                    text = "Workout Goal",
+                                    text = WorkoutStrings.WorkoutGoal,
                                     style = MaterialTheme.typography.labelSmall,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                                 Text(
-                                    text = "Workouts",
+                                    text = WorkoutStrings.Title,
                                     style = MaterialTheme.typography.headlineLarge,
                                     fontWeight = FontWeight.Bold,
                                     color = MaterialTheme.colorScheme.onBackground
                                 )
                             }
 
-                            IconButton(
-                                onClick = { onWeeklyPlanClick(todayDayNum) },
-                                colors = IconButtonDefaults.iconButtonColors(
-                                    containerColor = MaterialTheme.colorScheme.surface
-                                ),
-                                modifier = Modifier.size(44.dp)
-                            ) {
-                                AppIcon(
-                                    AppIcons.Calendar,
-                                    contentDescription = "Weekly Plan",
-                                    tint = MaterialTheme.colorScheme.onSurface,
-                                    size = 22.dp
-                                )
-                            }
+                            AppIconButton(
+                                AppIcons.Calendar,
+                                contentDescription = WorkoutStrings.WeeklyPlan,
+                                onClick = { onWeeklyPlanClick(today.toString()) },
+                                size = CalendarButtonSize,
+                                iconSize = CalendarIconSize,
+                                colors = AppIconButtonDefaults.surface()
+                            )
                         }
 
                         Spacer(modifier = Modifier.height(MaterialTheme.spacing.xs))
@@ -204,7 +207,7 @@ fun WorkoutListScreen(
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
                                     Text(
-                                        text = "READY FOR TODAY?",
+                                        text = WorkoutStrings.ReadyForToday,
                                         style = MaterialTheme.typography.labelSmall,
                                         fontWeight = FontWeight.Bold,
                                         color = MaterialTheme.extendedColors.mint
@@ -213,7 +216,7 @@ fun WorkoutListScreen(
                                     Box(
                                         modifier = Modifier
                                             .clip(PillShape)
-                                            .background(MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.15f))
+                                            .background(MaterialTheme.colorScheme.onPrimary.copy(alpha = OnPanelAlpha))
                                             .padding(horizontal = MaterialTheme.spacing.sm, vertical = MaterialTheme.spacing.xxs)
                                     ) {
                                         Text(
@@ -237,7 +240,7 @@ fun WorkoutListScreen(
                                 Spacer(modifier = Modifier.height(MaterialTheme.spacing.xxs))
 
                                 Text(
-                                    text = "${recommendedWorkout.durationMinutes} min • ${recommendedWorkout.exerciseCount} exercises • ${recommendedWorkout.description ?: "Focus: Strength"}",
+                                    text = "${WorkoutStrings.durationAndExercises(recommendedWorkout.durationMinutes, recommendedWorkout.exerciseCount)} • ${recommendedWorkout.description ?: WorkoutStrings.DefaultFocus}",
                                     style = MaterialTheme.typography.bodyMedium,
                                     color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.85f)
                                 )
@@ -247,28 +250,28 @@ fun WorkoutListScreen(
                                 Row(
                                     modifier = Modifier
                                         .fillMaxWidth()
-                                        .height(43.dp),
+                                        .height(ActionHeight),
                                     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm),
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
                                     AppButton(
-                                        text = "Start Workout",
+                                        text = WorkoutStrings.StartWorkout,
                                         onClick = { onStartWorkoutClick(recommendedWorkout.id) },
                                         style = AppButtonStyle.Accent,
                                         fullWidth = false,
                                         modifier = Modifier
                                             .weight(1f)
-                                            .height(43.dp)
+                                            .height(ActionHeight)
                                     )
 
                                     AppButton(
-                                        text = "Details",
+                                        text = WorkoutStrings.Details,
                                         onClick = { onWorkoutClick(recommendedWorkout.id) },
                                         style = AppButtonStyle.Outlined,
                                         fullWidth = false,
-                                        textColor = Color.White,
-                                        borderColor = Color.White.copy(alpha = 0.6f),
-                                        modifier = Modifier.height(43.dp)
+                                        textColor = MaterialTheme.colorScheme.onPrimary,
+                                        borderColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = OnPanelBorderAlpha),
+                                        modifier = Modifier.height(ActionHeight)
                                     )
                                 }
                             }
@@ -276,9 +279,9 @@ fun WorkoutListScreen(
 
                         // Card 2: VORA RECOMMENDS
                         AppNoticeCard(
-                            text = "Your last upper-body session was 4 days ago. Today is a great opportunity to hit your strength volume targets.",
-                            title = "VORA RECOMMENDS",
-                            leading = { VoraLogo(size = 20.dp) },
+                            text = WorkoutStrings.RecommendsText,
+                            title = WorkoutStrings.RecommendsTitle,
+                            leading = { VoraLogo(size = LogoSize) },
                             shape = MaterialTheme.shapes.large,
                             borderColor = null,
                             contentPadding = MaterialTheme.spacing.lg,
@@ -287,10 +290,10 @@ fun WorkoutListScreen(
                             textColor = MaterialTheme.colorScheme.onSurface
                         )
 
-                        // Card 3: This Week's Activity (Clicking any day takes you directly to that day's workout)
+                        // Card 3: This Week's Activity (cada día abre el Weekly Plan en esa fecha)
                         AppCard(
                             style = AppCardStyle.Surface,
-                            onClick = { onWeeklyPlanClick(todayDayNum) }
+                            onClick = { onWeeklyPlanClick(today.toString()) }
                         ) {
                             Column(modifier = Modifier.fillMaxWidth()) {
                                 Row(
@@ -299,7 +302,7 @@ fun WorkoutListScreen(
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
                                     Text(
-                                        text = "This Week's Activity",
+                                        text = WorkoutStrings.ThisWeeksActivity,
                                         style = MaterialTheme.typography.titleMedium,
                                         fontWeight = FontWeight.Bold,
                                         color = MaterialTheme.colorScheme.onSurface
@@ -307,7 +310,7 @@ fun WorkoutListScreen(
 
                                     AppIcon(
                                         AppIcons.ChevronRight,
-                                        contentDescription = "View Weekly Plan",
+                                        contentDescription = WorkoutStrings.ViewWeeklyPlan,
                                         tint = MaterialTheme.colorScheme.onSurfaceVariant,
                                         size = MediumIconSize
                                     )
@@ -320,67 +323,19 @@ fun WorkoutListScreen(
                                     horizontalArrangement = Arrangement.SpaceBetween,
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
-                                    val activityDays = remember(currentCalendar) {
-                                        val cal = Calendar.getInstance()
-                                        cal.firstDayOfWeek = Calendar.MONDAY
-                                        cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
-                                        val daysList = mutableListOf<Triple<String, String, String>>()
-                                        val dayNames = listOf("M", "T", "W", "T", "F", "S", "S")
-                                        val statuses = listOf("filled", "filled", "zzz", "filled", "fit", "zzz", "zzz")
-                                        dayNames.forEachIndexed { idx, name ->
-                                            val dayNum = cal.get(Calendar.DAY_OF_MONTH).toString()
-                                            daysList.add(Triple(name, dayNum, statuses[idx]))
-                                            cal.add(Calendar.DAY_OF_MONTH, 1)
-                                        }
-                                        daysList
-                                    }
-
-                                    activityDays.forEach { (dayName, dayNum, status) ->
+                                    week.forEachIndexed { index, day ->
+                                        val status = DayStatuses[index]
                                         Column(
                                             horizontalAlignment = Alignment.CenterHorizontally,
-                                            modifier = Modifier.clickable { onWeeklyPlanClick(dayNum) }
+                                            modifier = Modifier.clickable { onWeeklyPlanClick(day.date.toString()) }
                                         ) {
                                             Text(
-                                                text = dayName,
+                                                text = day.initial,
                                                 style = MaterialTheme.typography.labelSmall,
                                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                                             )
-                                            Spacer(modifier = Modifier.height(6.dp))
-                                            when (status) {
-                                                "filled" -> Box(
-                                                    modifier = Modifier
-                                                        .size(36.dp)
-                                                        .clip(CircleShape)
-                                                        .background(MaterialTheme.extendedColors.mint)
-                                                )
-                                                "fit" -> Box(
-                                                    modifier = Modifier
-                                                        .size(36.dp)
-                                                        .clip(CircleShape)
-                                                        .background(MaterialTheme.colorScheme.primary),
-                                                    contentAlignment = Alignment.Center
-                                                ) {
-                                                    Text(
-                                                        text = "FIT",
-                                                        style = MaterialTheme.typography.labelSmall,
-                                                        fontWeight = FontWeight.Bold,
-                                                        color = MaterialTheme.colorScheme.tertiary
-                                                    )
-                                                }
-                                                else -> Box(
-                                                    modifier = Modifier
-                                                        .size(36.dp)
-                                                        .clip(CircleShape)
-                                                        .background(MaterialTheme.colorScheme.surfaceVariant),
-                                                    contentAlignment = Alignment.Center
-                                                ) {
-                                                    Text(
-                                                        text = "Zzz",
-                                                        style = MaterialTheme.typography.labelSmall,
-                                                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                                                    )
-                                                }
-                                            }
+                                            Spacer(modifier = Modifier.height(MaterialTheme.spacing.xs))
+                                            DayCircle(status)
                                         }
                                     }
                                 }
@@ -396,14 +351,14 @@ fun WorkoutListScreen(
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
                                     Text(
-                                        text = "Your Progress",
+                                        text = WorkoutStrings.YourProgress,
                                         style = MaterialTheme.typography.titleMedium,
                                         fontWeight = FontWeight.Bold,
                                         color = MaterialTheme.colorScheme.onSurface
                                     )
 
                                     Text(
-                                        text = "View progress",
+                                        text = WorkoutStrings.ViewProgress,
                                         style = MaterialTheme.typography.labelMedium,
                                         color = MaterialTheme.colorScheme.primary,
                                         modifier = Modifier.clickable { onViewProgressClick() }
@@ -420,8 +375,8 @@ fun WorkoutListScreen(
                                     verticalAlignment = Alignment.Top
                                 ) {
                                     AppStat(
-                                        label = "STREAK",
-                                        value = "4 Days",
+                                        label = WorkoutStrings.Streak,
+                                        value = WorkoutStrings.StreakValue,
                                         modifier = Modifier.weight(0.9f),
                                         valueStyle = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                                         valueColor = MaterialTheme.colorScheme.onSurface
@@ -435,8 +390,8 @@ fun WorkoutListScreen(
                                     )
 
                                     AppStat(
-                                        label = "WORKOUTS",
-                                        value = "3/5 complete",
+                                        label = WorkoutStrings.WorkoutsLabel,
+                                        value = WorkoutStrings.WorkoutsValue,
                                         modifier = Modifier.weight(1.3f),
                                         valueStyle = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
                                         valueColor = MaterialTheme.colorScheme.onSurface
@@ -450,8 +405,8 @@ fun WorkoutListScreen(
                                     )
 
                                     AppStat(
-                                        label = "VOL. LIFTED",
-                                        value = "8,420 kg",
+                                        label = WorkoutStrings.VolumeLifted,
+                                        value = WorkoutStrings.VolumeLiftedValue,
                                         modifier = Modifier.weight(1.1f),
                                         valueStyle = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                                         valueColor = MaterialTheme.colorScheme.onSurface
@@ -464,6 +419,37 @@ fun WorkoutListScreen(
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun DayCircle(status: DayStatus) {
+    val container = when (status) {
+        DayStatus.Done -> MaterialTheme.extendedColors.mint
+        DayStatus.Fit -> MaterialTheme.colorScheme.primary
+        DayStatus.Rest -> MaterialTheme.colorScheme.surfaceVariant
+    }
+    Box(
+        modifier = Modifier
+            .size(DayCircleSize)
+            .clip(CircleShape)
+            .background(container),
+        contentAlignment = Alignment.Center
+    ) {
+        when (status) {
+            DayStatus.Fit -> Text(
+                text = WorkoutStrings.DayFit,
+                style = MaterialTheme.typography.labelSmall,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.tertiary
+            )
+            DayStatus.Rest -> Text(
+                text = WorkoutStrings.DayRest,
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            DayStatus.Done -> Unit
         }
     }
 }

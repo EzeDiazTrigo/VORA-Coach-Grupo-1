@@ -8,14 +8,15 @@ import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
 import com.example.tp3_parcial_grupo_1.ui.screens.workout.ActiveWorkoutRoute
 import com.example.tp3_parcial_grupo_1.ui.screens.workout.ExerciseDetailsRoute
-import com.example.tp3_parcial_grupo_1.ui.screens.workout.PreWorkoutScreen
+import com.example.tp3_parcial_grupo_1.ui.screens.workout.PreWorkoutRoute
 import com.example.tp3_parcial_grupo_1.ui.screens.workout.WeeklyPlanRoute
-import com.example.tp3_parcial_grupo_1.ui.screens.workout.WorkoutCompleteScreen
+import com.example.tp3_parcial_grupo_1.ui.screens.workout.WorkoutCompleteRoute
 import com.example.tp3_parcial_grupo_1.ui.screens.workout.WorkoutDetailRoute
 import com.example.tp3_parcial_grupo_1.ui.screens.workout.WorkoutListRoute
 
 private val workoutIdArgument = navArgument(NavArg.WorkoutId) { type = NavType.StringType }
 private val exerciseIdArgument = navArgument(NavArg.ExerciseId) { type = NavType.StringType }
+private val dateArgument = navArgument(NavArg.Date) { type = NavType.StringType; nullable = true; defaultValue = null }
 
 fun NavGraphBuilder.workoutGraph(navController: NavController) {
     navigation(
@@ -31,8 +32,8 @@ fun NavGraphBuilder.workoutGraph(navController: NavController) {
                 onStartWorkoutClick = { workoutId ->
                     navController.navigate(AppDestination.PreWorkout.createRoute(workoutId))
                 },
-                onWeeklyPlanClick = {
-                    navController.navigate(AppDestination.WeeklyPlan.route)
+                onWeeklyPlanClick = { date ->
+                    navController.navigate(AppDestination.WeeklyPlan.createRoute(date))
                 },
                 onViewProgressClick = {
                     navController.navigateInTab(AppDestination.WorkoutProgress.route)
@@ -40,10 +41,12 @@ fun NavGraphBuilder.workoutGraph(navController: NavController) {
             )
         }
 
-        composable(AppDestination.WeeklyPlan.route) { entry ->
-            val dayNumber = entry.savedStateHandle.get<String>("dayNumber") ?: "8"
+        composable(
+            route = AppDestination.WeeklyPlan.pattern,
+            arguments = listOf(dateArgument)
+        ) { entry ->
             WeeklyPlanRoute(
-                initialDayNumber = dayNumber,
+                initialDate = entry.arguments?.getString(NavArg.Date),
                 onBackClick = { navController.popBackStack() },
                 onWorkoutSelect = { workoutId ->
                     navController.navigate(AppDestination.WorkoutDetail.createRoute(workoutId))
@@ -72,14 +75,13 @@ fun NavGraphBuilder.workoutGraph(navController: NavController) {
             arguments = listOf(workoutIdArgument)
         ) { entry ->
             val workoutId = entry.arguments?.getString(NavArg.WorkoutId).orEmpty()
-            PreWorkoutScreen(
-                workoutId = workoutId,
+            PreWorkoutRoute(
                 onBackClick = { navController.popBackStack() },
                 onBeginClick = {
                     navController.navigate(AppDestination.ActiveWorkout.createRoute(workoutId))
                 },
                 onMicClick = {
-                    navController.navigate(AppDestination.Coach.route)
+                    navController.navigate(AppDestination.Coach.createRoute())
                 }
             )
         }
@@ -106,8 +108,8 @@ fun NavGraphBuilder.workoutGraph(navController: NavController) {
         ) {
             ExerciseDetailsRoute(
                 onBackClick = { navController.popBackStack() },
-                onAskVoraClick = {
-                    navController.navigate(AppDestination.Coach.route)
+                onAskVoraClick = { prompt ->
+                    navController.navigate(AppDestination.Coach.createRoute(prompt))
                 }
             )
         }
@@ -115,10 +117,8 @@ fun NavGraphBuilder.workoutGraph(navController: NavController) {
         composable(
             route = AppDestination.WorkoutComplete.route,
             arguments = listOf(workoutIdArgument)
-        ) { entry ->
-            val workoutId = entry.arguments?.getString(NavArg.WorkoutId).orEmpty()
-            WorkoutCompleteScreen(
-                workoutId = workoutId,
+        ) {
+            WorkoutCompleteRoute(
                 onBackToWorkoutsClick = {
                     navController.popBackStack(AppDestination.Workout.route, inclusive = false)
                 }

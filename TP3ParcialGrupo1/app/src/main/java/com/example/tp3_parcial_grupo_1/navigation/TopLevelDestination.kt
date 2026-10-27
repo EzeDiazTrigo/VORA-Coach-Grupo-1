@@ -31,9 +31,13 @@ private val routesWithBottomBar = setOf(
     AppDestination.Profile
 ).map { it.route }.toSet()
 
+// La ruta de un destino con argumentos opcionales llega con su query («workout/weekly_plan?date={date}»).
+internal fun String.withoutQuery() = substringBefore('?')
+
 fun bottomBarSelection(route: String?): TopLevelDestination? {
-    if (route == null || route !in routesWithBottomBar) return null
-    return TopLevelDestination.entries.firstOrNull { it.owns(route) }
+    val base = route?.withoutQuery()
+    if (base == null || base !in routesWithBottomBar) return null
+    return TopLevelDestination.entries.firstOrNull { it.owns(base) }
 }
 
 fun NavController.navigateToTopLevel(destination: TopLevelDestination) {

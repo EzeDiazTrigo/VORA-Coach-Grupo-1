@@ -41,4 +41,19 @@ class AppDestinationTest {
         assertEquals("workout/exercise/{workoutId}/{exerciseId}", AppDestination.ExerciseDetails.route)
         assertEquals("nutrition/meal/{mealId}", AppDestination.MealDetails.route)
     }
+
+    @Test
+    fun `given a date, when building the weekly plan route, then it carries the date as a query`() {
+        assertEquals("workout/weekly_plan?date=2026-10-27", AppDestination.WeeklyPlan.createRoute("2026-10-27"))
+        assertEquals("workout/weekly_plan", AppDestination.WeeklyPlan.createRoute())
+        assertEquals("workout/weekly_plan?date={date}", AppDestination.WeeklyPlan.pattern)
+    }
+
+    @Test
+    fun `given a question, when building the coach route, then it is url encoded`() {
+        assertEquals("coach?prompt=How%20do%20I%20fix%20my%20grip%3F", AppDestination.Coach.createRoute("How do I fix my grip?"))
+        assertEquals("coach", AppDestination.Coach.createRoute())
+        assertEquals("coach", AppDestination.Coach.createRoute("  "))
+        assertEquals("coach?prompt={prompt}", AppDestination.Coach.pattern)
+    }
 }
