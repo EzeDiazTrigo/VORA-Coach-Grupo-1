@@ -15,6 +15,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
@@ -108,9 +109,9 @@ fun ReviewMealScreen(
                     ) {
                         Text(
                             text = "MEAL TOTALS",
-                            style = MaterialTheme.typography.labelSmall.copy(
-                                color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.6f),
-                                fontSize = 10.sp,
+                            style = MaterialTheme.typography.labelMedium.copy(
+                                color = MaterialTheme.colorScheme.secondary,
+                                fontSize = 13.sp,
                                 fontWeight = FontWeight.Bold
                             )
                         )
@@ -123,6 +124,11 @@ fun ReviewMealScreen(
                             )
                         )
                     }
+                    Spacer(modifier = Modifier.height(16.dp))
+                    HorizontalDivider(
+                        color = MaterialTheme.colorScheme.surface.copy(alpha = 0.15f),
+                        thickness = 1.dp
+                    )
                     Spacer(modifier = Modifier.height(16.dp))
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -236,18 +242,15 @@ fun ReviewIngredientCard(name: String, quantity: String, calories: String, onDem
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Surface(
-                        shape = PillShape,
-                        color = MaterialTheme.colorScheme.background,
-                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+                        color = Color.Transparent,
+                        border = null
                     ) {
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                            horizontalArrangement = Arrangement.spacedBy(12.dp)
                         ) {
                             QuantityStepButton(symbol = "—", description = "Decrease quantity", onClick = onDemoClick)
-                            Spacer(modifier = Modifier.width(12.dp))
-                            Text(text = quantity, fontSize = 12.sp, fontWeight = FontWeight.Bold)
-                            Spacer(modifier = Modifier.width(12.dp))
+                            Text(text = quantity, fontSize = 13.sp, fontWeight = FontWeight.Bold)
                             QuantityStepButton(symbol = "+", description = "Increase quantity", onClick = onDemoClick)
                         }
                     }
@@ -271,14 +274,14 @@ fun ReviewIngredientCard(name: String, quantity: String, calories: String, onDem
 private fun QuantityStepButton(symbol: String, description: String, onClick: () -> Unit) {
     Box(
         modifier = Modifier
-            .size(28.dp)
-            .clip(CircleShape)
-            .background(MaterialTheme.colorScheme.surface)
+            .size(32.dp)
+            .clip(RoundedCornerShape(8.dp))
+            .background(MaterialTheme.colorScheme.background)
             .clickable(role = Role.Button, onClick = onClick)
             .semantics { contentDescription = description },
         contentAlignment = Alignment.Center
     ) {
-        Text(text = symbol, fontSize = 14.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)
+        Text(text = symbol, fontSize = 16.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)
     }
 }
 

@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.tp3_parcial_grupo_1.model.Meal
 import com.example.tp3_parcial_grupo_1.model.MealType
 import com.example.tp3_parcial_grupo_1.ui.components.AppButton
@@ -297,7 +298,7 @@ fun NutritionDashboardScreen(
                         )
                         Row(
                             modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm)
+                            horizontalArrangement = Arrangement.spacedBy(6.dp)
                         ) {
                             Box(modifier = Modifier.weight(1f)) {
                                 AppButton(
@@ -305,8 +306,9 @@ fun NutritionDashboardScreen(
                                     onClick = onNavigateToVoice,
                                     style = AppButtonStyle.Accent,
                                     leadingIcon = AppIcons.Mic,
+                                    isCompact = true,
                                     minHeight = AppButtonDefaults.SmallHeight,
-                                    textStyle = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.SemiBold)
+                                    textStyle = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.SemiBold, fontSize = 11.sp)
                                 )
                             }
                             Box(modifier = Modifier.weight(1f)) {
@@ -317,8 +319,9 @@ fun NutritionDashboardScreen(
                                     leadingIcon = AppIcons.Camera,
                                     containerColor = Color.White.copy(alpha = 0.12f),
                                     textColor = Color.White,
+                                    isCompact = true,
                                     minHeight = AppButtonDefaults.SmallHeight,
-                                    textStyle = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.SemiBold)
+                                    textStyle = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.SemiBold, fontSize = 11.sp)
                                 )
                             }
                             Box(modifier = Modifier.weight(1f)) {
@@ -329,8 +332,9 @@ fun NutritionDashboardScreen(
                                     leadingIcon = AppIcons.Search,
                                     containerColor = Color.White.copy(alpha = 0.12f),
                                     textColor = Color.White,
+                                    isCompact = true,
                                     minHeight = AppButtonDefaults.SmallHeight,
-                                    textStyle = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.SemiBold)
+                                    textStyle = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.SemiBold, fontSize = 11.sp)
                                 )
                             }
                         }

@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.sp
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
 import com.example.tp3_parcial_grupo_1.ui.components.VoraOrb
+import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
 import kotlinx.coroutines.delay
 
 private const val AnalysisDurationMillis = 3_000L
@@ -39,6 +40,7 @@ fun AnalyzingMealScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.primary)
+            .safeDrawingPadding()
             .padding(20.dp)
     ) {
         Column(
@@ -145,7 +147,15 @@ fun AnalyzingMealScreen(
                     )
                 )
             }
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(12.dp))
+            Box(
+                modifier = Modifier
+                    .width(134.dp)
+                    .height(4.dp)
+                    .clip(PillShape)
+                    .background(MaterialTheme.colorScheme.surface)
+            )
+            Spacer(modifier = Modifier.height(8.dp))
         }
     }
 }

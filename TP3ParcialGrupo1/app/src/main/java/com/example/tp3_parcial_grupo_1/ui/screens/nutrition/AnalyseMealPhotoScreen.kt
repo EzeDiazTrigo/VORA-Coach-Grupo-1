@@ -142,23 +142,24 @@ fun AnalyseMealPhotoScreen(
                                 contentColor = MaterialTheme.colorScheme.onBackground,
                                 borderColor = MaterialTheme.colorScheme.outlineVariant,
                                 textStyle = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
-                                contentPadding = PaddingValues(horizontal = 10.dp, vertical = 6.dp)
+                                contentPadding = PaddingValues(horizontal = 10.dp, vertical = 6.dp),
+                                shape = RoundedCornerShape(6.dp)
                             )
                             AppTag(
                                 text = "C: 54g",
-                                containerColor = MaterialTheme.colorScheme.background,
+                                containerColor = MaterialTheme.extendedColors.mintSoft,
                                 contentColor = MaterialTheme.colorScheme.onBackground,
-                                borderColor = MaterialTheme.colorScheme.outlineVariant,
                                 textStyle = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
-                                contentPadding = PaddingValues(horizontal = 10.dp, vertical = 6.dp)
+                                contentPadding = PaddingValues(horizontal = 10.dp, vertical = 6.dp),
+                                shape = RoundedCornerShape(6.dp)
                             )
                             AppTag(
                                 text = "F: 14g",
-                                containerColor = MaterialTheme.colorScheme.background,
+                                containerColor = MaterialTheme.colorScheme.tertiary.copy(alpha = 0.15f),
                                 contentColor = MaterialTheme.colorScheme.onBackground,
-                                borderColor = MaterialTheme.colorScheme.outlineVariant,
                                 textStyle = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
-                                contentPadding = PaddingValues(horizontal = 10.dp, vertical = 6.dp)
+                                contentPadding = PaddingValues(horizontal = 10.dp, vertical = 6.dp),
+                                shape = RoundedCornerShape(6.dp)
                             )
                         }
                     }
