@@ -1,29 +1,25 @@
 package com.example.tp3_parcial_grupo_1.ui.screens.auth
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.text.withStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
+import com.example.tp3_parcial_grupo_1.ui.components.AppTextLink
 import com.example.tp3_parcial_grupo_1.ui.components.VoraBrandMark
 import com.example.tp3_parcial_grupo_1.ui.components.VoraBrandMarkStyle
 import com.example.tp3_parcial_grupo_1.ui.strings.AuthStrings
@@ -79,34 +75,30 @@ fun BiometricNote(modifier: Modifier = Modifier) {
     }
 }
 
+// Enlace subrayado chico de los formularios («Forgot your password?»).
 @Composable
-fun AuthFooterLink(
-    text: String,
-    linkText: String,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    val linkColor = MaterialTheme.colorScheme.primary
-    Text(
-        text = buildAnnotatedString {
-            append(text)
-            withStyle(SpanStyle(color = linkColor, fontWeight = FontWeight.Bold, textDecoration = TextDecoration.Underline)) {
-                append(linkText)
-            }
-        },
-        style = MaterialTheme.typography.bodyMedium,
-        color = MaterialTheme.colorScheme.onSurfaceVariant,
-        textAlign = TextAlign.Center,
-        modifier = modifier.fillMaxWidth().clickable(onClick = onClick)
+fun AuthTextLink(text: String, onClick: () -> Unit, modifier: Modifier = Modifier) {
+    AppTextLink(
+        text = text,
+        onClick = onClick,
+        modifier = modifier,
+        style = MaterialTheme.typography.bodySmall,
+        underline = true,
+        contentPadding = PaddingValues(vertical = MaterialTheme.spacing.xs)
     )
 }
 
+// Frase con enlace del pie de Login y Registro («Don't have an account? Sign up here»).
 @Composable
-fun AuthTextLink(text: String, onClick: () -> Unit, modifier: Modifier = Modifier) {
-    Text(
-        text = text,
-        style = MaterialTheme.typography.bodySmall.copy(textDecoration = TextDecoration.Underline),
-        color = MaterialTheme.colorScheme.primary,
-        modifier = modifier.clickable(onClick = onClick).padding(vertical = MaterialTheme.spacing.xs)
+fun AuthFooterLink(text: String, linkText: String, onClick: () -> Unit, modifier: Modifier = Modifier) {
+    AppTextLink(
+        text = linkText,
+        onClick = onClick,
+        modifier = modifier.fillMaxWidth(),
+        prefix = text,
+        style = MaterialTheme.typography.bodyMedium,
+        underline = true,
+        fontWeight = FontWeight.Bold,
+        textAlign = TextAlign.Center
     )
 }

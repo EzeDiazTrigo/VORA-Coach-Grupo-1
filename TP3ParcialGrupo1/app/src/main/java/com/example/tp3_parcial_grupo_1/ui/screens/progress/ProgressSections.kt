@@ -1,6 +1,5 @@
 package com.example.tp3_parcial_grupo_1.ui.screens.progress
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -10,7 +9,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -22,7 +20,6 @@ import androidx.compose.ui.unit.dp
 import com.example.tp3_parcial_grupo_1.data.demo.ProgressDemoData
 import com.example.tp3_parcial_grupo_1.ui.components.AppBackButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppCard
-import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
 import com.example.tp3_parcial_grupo_1.ui.components.AppIconButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppIconButtonDefaults
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
@@ -116,18 +113,6 @@ internal fun VoraQuoteCard(text: String) {
         contentPadding = MaterialTheme.spacing.lg,
         textStyle = MaterialTheme.typography.bodyLarge
     )
-}
-
-@Composable
-internal fun ProgressLink(text: String, color: Color, onClick: () -> Unit) {
-    Row(
-        modifier = Modifier.clickable(onClick = onClick),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xs)
-    ) {
-        Text(text, style = MaterialTheme.typography.labelLarge, color = color)
-        AppIcon(AppIcons.ArrowRight, contentDescription = null, tint = color, size = ProgressSmallIconSize)
-    }
 }
 
 @Preview(showBackground = true, widthDp = 390)

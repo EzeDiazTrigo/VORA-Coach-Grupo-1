@@ -44,6 +44,7 @@ import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
 import com.example.tp3_parcial_grupo_1.ui.components.AppSectionLabel
 import com.example.tp3_parcial_grupo_1.ui.components.AppSectionLabelStyle
+import com.example.tp3_parcial_grupo_1.ui.components.AppTextLink
 import com.example.tp3_parcial_grupo_1.ui.components.AppTopBar
 import com.example.tp3_parcial_grupo_1.ui.strings.ProgressStrings
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
@@ -198,7 +199,7 @@ private fun ImprovementPanel(improvement: ReviewHighlight, onDinnerIdeasClick: (
             Text(improvement.title, style = MaterialTheme.typography.titleMedium)
         }
         Text(improvement.description, style = MaterialTheme.typography.bodyLarge, color = colors.onPrimary.copy(alpha = MutedTextAlpha))
-        ProgressLink(ProgressStrings.GetDinnerIdeas, colors.tertiary, onDinnerIdeasClick)
+        AppTextLink(ProgressStrings.GetDinnerIdeas, onClick = onDinnerIdeasClick, color = colors.tertiary, trailingIcon = AppIcons.ArrowRight)
     }
 }
 
@@ -214,7 +215,7 @@ private fun RecommendationsCard(recommendations: List<String>, onNextWeekPlanCli
             }
         }
         HorizontalDivider(color = colors.outlineVariant)
-        ProgressLink(ProgressStrings.ViewNextWeekPlan, colors.primary, onNextWeekPlanClick)
+        AppTextLink(ProgressStrings.ViewNextWeekPlan, onClick = onNextWeekPlanClick, color = colors.primary, trailingIcon = AppIcons.ArrowRight)
     }
 }
 

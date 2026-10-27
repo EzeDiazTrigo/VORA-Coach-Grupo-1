@@ -32,6 +32,7 @@ import com.example.tp3_parcial_grupo_1.ui.components.AppPanelHeader
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
 import com.example.tp3_parcial_grupo_1.ui.components.AppStat
 import com.example.tp3_parcial_grupo_1.ui.components.AppTag
+import com.example.tp3_parcial_grupo_1.ui.components.AppTextLink
 import com.example.tp3_parcial_grupo_1.ui.strings.ProgressStrings
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
@@ -146,7 +147,7 @@ private fun InsightCard(progress: PeriodProgress, onSeeWeeklyReviewClick: () -> 
             )
         }
         Text(ProgressStrings.quoted(progress.insight), style = MaterialTheme.typography.bodyLarge)
-        ProgressLink(ProgressStrings.SeeWeeklyReview, colors.tertiary, onSeeWeeklyReviewClick)
+        AppTextLink(ProgressStrings.SeeWeeklyReview, onClick = onSeeWeeklyReviewClick, color = colors.tertiary, trailingIcon = AppIcons.ArrowRight)
     }
 }
 
