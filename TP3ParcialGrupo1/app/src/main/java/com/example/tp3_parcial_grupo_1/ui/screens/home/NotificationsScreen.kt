@@ -79,8 +79,11 @@ fun NotificationsScreen(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(HomeStrings.NotificationsTitle, style = MaterialTheme.typography.headlineLarge)
-                    TextButton(onClick = onMarkAllAsReadClick, enabled = uiState.hasUnread) {
-                        Text(HomeStrings.MarkAllAsRead, style = MaterialTheme.typography.labelMedium)
+                    // Figma: 13 sp SemiBold en verde oscuro. Sin notificaciones sin leer no hay nada que marcar.
+                    if (uiState.hasUnread) {
+                        TextButton(onClick = onMarkAllAsReadClick) {
+                            Text(HomeStrings.MarkAllAsRead, style = MaterialTheme.typography.labelMedium)
+                        }
                     }
                 }
             }

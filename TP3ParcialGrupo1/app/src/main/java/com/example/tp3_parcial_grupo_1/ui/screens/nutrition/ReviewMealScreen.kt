@@ -1,5 +1,6 @@
 package com.example.tp3_parcial_grupo_1.ui.screens.nutrition
 
+import com.example.tp3_parcial_grupo_1.data.demo.AnalysedMeal
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -22,7 +23,6 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.tp3_parcial_grupo_1.model.Meal
 import com.example.tp3_parcial_grupo_1.model.MealType
 import com.example.tp3_parcial_grupo_1.ui.components.AppBackButton
@@ -37,6 +37,7 @@ import com.example.tp3_parcial_grupo_1.ui.strings.NutritionStrings
 import com.example.tp3_parcial_grupo_1.ui.strings.Strings
 import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
+import com.example.tp3_parcial_grupo_1.ui.theme.chip
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 import java.text.SimpleDateFormat
 import java.util.*
@@ -63,7 +64,7 @@ fun ReviewMealScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
                 .verticalScroll(rememberScrollState())
-                .padding(20.dp)
+                .padding(MaterialTheme.spacing.screen)
         ) {
             AppTopBar(
                 title = NutritionStrings.reviewMeal,
@@ -73,27 +74,30 @@ fun ReviewMealScreen(
                 spacing = MaterialTheme.spacing.sm
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.lg))
 
-            ReviewIngredientCard(name = "Grilled Chicken Breast", quantity = "180g", calories = "280 kcal", onDemoClick = showDemoNotice)
-            Spacer(modifier = Modifier.height(12.dp))
-            ReviewIngredientCard(name = "Basmati Rice", quantity = "150g", calories = "190 kcal", onDemoClick = showDemoNotice)
-            Spacer(modifier = Modifier.height(12.dp))
-            ReviewIngredientCard(name = "Mixed Steamed Vegetables", quantity = "100g", calories = "50 kcal", onDemoClick = showDemoNotice)
+            AnalysedMeal.ingredients.forEachIndexed { index, ingredient ->
+                if (index > 0) Spacer(modifier = Modifier.height(MaterialTheme.spacing.md))
+                ReviewIngredientCard(
+                    name = ingredient.name,
+                    quantity = ingredient.quantity,
+                    calories = NutritionStrings.caloriesValue(ingredient.calories),
+                    onDemoClick = showDemoNotice
+                )
+            }
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.sm))
             TextButton(onClick = showDemoNotice) {
                 Text(
                     text = NutritionStrings.addIngredient,
                     style = MaterialTheme.typography.bodyMedium.copy(
                         color = MaterialTheme.colorScheme.primary,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 13.sp
-                    )
+                        fontWeight = FontWeight.Bold
+)
                 )
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.lg))
 
             // Meal Totals Card (Dark Green)
             Box(
@@ -101,7 +105,7 @@ fun ReviewMealScreen(
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(20.dp))
                     .background(MaterialTheme.colorScheme.primary)
-                    .padding(20.dp)
+                    .padding(MaterialTheme.spacing.screen)
             ) {
                 Column {
                     Row(
@@ -113,32 +117,30 @@ fun ReviewMealScreen(
                             text = NutritionStrings.mealTotals,
                             style = MaterialTheme.typography.labelMedium.copy(
                                 color = MaterialTheme.colorScheme.secondary,
-                                fontSize = 13.sp,
                                 fontWeight = FontWeight.Bold
                             )
                         )
                         Text(
-                            text = "520 kcal",
-                            style = MaterialTheme.typography.headlineMedium.copy(
+                            text = NutritionStrings.caloriesValue(AnalysedMeal.calories),
+                            style = MaterialTheme.typography.headlineSmall.copy(
                                 color = MaterialTheme.colorScheme.surface,
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 22.sp
-                            )
+                                fontWeight = FontWeight.Bold
+)
                         )
                     }
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(MaterialTheme.spacing.lg))
                     HorizontalDivider(
                         color = MaterialTheme.colorScheme.surface.copy(alpha = 0.15f),
                         thickness = 1.dp
                     )
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(MaterialTheme.spacing.lg))
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         AppStat(
-                            label = "PROTEIN",
-                            value = "38g",
+                            label = NutritionStrings.protein.uppercase(),
+                            value = "${AnalysedMeal.protein}g",
                             labelStyle = AppStatDefaults.MacroLabelStyle,
                             labelColor = MaterialTheme.colorScheme.secondary,
                             valueStyle = AppStatDefaults.MacroValueStyle,
@@ -146,8 +148,8 @@ fun ReviewMealScreen(
                             spacing = 2.dp
                         )
                         AppStat(
-                            label = "CARBS",
-                            value = "54g",
+                            label = NutritionStrings.carbs.uppercase(),
+                            value = "${AnalysedMeal.carbs}g",
                             labelStyle = AppStatDefaults.MacroLabelStyle,
                             labelColor = MaterialTheme.colorScheme.secondary,
                             valueStyle = AppStatDefaults.MacroValueStyle,
@@ -155,8 +157,8 @@ fun ReviewMealScreen(
                             spacing = 2.dp
                         )
                         AppStat(
-                            label = "FAT",
-                            value = "14g",
+                            label = NutritionStrings.fat.uppercase(),
+                            value = "${AnalysedMeal.fat}g",
                             labelStyle = AppStatDefaults.MacroLabelStyle,
                             labelColor = MaterialTheme.colorScheme.secondary,
                             valueStyle = AppStatDefaults.MacroValueStyle,
@@ -167,28 +169,18 @@ fun ReviewMealScreen(
                 }
             }
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.xl))
 
             AppButton(
                 text = NutritionStrings.addToLunch,
                 onClick = {
-                    val meal = Meal(
-                        name = "Lunch",
-                        date = currentDate,
-                        type = MealType.LUNCH,
-                        calories = 520,
-                        protein = 38,
-                        carbs = 54,
-                        fat = 14,
-                        itemsSummary = "Grilled Chicken - Basmati Rice - Vegetables"
-                    )
-                    onSaveMeal(meal)
+                    onSaveMeal(AnalysedMeal.asLunch(currentDate))
                 },
                 minHeight = AppButtonDefaults.MediumHeight,
                 textStyle = AppButtonDefaults.BoldTextStyle
             )
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.md))
 
             AppButton(
                 text = NutritionStrings.saveWithoutLogging,
@@ -210,7 +202,7 @@ fun ReviewIngredientCard(name: String, quantity: String, calories: String, onDem
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
+        Column(modifier = Modifier.padding(MaterialTheme.spacing.lg)) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -218,22 +210,20 @@ fun ReviewIngredientCard(name: String, quantity: String, calories: String, onDem
             ) {
                 Text(
                     text = name,
-                    style = MaterialTheme.typography.titleMedium.copy(
+                    style = MaterialTheme.typography.bodyLarge.copy(
                         color = MaterialTheme.colorScheme.onBackground,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 15.sp
-                    )
+                        fontWeight = FontWeight.Bold
+)
                 )
                 Text(
                     text = calories,
-                    style = MaterialTheme.typography.titleMedium.copy(
+                    style = MaterialTheme.typography.labelLarge.copy(
                         color = MaterialTheme.colorScheme.onBackground,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 14.sp
-                    )
+                        fontWeight = FontWeight.Bold
+)
                 )
             }
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.md))
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -241,25 +231,24 @@ fun ReviewIngredientCard(name: String, quantity: String, calories: String, onDem
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm)
                 ) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md)
                     ) {
-                        AppStepButton(symbol = "-", contentDescription = "Decrease quantity", onClick = onDemoClick)
+                        AppStepButton(symbol = "-", contentDescription = NutritionStrings.decreaseQuantity, onClick = onDemoClick)
                         Text(text = quantity, style = MaterialTheme.typography.labelLarge)
-                        AppStepButton(symbol = "+", contentDescription = "Increase quantity", onClick = onDemoClick)
+                        AppStepButton(symbol = "+", contentDescription = NutritionStrings.increaseQuantity, onClick = onDemoClick)
                     }
                 }
                 TextButton(onClick = onDemoClick) {
                     Text(
                         text = NutritionStrings.remove,
-                        style = MaterialTheme.typography.bodySmall.copy(
+                        style = MaterialTheme.typography.chip.copy(
                             color = MaterialTheme.colorScheme.error,
-                            fontWeight = FontWeight.SemiBold,
-                            fontSize = 12.sp
-                        )
+                            fontWeight = FontWeight.SemiBold
+)
                     )
                 }
             }

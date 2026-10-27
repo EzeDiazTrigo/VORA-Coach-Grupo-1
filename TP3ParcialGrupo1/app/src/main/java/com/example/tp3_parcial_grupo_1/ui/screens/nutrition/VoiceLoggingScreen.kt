@@ -1,5 +1,7 @@
 package com.example.tp3_parcial_grupo_1.ui.screens.nutrition
 
+import com.example.tp3_parcial_grupo_1.ui.theme.spacing
+import com.example.tp3_parcial_grupo_1.ui.theme.message
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -12,7 +14,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.tp3_parcial_grupo_1.ui.components.AppButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppButtonDefaults
 import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
@@ -32,7 +33,7 @@ fun VoiceLoggingScreen(
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.primary)
             .safeDrawingPadding()
-            .padding(20.dp)
+            .padding(MaterialTheme.spacing.screen)
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -42,7 +43,7 @@ fun VoiceLoggingScreen(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 16.dp),
+                    .padding(top = MaterialTheme.spacing.lg),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -53,14 +54,13 @@ fun VoiceLoggingScreen(
                             .clip(CircleShape)
                             .background(MaterialTheme.colorScheme.secondary)
                     )
-                    Spacer(modifier = Modifier.width(8.dp))
+                    Spacer(modifier = Modifier.width(MaterialTheme.spacing.sm))
                     Text(
                         text = NutritionStrings.voiceLogging,
-                        style = MaterialTheme.typography.bodyMedium.copy(
+                        style = MaterialTheme.typography.message.copy(
                             color = MaterialTheme.colorScheme.surface,
-                            fontWeight = FontWeight.Medium,
-                            fontSize = 14.sp
-                        )
+                            fontWeight = FontWeight.Medium
+)
                     )
                 }
                 IconButton(
@@ -70,7 +70,7 @@ fun VoiceLoggingScreen(
                         .clip(CircleShape)
                         .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.1f))
                 ) {
-                    AppIcon(AppIcons.Close, contentDescription = "Close", tint = MaterialTheme.colorScheme.surface, size = 18.dp)
+                    AppIcon(AppIcons.Close, contentDescription = NutritionStrings.close, tint = MaterialTheme.colorScheme.surface, size = 18.dp)
                 }
             }
 
@@ -79,26 +79,24 @@ fun VoiceLoggingScreen(
             // Pulsing Audio Orb
             VoraOrb(size = 160.dp, glowAlpha = 0.3f, showRipple = true)
 
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.xxl))
 
             Text(
                 text = NutritionStrings.listening,
-                style = MaterialTheme.typography.headlineLarge.copy(
+                style = MaterialTheme.typography.headlineMedium.copy(
                     color = MaterialTheme.colorScheme.surface,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 24.sp
-                )
+                    fontWeight = FontWeight.Bold
+)
             )
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.sm))
             Text(
                 text = NutritionStrings.keepTalking,
                 style = MaterialTheme.typography.bodyMedium.copy(
-                    color = MaterialTheme.colorScheme.surface.copy(alpha = 0.7f),
-                    fontSize = 13.sp
-                )
+                    color = MaterialTheme.colorScheme.surface.copy(alpha = 0.7f)
+)
             )
 
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.xxl))
 
             // Transcript Card
             Box(
@@ -106,20 +104,19 @@ fun VoiceLoggingScreen(
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(16.dp))
                     .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.1f))
-                    .padding(16.dp)
+                    .padding(MaterialTheme.spacing.lg)
             ) {
                 Text(
-                    text = "\"I had grilled chicken with rice and some mixed vegetables for lunch.\"",
-                    style = MaterialTheme.typography.bodyMedium.copy(
-                        color = MaterialTheme.colorScheme.surface,
-                        fontSize = 14.sp
-                    ),
+                    text = NutritionStrings.voiceTranscript,
+                    style = MaterialTheme.typography.message.copy(
+                        color = MaterialTheme.colorScheme.surface
+),
                     textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth()
                 )
             }
 
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.xxl))
 
             AppButton(
                 text = NutritionStrings.doneSpeaking,
@@ -129,19 +126,18 @@ fun VoiceLoggingScreen(
                 textStyle = AppButtonDefaults.BoldTextStyle
             )
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.md))
 
             TextButton(onClick = onTypeInsteadClick) {
                 Text(
                     text = NutritionStrings.typeInstead,
                     style = MaterialTheme.typography.bodyMedium.copy(
                         color = MaterialTheme.colorScheme.surface.copy(alpha = 0.8f),
-                        fontSize = 13.sp,
                         fontWeight = FontWeight.SemiBold
                     )
                 )
             }
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.lg))
         }
     }
 }

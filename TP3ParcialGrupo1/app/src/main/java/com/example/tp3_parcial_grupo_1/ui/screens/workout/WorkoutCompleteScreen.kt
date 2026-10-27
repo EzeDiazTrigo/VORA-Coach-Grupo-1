@@ -36,6 +36,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.tp3_parcial_grupo_1.data.demo.WorkoutDemoData
 import com.example.tp3_parcial_grupo_1.model.Exercise
 import com.example.tp3_parcial_grupo_1.model.Workout
 import com.example.tp3_parcial_grupo_1.ui.components.AppButton
@@ -166,7 +167,7 @@ fun WorkoutCompleteScreen(
                     StatDivider()
                     CompleteStat(value = "$totalExercises/$totalExercises", label = WorkoutStrings.Exercises)
                     StatDivider()
-                    CompleteStat(value = WorkoutStrings.VolumeValue, label = WorkoutStrings.Volume)
+                    CompleteStat(value = WorkoutStrings.kilos(WorkoutDemoData.SessionVolumeKg), label = WorkoutStrings.Volume)
                 }
             }
 

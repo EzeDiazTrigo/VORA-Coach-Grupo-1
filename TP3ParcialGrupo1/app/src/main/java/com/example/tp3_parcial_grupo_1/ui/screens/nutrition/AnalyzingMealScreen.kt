@@ -1,5 +1,8 @@
 package com.example.tp3_parcial_grupo_1.ui.screens.nutrition
 
+import com.example.tp3_parcial_grupo_1.ui.theme.spacing
+import com.example.tp3_parcial_grupo_1.ui.theme.micro
+import com.example.tp3_parcial_grupo_1.ui.theme.message
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -15,7 +18,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
 import com.example.tp3_parcial_grupo_1.ui.components.VoraOrb
@@ -41,7 +43,7 @@ fun AnalyzingMealScreen(
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.primary)
             .safeDrawingPadding()
-            .padding(20.dp)
+            .padding(MaterialTheme.spacing.screen)
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -51,17 +53,16 @@ fun AnalyzingMealScreen(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 16.dp),
+                    .padding(top = MaterialTheme.spacing.lg),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
                     text = NutritionStrings.voraAi,
-                    style = MaterialTheme.typography.titleMedium.copy(
+                    style = MaterialTheme.typography.labelLarge.copy(
                         color = MaterialTheme.colorScheme.surface,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 14.sp
-                    )
+                        fontWeight = FontWeight.Bold
+)
                 )
                 IconButton(
                     onClick = onCancelClick,
@@ -70,7 +71,7 @@ fun AnalyzingMealScreen(
                         .clip(CircleShape)
                         .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.1f))
                 ) {
-                    AppIcon(AppIcons.Close, contentDescription = "Close", tint = MaterialTheme.colorScheme.surface, size = 18.dp)
+                    AppIcon(AppIcons.Close, contentDescription = NutritionStrings.close, tint = MaterialTheme.colorScheme.surface, size = 18.dp)
                 }
             }
 
@@ -83,14 +84,13 @@ fun AnalyzingMealScreen(
 
             Text(
                 text = NutritionStrings.analyzingMeal,
-                style = MaterialTheme.typography.headlineLarge.copy(
+                style = MaterialTheme.typography.headlineMedium.copy(
                     color = MaterialTheme.colorScheme.surface,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 24.sp
-                )
+                    fontWeight = FontWeight.Bold
+)
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.xl))
 
             // Captured Input Card
             Box(
@@ -98,41 +98,39 @@ fun AnalyzingMealScreen(
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(16.dp))
                     .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.1f))
-                    .padding(16.dp)
+                    .padding(MaterialTheme.spacing.lg)
             ) {
                 Column {
                     Text(
                         text = NutritionStrings.capturedInput,
-                        style = MaterialTheme.typography.labelSmall.copy(
+                        style = MaterialTheme.typography.micro.copy(
                             color = MaterialTheme.colorScheme.secondary,
-                            fontSize = 10.sp,
                             fontWeight = FontWeight.Bold
                         )
                     )
-                    Spacer(modifier = Modifier.height(4.dp))
+                    Spacer(modifier = Modifier.height(MaterialTheme.spacing.xxs))
                     Text(
-                        text = "\"Grilled chicken, rice and mixed vegetables\"",
+                        text = NutritionStrings.capturedInputText,
                         style = MaterialTheme.typography.bodyMedium.copy(
-                            color = MaterialTheme.colorScheme.surface,
-                            fontSize = 13.sp
-                        )
+                            color = MaterialTheme.colorScheme.surface
+)
                     )
                 }
             }
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.xl))
 
             // Steps Checklist
             Column(
                 modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
+                verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.lg)
             ) {
-                AnalysisStep(text = "Identifying foods...", isDone = true)
-                AnalysisStep(text = "Estimating portions...", isInProgress = true)
-                AnalysisStep(text = "Calculating nutrition...", isPending = true)
+                AnalysisStep(text = NutritionStrings.identifyingFoods, isDone = true)
+                AnalysisStep(text = NutritionStrings.estimatingPortions, isInProgress = true)
+                AnalysisStep(text = NutritionStrings.calculatingNutrition, isPending = true)
             }
 
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.xxl))
 
             TextButton(
                 onClick = onCancelClick,
@@ -140,14 +138,13 @@ fun AnalyzingMealScreen(
             ) {
                 Text(
                     text = NutritionStrings.cancelAnalysis,
-                    style = MaterialTheme.typography.bodyMedium.copy(
+                    style = MaterialTheme.typography.message.copy(
                         color = MaterialTheme.colorScheme.surface.copy(alpha = 0.8f),
-                        fontSize = 14.sp,
                         fontWeight = FontWeight.SemiBold
                     )
                 )
             }
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.lg))
         }
     }
 }
@@ -166,14 +163,13 @@ fun AnalysisStep(text: String, isDone: Boolean = false, isInProgress: Boolean = 
                 .clip(CircleShape)
                 .background(dotColor)
         )
-        Spacer(modifier = Modifier.width(12.dp))
+        Spacer(modifier = Modifier.width(MaterialTheme.spacing.md))
         Text(
             text = text,
-            style = MaterialTheme.typography.bodyMedium.copy(
+            style = MaterialTheme.typography.message.copy(
                 color = if (isPending) MaterialTheme.colorScheme.surface.copy(alpha = 0.5f) else MaterialTheme.colorScheme.surface,
-                fontWeight = if (isInProgress) FontWeight.Bold else FontWeight.Normal,
-                fontSize = 14.sp
-            )
+                fontWeight = if (isInProgress) FontWeight.Bold else FontWeight.Normal
+)
         )
     }
 }
