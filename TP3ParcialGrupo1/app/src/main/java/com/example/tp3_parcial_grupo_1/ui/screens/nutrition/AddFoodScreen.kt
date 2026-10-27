@@ -55,14 +55,14 @@ fun AddFoodScreen(
 
             // Talk to VORA Card (Panel style)
             AppCard(style = AppCardStyle.Panel) {
-                Row(
+                Column(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md)
                 ) {
-                    Column(
-                        modifier = Modifier.weight(1f),
-                        verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm)
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
                             text = NutritionStrings.talkToVora,
@@ -71,23 +71,21 @@ fun AddFoodScreen(
                                 fontWeight = FontWeight.Bold
                             )
                         )
-                        Text(
-                            text = NutritionStrings.talkToVoraDesc,
-                            style = MaterialTheme.typography.bodySmall.copy(
-                                color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f)
-                            )
-                        )
-                        Box(modifier = Modifier.fillMaxWidth()) {
-                            AppButton(
-                                text = NutritionStrings.startVoiceLogging,
-                                onClick = onNavigateToVoice,
-                                style = AppButtonStyle.Accent,
-                                leadingIcon = AppIcons.Mic
-                            )
-                        }
+                        VoraOrb(size = 44.dp, glowAlpha = 0.3f, showRipple = true, icon = null)
                     }
-                    Spacer(modifier = Modifier.width(MaterialTheme.spacing.md))
-                    VoraOrb(size = 44.dp, glowAlpha = 0.3f, showRipple = true, icon = null)
+                    Text(
+                        text = NutritionStrings.talkToVoraDesc,
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            color = MaterialTheme.extendedColors.mint
+                        )
+                    )
+                    AppButton(
+                        text = NutritionStrings.startVoiceLogging,
+                        onClick = onNavigateToVoice,
+                        style = AppButtonStyle.Accent,
+                        leadingIcon = AppIcons.Mic,
+                        modifier = Modifier.fillMaxWidth()
+                    )
                 }
             }
 
@@ -118,7 +116,7 @@ fun AddFoodScreen(
                     onClick = onNavigateToReview,
                     iconSize = AddOptionIconSize,
                     iconBoxSize = AddOptionIconBoxSize,
-                    iconContainerColor = MaterialTheme.extendedColors.mintSoft,
+                    iconContainerColor = MaterialTheme.colorScheme.background,
                     titleStyle = MaterialTheme.typography.titleMedium.copy(
                         color = MaterialTheme.colorScheme.onBackground,
                         fontWeight = FontWeight.Bold
@@ -136,7 +134,7 @@ fun AddFoodScreen(
                     onClick = onNavigateToManual,
                     iconSize = AddOptionIconSize,
                     iconBoxSize = AddOptionIconBoxSize,
-                    iconContainerColor = MaterialTheme.extendedColors.mintSoft,
+                    iconContainerColor = MaterialTheme.colorScheme.background,
                     titleStyle = MaterialTheme.typography.titleMedium.copy(
                         color = MaterialTheme.colorScheme.onBackground,
                         fontWeight = FontWeight.Bold

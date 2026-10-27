@@ -130,7 +130,7 @@ fun AnalyzingMealScreen(
                 AnalysisStep(text = "Calculating nutrition...", isPending = true)
             }
 
-            Spacer(modifier = Modifier.weight(1f))
+            Spacer(modifier = Modifier.height(32.dp))
 
             TextButton(
                 onClick = onCancelClick,

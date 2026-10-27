@@ -117,7 +117,7 @@ fun VoiceLoggingScreen(
                 )
             }
 
-            Spacer(modifier = Modifier.weight(1f))
+            Spacer(modifier = Modifier.height(32.dp))
 
             AppButton(
                 text = "Done Speaking",

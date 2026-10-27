@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
@@ -108,7 +109,7 @@ fun ReviewMealScreen(
                         Text(
                             text = "MEAL TOTALS",
                             style = MaterialTheme.typography.labelSmall.copy(
-                                color = MaterialTheme.extendedColors.textSubtle,
+                                color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.6f),
                                 fontSize = 10.sp,
                                 fontWeight = FontWeight.Bold
                             )
@@ -270,14 +271,14 @@ fun ReviewIngredientCard(name: String, quantity: String, calories: String, onDem
 private fun QuantityStepButton(symbol: String, description: String, onClick: () -> Unit) {
     Box(
         modifier = Modifier
-            .size(32.dp)
-            .clip(RoundedCornerShape(8.dp))
-            .background(MaterialTheme.colorScheme.surfaceVariant)
+            .size(28.dp)
+            .clip(CircleShape)
+            .background(MaterialTheme.colorScheme.surface)
             .clickable(role = Role.Button, onClick = onClick)
             .semantics { contentDescription = description },
         contentAlignment = Alignment.Center
     ) {
-        Text(text = symbol, fontSize = 16.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)
+        Text(text = symbol, fontSize = 14.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)
     }
 }
 
