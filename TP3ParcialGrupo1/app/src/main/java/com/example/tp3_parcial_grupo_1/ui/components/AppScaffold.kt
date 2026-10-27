@@ -31,6 +31,7 @@ fun AppScaffold(
     title: String? = null,
     onBack: (() -> Unit)? = null,
     actions: @Composable RowScope.() -> Unit = {},
+    showTopBar: Boolean = title != null || onBack != null,
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
     content: @Composable (PaddingValues) -> Unit
 ) {
@@ -39,7 +40,7 @@ fun AppScaffold(
         containerColor = MaterialTheme.colorScheme.background,
         snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
-            if (title != null || onBack != null) {
+            if (showTopBar) {
                 TopAppBar(
                     title = {
                         if (title != null) Text(title, style = MaterialTheme.typography.titleLarge)

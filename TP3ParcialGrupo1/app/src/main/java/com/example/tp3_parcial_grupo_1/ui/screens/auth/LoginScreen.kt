@@ -80,7 +80,13 @@ fun LoginScreen(
     onEnterDemoClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    AppScaffold(modifier = modifier.fillMaxSize(), snackbarHostState = snackbarHostState) { padding ->
+    // Login es la pantalla inicial: no hay a dónde volver, así que la barra solo muestra el idioma.
+    AppScaffold(
+        modifier = modifier.fillMaxSize(),
+        snackbarHostState = snackbarHostState,
+        showTopBar = true,
+        actions = { LanguagePill(onDemoNoticeClick, Modifier.padding(end = MaterialTheme.spacing.lg)) }
+    ) { padding ->
         Column(
             modifier = Modifier
                 .padding(padding)

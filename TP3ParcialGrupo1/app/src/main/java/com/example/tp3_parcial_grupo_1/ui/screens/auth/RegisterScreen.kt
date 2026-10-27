@@ -94,6 +94,7 @@ fun RegisterScreen(
     AppScaffold(
         modifier = modifier.fillMaxSize(),
         onBack = onBackClick,
+        actions = { LanguagePill(onDemoNoticeClick, Modifier.padding(end = MaterialTheme.spacing.lg)) },
         snackbarHostState = snackbarHostState
     ) { padding ->
         Column(

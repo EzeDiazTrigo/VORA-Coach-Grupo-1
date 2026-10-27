@@ -7,12 +7,16 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import com.example.tp3_parcial_grupo_1.ui.components.AppButton
@@ -24,6 +28,7 @@ import com.example.tp3_parcial_grupo_1.ui.components.VoraBrandMark
 import com.example.tp3_parcial_grupo_1.ui.components.VoraBrandMarkStyle
 import com.example.tp3_parcial_grupo_1.ui.strings.AuthStrings
 import com.example.tp3_parcial_grupo_1.ui.strings.Strings
+import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
 import com.example.tp3_parcial_grupo_1.ui.theme.iconSizes
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 
@@ -41,6 +46,28 @@ fun AuthHeader(modifier: Modifier = Modifier, markStyle: VoraBrandMarkStyle = Vo
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.primary
         )
+    }
+}
+
+// Píldora «EN ⌄» de la barra superior de Acceso. La app solo tiene textos en inglés: por ahora informa el modo demostración.
+@Composable
+fun LanguagePill(onClick: () -> Unit, modifier: Modifier = Modifier) {
+    val contentColor = MaterialTheme.colorScheme.onSurfaceVariant
+    Surface(
+        onClick = onClick,
+        modifier = modifier.semantics { contentDescription = AuthStrings.LanguageSelector },
+        shape = PillShape,
+        color = MaterialTheme.colorScheme.surface,
+        contentColor = contentColor
+    ) {
+        Row(
+            modifier = Modifier.padding(horizontal = MaterialTheme.spacing.md, vertical = MaterialTheme.spacing.xs),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xs)
+        ) {
+            Text(AuthStrings.Language, style = MaterialTheme.typography.labelMedium)
+            AppIcon(AppIcons.ChevronDown, contentDescription = null, size = MaterialTheme.iconSizes.sm, tint = contentColor)
+        }
     }
 }
 
