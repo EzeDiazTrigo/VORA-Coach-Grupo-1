@@ -1,11 +1,10 @@
 package com.example.tp3_parcial_grupo_1.ui.screens.home
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -28,7 +27,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -48,15 +46,17 @@ import com.example.tp3_parcial_grupo_1.ui.components.AppIconButtonDefaults
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
 import com.example.tp3_parcial_grupo_1.ui.components.AppNoticeCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppPanelHeader
+import com.example.tp3_parcial_grupo_1.ui.components.AppPillButton
+import com.example.tp3_parcial_grupo_1.ui.components.AppPillStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
 import com.example.tp3_parcial_grupo_1.ui.components.AppStat
+import com.example.tp3_parcial_grupo_1.ui.components.AppTag
 import com.example.tp3_parcial_grupo_1.ui.components.GoalValueText
 import com.example.tp3_parcial_grupo_1.ui.components.MacroProgressBar
 import com.example.tp3_parcial_grupo_1.ui.components.ProgressRing
 import com.example.tp3_parcial_grupo_1.ui.components.VoraLogo
 import com.example.tp3_parcial_grupo_1.ui.strings.HomeStrings
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
-import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 import java.util.Locale
@@ -154,6 +154,10 @@ private fun HomeHeader(uiState: HomeUiState, onNotificationsClick: () -> Unit) {
     }
 }
 
+// Chips del panel de VORA: más altos que el resto de las píldoras.
+private val PanelChipPadding
+    @Composable get() = PaddingValues(horizontal = MaterialTheme.spacing.lg, vertical = MaterialTheme.spacing.md)
+
 @Composable
 private fun CoachPanel(onStartVoiceClick: () -> Unit, onStartWorkoutClick: () -> Unit, onLogMealClick: () -> Unit) {
     val colors = MaterialTheme.colorScheme
@@ -163,13 +167,7 @@ private fun CoachPanel(onStartVoiceClick: () -> Unit, onStartWorkoutClick: () ->
             orb = { VoraLogo(size = 36.dp) },
             spacing = MaterialTheme.spacing.sm
         ) {
-            Text(
-                HomeStrings.AiOnline,
-                style = MaterialTheme.typography.labelSmall,
-                modifier = Modifier
-                    .background(colors.onPrimary.copy(alpha = 0.12f), PillShape)
-                    .padding(horizontal = MaterialTheme.spacing.md, vertical = MaterialTheme.spacing.xs)
-            )
+            AppTag(HomeStrings.AiOnline, containerColor = colors.onPrimary.copy(alpha = 0.12f))
         }
         Text(HomeStrings.CoachQuote, style = MaterialTheme.typography.headlineSmall)
         Text(HomeStrings.CoachHint, style = MaterialTheme.typography.bodyMedium, color = colors.onPrimary.copy(alpha = 0.7f))
@@ -180,22 +178,10 @@ private fun CoachPanel(onStartVoiceClick: () -> Unit, onStartWorkoutClick: () ->
             leadingIcon = AppIcons.Mic
         )
         Row(horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm)) {
-            PanelChip(HomeStrings.StartMyWorkout, onStartWorkoutClick)
-            PanelChip(HomeStrings.LogBreakfast, onLogMealClick)
+            AppPillButton(HomeStrings.StartMyWorkout, onStartWorkoutClick, style = AppPillStyle.OnDark, contentPadding = PanelChipPadding)
+            AppPillButton(HomeStrings.LogBreakfast, onLogMealClick, style = AppPillStyle.OnDark, contentPadding = PanelChipPadding)
         }
     }
-}
-
-@Composable
-private fun PanelChip(text: String, onClick: () -> Unit) {
-    Text(
-        text = text,
-        style = MaterialTheme.typography.labelMedium,
-        modifier = Modifier
-            .background(Color.White.copy(alpha = 0.12f), PillShape)
-            .clickable(onClick = onClick)
-            .padding(horizontal = MaterialTheme.spacing.lg, vertical = MaterialTheme.spacing.md)
-    )
 }
 
 @Composable

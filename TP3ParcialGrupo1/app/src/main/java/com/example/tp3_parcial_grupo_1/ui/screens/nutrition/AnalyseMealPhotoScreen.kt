@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tp3_parcial_grupo_1.R
 import com.example.tp3_parcial_grupo_1.ui.components.AppBackButton
+import com.example.tp3_parcial_grupo_1.ui.components.AppTag
 import com.example.tp3_parcial_grupo_1.ui.components.AppTopBar
 import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
@@ -132,9 +133,30 @@ fun AnalyseMealPhotoScreen(
                             )
                         )
                         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                            MacroChip(label = "P: 38g")
-                            MacroChip(label = "C: 54g")
-                            MacroChip(label = "F: 14g")
+                            AppTag(
+                                text = "P: 38g",
+                                containerColor = MaterialTheme.colorScheme.background,
+                                contentColor = MaterialTheme.colorScheme.onBackground,
+                                borderColor = MaterialTheme.colorScheme.outlineVariant,
+                                textStyle = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
+                                contentPadding = PaddingValues(horizontal = 10.dp, vertical = 6.dp)
+                            )
+                            AppTag(
+                                text = "C: 54g",
+                                containerColor = MaterialTheme.colorScheme.background,
+                                contentColor = MaterialTheme.colorScheme.onBackground,
+                                borderColor = MaterialTheme.colorScheme.outlineVariant,
+                                textStyle = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
+                                contentPadding = PaddingValues(horizontal = 10.dp, vertical = 6.dp)
+                            )
+                            AppTag(
+                                text = "F: 14g",
+                                containerColor = MaterialTheme.colorScheme.background,
+                                contentColor = MaterialTheme.colorScheme.onBackground,
+                                borderColor = MaterialTheme.colorScheme.outlineVariant,
+                                textStyle = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
+                                contentPadding = PaddingValues(horizontal = 10.dp, vertical = 6.dp)
+                            )
                         }
                     }
                 }
@@ -176,17 +198,3 @@ fun AnalyseMealPhotoScreen(
     }
 }
 
-@Composable
-fun MacroChip(label: String) {
-    Surface(
-        shape = PillShape,
-        color = MaterialTheme.colorScheme.background,
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
-    ) {
-        Text(
-            text = label,
-            modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
-            style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold, fontSize = 11.sp, color = MaterialTheme.colorScheme.onBackground)
-        )
-    }
-}

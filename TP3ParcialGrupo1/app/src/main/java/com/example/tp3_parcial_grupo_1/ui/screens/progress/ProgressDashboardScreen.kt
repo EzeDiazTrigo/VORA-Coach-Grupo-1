@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -30,9 +31,9 @@ import com.example.tp3_parcial_grupo_1.ui.components.AppListRow
 import com.example.tp3_parcial_grupo_1.ui.components.AppPanelHeader
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
 import com.example.tp3_parcial_grupo_1.ui.components.AppStat
+import com.example.tp3_parcial_grupo_1.ui.components.AppTag
 import com.example.tp3_parcial_grupo_1.ui.strings.ProgressStrings
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
-import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
 import com.example.tp3_parcial_grupo_1.ui.theme.iconSizes
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
@@ -137,13 +138,11 @@ private fun InsightCard(progress: PeriodProgress, onSeeWeeklyReviewClick: () -> 
     val colors = MaterialTheme.colorScheme
     AppCard(style = AppCardStyle.Panel) {
         AppPanelHeader(title = ProgressStrings.VoraInsight, orb = { ProgressOrb() }) {
-            Text(
-                progress.insightTag,
-                style = MaterialTheme.typography.labelSmall,
-                color = colors.tertiary,
-                modifier = Modifier
-                    .background(colors.onPrimary.copy(alpha = PanelTagAlpha), PillShape)
-                    .padding(horizontal = MaterialTheme.spacing.md, vertical = MaterialTheme.spacing.xxs)
+            AppTag(
+                text = progress.insightTag,
+                containerColor = colors.onPrimary.copy(alpha = PanelTagAlpha),
+                contentColor = colors.tertiary,
+                contentPadding = PaddingValues(horizontal = MaterialTheme.spacing.md, vertical = MaterialTheme.spacing.xxs)
             )
         }
         Text(ProgressStrings.quoted(progress.insight), style = MaterialTheme.typography.bodyLarge)

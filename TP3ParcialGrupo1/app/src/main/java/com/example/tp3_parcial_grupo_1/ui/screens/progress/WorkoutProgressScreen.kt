@@ -36,9 +36,9 @@ import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
 import com.example.tp3_parcial_grupo_1.ui.components.AppSectionLabel
 import com.example.tp3_parcial_grupo_1.ui.components.AppSectionLabelStyle
+import com.example.tp3_parcial_grupo_1.ui.components.AppTag
 import com.example.tp3_parcial_grupo_1.ui.strings.ProgressStrings
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
-import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 
@@ -163,13 +163,11 @@ private fun ExerciseCard(exercise: ExerciseProgress) {
 @Composable
 private fun TrendBadge(exercise: ExerciseProgress) {
     val isUp = exercise.trend == ExerciseTrend.Up
-    Text(
-        exercise.change,
-        style = MaterialTheme.typography.labelMedium,
-        color = if (isUp) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
-        modifier = Modifier
-            .background(if (isUp) MaterialTheme.extendedColors.mintSoft else MaterialTheme.colorScheme.background, PillShape)
-            .padding(horizontal = MaterialTheme.spacing.md, vertical = MaterialTheme.spacing.xs)
+    AppTag(
+        text = exercise.change,
+        containerColor = if (isUp) MaterialTheme.extendedColors.mintSoft else MaterialTheme.colorScheme.background,
+        contentColor = if (isUp) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
+        textStyle = MaterialTheme.typography.labelMedium
     )
 }
 

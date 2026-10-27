@@ -9,6 +9,7 @@ import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
@@ -35,12 +36,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.tp3_parcial_grupo_1.data.demo.CoachDemoData
 import com.example.tp3_parcial_grupo_1.ui.components.AppBackButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppIconButtonDefaults
+import com.example.tp3_parcial_grupo_1.ui.components.AppTag
 import com.example.tp3_parcial_grupo_1.ui.components.AppTopBar
 import com.example.tp3_parcial_grupo_1.ui.components.LightSystemBarIcons
 import com.example.tp3_parcial_grupo_1.ui.strings.CoachStrings
 import com.example.tp3_parcial_grupo_1.ui.strings.Strings
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
-import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
 import com.example.tp3_parcial_grupo_1.ui.theme.iconSizes
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
@@ -199,16 +200,11 @@ internal fun CoachHeader(
 @Composable
 internal fun StatusPill(text: String, dark: Boolean) {
     val colors = MaterialTheme.colorScheme
-    Text(
+    AppTag(
         text = text,
-        style = MaterialTheme.typography.labelSmall,
-        color = if (dark) colors.secondary else colors.primary,
-        modifier = Modifier
-            .background(
-                if (dark) colors.secondary.copy(alpha = 0.15f) else MaterialTheme.extendedColors.mintSoft,
-                PillShape
-            )
-            .padding(horizontal = 10.dp, vertical = MaterialTheme.spacing.xxs)
+        containerColor = if (dark) colors.secondary.copy(alpha = 0.15f) else MaterialTheme.extendedColors.mintSoft,
+        contentColor = if (dark) colors.secondary else colors.primary,
+        contentPadding = PaddingValues(horizontal = 10.dp, vertical = MaterialTheme.spacing.xxs)
     )
 }
 

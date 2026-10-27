@@ -1,7 +1,6 @@
 package com.example.tp3_parcial_grupo_1.ui.screens.profile
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -43,11 +42,11 @@ import com.example.tp3_parcial_grupo_1.ui.components.AppPillButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppPillStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
 import com.example.tp3_parcial_grupo_1.ui.components.AppSectionLabel
+import com.example.tp3_parcial_grupo_1.ui.components.AppTag
 import com.example.tp3_parcial_grupo_1.ui.components.VoraLogo
 import com.example.tp3_parcial_grupo_1.ui.components.VoraLogoStyle
 import com.example.tp3_parcial_grupo_1.ui.strings.ProfileStrings
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
-import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 
 private val BorderWidth = 1.dp
@@ -242,14 +241,11 @@ private fun PersonalisationPanel(onReviewPreferencesClick: () -> Unit) {
 
 @Composable
 private fun SyncedBadge() {
-    Text(
-        ProfileStrings.Synced,
-        style = MaterialTheme.typography.labelSmall,
-        color = MaterialTheme.colorScheme.onPrimary,
-        modifier = Modifier
-            .padding(end = MaterialTheme.spacing.md)
-            .background(MaterialTheme.colorScheme.primary, PillShape)
-            .padding(horizontal = MaterialTheme.spacing.md, vertical = MaterialTheme.spacing.xs)
+    AppTag(
+        text = ProfileStrings.Synced,
+        modifier = Modifier.padding(end = MaterialTheme.spacing.md),
+        containerColor = MaterialTheme.colorScheme.primary,
+        contentColor = MaterialTheme.colorScheme.onPrimary
     )
 }
 
