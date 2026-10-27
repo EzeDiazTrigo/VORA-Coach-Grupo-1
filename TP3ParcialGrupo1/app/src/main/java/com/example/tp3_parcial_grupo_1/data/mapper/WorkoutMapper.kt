@@ -9,41 +9,45 @@ import com.example.tp3_parcial_grupo_1.model.Exercise
 import com.example.tp3_parcial_grupo_1.model.Workout
 
 // DTO -> Entity
-fun WorkoutSummaryDto.toEntity(): WorkoutEntity =
-    WorkoutEntity(
-        id = id.orEmpty().ifEmpty { "w01" },
-        name = name.orEmpty().ifEmpty { "Workout" },
-        level = level.orEmpty().ifEmpty { "MODERATE" },
-        durationMinutes = durationMinutes ?: 45,
-        exerciseCount = exerciseCount ?: 5,
-        description = description
-    )
-
-fun WorkoutDto.toEntity(overrideId: String? = null): WorkoutEntity {
-    val workoutId = overrideId ?: id.orEmpty().ifEmpty { "w01" }
-    val exerciseList = exercises.orEmpty()
+fun WorkoutSummaryDto.toEntity(): WorkoutEntity? {
+    val validId = id?.takeIf { it.isNotBlank() } ?: return null
     return WorkoutEntity(
-        id = workoutId,
-        name = name.orEmpty().ifEmpty { "Workout" },
-        level = level.orEmpty().ifEmpty { "MODERATE" },
-        durationMinutes = durationMinutes ?: 45,
-        exerciseCount = if (exerciseList.isNotEmpty()) exerciseList.size else 5,
+        id = validId,
+        name = name.orEmpty(),
+        level = level.orEmpty(),
+        durationMinutes = durationMinutes ?: 0,
+        exerciseCount = exerciseCount ?: 0,
         description = description
     )
 }
 
-fun ExerciseDto.toEntity(workoutId: String): ExerciseEntity =
-    ExerciseEntity(
-        id = id.orEmpty().ifEmpty { java.util.UUID.randomUUID().toString() },
+fun WorkoutDto.toEntity(overrideId: String? = null): WorkoutEntity? {
+    val validId = overrideId ?: id?.takeIf { it.isNotBlank() } ?: return null
+    val exerciseList = exercises.orEmpty()
+    return WorkoutEntity(
+        id = validId,
+        name = name.orEmpty(),
+        level = level.orEmpty(),
+        durationMinutes = durationMinutes ?: 0,
+        exerciseCount = exerciseList.size,
+        description = description
+    )
+}
+
+fun ExerciseDto.toEntity(workoutId: String, index: Int = 0): ExerciseEntity? {
+    val validId = id?.takeIf { it.isNotBlank() } ?: "e_${workoutId}_$index"
+    return ExerciseEntity(
+        id = validId,
         workoutId = workoutId,
-        name = name.orEmpty().ifEmpty { "Exercise" },
-        sets = sets ?: 3,
-        reps = reps ?: 10,
-        muscleGroup = muscleGroup.orEmpty().ifEmpty { "Full Body" },
-        restSeconds = restSeconds ?: 60,
+        name = name.orEmpty(),
+        sets = sets ?: 0,
+        reps = reps ?: 0,
+        muscleGroup = muscleGroup.orEmpty(),
+        restSeconds = restSeconds ?: 0,
         tip = tip.orEmpty(),
         instructions = instructions.orEmpty()
     )
+}
 
 // Entity -> Domain
 fun WorkoutEntity.toDomain(exercises: List<ExerciseEntity> = emptyList()): Workout =

@@ -39,6 +39,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.tp3_parcial_grupo_1.model.Workout
 import com.example.tp3_parcial_grupo_1.ui.components.AppButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
@@ -53,27 +55,50 @@ import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 import kotlinx.coroutines.delay
 
 @Composable
+fun ActiveWorkoutRoute(
+    onBackClick: () -> Unit,
+    onExerciseClick: (String) -> Unit,
+    onFinishWorkoutClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    viewModel: ActiveWorkoutViewModel = hiltViewModel()
+) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    ActiveWorkoutScreen(
+        workout = uiState.workout,
+        activeSetIndex = uiState.activeSetIndex,
+        weightKg = uiState.weightKg,
+        restTimeSeconds = uiState.restTimeSeconds,
+        onBackClick = onBackClick,
+        onExerciseClick = onExerciseClick,
+        onFinishWorkoutClick = onFinishWorkoutClick,
+        onAddRestTime = { viewModel.addRestTime(30) },
+        onSkipRest = viewModel::skipRest,
+        onAddWeight = { delta -> viewModel.addWeight(delta) },
+        onSelectSet = viewModel::selectSet,
+        onCompleteSet = { viewModel.completeCurrentSet(onFinishWorkoutClick) },
+        modifier = modifier
+    )
+}
+
+@Composable
 fun ActiveWorkoutScreen(
     workout: Workout? = null,
-    currentExerciseIndex: Int = 1,
+    activeSetIndex: Int = 1,
+    weightKg: Double = 45.0,
+    restTimeSeconds: Int = 78,
     workoutId: String = "w01",
     onBackClick: () -> Unit = {},
     onExerciseClick: (String) -> Unit = {},
     onFinishWorkoutClick: () -> Unit = {},
+    onAddRestTime: () -> Unit = {},
+    onSkipRest: () -> Unit = {},
+    onAddWeight: (Double) -> Unit = {},
+    onSelectSet: (Int) -> Unit = {},
+    onCompleteSet: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     LightSystemBarIcons()
-
-    var activeSetIndex by rememberSaveable { mutableIntStateOf(1) } // 0: Set 1, 1: Set 2, 2: Set 3
-    var weightKg by rememberSaveable { mutableDoubleStateOf(45.0) }
-    var restTimeSeconds by rememberSaveable { mutableIntStateOf(78) }
-
-    LaunchedEffect(restTimeSeconds) {
-        if (restTimeSeconds > 0) {
-            delay(1000L)
-            restTimeSeconds--
-        }
-    }
 
     val exercises = workout?.exercises.orEmpty()
     val totalExercises = if (exercises.isNotEmpty()) exercises.size else (workout?.exerciseCount ?: 5)
@@ -263,7 +288,7 @@ fun ActiveWorkoutScreen(
                                 .size(28.dp)
                                 .clip(CircleShape)
                                 .background(MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.15f))
-                                .clickable { if (weightKg > 2.5) weightKg -= 2.5 },
+                                .clickable { onAddWeight(-2.5) },
                             contentAlignment = Alignment.Center
                         ) {
                             Text("-", fontSize = 16.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onPrimary)
@@ -281,7 +306,7 @@ fun ActiveWorkoutScreen(
                                 .size(28.dp)
                                 .clip(CircleShape)
                                 .background(MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.15f))
-                                .clickable { weightKg += 2.5 },
+                                .clickable { onAddWeight(2.5) },
                             contentAlignment = Alignment.Center
                         ) {
                             Text("+", fontSize = 16.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onPrimary)
@@ -310,7 +335,7 @@ fun ActiveWorkoutScreen(
                                 if (isCurrent) Modifier.border(1.5.dp, MaterialTheme.colorScheme.tertiary, PillShape)
                                 else Modifier
                             )
-                            .clickable { activeSetIndex = index },
+                            .clickable { onSelectSet(index) },
                         contentAlignment = Alignment.Center
                     ) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -373,7 +398,7 @@ fun ActiveWorkoutScreen(
                                 .clip(PillShape)
                                 .background(MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.12f))
                                 .border(1.dp, Color.White.copy(alpha = 0.3f), PillShape)
-                                .clickable { restTimeSeconds += 30 }
+                                .clickable { onAddRestTime() }
                                 .padding(horizontal = MaterialTheme.spacing.md, vertical = 4.dp)
                         ) {
                             Text(
@@ -387,7 +412,7 @@ fun ActiveWorkoutScreen(
                             modifier = Modifier
                                 .clip(PillShape)
                                 .background(MaterialTheme.colorScheme.secondary)
-                                .clickable { restTimeSeconds = 0 }
+                                .clickable { onSkipRest() }
                                 .padding(horizontal = MaterialTheme.spacing.md, vertical = 4.dp)
                         ) {
                             Text(
@@ -444,13 +469,7 @@ fun ActiveWorkoutScreen(
             // Complete Set Button directly below cards
             AppButton(
                 text = "Complete Set",
-                onClick = {
-                    if (activeSetIndex < 2) {
-                        activeSetIndex++
-                    } else {
-                        onFinishWorkoutClick()
-                    }
-                },
+                onClick = onCompleteSet,
                 style = AppButtonStyle.Accent
             )
 
@@ -465,7 +484,6 @@ private fun ActiveWorkoutScreenPreview() {
     AppTheme {
         ActiveWorkoutScreen(
             workout = null,
-            currentExerciseIndex = 1,
             workoutId = "w01",
             onBackClick = {},
             onExerciseClick = {},

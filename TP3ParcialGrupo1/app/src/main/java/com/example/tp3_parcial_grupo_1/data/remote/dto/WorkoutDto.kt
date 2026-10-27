@@ -19,9 +19,9 @@ data class WorkoutDto(
     @SerializedName("exercises")
     val exercises: List<ExerciseDto>? = null
 ) {
-    fun toDomain(overrideId: String? = null): Workout {
-        val workoutId = overrideId ?: id.orEmpty().ifEmpty { "w01" }
-        val exerciseEntities = exercises.orEmpty().map { it.toEntity(workoutId) }
-        return toEntity(workoutId).toDomain(exerciseEntities)
+    fun toDomain(overrideId: String? = null): Workout? {
+        val workoutId = overrideId ?: id?.takeIf { it.isNotBlank() } ?: return null
+        val exerciseEntities = exercises.orEmpty().mapIndexedNotNull { idx, dto -> dto.toEntity(workoutId, idx) }
+        return toEntity(workoutId)?.toDomain(exerciseEntities)
     }
 }

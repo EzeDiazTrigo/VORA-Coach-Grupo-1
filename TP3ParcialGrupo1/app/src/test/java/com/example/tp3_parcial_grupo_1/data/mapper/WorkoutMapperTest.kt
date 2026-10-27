@@ -22,7 +22,7 @@ class WorkoutMapperTest {
             description = "Rutina completa"
         )
 
-        val entity = dto.toEntity()
+        val entity = dto.toEntity()!!
 
         assertEquals("w01", entity.id)
         assertEquals("Fuerza Total", entity.name)
@@ -53,12 +53,12 @@ class WorkoutMapperTest {
             exercises = listOf(exerciseDto)
         )
 
-        val workoutEntity = workoutDto.toEntity()
+        val workoutEntity = workoutDto.toEntity()!!
 
         assertEquals("w01", workoutEntity.id)
         assertEquals(1, workoutEntity.exerciseCount)
 
-        val exerciseEntity = exerciseDto.toEntity("w01")
+        val exerciseEntity = exerciseDto.toEntity("w01")!!
         assertEquals("e01", exerciseEntity.id)
         assertEquals("w01", exerciseEntity.workoutId)
         assertEquals("Sentadilla", exerciseEntity.name)

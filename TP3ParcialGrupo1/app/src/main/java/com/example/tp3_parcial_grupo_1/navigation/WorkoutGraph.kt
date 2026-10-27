@@ -6,10 +6,10 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
-import com.example.tp3_parcial_grupo_1.ui.screens.workout.ActiveWorkoutScreen
+import com.example.tp3_parcial_grupo_1.ui.screens.workout.ActiveWorkoutRoute
 import com.example.tp3_parcial_grupo_1.ui.screens.workout.ExerciseDetailsRoute
 import com.example.tp3_parcial_grupo_1.ui.screens.workout.PreWorkoutScreen
-import com.example.tp3_parcial_grupo_1.ui.screens.workout.WeeklyPlanScreen
+import com.example.tp3_parcial_grupo_1.ui.screens.workout.WeeklyPlanRoute
 import com.example.tp3_parcial_grupo_1.ui.screens.workout.WorkoutCompleteScreen
 import com.example.tp3_parcial_grupo_1.ui.screens.workout.WorkoutDetailRoute
 import com.example.tp3_parcial_grupo_1.ui.screens.workout.WorkoutListRoute
@@ -42,7 +42,7 @@ fun NavGraphBuilder.workoutGraph(navController: NavController) {
 
         composable(AppDestination.WeeklyPlan.route) { entry ->
             val dayNumber = entry.savedStateHandle.get<String>("dayNumber") ?: "8"
-            WeeklyPlanScreen(
+            WeeklyPlanRoute(
                 initialDayNumber = dayNumber,
                 onBackClick = { navController.popBackStack() },
                 onWorkoutSelect = { workoutId ->
@@ -77,6 +77,9 @@ fun NavGraphBuilder.workoutGraph(navController: NavController) {
                 onBackClick = { navController.popBackStack() },
                 onBeginClick = {
                     navController.navigate(AppDestination.ActiveWorkout.createRoute(workoutId))
+                },
+                onMicClick = {
+                    navController.navigate(AppDestination.Coach.route)
                 }
             )
         }
@@ -86,8 +89,7 @@ fun NavGraphBuilder.workoutGraph(navController: NavController) {
             arguments = listOf(workoutIdArgument)
         ) { entry ->
             val workoutId = entry.arguments?.getString(NavArg.WorkoutId).orEmpty()
-            ActiveWorkoutScreen(
-                workoutId = workoutId,
+            ActiveWorkoutRoute(
                 onBackClick = { navController.popBackStack() },
                 onExerciseClick = { exerciseId ->
                     navController.navigate(AppDestination.ExerciseDetails.createRoute(workoutId, exerciseId))
@@ -103,7 +105,10 @@ fun NavGraphBuilder.workoutGraph(navController: NavController) {
             arguments = listOf(workoutIdArgument, exerciseIdArgument)
         ) {
             ExerciseDetailsRoute(
-                onBackClick = { navController.popBackStack() }
+                onBackClick = { navController.popBackStack() },
+                onAskVoraClick = {
+                    navController.navigate(AppDestination.Coach.route)
+                }
             )
         }
 

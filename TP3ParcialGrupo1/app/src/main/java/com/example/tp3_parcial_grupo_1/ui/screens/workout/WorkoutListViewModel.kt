@@ -2,7 +2,6 @@ package com.example.tp3_parcial_grupo_1.ui.screens.workout
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.tp3_parcial_grupo_1.data.demo.WorkoutDemoData
 import com.example.tp3_parcial_grupo_1.data.repository.WorkoutRepository
 import com.example.tp3_parcial_grupo_1.ui.strings.WorkoutStrings
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -35,7 +34,6 @@ class WorkoutListViewModel @Inject constructor(
                 .catch {
                     _uiState.update {
                         it.copy(
-                            workouts = if (it.workouts.isEmpty()) WorkoutDemoData.workouts else it.workouts,
                             isLoading = false,
                             errorMessage = WorkoutStrings.ErrorGeneric
                         )
@@ -60,7 +58,6 @@ class WorkoutListViewModel @Inject constructor(
             if (result.isFailure) {
                 _uiState.update {
                     it.copy(
-                        workouts = if (it.workouts.isEmpty()) WorkoutDemoData.workouts else it.workouts,
                         isLoading = false,
                         errorMessage = WorkoutStrings.ErrorGeneric
                     )

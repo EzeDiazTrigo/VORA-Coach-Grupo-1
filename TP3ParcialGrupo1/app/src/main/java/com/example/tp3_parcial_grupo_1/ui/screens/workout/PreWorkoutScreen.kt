@@ -1,6 +1,8 @@
 package com.example.tp3_parcial_grupo_1.ui.screens.workout
 
+import android.app.Activity
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,23 +12,29 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.view.WindowCompat
+import com.example.tp3_parcial_grupo_1.R
 import com.example.tp3_parcial_grupo_1.model.Workout
 import com.example.tp3_parcial_grupo_1.ui.components.AppButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
@@ -34,7 +42,6 @@ import com.example.tp3_parcial_grupo_1.ui.components.AppCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppCardStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
-import com.example.tp3_parcial_grupo_1.ui.components.LightSystemBarIcons
 import com.example.tp3_parcial_grupo_1.ui.components.VoraLogo
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
@@ -44,11 +51,19 @@ import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 fun PreWorkoutScreen(
     workout: Workout? = null,
     workoutId: String = "w01",
-    onBackClick: () -> Unit,
-    onBeginClick: () -> Unit,
+    onBackClick: () -> Unit = {},
+    onBeginClick: () -> Unit = {},
+    onMicClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
-    LightSystemBarIcons()
+    val view = LocalView.current
+    if (!view.isInEditMode) {
+        SideEffect {
+            val window = (view.context as Activity).window
+            window.statusBarColor = android.graphics.Color.parseColor("#123D35")
+            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = false
+        }
+    }
 
     val workoutName = workout?.name ?: "Upper Body Strength"
     val durationMinutes = workout?.durationMinutes ?: 42
@@ -62,7 +77,7 @@ fun PreWorkoutScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .safeDrawingPadding()
+                .statusBarsPadding()
                 .padding(horizontal = MaterialTheme.spacing.screen, vertical = MaterialTheme.spacing.md)
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md)
@@ -84,8 +99,8 @@ fun PreWorkoutScreen(
                     onClick = onBackClick,
                     modifier = Modifier.size(32.dp)
                 ) {
-                    AppIcon(
-                        AppIcons.Close,
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_close),
                         contentDescription = "Close",
                         tint = MaterialTheme.colorScheme.onPrimary
                     )
@@ -173,7 +188,12 @@ fun PreWorkoutScreen(
             }
 
             // Card 4: Need anything? Mic Widget (No border)
-            AppCard(style = AppCardStyle.Translucent, spacing = 0.dp, borderColor = Color.Transparent) {
+            AppCard(
+                style = AppCardStyle.Translucent,
+                spacing = 0.dp,
+                borderColor = Color.Transparent,
+                onClick = onMicClick
+            ) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -202,7 +222,8 @@ fun PreWorkoutScreen(
                         modifier = Modifier
                             .size(44.dp)
                             .clip(CircleShape)
-                            .background(MaterialTheme.colorScheme.tertiary),
+                            .background(MaterialTheme.colorScheme.tertiary)
+                            .clickable { onMicClick() },
                         contentAlignment = Alignment.Center
                     ) {
                         AppIcon(
@@ -217,11 +238,13 @@ fun PreWorkoutScreen(
 
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.xs))
 
-            // Botón menta de inicio, debajo de las tarjetas
+            // Mint #65D6B0 Start Workout Button directly below cards
             AppButton(
                 text = "Start Workout",
                 onClick = onBeginClick,
-                style = AppButtonStyle.Secondary
+                style = AppButtonStyle.Accent,
+                containerColor = Color(0xFF65D6B0),
+                textColor = Color(0xFF123D35)
             )
 
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.md))
@@ -229,7 +252,7 @@ fun PreWorkoutScreen(
     }
 }
 
-@Preview(showBackground = true, widthDp = 390, heightDp = 676)
+@Preview(showBackground = true)
 @Composable
 private fun PreWorkoutScreenPreview() {
     AppTheme {

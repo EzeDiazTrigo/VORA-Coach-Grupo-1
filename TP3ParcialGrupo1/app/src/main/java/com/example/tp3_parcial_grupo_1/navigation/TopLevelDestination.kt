@@ -1,7 +1,6 @@
 package com.example.tp3_parcial_grupo_1.navigation
 
 import androidx.navigation.NavController
-import androidx.navigation.NavGraph.Companion.findStartDestination
 
 enum class TopLevelDestination(val graphRoute: String, val startRoute: String, private val routePrefix: String) {
     Home(AppDestination.HomeGraph.route, AppDestination.Home.route, "home/"),
@@ -43,7 +42,7 @@ fun NavController.navigateToTopLevel(destination: TopLevelDestination) {
         return
     }
     navigate(destination.graphRoute) {
-        popUpTo(graph.findStartDestination().id) { saveState = true }
+        popUpTo(AppDestination.Home.route) { saveState = true }
         launchSingleTop = true
         restoreState = true
     }

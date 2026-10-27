@@ -14,11 +14,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -58,6 +58,7 @@ import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
 import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
+import java.util.Calendar
 
 private val MediumIconSize = 20.dp
 
@@ -67,7 +68,7 @@ fun WorkoutListRoute(
     onBackClick: (() -> Unit)? = null,
     onWorkoutClick: (String) -> Unit,
     onStartWorkoutClick: (String) -> Unit = {},
-    onWeeklyPlanClick: () -> Unit = {},
+    onWeeklyPlanClick: (String) -> Unit = {},
     onViewProgressClick: () -> Unit = {},
     viewModel: WorkoutListViewModel = hiltViewModel()
 ) {
@@ -102,10 +103,13 @@ fun WorkoutListScreen(
     onBackClick: (() -> Unit)? = null,
     onWorkoutClick: (String) -> Unit,
     onStartWorkoutClick: (String) -> Unit,
-    onWeeklyPlanClick: () -> Unit,
+    onWeeklyPlanClick: (String) -> Unit,
     onViewProgressClick: () -> Unit,
     onRetryClick: () -> Unit
 ) {
+    val currentCalendar = remember { Calendar.getInstance() }
+    val todayDayNum = remember(currentCalendar) { currentCalendar.get(Calendar.DAY_OF_MONTH).toString() }
+
     AppScaffold(
         onBack = onBackClick,
         snackbarHostState = snackbarHostState,
@@ -174,7 +178,7 @@ fun WorkoutListScreen(
                             }
 
                             IconButton(
-                                onClick = onWeeklyPlanClick,
+                                onClick = { onWeeklyPlanClick(todayDayNum) },
                                 colors = IconButtonDefaults.iconButtonColors(
                                     containerColor = MaterialTheme.colorScheme.surface
                                 ),
@@ -233,11 +237,7 @@ fun WorkoutListScreen(
                                 Spacer(modifier = Modifier.height(MaterialTheme.spacing.xxs))
 
                                 Text(
-                                    text = listOfNotNull(
-                                        WorkoutStrings.minutesCount(recommendedWorkout.durationMinutes),
-                                        WorkoutStrings.exercisesCount(recommendedWorkout.exerciseCount),
-                                        recommendedWorkout.description
-                                    ).joinToString(" • "),
+                                    text = "${recommendedWorkout.durationMinutes} min • ${recommendedWorkout.exerciseCount} exercises • ${recommendedWorkout.description ?: "Focus: Strength"}",
                                     style = MaterialTheme.typography.bodyMedium,
                                     color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.85f)
                                 )
@@ -287,10 +287,10 @@ fun WorkoutListScreen(
                             textColor = MaterialTheme.colorScheme.onSurface
                         )
 
-                        // Card 3: This Week's Activity (Clicking navigates to Weekly Plan)
+                        // Card 3: This Week's Activity (Clicking any day takes you directly to that day's workout)
                         AppCard(
                             style = AppCardStyle.Surface,
-                            onClick = onWeeklyPlanClick
+                            onClick = { onWeeklyPlanClick(todayDayNum) }
                         ) {
                             Column(modifier = Modifier.fillMaxWidth()) {
                                 Row(
@@ -320,20 +320,28 @@ fun WorkoutListScreen(
                                     horizontalArrangement = Arrangement.SpaceBetween,
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
-                                    val activityDays = listOf(
-                                        Pair("M", "filled"),
-                                        Pair("T", "filled"),
-                                        Pair("W", "zzz"),
-                                        Pair("T", "filled"),
-                                        Pair("F", "fit"),
-                                        Pair("S", "zzz"),
-                                        Pair("S", "zzz")
-                                    )
+                                    val activityDays = remember(currentCalendar) {
+                                        val cal = Calendar.getInstance()
+                                        cal.firstDayOfWeek = Calendar.MONDAY
+                                        cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
+                                        val daysList = mutableListOf<Triple<String, String, String>>()
+                                        val dayNames = listOf("M", "T", "W", "T", "F", "S", "S")
+                                        val statuses = listOf("filled", "filled", "zzz", "filled", "fit", "zzz", "zzz")
+                                        dayNames.forEachIndexed { idx, name ->
+                                            val dayNum = cal.get(Calendar.DAY_OF_MONTH).toString()
+                                            daysList.add(Triple(name, dayNum, statuses[idx]))
+                                            cal.add(Calendar.DAY_OF_MONTH, 1)
+                                        }
+                                        daysList
+                                    }
 
-                                    activityDays.forEach { (day, status) ->
-                                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                    activityDays.forEach { (dayName, dayNum, status) ->
+                                        Column(
+                                            horizontalAlignment = Alignment.CenterHorizontally,
+                                            modifier = Modifier.clickable { onWeeklyPlanClick(dayNum) }
+                                        ) {
                                             Text(
-                                                text = day,
+                                                text = dayName,
                                                 style = MaterialTheme.typography.labelSmall,
                                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                                             )
@@ -409,12 +417,12 @@ fun WorkoutListScreen(
                                         .fillMaxWidth()
                                         .height(IntrinsicSize.Min),
                                     horizontalArrangement = Arrangement.SpaceBetween,
-                                    verticalAlignment = Alignment.CenterVertically
+                                    verticalAlignment = Alignment.Top
                                 ) {
                                     AppStat(
                                         label = "STREAK",
                                         value = "4 Days",
-                                        modifier = Modifier.weight(1f),
+                                        modifier = Modifier.weight(0.9f),
                                         valueStyle = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                                         valueColor = MaterialTheme.colorScheme.onSurface
                                     )
@@ -429,8 +437,8 @@ fun WorkoutListScreen(
                                     AppStat(
                                         label = "WORKOUTS",
                                         value = "3/5 complete",
-                                        modifier = Modifier.weight(1.1f),
-                                        valueStyle = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                                        modifier = Modifier.weight(1.3f),
+                                        valueStyle = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
                                         valueColor = MaterialTheme.colorScheme.onSurface
                                     )
 
@@ -444,7 +452,7 @@ fun WorkoutListScreen(
                                     AppStat(
                                         label = "VOL. LIFTED",
                                         value = "8,420 kg",
-                                        modifier = Modifier.weight(1.2f),
+                                        modifier = Modifier.weight(1.1f),
                                         valueStyle = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                                         valueColor = MaterialTheme.colorScheme.onSurface
                                     )

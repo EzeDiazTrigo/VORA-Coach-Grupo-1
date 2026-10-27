@@ -19,5 +19,5 @@ data class WorkoutSummaryDto(
     @SerializedName("description")
     val description: String? = null
 ) {
-    fun toDomain(): Workout = toEntity().toDomain()
+    fun toDomain(): Workout? = toEntity()?.toDomain()
 }
