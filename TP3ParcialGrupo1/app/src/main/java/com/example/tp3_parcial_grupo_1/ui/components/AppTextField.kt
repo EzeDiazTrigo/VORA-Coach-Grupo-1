@@ -18,6 +18,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -41,7 +42,8 @@ fun AppTextField(
     visualTransformation: VisualTransformation = VisualTransformation.None,
     singleLine: Boolean = true,
     uppercaseLabel: Boolean = false,
-    labelAction: (@Composable () -> Unit)? = null
+    labelAction: (@Composable () -> Unit)? = null,
+    shape: Shape = MaterialTheme.shapes.small
 ) {
     val colors = MaterialTheme.colorScheme
     Column(modifier = modifier.fillMaxWidth()) {
@@ -70,7 +72,7 @@ fun AppTextField(
             singleLine = singleLine,
             keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
             visualTransformation = visualTransformation,
-            shape = MaterialTheme.shapes.small,
+            shape = shape,
             colors = OutlinedTextFieldDefaults.colors(
                 focusedContainerColor = colors.surface,
                 unfocusedContainerColor = colors.surface,
@@ -90,7 +92,8 @@ fun PasswordTextField(
     modifier: Modifier = Modifier,
     placeholder: String? = null,
     errorMessage: String? = null,
-    labelAction: (@Composable () -> Unit)? = null
+    labelAction: (@Composable () -> Unit)? = null,
+    shape: Shape = MaterialTheme.shapes.small
 ) {
     var isVisible by rememberSaveable { mutableStateOf(false) }
     AppTextField(
@@ -114,7 +117,8 @@ fun PasswordTextField(
         errorMessage = errorMessage,
         keyboardType = KeyboardType.Password,
         visualTransformation = if (isVisible) VisualTransformation.None else PasswordVisualTransformation(),
-        labelAction = labelAction
+        labelAction = labelAction,
+        shape = shape
     )
 }
 

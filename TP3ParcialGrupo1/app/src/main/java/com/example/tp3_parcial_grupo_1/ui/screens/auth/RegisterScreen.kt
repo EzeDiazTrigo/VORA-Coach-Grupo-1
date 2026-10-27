@@ -23,8 +23,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.tp3_parcial_grupo_1.ui.components.AppButton
-import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
@@ -153,12 +151,7 @@ fun RegisterScreen(
                     }
                     AuthTextLink(AuthStrings.PasswordHelp, onDemoNoticeClick)
                 }
-                AppButton(
-                    text = AuthStrings.SignUp,
-                    onClick = onSignUpClick,
-                    style = AppButtonStyle.Accent,
-                    trailingIcon = AppIcons.ArrowRight
-                )
+                AuthSubmitButton(AuthStrings.SignUp, onSignUpClick)
                 LabeledDivider(AuthStrings.OrSignUpWith)
                 SocialButtonsRow(onClick = onDemoNoticeClick)
             }

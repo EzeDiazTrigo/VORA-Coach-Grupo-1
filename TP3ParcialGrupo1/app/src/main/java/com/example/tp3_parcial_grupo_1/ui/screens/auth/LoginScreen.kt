@@ -9,7 +9,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -103,7 +102,8 @@ fun LoginScreen(
                     placeholder = AuthStrings.EmailPlaceholder,
                     leadingIcon = AppIcons.FieldMail,
                     errorMessage = uiState.emailError,
-                    keyboardType = KeyboardType.Email
+                    keyboardType = KeyboardType.Email,
+                    shape = MaterialTheme.shapes.medium
                 )
                 PasswordTextField(
                     value = uiState.password,
@@ -111,14 +111,10 @@ fun LoginScreen(
                     label = AuthStrings.Password,
                     placeholder = AuthStrings.PasswordPlaceholder,
                     errorMessage = uiState.passwordError,
-                    labelAction = { ForgotPasswordLink(onDemoNoticeClick) }
+                    labelAction = { ForgotPasswordLink(onDemoNoticeClick) },
+                    shape = MaterialTheme.shapes.medium
                 )
-                AppButton(
-                    text = AuthStrings.SignIn,
-                    onClick = onSignInClick,
-                    style = AppButtonStyle.Accent,
-                    trailingIcon = AppIcons.ArrowRight
-                )
+                AuthSubmitButton(AuthStrings.SignIn, onSignInClick)
                 LabeledDivider(AuthStrings.OrContinueWith)
                 SocialButtonsRow(onClick = onDemoNoticeClick)
             }

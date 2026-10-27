@@ -23,6 +23,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.example.tp3_parcial_grupo_1.ui.components.AppButton
+import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
 import com.example.tp3_parcial_grupo_1.ui.components.AppTextLink
@@ -89,6 +91,20 @@ fun LanguagePill(onClick: () -> Unit, modifier: Modifier = Modifier) {
             AppIcon(AppIcons.ChevronDown, contentDescription = null, size = MaterialTheme.iconSizes.sm, tint = contentColor)
         }
     }
+}
+
+// Botón principal de Login y Registro: esquina de 16 dp y texto de 16 sp Bold, como en Figma.
+@Composable
+fun AuthSubmitButton(text: String, onClick: () -> Unit, modifier: Modifier = Modifier) {
+    AppButton(
+        text = text,
+        onClick = onClick,
+        modifier = modifier,
+        style = AppButtonStyle.Accent,
+        trailingIcon = AppIcons.ArrowRight,
+        shape = MaterialTheme.shapes.medium,
+        textStyle = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold)
+    )
 }
 
 private val SocialButtonHeight = 46.dp
