@@ -14,30 +14,38 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.tp3_parcial_grupo_1.R
 import com.example.tp3_parcial_grupo_1.model.Meal
 import com.example.tp3_parcial_grupo_1.model.MealType
+import com.example.tp3_parcial_grupo_1.ui.components.AppBackButton
+import com.example.tp3_parcial_grupo_1.ui.components.AppButton
+import com.example.tp3_parcial_grupo_1.ui.components.AppButtonDefaults
+import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
+import com.example.tp3_parcial_grupo_1.ui.components.AppStat
+import com.example.tp3_parcial_grupo_1.ui.components.AppStatDefaults
+import com.example.tp3_parcial_grupo_1.ui.components.AppTopBar
 import com.example.tp3_parcial_grupo_1.ui.strings.Strings
 import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
-import kotlinx.coroutines.launch
+import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlinx.coroutines.launch
 
 @Composable
 fun ReviewMealScreen(
-    onNavigate: (String) -> Unit,
     onBackClick: () -> Unit,
     onSaveMeal: (Meal) -> Unit
 ) {
-    val currentDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+    // El idioma se lee de la configuración para que Compose recomponga si cambia.
+    val locale = LocalConfiguration.current.locales[0]
+    val currentDate = remember(locale) { SimpleDateFormat("yyyy-MM-dd", locale).format(Date()) }
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
     val showDemoNotice: () -> Unit = { scope.launch { snackbarHostState.showSnackbar(Strings.DemoMode) } }
@@ -53,23 +61,13 @@ fun ReviewMealScreen(
                 .verticalScroll(rememberScrollState())
                 .padding(20.dp)
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                IconButton(onClick = onBackClick) {
-                    Icon(painter = painterResource(id = R.drawable.ic_chevron_left), contentDescription = "Back", tint = MaterialTheme.colorScheme.onBackground)
-                }
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = "Review Meal",
-                    style = MaterialTheme.typography.headlineMedium.copy(
-                        color = MaterialTheme.colorScheme.onBackground,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 24.sp
-                    )
-                )
-            }
+            AppTopBar(
+                title = "Review Meal",
+                navigation = { AppBackButton(onClick = onBackClick) },
+                titleStyle = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
+                titleColor = MaterialTheme.colorScheme.onBackground,
+                spacing = MaterialTheme.spacing.sm
+            )
 
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -129,16 +127,41 @@ fun ReviewMealScreen(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        MacroTotalItem(label = "PROTEIN", value = "38g")
-                        MacroTotalItem(label = "CARBS", value = "54g")
-                        MacroTotalItem(label = "FAT", value = "14g")
+                        AppStat(
+                            label = "PROTEIN",
+                            value = "38g",
+                            labelStyle = AppStatDefaults.MacroLabelStyle,
+                            labelColor = MaterialTheme.colorScheme.secondary,
+                            valueStyle = AppStatDefaults.MacroValueStyle,
+                            valueColor = MaterialTheme.colorScheme.surface,
+                            spacing = 2.dp
+                        )
+                        AppStat(
+                            label = "CARBS",
+                            value = "54g",
+                            labelStyle = AppStatDefaults.MacroLabelStyle,
+                            labelColor = MaterialTheme.colorScheme.secondary,
+                            valueStyle = AppStatDefaults.MacroValueStyle,
+                            valueColor = MaterialTheme.colorScheme.surface,
+                            spacing = 2.dp
+                        )
+                        AppStat(
+                            label = "FAT",
+                            value = "14g",
+                            labelStyle = AppStatDefaults.MacroLabelStyle,
+                            labelColor = MaterialTheme.colorScheme.secondary,
+                            valueStyle = AppStatDefaults.MacroValueStyle,
+                            valueColor = MaterialTheme.colorScheme.surface,
+                            spacing = 2.dp
+                        )
                     }
                 }
             }
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            Button(
+            AppButton(
+                text = "Add to Lunch",
                 onClick = {
                     val meal = Meal(
                         name = "Lunch",
@@ -152,24 +175,20 @@ fun ReviewMealScreen(
                     )
                     onSaveMeal(meal)
                 },
-                modifier = Modifier.fillMaxWidth(),
-                shape = PillShape,
-                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary, contentColor = MaterialTheme.colorScheme.surface)
-            ) {
-                Text(text = "Add to Lunch", fontWeight = FontWeight.Bold, fontSize = 15.sp)
-            }
+                minHeight = AppButtonDefaults.MediumHeight,
+                textStyle = AppButtonDefaults.BoldTextStyle
+            )
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            OutlinedButton(
+            AppButton(
+                text = "Save without logging",
                 onClick = onBackClick,
-                modifier = Modifier.fillMaxWidth(),
-                shape = PillShape,
-                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
-                colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.onBackground)
-            ) {
-                Text(text = "Save without logging", fontWeight = FontWeight.Bold, fontSize = 15.sp)
-            }
+                style = AppButtonStyle.Outlined,
+                textColor = MaterialTheme.colorScheme.onBackground,
+                minHeight = AppButtonDefaults.MediumHeight,
+                textStyle = AppButtonDefaults.BoldTextStyle
+            )
         }
     }
 }
@@ -260,11 +279,3 @@ private fun QuantityStepButton(symbol: String, description: String, onClick: () 
     }
 }
 
-@Composable
-fun MacroTotalItem(label: String, value: String) {
-    Column {
-        Text(text = label, style = MaterialTheme.typography.labelSmall.copy(color = MaterialTheme.colorScheme.secondary, fontSize = 10.sp, fontWeight = FontWeight.Bold))
-        Spacer(modifier = Modifier.height(2.dp))
-        Text(text = value, style = MaterialTheme.typography.titleMedium.copy(color = MaterialTheme.colorScheme.surface, fontSize = 16.sp, fontWeight = FontWeight.Bold))
-    }
-}

@@ -7,9 +7,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.ArrowForward
-import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -27,6 +24,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.tp3_parcial_grupo_1.ui.components.AppButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppCard
+import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
 import com.example.tp3_parcial_grupo_1.ui.components.AppTextField
 import com.example.tp3_parcial_grupo_1.ui.components.PasswordTextField
@@ -97,7 +95,7 @@ fun LoginScreen(
                     onValueChange = onEmailChange,
                     label = AuthStrings.Email,
                     placeholder = AuthStrings.EmailPlaceholder,
-                    leadingIcon = Icons.Outlined.Email,
+                    leadingIcon = AppIcons.FieldMail,
                     errorMessage = uiState.emailError,
                     keyboardType = KeyboardType.Email
                 )
@@ -113,7 +111,7 @@ fun LoginScreen(
                     text = AuthStrings.SignIn,
                     onClick = onSignInClick,
                     style = AppButtonStyle.Accent,
-                    trailingIcon = Icons.AutoMirrored.Outlined.ArrowForward
+                    trailingIcon = AppIcons.ArrowRight
                 )
                 Text(
                     AuthStrings.OrContinueWith,

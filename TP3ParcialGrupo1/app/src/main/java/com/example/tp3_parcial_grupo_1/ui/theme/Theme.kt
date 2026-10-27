@@ -9,6 +9,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 fun AppTheme(content: @Composable () -> Unit) {
     CompositionLocalProvider(
         LocalSpacing provides Spacing(),
+        LocalIconSizes provides IconSizes(),
         LocalExtendedColors provides ExtendedColors()
     ) {
         MaterialTheme(

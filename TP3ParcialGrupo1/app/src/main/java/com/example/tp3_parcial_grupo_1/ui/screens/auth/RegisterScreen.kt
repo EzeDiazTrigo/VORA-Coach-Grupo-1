@@ -9,12 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.ArrowForward
-import androidx.compose.material.icons.outlined.CheckCircle
-import androidx.compose.material.icons.outlined.Email
-import androidx.compose.material.icons.outlined.Person
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -31,12 +25,14 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.tp3_parcial_grupo_1.ui.components.AppButton
-import com.example.tp3_parcial_grupo_1.ui.components.VoraBrandMarkStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppCard
+import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
+import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
 import com.example.tp3_parcial_grupo_1.ui.components.AppTextField
 import com.example.tp3_parcial_grupo_1.ui.components.PasswordTextField
+import com.example.tp3_parcial_grupo_1.ui.components.VoraBrandMarkStyle
 import com.example.tp3_parcial_grupo_1.ui.strings.AuthStrings
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
@@ -114,7 +110,7 @@ fun RegisterScreen(
                     onValueChange = onFullNameChange,
                     label = AuthStrings.FullName,
                     placeholder = AuthStrings.FullNamePlaceholder,
-                    leadingIcon = Icons.Outlined.Person,
+                    leadingIcon = AppIcons.User,
                     errorMessage = uiState.fullNameError
                 )
                 AppTextField(
@@ -122,7 +118,7 @@ fun RegisterScreen(
                     onValueChange = onEmailChange,
                     label = AuthStrings.Email,
                     placeholder = AuthStrings.EmailPlaceholder,
-                    leadingIcon = Icons.Outlined.Email,
+                    leadingIcon = AppIcons.FieldMail,
                     errorMessage = uiState.emailError,
                     keyboardType = KeyboardType.Email
                 )
@@ -142,10 +138,10 @@ fun RegisterScreen(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xs)
                     ) {
-                        Icon(
-                            Icons.Outlined.CheckCircle,
+                        AppIcon(
+                            AppIcons.CheckCircle,
                             contentDescription = null,
-                            modifier = Modifier.size(PasswordHintIconSize),
+                            size = PasswordHintIconSize,
                             tint = if (uiState.hasSecurePassword) MaterialTheme.extendedColors.success else MaterialTheme.colorScheme.outline
                         )
                         Text(AuthStrings.SecureCharacters, style = MaterialTheme.typography.bodySmall)
@@ -156,7 +152,7 @@ fun RegisterScreen(
                     text = AuthStrings.SignUp,
                     onClick = onSignUpClick,
                     style = AppButtonStyle.Accent,
-                    trailingIcon = Icons.AutoMirrored.Outlined.ArrowForward
+                    trailingIcon = AppIcons.ArrowRight
                 )
                 Text(
                     AuthStrings.OrSignUpWith,

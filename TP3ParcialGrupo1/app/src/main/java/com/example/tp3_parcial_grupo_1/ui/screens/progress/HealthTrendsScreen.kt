@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -20,15 +19,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.tp3_parcial_grupo_1.R
 import com.example.tp3_parcial_grupo_1.data.demo.ProgressDemoData
 import com.example.tp3_parcial_grupo_1.ui.components.AppCard
+import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
+import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
+import com.example.tp3_parcial_grupo_1.ui.components.AppSectionLabel
+import com.example.tp3_parcial_grupo_1.ui.components.AppSectionLabelStyle
 import com.example.tp3_parcial_grupo_1.ui.strings.ProgressStrings
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
@@ -87,7 +88,7 @@ fun HealthTrendsScreen(
             StatStripCard(uiState.stats, horizontalAlignment = Alignment.Start)
             StepsTrendCard(uiState)
             VoraQuoteCard(uiState.insight)
-            SectionLabel(ProgressStrings.HabitSignals)
+            AppSectionLabel(ProgressStrings.HabitSignals, style = AppSectionLabelStyle.Title)
             uiState.signals.forEach { signal -> HabitSignalCard(signal) }
         }
     }
@@ -113,24 +114,24 @@ private fun HabitSignalCard(signal: HabitSignal) {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md)
         ) {
-            Icon(
-                painterResource(signal.area.iconRes()),
+            AppIcon(
+                signal.area.icon(),
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(SignalIconSize)
+                size = SignalIconSize
             )
             Text(signal.name, style = MaterialTheme.typography.titleSmall, modifier = Modifier.weight(1f))
             Text(signal.trend.label(), style = MaterialTheme.typography.bodyLarge, color = trendColor)
-            Icon(painterResource(signal.trend.iconRes()), contentDescription = null, tint = trendColor, modifier = Modifier.size(TrendIconSize))
+            AppIcon(signal.trend.icon(), contentDescription = null, tint = trendColor, size = TrendIconSize)
         }
     }
 }
 
-private fun HabitArea.iconRes(): Int = when (this) {
-    HabitArea.Sleep -> R.drawable.ic_bed
-    HabitArea.Movement -> R.drawable.ic_navigation
-    HabitArea.Workout -> R.drawable.ic_dumbbell
-    HabitArea.Protein -> R.drawable.ic_apple
+private fun HabitArea.icon(): AppIcons = when (this) {
+    HabitArea.Sleep -> AppIcons.Bed
+    HabitArea.Movement -> AppIcons.Navigation
+    HabitArea.Workout -> AppIcons.Dumbbell
+    HabitArea.Protein -> AppIcons.Apple
 }
 
 private fun HabitTrend.label(): String = when (this) {
@@ -138,9 +139,9 @@ private fun HabitTrend.label(): String = when (this) {
     HabitTrend.Consistent -> ProgressStrings.Consistent
 }
 
-private fun HabitTrend.iconRes(): Int = when (this) {
-    HabitTrend.Improving -> R.drawable.ic_trending_up
-    HabitTrend.Consistent -> R.drawable.ic_activity
+private fun HabitTrend.icon(): AppIcons = when (this) {
+    HabitTrend.Improving -> AppIcons.TrendingUp
+    HabitTrend.Consistent -> AppIcons.Activity
 }
 
 @Composable

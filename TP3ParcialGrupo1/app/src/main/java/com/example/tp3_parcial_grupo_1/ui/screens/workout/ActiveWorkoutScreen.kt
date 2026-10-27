@@ -1,13 +1,12 @@
 package com.example.tp3_parcial_grupo_1.ui.screens.workout
 
-import android.app.Activity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -15,8 +14,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -25,7 +24,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableDoubleStateOf
 import androidx.compose.runtime.mutableIntStateOf
@@ -35,15 +33,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.view.WindowCompat
 import com.example.tp3_parcial_grupo_1.model.Workout
 import com.example.tp3_parcial_grupo_1.ui.components.AppButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
+import com.example.tp3_parcial_grupo_1.ui.components.AppCard
+import com.example.tp3_parcial_grupo_1.ui.components.AppCardStyle
+import com.example.tp3_parcial_grupo_1.ui.components.LightSystemBarIcons
 import com.example.tp3_parcial_grupo_1.ui.components.VoraLogo
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
 import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
@@ -60,17 +59,7 @@ fun ActiveWorkoutScreen(
     onFinishWorkoutClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val view = LocalView.current
-    if (!view.isInEditMode) {
-        SideEffect {
-            val window = (view.context as Activity).window
-            window.statusBarColor = android.graphics.Color.parseColor("#123D35")
-            window.navigationBarColor = android.graphics.Color.parseColor("#123D35")
-            window.isNavigationBarContrastEnforced = false
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = false
-            WindowCompat.getInsetsController(window, view).isAppearanceLightNavigationBars = false
-        }
-    }
+    LightSystemBarIcons()
 
     var activeSetIndex by remember { mutableIntStateOf(1) } // 0: Set 1, 1: Set 2, 2: Set 3
     var weightKg by remember { mutableDoubleStateOf(45.0) }
@@ -98,7 +87,7 @@ fun ActiveWorkoutScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .statusBarsPadding()
+                .safeDrawingPadding()
                 .padding(horizontal = MaterialTheme.spacing.screen, vertical = MaterialTheme.spacing.md)
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md)
@@ -152,7 +141,11 @@ fun ActiveWorkoutScreen(
             }
 
             // Card 1: CURRENT VOLUME WORK Matrix
-            DarkWorkoutCard {
+            AppCard(
+                style = AppCardStyle.Translucent,
+                contentPadding = PaddingValues(horizontal = MaterialTheme.spacing.md, vertical = 10.dp),
+                spacing = 0.dp
+            ) {
                 Column(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
@@ -213,7 +206,11 @@ fun ActiveWorkoutScreen(
             }
 
             // Card 2: LAST SESSION & Weight Selector
-            DarkWorkoutCard {
+            AppCard(
+                style = AppCardStyle.Translucent,
+                contentPadding = PaddingValues(horizontal = MaterialTheme.spacing.md, vertical = 10.dp),
+                spacing = 0.dp
+            ) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -339,7 +336,11 @@ fun ActiveWorkoutScreen(
             }
 
             // Resting Timer Card [350 Fill x 47 Hug]
-            DarkWorkoutCard {
+            AppCard(
+                style = AppCardStyle.Translucent,
+                contentPadding = PaddingValues(horizontal = MaterialTheme.spacing.md, vertical = 10.dp),
+                spacing = 0.dp
+            ) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -371,7 +372,7 @@ fun ActiveWorkoutScreen(
                         Box(
                             modifier = Modifier
                                 .clip(PillShape)
-                                .background(Color(0xFF65D6B0))
+                                .background(MaterialTheme.colorScheme.secondary)
                                 .clickable { restTimeSeconds = 0 }
                                 .padding(horizontal = MaterialTheme.spacing.md, vertical = 4.dp)
                         ) {
@@ -379,7 +380,7 @@ fun ActiveWorkoutScreen(
                                 text = "Skip",
                                 style = MaterialTheme.typography.labelSmall,
                                 fontWeight = FontWeight.Bold,
-                                color = Color(0xFF123D35)
+                                color = MaterialTheme.colorScheme.onSecondary
                             )
                         }
                     }
@@ -387,7 +388,11 @@ fun ActiveWorkoutScreen(
             }
 
             // VORA Coach Note Card
-            DarkWorkoutCard {
+            AppCard(
+                style = AppCardStyle.Translucent,
+                contentPadding = PaddingValues(horizontal = MaterialTheme.spacing.md, vertical = 10.dp),
+                spacing = 0.dp
+            ) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -437,23 +442,6 @@ fun ActiveWorkoutScreen(
 
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.md))
         }
-    }
-}
-
-@Composable
-private fun DarkWorkoutCard(
-    modifier: Modifier = Modifier,
-    content: @Composable ColumnScope.() -> Unit
-) {
-    Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .clip(MaterialTheme.shapes.large)
-            .background(MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.12f))
-            .border(1.dp, Color.White.copy(alpha = 0.1216f), MaterialTheme.shapes.large)
-            .padding(horizontal = MaterialTheme.spacing.md, vertical = 10.dp)
-    ) {
-        Column(content = content)
     }
 }
 

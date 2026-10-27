@@ -1,9 +1,5 @@
 package com.example.tp3_parcial_grupo_1.ui.components
 
-import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Icon
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.Icons
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -13,27 +9,28 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
 import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
+import com.example.tp3_parcial_grupo_1.ui.theme.iconSizes
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 
 private val ChipBorderWidth = 1.dp
 
-private val CheckIconSize = 16.dp
-
 // Mint: selección única con relleno menta; Dark: relleno verde oscuro; Outlined: selección múltiple con borde menta y check.
 enum class AppChipStyle { Mint, Dark, Outlined }
 
-// Chip de selección con radio completo.
+// Chip de selección; por defecto en píldora, [shape] permite la esquina de 12 dp de algunos grupos de Figma.
 @Composable
 fun AppChip(
     text: String,
     selected: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    style: AppChipStyle = AppChipStyle.Mint
+    style: AppChipStyle = AppChipStyle.Mint,
+    shape: Shape = PillShape
 ) {
     val colors = MaterialTheme.colorScheme
     val selectedContainer = when (style) {
@@ -48,9 +45,9 @@ fun AppChip(
         onClick = onClick,
         label = { Text(text, style = MaterialTheme.typography.labelLarge) },
         modifier = modifier,
-        shape = PillShape,
+        shape = shape,
         trailingIcon = if (style == AppChipStyle.Outlined && selected) {
-            { Icon(Icons.Filled.Check, contentDescription = null, modifier = Modifier.size(CheckIconSize)) }
+            { AppIcon(AppIcons.Check, contentDescription = null, size = MaterialTheme.iconSizes.md) }
         } else {
             null
         },
@@ -83,6 +80,7 @@ private fun AppChipPreview() {
             AppChip(text = "4 days", selected = true, onClick = {}, style = AppChipStyle.Dark)
             AppChip(text = "Chicken", selected = true, onClick = {}, style = AppChipStyle.Outlined)
             AppChip(text = "Cardio", selected = false, onClick = {})
+            AppChip(text = "Balanced", selected = false, onClick = {}, shape = MaterialTheme.shapes.small)
         }
     }
 }

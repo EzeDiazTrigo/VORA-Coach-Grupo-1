@@ -25,8 +25,7 @@ fun AppNavHost(
     val currentEntry by navController.currentBackStackEntryAsState()
     val currentRoute = currentEntry?.destination?.route
     val selectedTab = bottomBarSelection(currentRoute)
-    // El Asistente pinta su propio fondo (verde en escucha/respuesta) detrás de las barras del sistema.
-    val drawsBehindSystemBars = currentRoute in fullScreenRoutes
+    val drawsBehindSystemBars = drawsBehindSystemBars(currentRoute)
 
     Scaffold(
         modifier = modifier.fillMaxSize(),
@@ -52,7 +51,6 @@ fun AppNavHost(
             homeGraph(navController)
             coachGraph(navController)
             workoutGraph(navController)
-            workoutGraph(navController)
             nutritionGraph(navController)
             progressGraph(navController)
             profileGraph(navController)
@@ -60,5 +58,12 @@ fun AppNavHost(
     }
 }
 
-// Pantallas que manejan sus propios insets (safeDrawingPadding) en lugar del Scaffold.
-private val fullScreenRoutes = setOf(AppDestination.Coach.route)
+// Pantallas que manejan sus propios insets (safeDrawingPadding) en lugar del Scaffold: el Asistente,
+// Pre Workout y Active Workout pintan su fondo verde detrás de las barras del sistema.
+private val fullScreenRoutes = setOf(
+    AppDestination.Coach.route,
+    AppDestination.PreWorkout.route,
+    AppDestination.ActiveWorkout.route
+)
+
+internal fun drawsBehindSystemBars(route: String?): Boolean = route in fullScreenRoutes

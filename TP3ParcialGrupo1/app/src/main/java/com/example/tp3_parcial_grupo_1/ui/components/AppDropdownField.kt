@@ -3,11 +3,8 @@ package com.example.tp3_parcial_grupo_1.ui.components
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.KeyboardArrowDown
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -16,8 +13,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
+import com.example.tp3_parcial_grupo_1.ui.theme.iconSizes
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 
 // Campo de selección: se ve como un AppTextField y abre un menú con las opciones.
@@ -37,10 +38,15 @@ fun AppDropdownField(
             onValueChange = {},
             label = label,
             uppercaseLabel = uppercaseLabel,
-            trailingIcon = { Icon(Icons.Outlined.KeyboardArrowDown, contentDescription = null) }
+            trailingIcon = { AppIcon(AppIcons.ChevronDown, contentDescription = null, size = MaterialTheme.iconSizes.sm) }
         )
-        // Captura el toque para abrir el menú en lugar de editar el texto.
-        Box(Modifier.matchParentSize().clickable { expanded = true })
+        // Captura el toque para abrir el menú en lugar de editar el texto; el lector de pantalla lee etiqueta y valor.
+        Box(
+            Modifier
+                .matchParentSize()
+                .semantics { contentDescription = "$label, $selected" }
+                .clickable(role = Role.DropdownList) { expanded = true }
+        )
         DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
             options.forEach { option ->
                 DropdownMenuItem(

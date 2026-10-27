@@ -3,36 +3,34 @@ package com.example.tp3_parcial_grupo_1.ui.screens.nutrition
 import android.app.DatePickerDialog
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.example.tp3_parcial_grupo_1.R
 import com.example.tp3_parcial_grupo_1.model.Meal
 import com.example.tp3_parcial_grupo_1.model.MealType
 import com.example.tp3_parcial_grupo_1.ui.components.AppButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppCardStyle
+import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
+import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
+import com.example.tp3_parcial_grupo_1.ui.components.AppNoticeCard
+import com.example.tp3_parcial_grupo_1.ui.components.AppPanelHeader
 import com.example.tp3_parcial_grupo_1.ui.components.MacroProgressBar
 import com.example.tp3_parcial_grupo_1.ui.components.ProgressRing
 import com.example.tp3_parcial_grupo_1.ui.components.VoraLogo
 import com.example.tp3_parcial_grupo_1.ui.strings.NutritionStrings
-import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
+import com.example.tp3_parcial_grupo_1.ui.theme.iconSizes
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 import java.text.SimpleDateFormat
 import java.util.*
@@ -40,7 +38,6 @@ import java.util.*
 @Composable
 fun NutritionDashboardScreen(
     uiState: MealUiState,
-    onNavigate: (String) -> Unit,
     onNavigateToAddFood: () -> Unit,
     onNavigateToHistory: () -> Unit,
     onNavigateToDetail: (Long) -> Unit,
@@ -132,11 +129,11 @@ fun NutritionDashboardScreen(
                             .clip(CircleShape)
                             .border(1.dp, MaterialTheme.colorScheme.outlineVariant, CircleShape)
                     ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_calendar),
+                        AppIcon(
+                            AppIcons.Calendar,
                             contentDescription = "Calendar",
                             tint = MaterialTheme.colorScheme.onBackground,
-                            modifier = Modifier.size(20.dp)
+                            size = 20.dp
                         )
                     }
                 }
@@ -229,31 +226,12 @@ fun NutritionDashboardScreen(
 
             item {
                 // Advice Banner
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clip(RoundedCornerShape(12.dp))
-                        .background(MaterialTheme.extendedColors.mintSoft)
-                        .border(1.dp, MaterialTheme.colorScheme.secondary, RoundedCornerShape(12.dp))
-                        .padding(MaterialTheme.spacing.md)
-                ) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_sparkles),
-                            contentDescription = "Advice",
-                            tint = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.size(20.dp)
-                        )
-                        Spacer(modifier = Modifier.width(MaterialTheme.spacing.md))
-                        Text(
-                            text = "You're on track today. A protein-rich dinner would help you reach your target.",
-                            style = MaterialTheme.typography.bodyMedium.copy(
-                                color = MaterialTheme.colorScheme.primary,
-                                fontWeight = FontWeight.Medium
-                            )
-                        )
+                AppNoticeCard(
+                    text = "You're on track today. A protein-rich dinner would help you reach your target.",
+                    leading = {
+                        AppIcon(AppIcons.Sparkles, contentDescription = null, size = MaterialTheme.iconSizes.xl, tint = MaterialTheme.colorScheme.primary)
                     }
-                }
+                )
             }
 
             item {
@@ -302,17 +280,13 @@ fun NutritionDashboardScreen(
                 // Tell Vora what you ate Card (Panel style)
                 AppCard(style = AppCardStyle.Panel) {
                     Column(verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md)) {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            VoraLogo(size = 28.dp, glowAlpha = 0.3f)
-                            Spacer(modifier = Modifier.width(MaterialTheme.spacing.sm))
-                            Text(
-                                text = NutritionStrings.tellVoraTitle,
-                                style = MaterialTheme.typography.titleMedium.copy(
-                                    color = MaterialTheme.colorScheme.onPrimary,
-                                    fontWeight = FontWeight.Bold
-                                )
-                            )
-                        }
+                        AppPanelHeader(
+                            title = NutritionStrings.tellVoraTitle,
+                            orb = { VoraLogo(size = 28.dp, glowAlpha = 0.3f) },
+                            titleStyle = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                            titleColor = MaterialTheme.colorScheme.onPrimary,
+                            spacing = MaterialTheme.spacing.sm
+                        )
                         Text(
                             text = NutritionStrings.tellVoraSubtitle,
                             style = MaterialTheme.typography.bodyMedium.copy(

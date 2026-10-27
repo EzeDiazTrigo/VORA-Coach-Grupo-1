@@ -1,12 +1,11 @@
 package com.example.tp3_parcial_grupo_1.ui.screens.coach
 
-import androidx.annotation.DrawableRes
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,11 +15,8 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -28,14 +24,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.example.tp3_parcial_grupo_1.R
 import com.example.tp3_parcial_grupo_1.ui.components.AppButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
+import com.example.tp3_parcial_grupo_1.ui.components.AppCard
+import com.example.tp3_parcial_grupo_1.ui.components.AppCardStyle
+import com.example.tp3_parcial_grupo_1.ui.components.AppIconButton
+import com.example.tp3_parcial_grupo_1.ui.components.AppIconButtonColors
+import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
 import com.example.tp3_parcial_grupo_1.ui.components.InlineLoading
 import com.example.tp3_parcial_grupo_1.ui.components.VoraOrb
 import com.example.tp3_parcial_grupo_1.ui.strings.CoachStrings
@@ -54,19 +53,14 @@ internal fun CoachListeningContent(state: CoachUiState.Listening, actions: Coach
             }
         },
         bottom = {
-            Surface(
+            AppIconButton(
+                AppIcons.Mic,
+                contentDescription = CoachStrings.StopListening,
                 onClick = actions.onFinishListening,
-                modifier = Modifier.size(80.dp),
-                shape = CircleShape,
-                color = colors.secondary,
-                contentColor = colors.primary
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_mic),
-                    contentDescription = CoachStrings.StopListening,
-                    modifier = Modifier.padding(26.dp)
-                )
-            }
+                size = 80.dp,
+                iconSize = 28.dp,
+                colors = AppIconButtonColors(colors.secondary, colors.primary)
+            )
             TextButton(onClick = actions.onCancel) {
                 Text(Strings.Cancel, style = MaterialTheme.typography.labelLarge, color = colors.secondary)
             }
@@ -75,7 +69,7 @@ internal fun CoachListeningContent(state: CoachUiState.Listening, actions: Coach
         Spacer(Modifier.height(MaterialTheme.spacing.xxxl))
         VoraOrb(size = 170.dp, glowAlpha = 0.45f, showRipple = true)
         Spacer(Modifier.height(MaterialTheme.spacing.xxxl))
-        DarkCard {
+        CoachDarkCard {
             Text(CoachStrings.LiveTranscript, style = MaterialTheme.typography.labelSmall, color = colors.secondary)
             Text(
                 text = CoachStrings.quoted(state.transcript.trimEnd('.') + "…"),
@@ -112,7 +106,7 @@ internal fun CoachProcessingContent(state: CoachUiState.Processing, actions: Coa
         Spacer(Modifier.height(MaterialTheme.spacing.xxxl))
         Text(CoachStrings.Thinking, style = MaterialTheme.typography.labelLarge, color = colors.secondary)
         Spacer(Modifier.height(MaterialTheme.spacing.lg))
-        DarkCard(shape = MaterialTheme.shapes.medium, contentPadding = 18.dp) {
+        CoachDarkCard(shape = MaterialTheme.shapes.medium, contentPadding = 18.dp) {
             Text(
                 text = CoachStrings.quoted(state.transcript),
                 style = MaterialTheme.typography.bodyLarge,
@@ -143,7 +137,7 @@ internal fun CoachReplyContent(state: CoachUiState.Reply, actions: CoachActions)
         Spacer(Modifier.height(MaterialTheme.spacing.xxl))
         VoraOrb(size = 140.dp, glowAlpha = 0.4f, showRipple = true)
         Spacer(Modifier.height(MaterialTheme.spacing.xxl))
-        DarkCard {
+        CoachDarkCard {
             Text(
                 text = CoachStrings.quoted(state.reply),
                 style = MaterialTheme.typography.titleSmall,
@@ -158,9 +152,9 @@ internal fun CoachReplyContent(state: CoachUiState.Reply, actions: CoachActions)
             horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xl),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            PlaybackButton(R.drawable.ic_repeat_1, CoachStrings.Replay, actions.onReplay)
+            PlaybackButton(AppIcons.Repeat, CoachStrings.Replay, actions.onReplay)
             PlaybackButton(
-                icon = if (state.isPaused) R.drawable.ic_play else R.drawable.ic_pause,
+                icon = if (state.isPaused) AppIcons.Play else AppIcons.Pause,
                 description = if (state.isPaused) CoachStrings.Resume else CoachStrings.Pause,
                 onClick = actions.onTogglePause,
                 size = 56.dp,
@@ -168,7 +162,7 @@ internal fun CoachReplyContent(state: CoachUiState.Reply, actions: CoachActions)
                 container = colors.secondary,
                 content = colors.primary
             )
-            PlaybackButton(R.drawable.ic_stop_circle, CoachStrings.Stop, actions.onStop)
+            PlaybackButton(AppIcons.StopCircle, CoachStrings.Stop, actions.onStop)
         }
         // En Figma el botón va debajo de los controles, no anclado al borde inferior.
         Spacer(Modifier.height(MaterialTheme.spacing.lg))
@@ -206,7 +200,7 @@ private fun ReplyProgress(state: CoachUiState.Reply) {
 
 @Composable
 private fun PlaybackButton(
-    @DrawableRes icon: Int,
+    icon: AppIcons,
     description: String,
     onClick: () -> Unit,
     size: Dp = 40.dp,
@@ -214,17 +208,14 @@ private fun PlaybackButton(
     container: Color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.1f),
     content: Color = MaterialTheme.colorScheme.onPrimary
 ) {
-    Surface(
+    AppIconButton(
+        icon = icon,
+        contentDescription = description,
         onClick = onClick,
-        modifier = Modifier.size(size),
-        shape = CircleShape,
-        color = container,
-        contentColor = content
-    ) {
-        Box(contentAlignment = Alignment.Center) {
-            Icon(painterResource(icon), contentDescription = description, modifier = Modifier.size(iconSize))
-        }
-    }
+        size = size,
+        iconSize = iconSize,
+        colors = AppIconButtonColors(container, content)
+    )
 }
 
 // Estructura común de las pantallas oscuras: encabezado, contenido desplazable y controles abajo (opcionales).
@@ -258,23 +249,21 @@ private fun DarkLayout(
 }
 
 // Tarjeta translúcida de las pantallas oscuras (transcripción, respuesta).
+
+// Tarjeta translúcida del Asistente: Figma la dibuja más tenue (8 % y borde al 10 %) que la de Workout.
 @Composable
-private fun DarkCard(
+private fun CoachDarkCard(
     shape: Shape = MaterialTheme.shapes.large,
     contentPadding: Dp = MaterialTheme.spacing.screen,
     content: @Composable ColumnScope.() -> Unit
 ) {
     val onPrimary = MaterialTheme.colorScheme.onPrimary
-    Surface(
-        modifier = Modifier.fillMaxWidth(),
+    AppCard(
+        style = AppCardStyle.Translucent,
         shape = shape,
-        color = onPrimary.copy(alpha = 0.08f),
-        border = BorderStroke(1.dp, onPrimary.copy(alpha = 0.1f))
-    ) {
-        Column(
-            modifier = Modifier.padding(contentPadding),
-            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md),
-            content = content
-        )
-    }
+        contentPadding = PaddingValues(contentPadding),
+        containerColor = onPrimary.copy(alpha = 0.08f),
+        borderColor = onPrimary.copy(alpha = 0.1f),
+        content = content
+    )
 }

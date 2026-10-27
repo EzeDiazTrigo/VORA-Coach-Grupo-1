@@ -1,54 +1,49 @@
 package com.example.tp3_parcial_grupo_1.ui.screens.coach
 
-import android.app.Activity
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalView
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.view.WindowCompat
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.tp3_parcial_grupo_1.R
 import com.example.tp3_parcial_grupo_1.data.demo.CoachDemoData
+import com.example.tp3_parcial_grupo_1.ui.components.AppBackButton
+import com.example.tp3_parcial_grupo_1.ui.components.AppIconButtonDefaults
+import com.example.tp3_parcial_grupo_1.ui.components.AppTag
+import com.example.tp3_parcial_grupo_1.ui.components.AppTopBar
+import com.example.tp3_parcial_grupo_1.ui.components.LightSystemBarIcons
 import com.example.tp3_parcial_grupo_1.ui.strings.CoachStrings
 import com.example.tp3_parcial_grupo_1.ui.strings.Strings
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
-import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
+import com.example.tp3_parcial_grupo_1.ui.theme.iconSizes
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 import kotlinx.coroutines.launch
 
@@ -84,7 +79,7 @@ fun CoachRoute(
     val scope = rememberCoroutineScope()
 
     BackHandler(enabled = uiState !is CoachUiState.Idle) { viewModel.onBack() }
-    LightStatusBarIcons(enabled = uiState.isDark)
+    LightSystemBarIcons(enabled = uiState.isDark)
 
     val actions = remember(viewModel) {
         CoachActions(
@@ -166,22 +161,6 @@ fun CoachScreen(
 private val CoachUiState.isDark: Boolean
     get() = this is CoachUiState.Listening || this is CoachUiState.Processing || this is CoachUiState.Reply
 
-@Composable
-private fun LightStatusBarIcons(enabled: Boolean) {
-    val view = LocalView.current
-    if (view.isInEditMode) return
-    DisposableEffect(enabled) {
-        val window = (view.context as Activity).window
-        val controller = WindowCompat.getInsetsController(window, view)
-        controller.isAppearanceLightStatusBars = !enabled
-        controller.isAppearanceLightNavigationBars = !enabled
-        onDispose {
-            controller.isAppearanceLightStatusBars = true
-            controller.isAppearanceLightNavigationBars = true
-        }
-    }
-}
-
 // Encabezado de Figma: botón circular de 32 dp con chevron, título y un indicador a la derecha.
 @Composable
 internal fun CoachHeader(
@@ -193,62 +172,39 @@ internal fun CoachHeader(
     trailing: @Composable RowScope.() -> Unit = {}
 ) {
     val colors = MaterialTheme.colorScheme
-    val contentColor = if (dark) colors.onPrimary else colors.onSurface
-    Row(
+    AppTopBar(
+        title = title,
         modifier = modifier
-            .fillMaxWidth()
             .height(56.dp)
             .padding(horizontal = MaterialTheme.spacing.screen),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(10.dp)
-    ) {
-        Surface(
-            onClick = onBack,
-            modifier = Modifier.size(32.dp),
-            shape = CircleShape,
-            color = if (dark) colors.onPrimary.copy(alpha = 0.1f) else colors.surface,
-            contentColor = contentColor,
-            border = BorderStroke(1.dp, if (dark) colors.onPrimary.copy(alpha = 0.1f) else colors.outlineVariant)
-        ) {
-            Box(contentAlignment = Alignment.Center) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_chevron_left),
-                    contentDescription = Strings.Back,
-                    modifier = Modifier.size(14.dp)
-                )
-            }
-        }
-        Text(
-            text = title,
-            style = MaterialTheme.typography.titleSmall,
-            fontWeight = FontWeight.Medium,
-            color = contentColor
-        )
-        if (showOnlineDot) {
-            Box(
-                modifier = Modifier
-                    .size(6.dp)
-                    .background(colors.secondary, CircleShape)
+        titleStyle = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Medium),
+        titleColor = if (dark) colors.onPrimary else colors.onSurface,
+        spacing = 10.dp,
+        navigation = {
+            AppBackButton(
+                onClick = onBack,
+                size = 32.dp,
+                iconSize = MaterialTheme.iconSizes.sm,
+                colors = if (dark) AppIconButtonDefaults.onDark(withBorder = true) else AppIconButtonDefaults.outlined()
             )
-        }
-        Spacer(Modifier.weight(1f))
-        trailing()
-    }
+        },
+        titleAccessory = if (showOnlineDot) {
+            { Box(modifier = Modifier.size(6.dp).background(colors.secondary, CircleShape)) }
+        } else {
+            null
+        },
+        trailing = trailing
+    )
 }
 
 @Composable
 internal fun StatusPill(text: String, dark: Boolean) {
     val colors = MaterialTheme.colorScheme
-    Text(
+    AppTag(
         text = text,
-        style = MaterialTheme.typography.labelSmall,
-        color = if (dark) colors.secondary else colors.primary,
-        modifier = Modifier
-            .background(
-                if (dark) colors.secondary.copy(alpha = 0.15f) else MaterialTheme.extendedColors.mintSoft,
-                PillShape
-            )
-            .padding(horizontal = 10.dp, vertical = MaterialTheme.spacing.xxs)
+        containerColor = if (dark) colors.secondary.copy(alpha = 0.15f) else MaterialTheme.extendedColors.mintSoft,
+        contentColor = if (dark) colors.secondary else colors.primary,
+        contentPadding = PaddingValues(horizontal = 10.dp, vertical = MaterialTheme.spacing.xxs)
     )
 }
 

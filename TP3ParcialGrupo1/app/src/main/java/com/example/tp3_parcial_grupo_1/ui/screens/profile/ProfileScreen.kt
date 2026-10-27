@@ -1,13 +1,7 @@
 package com.example.tp3_parcial_grupo_1.ui.screens.profile
 
-import com.example.tp3_parcial_grupo_1.ui.components.AppPillStyle
-import com.example.tp3_parcial_grupo_1.ui.components.AppPillButton
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,9 +11,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -41,21 +32,26 @@ import com.example.tp3_parcial_grupo_1.R
 import com.example.tp3_parcial_grupo_1.data.demo.ProfileDemoData
 import com.example.tp3_parcial_grupo_1.ui.components.AppCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppCardStyle
+import com.example.tp3_parcial_grupo_1.ui.components.AppIconButton
+import com.example.tp3_parcial_grupo_1.ui.components.AppIconButtonDefaults
+import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
+import com.example.tp3_parcial_grupo_1.ui.components.AppListRow
+import com.example.tp3_parcial_grupo_1.ui.components.AppListRowDefaults
+import com.example.tp3_parcial_grupo_1.ui.components.AppPanelHeader
+import com.example.tp3_parcial_grupo_1.ui.components.AppPillButton
+import com.example.tp3_parcial_grupo_1.ui.components.AppPillStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
 import com.example.tp3_parcial_grupo_1.ui.components.AppSectionLabel
+import com.example.tp3_parcial_grupo_1.ui.components.AppTag
 import com.example.tp3_parcial_grupo_1.ui.components.VoraLogo
 import com.example.tp3_parcial_grupo_1.ui.components.VoraLogoStyle
 import com.example.tp3_parcial_grupo_1.ui.strings.ProfileStrings
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
-import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
-import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 
 private val BorderWidth = 1.dp
 private val AvatarSize = 72.dp
 private val OrbSize = 40.dp
-private val LinkIconBoxSize = 40.dp
-private val LinkIconSize = 20.dp
 
 @Composable
 fun ProfileRoute(
@@ -121,27 +117,29 @@ fun ProfileScreen(
             HeroCard(uiState, onEditProfileClick)
             SnapshotCard(uiState)
             PersonalisationPanel(onReviewPreferencesClick = onVoiceAiClick)
-            ProfileLink(
-                iconRes = R.drawable.ic_target,
+            AppListRow(
+                icon = AppIcons.Target,
                 title = ProfileStrings.YourGoals,
                 subtitle = uiState.goal,
                 onClick = onGoalsClick
             )
-            ProfileLink(
-                iconRes = R.drawable.ic_sliders,
+            AppListRow(
+                icon = AppIcons.Sliders,
                 title = ProfileStrings.YourPreferences,
                 subtitle = ProfileStrings.YourPreferencesSubtitle,
                 onClick = onPreferencesClick
             )
-            ProfileLink(
-                iconRes = R.drawable.ic_activity,
+            AppListRow(
+                icon = AppIcons.Activity,
                 title = ProfileStrings.ConnectedData,
                 subtitle = ProfileStrings.ConnectedDataSubtitle,
-                onClick = onConnectedDataClick,
-                badge = if (uiState.isDataSynced) ProfileStrings.Synced else null
-            )
-            ProfileLink(
-                iconRes = R.drawable.ic_lock,
+                onClick = onConnectedDataClick
+            ) {
+                if (uiState.isDataSynced) SyncedBadge()
+                AppListRowDefaults.Chevron()
+            }
+            AppListRow(
+                icon = AppIcons.Lock,
                 title = ProfileStrings.Account,
                 subtitle = ProfileStrings.AccountSubtitle,
                 onClick = onAccountClick
@@ -152,15 +150,13 @@ fun ProfileScreen(
 
 @Composable
 private fun SettingsButton(onClick: () -> Unit) {
-    IconButton(
+    AppIconButton(
+        AppIcons.Settings,
+        contentDescription = ProfileStrings.SettingsButton,
         onClick = onClick,
-        colors = IconButtonDefaults.iconButtonColors(containerColor = MaterialTheme.colorScheme.surface),
-        modifier = Modifier
-            .padding(end = MaterialTheme.spacing.sm)
-            .border(BorderWidth, MaterialTheme.colorScheme.outlineVariant, CircleShape)
-    ) {
-        Icon(painterResource(R.drawable.ic_settings), contentDescription = ProfileStrings.SettingsButton)
-    }
+        modifier = Modifier.padding(end = MaterialTheme.spacing.sm),
+        colors = AppIconButtonDefaults.outlined()
+    )
 }
 
 @Composable
@@ -225,17 +221,10 @@ private fun SnapshotRow(label: String, value: String) {
 @Composable
 private fun PersonalisationPanel(onReviewPreferencesClick: () -> Unit) {
     AppCard(style = AppCardStyle.Panel) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md)
-        ) {
-            VoraLogo(size = OrbSize, glowAlpha = 0.25f, style = VoraLogoStyle.Insight)
-            Text(
-                ProfileStrings.PersonalisationTitle,
-                style = MaterialTheme.typography.labelLarge,
-                color = MaterialTheme.extendedColors.mint
-            )
-        }
+        AppPanelHeader(
+            title = ProfileStrings.PersonalisationTitle,
+            orb = { VoraLogo(size = OrbSize, glowAlpha = 0.25f, style = VoraLogoStyle.Insight) }
+        )
         Text(ProfileStrings.PersonalisationHeadline, style = MaterialTheme.typography.titleSmall)
         Text(
             ProfileStrings.PersonalisationBody,
@@ -251,54 +240,13 @@ private fun PersonalisationPanel(onReviewPreferencesClick: () -> Unit) {
 }
 
 @Composable
-private fun ProfileLink(
-    @DrawableRes iconRes: Int,
-    title: String,
-    subtitle: String,
-    onClick: () -> Unit,
-    badge: String? = null
-) {
-    AppCard(onClick = onClick) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md)
-        ) {
-            Box(
-                modifier = Modifier.size(LinkIconBoxSize).background(MaterialTheme.colorScheme.background, CircleShape),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    painterResource(iconRes),
-                    contentDescription = null,
-                    modifier = Modifier.size(LinkIconSize),
-                    tint = MaterialTheme.colorScheme.primary
-                )
-            }
-            Column(
-                modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xxs)
-            ) {
-                Text(title, style = MaterialTheme.typography.labelLarge)
-                Text(subtitle, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
-            }
-            if (badge != null) {
-                Text(
-                    badge,
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onPrimary,
-                    modifier = Modifier
-                        .background(MaterialTheme.colorScheme.primary, PillShape)
-                        .padding(horizontal = MaterialTheme.spacing.md, vertical = MaterialTheme.spacing.xs)
-                )
-            }
-            Icon(
-                painterResource(R.drawable.ic_chevron_right),
-                contentDescription = null,
-                tint = MaterialTheme.extendedColors.textSubtle
-            )
-        }
-    }
+private fun SyncedBadge() {
+    AppTag(
+        text = ProfileStrings.Synced,
+        modifier = Modifier.padding(end = MaterialTheme.spacing.md),
+        containerColor = MaterialTheme.colorScheme.primary,
+        contentColor = MaterialTheme.colorScheme.onPrimary
+    )
 }
 
 @Preview(showBackground = true, widthDp = 390, heightDp = 1000)

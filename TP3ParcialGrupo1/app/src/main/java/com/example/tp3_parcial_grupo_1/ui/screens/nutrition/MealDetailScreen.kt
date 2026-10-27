@@ -11,22 +11,29 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.tp3_parcial_grupo_1.R
 import com.example.tp3_parcial_grupo_1.model.Meal
+import com.example.tp3_parcial_grupo_1.ui.components.AppBackButton
+import com.example.tp3_parcial_grupo_1.ui.components.AppButton
+import com.example.tp3_parcial_grupo_1.ui.components.AppButtonDefaults
+import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
+import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
+import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
+import com.example.tp3_parcial_grupo_1.ui.components.AppNoticeCard
+import com.example.tp3_parcial_grupo_1.ui.components.AppStat
+import com.example.tp3_parcial_grupo_1.ui.components.AppStatDefaults
+import com.example.tp3_parcial_grupo_1.ui.components.AppTopBar
 import com.example.tp3_parcial_grupo_1.ui.strings.Strings
-import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
+import com.example.tp3_parcial_grupo_1.ui.theme.iconSizes
+import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 import kotlinx.coroutines.launch
 
 @Composable
 fun MealDetailScreen(
     viewModel: MealsViewModel,
-    onNavigate: (String) -> Unit,
     onBackClick: () -> Unit,
     onDeleteSuccess: () -> Unit
 ) {
@@ -72,25 +79,13 @@ fun MealDetailScreen(
                 .verticalScroll(rememberScrollState())
                 .padding(20.dp)
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+            AppTopBar(
+                title = meal.name,
+                navigation = { AppBackButton(onClick = onBackClick) },
+                titleStyle = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
+                titleColor = MaterialTheme.colorScheme.onBackground,
+                spacing = MaterialTheme.spacing.xxs
             ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    IconButton(onClick = onBackClick) {
-                        Icon(painter = painterResource(id = R.drawable.ic_chevron_left), contentDescription = "Back", tint = MaterialTheme.colorScheme.onBackground)
-                    }
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text(
-                        text = meal.name,
-                        style = MaterialTheme.typography.headlineMedium.copy(
-                            color = MaterialTheme.colorScheme.onBackground,
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 24.sp
-                        )
-                    )
-                }
                 Text(
                     text = "13:12",
                     style = MaterialTheme.typography.bodySmall.copy(
@@ -156,9 +151,33 @@ fun MealDetailScreen(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        DetailMacroItem(label = "PROTEIN", value = "${meal.protein}g")
-                        DetailMacroItem(label = "CARBS", value = "${meal.carbs}g")
-                        DetailMacroItem(label = "FAT", value = "${meal.fat}g")
+                        AppStat(
+                            label = "PROTEIN",
+                            value = "${meal.protein}g",
+                            labelStyle = AppStatDefaults.MacroLabelStyle,
+                            labelColor = MaterialTheme.extendedColors.textSubtle,
+                            valueStyle = AppStatDefaults.MacroValueStyle,
+                            valueColor = MaterialTheme.colorScheme.onBackground,
+                            spacing = 2.dp
+                        )
+                        AppStat(
+                            label = "CARBS",
+                            value = "${meal.carbs}g",
+                            labelStyle = AppStatDefaults.MacroLabelStyle,
+                            labelColor = MaterialTheme.extendedColors.textSubtle,
+                            valueStyle = AppStatDefaults.MacroValueStyle,
+                            valueColor = MaterialTheme.colorScheme.onBackground,
+                            spacing = 2.dp
+                        )
+                        AppStat(
+                            label = "FAT",
+                            value = "${meal.fat}g",
+                            labelStyle = AppStatDefaults.MacroLabelStyle,
+                            labelColor = MaterialTheme.extendedColors.textSubtle,
+                            valueStyle = AppStatDefaults.MacroValueStyle,
+                            valueColor = MaterialTheme.colorScheme.onBackground,
+                            spacing = 2.dp
+                        )
                     }
                 }
             }
@@ -166,32 +185,14 @@ fun MealDetailScreen(
             Spacer(modifier = Modifier.height(16.dp))
 
             // Advice Banner
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(RoundedCornerShape(12.dp))
-                    .background(MaterialTheme.extendedColors.mintSoft)
-                    .border(1.dp, MaterialTheme.colorScheme.secondary, RoundedCornerShape(12.dp))
-                    .padding(14.dp)
-            ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_sparkles),
-                        contentDescription = "Advice",
-                        tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(20.dp)
-                    )
-                    Spacer(modifier = Modifier.width(10.dp))
-                    Text(
-                        text = "Great protein choice. You're now 36g away from your daily protein target.",
-                        style = MaterialTheme.typography.bodyMedium.copy(
-                            color = MaterialTheme.colorScheme.primary,
-                            fontSize = 13.sp,
-                            fontWeight = FontWeight.Medium
-                        )
-                    )
-                }
-            }
+            AppNoticeCard(
+                text = "Great protein choice. You're now 36g away from your daily protein target.",
+                leading = {
+                    AppIcon(AppIcons.Sparkles, contentDescription = null, size = MaterialTheme.iconSizes.xl, tint = MaterialTheme.colorScheme.primary)
+                },
+                contentPadding = 14.dp,
+                spacing = 10.dp
+            )
 
             Spacer(modifier = Modifier.height(24.dp))
 
@@ -214,35 +215,28 @@ fun MealDetailScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            Button(
+            AppButton(
+                text = "Edit Meal",
                 onClick = showDemoNotice,
-                modifier = Modifier.fillMaxWidth(),
-                shape = PillShape,
-                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.surface, contentColor = MaterialTheme.colorScheme.onBackground),
-                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
-            ) {
-                Text(text = "Edit Meal", fontWeight = FontWeight.Bold, fontSize = 15.sp)
-            }
+                style = AppButtonStyle.Outlined,
+                textColor = MaterialTheme.colorScheme.onBackground,
+                containerColor = MaterialTheme.colorScheme.surface,
+                minHeight = AppButtonDefaults.MediumHeight,
+                textStyle = AppButtonDefaults.BoldTextStyle
+            )
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            Button(
+            AppButton(
+                text = "Delete Meal",
                 onClick = { showDeleteDialog = true },
-                modifier = Modifier.fillMaxWidth(),
-                shape = PillShape,
-                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error, contentColor = MaterialTheme.colorScheme.surface)
-            ) {
-                Text(text = "Delete Meal", fontWeight = FontWeight.Bold, fontSize = 15.sp)
-            }
+                style = AppButtonStyle.Primary,
+                containerColor = MaterialTheme.colorScheme.error,
+                textColor = MaterialTheme.colorScheme.onError,
+                minHeight = AppButtonDefaults.MediumHeight,
+                textStyle = AppButtonDefaults.BoldTextStyle
+            )
         }
     }
 }
 
-@Composable
-fun DetailMacroItem(label: String, value: String) {
-    Column {
-        Text(text = label, style = MaterialTheme.typography.labelSmall.copy(color = MaterialTheme.extendedColors.textSubtle, fontSize = 10.sp, fontWeight = FontWeight.Bold))
-        Spacer(modifier = Modifier.height(2.dp))
-        Text(text = value, style = MaterialTheme.typography.titleMedium.copy(color = MaterialTheme.colorScheme.onBackground, fontSize = 16.sp, fontWeight = FontWeight.Bold))
-    }
-}

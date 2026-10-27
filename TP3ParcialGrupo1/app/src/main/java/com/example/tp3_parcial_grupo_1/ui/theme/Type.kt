@@ -37,3 +37,9 @@ val AppTypography = Typography(
     labelMedium = style(13, FontWeight.SemiBold),
     labelSmall = style(11, FontWeight.SemiBold)
 )
+
+// Texto de los mensajes del Asistente: 14 sp Regular con interlineado 1.4 (no tiene lugar en la escala de Material).
+private val MessageStyle = style(14, FontWeight.Normal)
+
+val Typography.message: TextStyle
+    get() = MessageStyle

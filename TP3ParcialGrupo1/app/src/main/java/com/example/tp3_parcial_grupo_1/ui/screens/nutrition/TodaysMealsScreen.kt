@@ -8,14 +8,14 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.example.tp3_parcial_grupo_1.R
 import com.example.tp3_parcial_grupo_1.model.MealType
+import com.example.tp3_parcial_grupo_1.ui.components.AppBackButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppCard
+import com.example.tp3_parcial_grupo_1.ui.components.AppTopBar
 import com.example.tp3_parcial_grupo_1.ui.strings.NutritionStrings
 import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
@@ -24,7 +24,6 @@ import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 @Composable
 fun TodaysMealsScreen(
     uiState: MealUiState,
-    onNavigate: (String) -> Unit,
     onBackClick: () -> Unit,
     onAddDinner: () -> Unit
 ) {
@@ -40,39 +39,14 @@ fun TodaysMealsScreen(
         ) {
             item {
                 Spacer(modifier = Modifier.height(MaterialTheme.spacing.sm))
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
+                AppTopBar(
+                    title = NutritionStrings.todaysMeals,
+                    navigation = { AppBackButton(onClick = onBackClick) },
+                    eyebrow = "TIMELINE",
+                    titleStyle = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
+                    titleColor = MaterialTheme.colorScheme.onBackground,
+                    spacing = MaterialTheme.spacing.xs
                 ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xs)
-                    ) {
-                        IconButton(onClick = onBackClick) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_chevron_left),
-                                contentDescription = "Back",
-                                tint = MaterialTheme.colorScheme.onBackground
-                            )
-                        }
-                        Column {
-                            Text(
-                                text = "TIMELINE",
-                                style = MaterialTheme.typography.labelSmall.copy(
-                                    color = MaterialTheme.extendedColors.textSubtle,
-                                    fontWeight = FontWeight.SemiBold
-                                )
-                            )
-                            Text(
-                                text = NutritionStrings.todaysMeals,
-                                style = MaterialTheme.typography.headlineMedium.copy(
-                                    color = MaterialTheme.colorScheme.onBackground,
-                                    fontWeight = FontWeight.Bold
-                                )
-                            )
-                        }
-                    }
                     Surface(
                         shape = PillShape,
                         color = MaterialTheme.colorScheme.surface,

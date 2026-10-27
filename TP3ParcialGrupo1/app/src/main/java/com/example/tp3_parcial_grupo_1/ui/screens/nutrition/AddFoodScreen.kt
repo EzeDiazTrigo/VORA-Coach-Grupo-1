@@ -3,29 +3,31 @@ package com.example.tp3_parcial_grupo_1.ui.screens.nutrition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.example.tp3_parcial_grupo_1.R
+import com.example.tp3_parcial_grupo_1.ui.components.AppBackButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppCardStyle
+import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
+import com.example.tp3_parcial_grupo_1.ui.components.AppListRow
+import com.example.tp3_parcial_grupo_1.ui.components.AppTopBar
 import com.example.tp3_parcial_grupo_1.ui.components.VoraOrb
 import com.example.tp3_parcial_grupo_1.ui.strings.NutritionStrings
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 
+private val AddOptionIconSize = 22.dp
+private val AddOptionIconBoxSize = 44.dp
+
 @Composable
 fun AddFoodScreen(
-    onNavigate: (String) -> Unit,
     onBackClick: () -> Unit,
     onNavigateToVoice: () -> Unit,
     onNavigateToPhoto: () -> Unit,
@@ -43,22 +45,13 @@ fun AddFoodScreen(
                 .padding(horizontal = MaterialTheme.spacing.screen, vertical = MaterialTheme.spacing.lg),
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.lg)
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                IconButton(onClick = onBackClick) {
-                    Icon(painter = painterResource(id = R.drawable.ic_chevron_left), contentDescription = "Back", tint = MaterialTheme.colorScheme.onBackground)
-                }
-                Spacer(modifier = Modifier.width(MaterialTheme.spacing.sm))
-                Text(
-                    text = NutritionStrings.addFoodTitle,
-                    style = MaterialTheme.typography.headlineMedium.copy(
-                        color = MaterialTheme.colorScheme.onBackground,
-                        fontWeight = FontWeight.Bold
-                    )
-                )
-            }
+            AppTopBar(
+                title = NutritionStrings.addFoodTitle,
+                navigation = { AppBackButton(onClick = onBackClick) },
+                titleStyle = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
+                titleColor = MaterialTheme.colorScheme.onBackground,
+                spacing = MaterialTheme.spacing.sm
+            )
 
             // Talk to VORA Card (Panel style)
             AppCard(style = AppCardStyle.Panel) {
@@ -100,69 +93,62 @@ fun AddFoodScreen(
 
             // Option Cards
             Column(verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md)) {
-                AddOptionCard(
-                    iconRes = R.drawable.ic_camera,
+                AppListRow(
+                    icon = AppIcons.Camera,
                     title = NutritionStrings.snapAPhoto,
                     subtitle = NutritionStrings.snapAPhotoDesc,
-                    onClick = onNavigateToPhoto
+                    onClick = onNavigateToPhoto,
+                    iconSize = AddOptionIconSize,
+                    iconBoxSize = AddOptionIconBoxSize,
+                    iconContainerColor = MaterialTheme.extendedColors.mintSoft,
+                    titleStyle = MaterialTheme.typography.titleMedium.copy(
+                        color = MaterialTheme.colorScheme.onBackground,
+                        fontWeight = FontWeight.Bold
+                    ),
+                    subtitleStyle = MaterialTheme.typography.bodySmall,
+                    subtitleColor = MaterialTheme.extendedColors.textSubtle,
+                    spacing = MaterialTheme.spacing.lg,
+                    textSpacing = 2.dp,
+                    trailing = {}
                 )
-                AddOptionCard(
-                    iconRes = R.drawable.ic_search,
+                AppListRow(
+                    icon = AppIcons.Search,
                     title = NutritionStrings.searchDatabase,
                     subtitle = NutritionStrings.searchDatabaseDesc,
-                    onClick = onNavigateToReview
+                    onClick = onNavigateToReview,
+                    iconSize = AddOptionIconSize,
+                    iconBoxSize = AddOptionIconBoxSize,
+                    iconContainerColor = MaterialTheme.extendedColors.mintSoft,
+                    titleStyle = MaterialTheme.typography.titleMedium.copy(
+                        color = MaterialTheme.colorScheme.onBackground,
+                        fontWeight = FontWeight.Bold
+                    ),
+                    subtitleStyle = MaterialTheme.typography.bodySmall,
+                    subtitleColor = MaterialTheme.extendedColors.textSubtle,
+                    spacing = MaterialTheme.spacing.lg,
+                    textSpacing = 2.dp,
+                    trailing = {}
                 )
-                AddOptionCard(
-                    iconRes = R.drawable.ic_pen,
+                AppListRow(
+                    icon = AppIcons.Pen,
                     title = NutritionStrings.logManually,
                     subtitle = NutritionStrings.logManuallyDesc,
-                    onClick = onNavigateToManual
+                    onClick = onNavigateToManual,
+                    iconSize = AddOptionIconSize,
+                    iconBoxSize = AddOptionIconBoxSize,
+                    iconContainerColor = MaterialTheme.extendedColors.mintSoft,
+                    titleStyle = MaterialTheme.typography.titleMedium.copy(
+                        color = MaterialTheme.colorScheme.onBackground,
+                        fontWeight = FontWeight.Bold
+                    ),
+                    subtitleStyle = MaterialTheme.typography.bodySmall,
+                    subtitleColor = MaterialTheme.extendedColors.textSubtle,
+                    spacing = MaterialTheme.spacing.lg,
+                    textSpacing = 2.dp,
+                    trailing = {}
                 )
             }
         }
     }
 }
 
-@Composable
-fun AddOptionCard(iconRes: Int, title: String, subtitle: String, onClick: () -> Unit) {
-    AppCard(onClick = onClick) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Box(
-                modifier = Modifier
-                    .size(44.dp)
-                    .clip(CircleShape)
-                    .background(MaterialTheme.extendedColors.mintSoft),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    painter = painterResource(id = iconRes),
-                    contentDescription = title,
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(22.dp)
-                )
-            }
-            Spacer(modifier = Modifier.width(MaterialTheme.spacing.lg))
-            Column(
-                modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.spacedBy(2.dp)
-            ) {
-                Text(
-                    text = title,
-                    style = MaterialTheme.typography.titleMedium.copy(
-                        color = MaterialTheme.colorScheme.onBackground,
-                        fontWeight = FontWeight.Bold
-                    )
-                )
-                Text(
-                    text = subtitle,
-                    style = MaterialTheme.typography.bodySmall.copy(
-                        color = MaterialTheme.extendedColors.textSubtle
-                    )
-                )
-            }
-        }
-    }
-}

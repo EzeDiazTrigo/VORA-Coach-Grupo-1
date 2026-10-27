@@ -1,13 +1,10 @@
 package com.example.tp3_parcial_grupo_1.ui.screens.profile
 
-import com.example.tp3_parcial_grupo_1.ui.components.AppSectionLabel
-import com.example.tp3_parcial_grupo_1.ui.components.AppChipStyle
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,9 +12,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -27,12 +24,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.tp3_parcial_grupo_1.R
 import com.example.tp3_parcial_grupo_1.data.demo.ProfileDemoData
 import com.example.tp3_parcial_grupo_1.model.CoachingStyle
 import com.example.tp3_parcial_grupo_1.model.ResponseStyle
@@ -41,8 +36,12 @@ import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppCardStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppChip
+import com.example.tp3_parcial_grupo_1.ui.components.AppChipStyle
+import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
+import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
 import com.example.tp3_parcial_grupo_1.ui.components.AppOptionCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
+import com.example.tp3_parcial_grupo_1.ui.components.AppSection
 import com.example.tp3_parcial_grupo_1.ui.components.AppSwitchRow
 import com.example.tp3_parcial_grupo_1.ui.strings.ProfileStrings
 import com.example.tp3_parcial_grupo_1.ui.strings.description
@@ -122,7 +121,7 @@ fun VoiceSettingsScreen(
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
-            VoiceSection(ProfileStrings.CoachingStyleLabel) {
+            AppSection(ProfileStrings.CoachingStyleLabel) {
                 FlowRow(
                     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm),
                     verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm)
@@ -137,7 +136,7 @@ fun VoiceSettingsScreen(
                     }
                 }
             }
-            VoiceSection(ProfileStrings.ActiveVoiceLabel) {
+            AppSection(ProfileStrings.ActiveVoiceLabel) {
                 AppCard {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -148,10 +147,10 @@ fun VoiceSettingsScreen(
                             modifier = Modifier.size(VoiceIconBoxSize).background(MaterialTheme.colorScheme.primary, CircleShape),
                             contentAlignment = Alignment.Center
                         ) {
-                            Icon(
-                                painterResource(R.drawable.ic_volume_2),
+                            AppIcon(
+                                AppIcons.Volume,
                                 contentDescription = null,
-                                modifier = Modifier.size(VoiceIconSize),
+                                size = VoiceIconSize,
                                 tint = MaterialTheme.colorScheme.onPrimary
                             )
                         }
@@ -164,14 +163,14 @@ fun VoiceSettingsScreen(
                             text = ProfileStrings.Preview,
                             onClick = onPreviewClick,
                             style = AppButtonStyle.Outlined,
-                            leadingIcon = painterResource(R.drawable.ic_audio_waveform),
+                            leadingIcon = AppIcons.AudioWaveform,
                             isCompact = true,
                             modifier = Modifier.weight(1f)
                         )
                     }
                 }
             }
-            VoiceSection(ProfileStrings.SpeakingBehaviourLabel) {
+            AppSection(ProfileStrings.SpeakingBehaviourLabel) {
                 AppCard {
                     AppSwitchRow(
                         title = ProfileStrings.SpeakResponsesAloud,
@@ -193,7 +192,7 @@ fun VoiceSettingsScreen(
                     )
                 }
             }
-            VoiceSection(ProfileStrings.ResponseStyleLabel) {
+            AppSection(ProfileStrings.ResponseStyleLabel) {
                 ResponseStyle.entries.forEach { style ->
                     AppOptionCard(
                         title = style.title(),
@@ -234,14 +233,6 @@ fun VoiceSettingsScreen(
                 )
             }
         }
-    }
-}
-
-@Composable
-private fun VoiceSection(label: String, content: @Composable () -> Unit) {
-    Column(verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md)) {
-        AppSectionLabel(label)
-        content()
     }
 }
 

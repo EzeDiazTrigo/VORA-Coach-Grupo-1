@@ -4,12 +4,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Lock
-import androidx.compose.material.icons.outlined.Email
-import androidx.compose.material.icons.outlined.Visibility
-import androidx.compose.material.icons.outlined.VisibilityOff
-import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -21,14 +15,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.example.tp3_parcial_grupo_1.ui.strings.Strings
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
+import com.example.tp3_parcial_grupo_1.ui.theme.iconSizes
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 
 @Composable
@@ -38,7 +31,7 @@ fun AppTextField(
     label: String,
     modifier: Modifier = Modifier,
     placeholder: String? = null,
-    leadingIcon: ImageVector? = null,
+    leadingIcon: AppIcons? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
     errorMessage: String? = null,
     keyboardType: KeyboardType = KeyboardType.Text,
@@ -64,7 +57,7 @@ fun AppTextField(
             modifier = Modifier.fillMaxWidth(),
             textStyle = MaterialTheme.typography.bodyLarge,
             placeholder = placeholder?.let { { Text(it, color = colors.outline) } },
-            leadingIcon = leadingIcon?.let { { Icon(it, contentDescription = null, tint = colors.onSurfaceVariant) } },
+            leadingIcon = leadingIcon?.let { { AppIcon(it, contentDescription = null, size = MaterialTheme.iconSizes.xl, tint = colors.onSurfaceVariant) } },
             trailingIcon = trailingIcon,
             isError = errorMessage != null,
             supportingText = errorMessage?.let { { Text(it) } },
@@ -99,12 +92,15 @@ fun PasswordTextField(
         label = label,
         modifier = modifier,
         placeholder = placeholder,
-        leadingIcon = Icons.Outlined.Lock,
+        leadingIcon = AppIcons.FieldLock,
         trailingIcon = {
             IconButton(onClick = { isVisible = !isVisible }) {
-                Icon(
-                    imageVector = if (isVisible) Icons.Outlined.VisibilityOff else Icons.Outlined.Visibility,
-                    contentDescription = if (isVisible) Strings.HidePassword else Strings.ShowPassword
+                // Figma solo exporta el ojo abierto: el tinte verde indica que la contraseña está visible.
+                AppIcon(
+                    AppIcons.FieldEye,
+                    contentDescription = if (isVisible) Strings.HidePassword else Strings.ShowPassword,
+                    size = MaterialTheme.iconSizes.xl,
+                    tint = if (isVisible) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
         },
@@ -122,7 +118,7 @@ private fun AppTextFieldPreview() {
             modifier = Modifier.padding(MaterialTheme.spacing.screen),
             verticalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(MaterialTheme.spacing.lg)
         ) {
-            AppTextField(value = "alex.morgan@email.com", onValueChange = {}, label = "Email Address", leadingIcon = Icons.Outlined.Email)
+            AppTextField(value = "alex.morgan@email.com", onValueChange = {}, label = "Email Address", leadingIcon = AppIcons.FieldMail)
             AppTextField(value = "", onValueChange = {}, label = "Full Name", placeholder = "Alex Morgan")
             AppTextField(value = "alex", onValueChange = {}, label = "Email Address", errorMessage = "Invalid email")
             PasswordTextField(value = "secret123", onValueChange = {}, label = "Password")

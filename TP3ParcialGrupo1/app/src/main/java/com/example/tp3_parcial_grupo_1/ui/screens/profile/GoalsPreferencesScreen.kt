@@ -1,7 +1,5 @@
 package com.example.tp3_parcial_grupo_1.ui.screens.profile
 
-import com.example.tp3_parcial_grupo_1.ui.components.AppSectionLabel
-import com.example.tp3_parcial_grupo_1.ui.components.AppChipStyle
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -25,8 +23,10 @@ import com.example.tp3_parcial_grupo_1.model.PrimaryGoal
 import com.example.tp3_parcial_grupo_1.model.WorkoutPreference
 import com.example.tp3_parcial_grupo_1.ui.components.AppButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppChip
+import com.example.tp3_parcial_grupo_1.ui.components.AppChipStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppOptionCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
+import com.example.tp3_parcial_grupo_1.ui.components.AppSection
 import com.example.tp3_parcial_grupo_1.ui.strings.ProfileStrings
 import com.example.tp3_parcial_grupo_1.ui.strings.TrainingDaysOptions
 import com.example.tp3_parcial_grupo_1.ui.strings.chipLabel
@@ -89,7 +89,7 @@ fun GoalsPreferencesScreen(
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
-            Section(label = ProfileStrings.PrimaryGoalLabel, prompt = ProfileStrings.PrimaryGoalPrompt) {
+            AppSection(label = "${ProfileStrings.PrimaryGoalLabel} — ${ProfileStrings.PrimaryGoalPrompt}") {
                 PrimaryGoal.entries.forEach { goal ->
                     AppOptionCard(
                         title = goal.title(),
@@ -99,7 +99,7 @@ fun GoalsPreferencesScreen(
                     )
                 }
             }
-            Section(label = ProfileStrings.TrainingFrequencyLabel) {
+            AppSection(label = ProfileStrings.TrainingFrequencyLabel) {
                 FlowRow(
                     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm),
                     verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm)
@@ -114,7 +114,7 @@ fun GoalsPreferencesScreen(
                     }
                 }
             }
-            Section(label = ProfileStrings.WorkoutPreferenceLabel) {
+            AppSection(label = ProfileStrings.WorkoutPreferenceLabel) {
                 FlowRow(
                     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm),
                     verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm)
@@ -128,7 +128,7 @@ fun GoalsPreferencesScreen(
                     }
                 }
             }
-            Section(label = ProfileStrings.CoachingStyleLabel, prompt = ProfileStrings.CoachingStylePrompt) {
+            AppSection(label = "${ProfileStrings.CoachingStyleLabel} — ${ProfileStrings.CoachingStylePrompt}") {
                 CoachingStyle.entries.forEach { style ->
                     AppOptionCard(
                         title = style.title(),
@@ -140,18 +140,6 @@ fun GoalsPreferencesScreen(
             }
             AppButton(text = ProfileStrings.SavePreferences, onClick = onSaveClick)
         }
-    }
-}
-
-@Composable
-private fun Section(
-    label: String,
-    prompt: String? = null,
-    content: @Composable () -> Unit
-) {
-    Column(verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md)) {
-        AppSectionLabel(if (prompt != null) "$label — $prompt" else label)
-        content()
     }
 }
 

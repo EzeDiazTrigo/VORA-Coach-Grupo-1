@@ -18,12 +18,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tp3_parcial_grupo_1.R
+import com.example.tp3_parcial_grupo_1.ui.components.AppBackButton
+import com.example.tp3_parcial_grupo_1.ui.components.AppButton
+import com.example.tp3_parcial_grupo_1.ui.components.AppButtonDefaults
+import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
+import com.example.tp3_parcial_grupo_1.ui.components.AppTag
+import com.example.tp3_parcial_grupo_1.ui.components.AppTopBar
 import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
+import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 
 @Composable
 fun AnalyseMealPhotoScreen(
-    onNavigate: (String) -> Unit,
     onBackClick: () -> Unit,
     onReviewAndAdd: () -> Unit
 ) {
@@ -37,23 +43,13 @@ fun AnalyseMealPhotoScreen(
                 .verticalScroll(rememberScrollState())
                 .padding(20.dp)
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                IconButton(onClick = onBackClick) {
-                    Icon(painter = painterResource(id = R.drawable.ic_chevron_left), contentDescription = "Back", tint = MaterialTheme.colorScheme.onBackground)
-                }
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = "Analyse Meal",
-                    style = MaterialTheme.typography.headlineMedium.copy(
-                        color = MaterialTheme.colorScheme.onBackground,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 24.sp
-                    )
-                )
-            }
+            AppTopBar(
+                title = "Analyse Meal",
+                navigation = { AppBackButton(onClick = onBackClick) },
+                titleStyle = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
+                titleColor = MaterialTheme.colorScheme.onBackground,
+                spacing = MaterialTheme.spacing.sm
+            )
 
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -140,9 +136,30 @@ fun AnalyseMealPhotoScreen(
                             )
                         )
                         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                            MacroChip(label = "P: 38g")
-                            MacroChip(label = "C: 54g")
-                            MacroChip(label = "F: 14g")
+                            AppTag(
+                                text = "P: 38g",
+                                containerColor = MaterialTheme.colorScheme.background,
+                                contentColor = MaterialTheme.colorScheme.onBackground,
+                                borderColor = MaterialTheme.colorScheme.outlineVariant,
+                                textStyle = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
+                                contentPadding = PaddingValues(horizontal = 10.dp, vertical = 6.dp)
+                            )
+                            AppTag(
+                                text = "C: 54g",
+                                containerColor = MaterialTheme.colorScheme.background,
+                                contentColor = MaterialTheme.colorScheme.onBackground,
+                                borderColor = MaterialTheme.colorScheme.outlineVariant,
+                                textStyle = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
+                                contentPadding = PaddingValues(horizontal = 10.dp, vertical = 6.dp)
+                            )
+                            AppTag(
+                                text = "F: 14g",
+                                containerColor = MaterialTheme.colorScheme.background,
+                                contentColor = MaterialTheme.colorScheme.onBackground,
+                                borderColor = MaterialTheme.colorScheme.outlineVariant,
+                                textStyle = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
+                                contentPadding = PaddingValues(horizontal = 10.dp, vertical = 6.dp)
+                            )
                         }
                     }
                 }
@@ -160,41 +177,25 @@ fun AnalyseMealPhotoScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            Button(
+            AppButton(
+                text = "Review & Add",
                 onClick = onReviewAndAdd,
-                modifier = Modifier.fillMaxWidth(),
-                shape = PillShape,
-                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary, contentColor = MaterialTheme.colorScheme.surface)
-            ) {
-                Text(text = "Review & Add", fontWeight = FontWeight.Bold, fontSize = 15.sp)
-            }
+                style = AppButtonStyle.Primary,
+                minHeight = AppButtonDefaults.MediumHeight,
+                textStyle = AppButtonDefaults.BoldTextStyle
+            )
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            OutlinedButton(
+            AppButton(
+                text = "Retake Photo",
                 onClick = onBackClick,
-                modifier = Modifier.fillMaxWidth(),
-                shape = PillShape,
-                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
-                colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.onBackground)
-            ) {
-                Text(text = "Retake Photo", fontWeight = FontWeight.Bold, fontSize = 15.sp)
-            }
+                style = AppButtonStyle.Outlined,
+                textColor = MaterialTheme.colorScheme.onBackground,
+                minHeight = AppButtonDefaults.MediumHeight,
+                textStyle = AppButtonDefaults.BoldTextStyle
+            )
         }
     }
 }
 
-@Composable
-fun MacroChip(label: String) {
-    Surface(
-        shape = PillShape,
-        color = MaterialTheme.colorScheme.background,
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
-    ) {
-        Text(
-            text = label,
-            modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
-            style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold, fontSize = 11.sp, color = MaterialTheme.colorScheme.onBackground)
-        )
-    }
-}

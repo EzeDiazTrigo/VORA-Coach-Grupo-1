@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -23,7 +22,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
@@ -31,13 +29,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.tp3_parcial_grupo_1.R
 import com.example.tp3_parcial_grupo_1.data.demo.ProgressDemoData
 import com.example.tp3_parcial_grupo_1.ui.components.AppCard
+import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
+import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
+import com.example.tp3_parcial_grupo_1.ui.components.AppSectionLabel
+import com.example.tp3_parcial_grupo_1.ui.components.AppSectionLabelStyle
+import com.example.tp3_parcial_grupo_1.ui.components.AppTag
 import com.example.tp3_parcial_grupo_1.ui.strings.ProgressStrings
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
-import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 
@@ -94,7 +95,7 @@ fun WorkoutProgressScreen(
             TrainingVolumeCard(progress)
             PersonalBestCard(progress.personalBest)
             VoraQuoteCard(progress.insight)
-            SectionLabel(ProgressStrings.ExerciseProgress)
+            AppSectionLabel(ProgressStrings.ExerciseProgress, style = AppSectionLabelStyle.Title)
             progress.exercises.forEach { exercise -> ExerciseCard(exercise) }
         }
     }
@@ -130,7 +131,7 @@ private fun PersonalBestCard(personalBest: PersonalBest) {
             modifier = Modifier.size(TrophyContainerSize).background(extended.mintSoft, CircleShape),
             contentAlignment = Alignment.Center
         ) {
-            Icon(painterResource(R.drawable.ic_trophy), contentDescription = null, tint = extended.success, modifier = Modifier.size(TrophyIconSize))
+            AppIcon(AppIcons.Trophy, contentDescription = null, tint = extended.success, size = TrophyIconSize)
         }
         Column(verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xxs)) {
             Text(ProgressStrings.PersonalBest, style = MaterialTheme.typography.labelSmall, color = extended.success)
@@ -162,13 +163,11 @@ private fun ExerciseCard(exercise: ExerciseProgress) {
 @Composable
 private fun TrendBadge(exercise: ExerciseProgress) {
     val isUp = exercise.trend == ExerciseTrend.Up
-    Text(
-        exercise.change,
-        style = MaterialTheme.typography.labelMedium,
-        color = if (isUp) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
-        modifier = Modifier
-            .background(if (isUp) MaterialTheme.extendedColors.mintSoft else MaterialTheme.colorScheme.background, PillShape)
-            .padding(horizontal = MaterialTheme.spacing.md, vertical = MaterialTheme.spacing.xs)
+    AppTag(
+        text = exercise.change,
+        containerColor = if (isUp) MaterialTheme.extendedColors.mintSoft else MaterialTheme.colorScheme.background,
+        contentColor = if (isUp) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
+        textStyle = MaterialTheme.typography.labelMedium
     )
 }
 

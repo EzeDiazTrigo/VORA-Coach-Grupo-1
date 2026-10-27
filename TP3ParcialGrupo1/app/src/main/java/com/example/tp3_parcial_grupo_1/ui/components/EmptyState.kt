@@ -1,6 +1,5 @@
 package com.example.tp3_parcial_grupo_1.ui.components
 
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
@@ -8,7 +7,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.tp3_parcial_grupo_1.R
 import com.example.tp3_parcial_grupo_1.ui.strings.ComponentStrings
 import com.example.tp3_parcial_grupo_1.ui.strings.Strings
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
@@ -20,7 +18,7 @@ fun EmptyState(
     modifier: Modifier = Modifier,
     title: String = ComponentStrings.EmptyTitle,
     message: String? = Strings.EmptyContent,
-    @DrawableRes icon: Int = R.drawable.ic_search,
+    icon: AppIcons = AppIcons.Search,
     actionLabel: String? = null,
     onAction: (() -> Unit)? = null
 ) {
@@ -47,7 +45,7 @@ private fun EmptyStatePreview() {
         EmptyState(
             title = "Sin comidas hoy",
             message = "Log your first meal to see today's total.",
-            icon = R.drawable.ic_apple,
+            icon = AppIcons.Apple,
             actionLabel = "Agregar comida",
             onAction = {}
         )
