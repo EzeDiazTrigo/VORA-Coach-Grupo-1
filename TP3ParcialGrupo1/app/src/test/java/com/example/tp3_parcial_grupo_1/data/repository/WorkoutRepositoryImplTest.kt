@@ -66,6 +66,36 @@ class WorkoutRepositoryImplTest {
         assertEquals("e01", exercisesStored.first().id)
     }
 
+    @Test
+    fun `refreshWorkouts handles HTTP 500 error`() = runTest {
+        workoutApi.workoutsResponse = Response.error(500, "".toResponseBody(null))
+
+        val result = repository.refreshWorkouts()
+
+        assertTrue(result.isFailure)
+        assertTrue(result.exceptionOrNull()?.message?.contains("500") == true)
+    }
+
+    @Test
+    fun `refreshWorkoutDetails handles HTTP 404 error`() = runTest {
+        workoutApi.workoutDetailResponse = Response.error(404, "".toResponseBody(null))
+
+        val result = repository.refreshWorkoutDetails("w01")
+
+        assertTrue(result.isFailure)
+        assertTrue(result.exceptionOrNull()?.message?.contains("404") == true)
+    }
+
+    @Test
+    fun `refreshWorkoutDetails handles HTTP 503 error`() = runTest {
+        workoutApi.workoutDetailResponse = Response.error(503, "".toResponseBody(null))
+
+        val result = repository.refreshWorkoutDetails("w01")
+
+        assertTrue(result.isFailure)
+        assertTrue(result.exceptionOrNull()?.message?.contains("503") == true)
+    }
+
     private class FakeWorkoutDao : WorkoutDao {
         val workouts = MutableStateFlow<List<WorkoutEntity>>(emptyList())
 
