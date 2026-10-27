@@ -1,6 +1,7 @@
 package com.example.tp3_parcial_grupo_1.navigation
 
 import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
 
 enum class TopLevelDestination(val graphRoute: String, val startRoute: String, private val routePrefix: String) {
     Home(AppDestination.HomeGraph.route, AppDestination.Home.route, "home/"),
@@ -32,8 +33,8 @@ private val routesWithBottomBar = setOf(
 ).map { it.route }.toSet()
 
 fun bottomBarSelection(route: String?): TopLevelDestination? {
-    if (route !in routesWithBottomBar) return null
-    return TopLevelDestination.entries.first { it.owns(route!!) }
+    if (route == null || route !in routesWithBottomBar) return null
+    return TopLevelDestination.entries.firstOrNull { it.owns(route) }
 }
 
 fun NavController.navigateToTopLevel(destination: TopLevelDestination) {
@@ -42,13 +43,14 @@ fun NavController.navigateToTopLevel(destination: TopLevelDestination) {
         return
     }
     navigate(destination.graphRoute) {
-        popUpTo(AppDestination.Home.route) { saveState = true }
+        popUpTo(graph.findStartDestination().id) { saveState = true }
         launchSingleTop = true
         restoreState = true
     }
 }
 
 fun NavController.navigateInTab(route: String) {
-    navigateToTopLevel(TopLevelDestination.entries.first { it.owns(route) })
+    val tab = TopLevelDestination.entries.firstOrNull { it.owns(route) } ?: TopLevelDestination.Home
+    navigateToTopLevel(tab)
     if (currentDestination?.route != route) navigate(route)
 }

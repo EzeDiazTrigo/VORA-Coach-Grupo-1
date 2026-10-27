@@ -37,7 +37,9 @@ import com.example.tp3_parcial_grupo_1.ui.components.AppButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppCardStyle
+import com.example.tp3_parcial_grupo_1.ui.components.AppIconButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppIconButtonDefaults
+import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
 import com.example.tp3_parcial_grupo_1.ui.components.AppNoticeCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
 import com.example.tp3_parcial_grupo_1.ui.components.AppTopBar
@@ -47,7 +49,6 @@ import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
 import com.example.tp3_parcial_grupo_1.ui.theme.iconSizes
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 
-// Botones circulares del encabezado (volver y ayuda).
 private val HeaderButtonSize = 40.dp
 
 @Composable
@@ -155,10 +156,7 @@ fun WorkoutDetailScreen(
                                     colors = AppIconButtonDefaults.surface()
                                 )
                             }
-                        ) {
-                            // Mismo ancho que el botón de volver para que el título quede centrado.
-                            Spacer(modifier = Modifier.width(HeaderButtonSize))
-                        }
+                        )
 
                         Spacer(modifier = Modifier.height(MaterialTheme.spacing.xs))
 
@@ -180,20 +178,22 @@ fun WorkoutDetailScreen(
                                     Spacer(modifier = Modifier.height(MaterialTheme.spacing.xs))
 
                                     Text(
-                                        text = "${workout.durationMinutes} min   •   ${workout.level}   •   ${WorkoutStrings.exercisesCount(workout.exercises.size)}",
+                                        text = listOfNotNull(
+                                            WorkoutStrings.minutesCount(workout.durationMinutes),
+                                            workout.level,
+                                            WorkoutStrings.exercisesCount(workout.exercises.size)
+                                        ).joinToString(" • "),
                                         style = MaterialTheme.typography.bodyMedium,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
 
-                                    workout.description?.let { description ->
-                                        Spacer(modifier = Modifier.height(4.dp))
+                                    Spacer(modifier = Modifier.height(4.dp))
 
-                                        Text(
-                                            text = description,
-                                            style = MaterialTheme.typography.bodyMedium,
-                                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                                        )
-                                    }
+                                    Text(
+                                        text = workout.description ?: "Focus: Chest • Back • Shoulders • Arms",
+                                        style = MaterialTheme.typography.bodyMedium,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
                                 }
                             }
 
@@ -212,11 +212,11 @@ fun WorkoutDetailScreen(
                                 )
                             }
 
-                            itemsIndexed(workout.exercises, key = { _, e -> e.id }) { index, exercise ->
+                            itemsIndexed(workout.exercises, key = { index, e -> "${e.id}_$index" }) { index, exercise ->
                                 NumberedExerciseItem(
                                     number = String.format("%02d", index + 1),
                                     exercise = exercise,
-                                    onClick = { onExerciseClick(exercise.id) }
+                                    onClick = { onExerciseClick(exercise.id.ifEmpty { "e0${index + 1}" }) }
                                 )
                             }
 

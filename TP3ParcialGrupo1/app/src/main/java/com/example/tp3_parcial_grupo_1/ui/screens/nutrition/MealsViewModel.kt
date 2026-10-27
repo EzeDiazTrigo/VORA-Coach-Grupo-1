@@ -68,22 +68,26 @@ class MealsViewModel @Inject constructor(
     private fun observeMeals(date: String) {
         mealsJob?.cancel()
         mealsJob = viewModelScope.launch {
-            mealRepository.observeMealsByDate(date).collect { meals ->
-                val cal = meals.sumOf { it.calories }
-                val pro = meals.sumOf { it.protein }
-                val carb = meals.sumOf { it.carbs }
-                val fat = meals.sumOf { it.fat }
-                _uiState.update {
-                    it.copy(
-                        selectedDate = date,
-                        meals = meals,
-                        totalCalories = cal,
-                        totalProtein = pro,
-                        totalCarbs = carb,
-                        totalFat = fat
-                    )
+            mealRepository.observeMealsByDate(date)
+                .catch {
+                    _uiState.update { it.copy(selectedDate = date, isLoading = false) }
                 }
-            }
+                .collect { meals ->
+                    val cal = meals.sumOf { it.calories }
+                    val pro = meals.sumOf { it.protein }
+                    val carb = meals.sumOf { it.carbs }
+                    val fat = meals.sumOf { it.fat }
+                    _uiState.update {
+                        it.copy(
+                            selectedDate = date,
+                            meals = meals,
+                            totalCalories = cal,
+                            totalProtein = pro,
+                            totalCarbs = carb,
+                            totalFat = fat
+                        )
+                    }
+                }
         }
     }
 

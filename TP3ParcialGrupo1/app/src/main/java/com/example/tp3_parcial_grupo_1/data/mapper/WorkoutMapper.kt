@@ -11,37 +11,38 @@ import com.example.tp3_parcial_grupo_1.model.Workout
 // DTO -> Entity
 fun WorkoutSummaryDto.toEntity(): WorkoutEntity =
     WorkoutEntity(
-        id = id,
-        name = name,
-        level = level,
-        durationMinutes = durationMinutes,
-        exerciseCount = exerciseCount,
+        id = id.orEmpty().ifEmpty { "w01" },
+        name = name.orEmpty().ifEmpty { "Workout" },
+        level = level.orEmpty().ifEmpty { "MODERATE" },
+        durationMinutes = durationMinutes ?: 45,
+        exerciseCount = exerciseCount ?: 5,
         description = description
     )
 
-fun WorkoutDto.toEntity(): WorkoutEntity {
+fun WorkoutDto.toEntity(overrideId: String? = null): WorkoutEntity {
+    val workoutId = overrideId ?: id.orEmpty().ifEmpty { "w01" }
     val exerciseList = exercises.orEmpty()
     return WorkoutEntity(
-        id = id,
-        name = name,
-        level = level,
-        durationMinutes = durationMinutes,
-        exerciseCount = exerciseList.size,
+        id = workoutId,
+        name = name.orEmpty().ifEmpty { "Workout" },
+        level = level.orEmpty().ifEmpty { "MODERATE" },
+        durationMinutes = durationMinutes ?: 45,
+        exerciseCount = if (exerciseList.isNotEmpty()) exerciseList.size else 5,
         description = description
     )
 }
 
 fun ExerciseDto.toEntity(workoutId: String): ExerciseEntity =
     ExerciseEntity(
-        id = id,
+        id = id.orEmpty().ifEmpty { java.util.UUID.randomUUID().toString() },
         workoutId = workoutId,
-        name = name,
-        sets = sets,
-        reps = reps,
-        muscleGroup = muscleGroup,
-        restSeconds = restSeconds,
-        tip = tip,
-        instructions = instructions
+        name = name.orEmpty().ifEmpty { "Exercise" },
+        sets = sets ?: 3,
+        reps = reps ?: 10,
+        muscleGroup = muscleGroup.orEmpty().ifEmpty { "Full Body" },
+        restSeconds = restSeconds ?: 60,
+        tip = tip.orEmpty(),
+        instructions = instructions.orEmpty()
     )
 
 // Entity -> Domain
