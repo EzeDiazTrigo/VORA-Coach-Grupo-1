@@ -48,7 +48,11 @@ class NutritionPreferencesViewModel @Inject constructor(
 
     fun onDinnerSelected(value: String) = _uiState.update { it.copy(preferredDinner = value) }
 
-    fun onPrioritySelected(priority: NutritionPriority) = _uiState.update { it.copy(priority = priority) }
+    // Igual que las metas: se alternan y queda al menos una.
+    fun onPriorityToggled(priority: NutritionPriority) = _uiState.update { state ->
+        val priorities = if (priority in state.priorities) state.priorities - priority else state.priorities + priority
+        if (priorities.isEmpty()) state else state.copy(priorities = priorities)
+    }
 
     fun onSaveClick() {
         val state = _uiState.value
@@ -60,7 +64,7 @@ class NutritionPreferencesViewModel @Inject constructor(
                 mealsPerDay = state.mealsPerDay,
                 preferredBreakfast = state.preferredBreakfast,
                 preferredDinner = state.preferredDinner,
-                priority = state.priority
+                priorities = state.priorities
             )
         }
         _uiState.update { it.copy(isSaved = true) }

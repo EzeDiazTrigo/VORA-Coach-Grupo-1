@@ -77,7 +77,7 @@ object ProfileStrings {
     val FoodsEnjoyOptions = listOf("Chicken", "Eggs", "Fish", "Rice", "Pasta", "Greek yoghurt", "Vegetables", "Fruit")
     val MealsPerDayOptions = listOf("3 meals", "3 meals + 1 snack", "4 meals", "5 meals")
     val BreakfastOptions = listOf("Quick & high protein", "Light & fresh", "Hearty & filling", "I usually skip it")
-    val DinnerOptions = listOf("Light & early", "Balanced plate", "High protein", "Hearty & filling")
+    val DinnerOptions = listOf("Light & early", "Balanced", "High protein", "Hearty & filling")
 
     const val VoiceTitle = "VORA Coach"
     const val VoiceIntro = "Choose how VORA communicates and coaches you."
@@ -93,6 +93,7 @@ object ProfileStrings {
     const val HapticFeedback = "Haptic feedback"
     const val ControlTitle = "Your control matters"
     const val ControlBody = "Manage microphone permissions and connected data from Settings."
+    const val Cancel = "Cancel"
     const val PrivacyAndPermissions = "Privacy & permissions"
 
     const val SettingsTitle = "Settings"

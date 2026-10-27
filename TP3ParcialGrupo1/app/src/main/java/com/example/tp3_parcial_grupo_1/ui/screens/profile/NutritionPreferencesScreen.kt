@@ -1,10 +1,20 @@
 package com.example.tp3_parcial_grupo_1.ui.screens.profile
 
 import androidx.compose.foundation.layout.Arrangement
+import com.example.tp3_parcial_grupo_1.ui.components.AppOptionDialog
+import com.example.tp3_parcial_grupo_1.ui.components.AppCard
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.Alignment
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -29,7 +39,6 @@ import com.example.tp3_parcial_grupo_1.model.NutritionPriority
 import com.example.tp3_parcial_grupo_1.ui.components.AppButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppChip
 import com.example.tp3_parcial_grupo_1.ui.components.AppChipStyle
-import com.example.tp3_parcial_grupo_1.ui.components.AppDropdownField
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
 import com.example.tp3_parcial_grupo_1.ui.components.AppOptionCard
@@ -67,7 +76,7 @@ fun NutritionPreferencesRoute(
         onMealsPerDaySelected = viewModel::onMealsPerDaySelected,
         onBreakfastSelected = viewModel::onBreakfastSelected,
         onDinnerSelected = viewModel::onDinnerSelected,
-        onPrioritySelected = viewModel::onPrioritySelected,
+        onPriorityToggled = viewModel::onPriorityToggled,
         onSaveClick = viewModel::onSaveClick,
         modifier = modifier
     )
@@ -86,10 +95,32 @@ fun NutritionPreferencesScreen(
     onMealsPerDaySelected: (String) -> Unit,
     onBreakfastSelected: (String) -> Unit,
     onDinnerSelected: (String) -> Unit,
-    onPrioritySelected: (NutritionPriority) -> Unit,
+    onPriorityToggled: (NutritionPriority) -> Unit,
     onSaveClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    var editing by rememberSaveable { mutableStateOf<MealPreferenceField?>(null) }
+    editing?.let { field ->
+        val (label, options, selected, onSelected) = when (field) {
+            MealPreferenceField.MealsPerDay ->
+                MealDialog(ProfileStrings.MealsPerDayLabel, ProfileStrings.MealsPerDayOptions, uiState.mealsPerDay, onMealsPerDaySelected)
+            MealPreferenceField.Breakfast ->
+                MealDialog(ProfileStrings.PreferredBreakfastLabel, ProfileStrings.BreakfastOptions, uiState.preferredBreakfast, onBreakfastSelected)
+            MealPreferenceField.Dinner ->
+                MealDialog(ProfileStrings.PreferredDinnerLabel, ProfileStrings.DinnerOptions, uiState.preferredDinner, onDinnerSelected)
+        }
+        AppOptionDialog(
+            title = label,
+            options = options,
+            selected = selected,
+            cancelLabel = ProfileStrings.Cancel,
+            onSelected = {
+                onSelected(it)
+                editing = null
+            },
+            onDismiss = { editing = null }
+        )
+    }
     AppScaffold(
         modifier = modifier.fillMaxSize(),
         title = ProfileStrings.NutritionHeading,
@@ -177,36 +208,63 @@ fun NutritionPreferencesScreen(
                 }
             }
             AppSection(ProfileStrings.MealPreferencesLabel) {
-                AppDropdownField(
-                    label = ProfileStrings.MealsPerDayLabel,
-                    selected = uiState.mealsPerDay,
-                    options = ProfileStrings.MealsPerDayOptions,
-                    onSelected = onMealsPerDaySelected
-                )
-                AppDropdownField(
-                    label = ProfileStrings.PreferredBreakfastLabel,
-                    selected = uiState.preferredBreakfast,
-                    options = ProfileStrings.BreakfastOptions,
-                    onSelected = onBreakfastSelected
-                )
-                AppDropdownField(
-                    label = ProfileStrings.PreferredDinnerLabel,
-                    selected = uiState.preferredDinner,
-                    options = ProfileStrings.DinnerOptions,
-                    onSelected = onDinnerSelected
-                )
+                AppCard {
+                    Column(verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xxs)) {
+                        MealPreferenceRow(
+                            label = ProfileStrings.MealsPerDayLabel,
+                            value = uiState.mealsPerDay,
+                            onClick = { editing = MealPreferenceField.MealsPerDay }
+                        )
+                        MealPreferenceRow(
+                            label = ProfileStrings.PreferredBreakfastLabel,
+                            value = uiState.preferredBreakfast,
+                            onClick = { editing = MealPreferenceField.Breakfast }
+                        )
+                        MealPreferenceRow(
+                            label = ProfileStrings.PreferredDinnerLabel,
+                            value = uiState.preferredDinner,
+                            onClick = { editing = MealPreferenceField.Dinner }
+                        )
+                    }
+                }
             }
             AppSection(ProfileStrings.NutritionPriorityPrompt) {
                 NutritionPriority.entries.forEach { priority ->
                     AppOptionCard(
                         title = priority.title(),
-                        selected = priority == uiState.priority,
-                        onClick = { onPrioritySelected(priority) }
+                        selected = priority in uiState.priorities,
+                        onClick = { onPriorityToggled(priority) },
+                        multiSelect = true
                     )
                 }
             }
             AppButton(text = ProfileStrings.SavePreferences, onClick = onSaveClick)
         }
+    }
+}
+
+private enum class MealPreferenceField { MealsPerDay, Breakfast, Dinner }
+
+private data class MealDialog(
+    val label: String,
+    val options: List<String>,
+    val selected: String,
+    val onSelected: (String) -> Unit
+)
+
+// Fila de solo lectura de la tarjeta de Meal Preferences: etiqueta gris a la izquierda y valor en SemiBold a la derecha.
+@Composable
+private fun MealPreferenceRow(label: String, value: String, onClick: () -> Unit) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(role = Role.Button, onClickLabel = label, onClick = onClick)
+            .padding(vertical = MaterialTheme.spacing.xxs),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(label, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        Text(value, style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurface)
     }
 }
 
@@ -218,7 +276,7 @@ private fun NutritionPreferencesScreenPreview() {
             uiState = ProfileDemoData.nutritionPreferences.toUiState(),
             onBackClick = {}, onDietSelected = {}, onFoodEnjoyedToggled = {}, onIngredientInputChange = {},
             onAddIngredientClick = {}, onRemoveIngredientClick = {}, onMealsPerDaySelected = {},
-            onBreakfastSelected = {}, onDinnerSelected = {}, onPrioritySelected = {}, onSaveClick = {}
+            onBreakfastSelected = {}, onDinnerSelected = {}, onPriorityToggled = {}, onSaveClick = {}
         )
     }
 }

@@ -13,7 +13,7 @@ data class NutritionPreferencesUiState(
     val mealsPerDay: String,
     val preferredBreakfast: String,
     val preferredDinner: String,
-    val priority: NutritionPriority,
+    val priorities: Set<NutritionPriority>,
     val isSaved: Boolean = false
 )
 
@@ -24,5 +24,5 @@ fun NutritionPreferences.toUiState() = NutritionPreferencesUiState(
     mealsPerDay = mealsPerDay,
     preferredBreakfast = preferredBreakfast,
     preferredDinner = preferredDinner,
-    priority = priority
+    priorities = priorities
 )

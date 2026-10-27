@@ -11,5 +11,5 @@ data class NutritionPreferences(
     val mealsPerDay: String,
     val preferredBreakfast: String,
     val preferredDinner: String,
-    val priority: NutritionPriority
+    val priorities: Set<NutritionPriority>
 )

@@ -6,7 +6,7 @@ import com.example.tp3_parcial_grupo_1.model.UserProfile
 import com.example.tp3_parcial_grupo_1.model.WorkoutPreference
 
 data class GoalsPreferencesUiState(
-    val goal: PrimaryGoal,
+    val goals: Set<PrimaryGoal>,
     val trainingDays: Int,
     val workoutPreference: WorkoutPreference,
     val coachingStyle: CoachingStyle,
@@ -14,7 +14,7 @@ data class GoalsPreferencesUiState(
 )
 
 fun UserProfile.toGoalsUiState() = GoalsPreferencesUiState(
-    goal = goal,
+    goals = goals,
     trainingDays = trainingDaysPerWeek,
     workoutPreference = preferredWorkout,
     coachingStyle = coachingStyle

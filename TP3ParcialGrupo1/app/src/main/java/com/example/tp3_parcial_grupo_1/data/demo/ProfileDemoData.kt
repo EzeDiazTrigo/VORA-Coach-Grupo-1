@@ -22,7 +22,7 @@ object ProfileDemoData {
         weightKg = 76,
         gender = "Prefer not to say",
         tagline = "Building strength & improving fitness",
-        goal = PrimaryGoal.ImproveFitness,
+        goals = setOf(PrimaryGoal.BuildStrength, PrimaryGoal.ImproveFitness),
         experience = "Intermediate",
         trainingDaysPerWeek = 4,
         preferredWorkout = WorkoutPreference.Strength,
@@ -35,8 +35,8 @@ object ProfileDemoData {
         foodsToAvoid = listOf("Peanuts", "Shellfish", "Mushrooms"),
         mealsPerDay = "3 meals + 1 snack",
         preferredBreakfast = "Quick & high protein",
-        preferredDinner = "Balanced plate",
-        priority = NutritionPriority.HitProteinTargets
+        preferredDinner = "Balanced",
+        priorities = setOf(NutritionPriority.HitProteinTargets, NutritionPriority.EatMoreConsistently)
     )
 
     val voiceSettings = VoiceSettings(
