@@ -40,6 +40,8 @@ import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
 import com.example.tp3_parcial_grupo_1.ui.components.AppIconButtonColors
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
+import com.example.tp3_parcial_grupo_1.ui.components.AppSectionLabel
+import com.example.tp3_parcial_grupo_1.ui.components.AppSectionLabelStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppTopBar
 import com.example.tp3_parcial_grupo_1.ui.strings.ProgressStrings
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
@@ -100,9 +102,9 @@ fun WeeklyReviewScreen(
             ) {
                 ReviewHeader(onBackClick)
                 SummaryPanel(uiState)
-                SectionLabel(ProgressStrings.WhatWentWell, color = MaterialTheme.extendedColors.mint)
+                AppSectionLabel(ProgressStrings.WhatWentWell, style = AppSectionLabelStyle.Title, color = MaterialTheme.extendedColors.mint)
                 uiState.wins.forEach { win -> WinRow(win) }
-                SectionLabel(ProgressStrings.WhatToImprove, color = colors.tertiary)
+                AppSectionLabel(ProgressStrings.WhatToImprove, style = AppSectionLabelStyle.Title, color = colors.tertiary)
                 ImprovementPanel(uiState.improvement, onDinnerIdeasClick)
                 RecommendationsCard(uiState.recommendations, onNextWeekPlanClick)
                 AppButton(
@@ -203,7 +205,7 @@ private fun ImprovementPanel(improvement: ReviewHighlight, onDinnerIdeasClick: (
 private fun RecommendationsCard(recommendations: List<String>, onNextWeekPlanClick: () -> Unit) {
     val colors = MaterialTheme.colorScheme
     AppCard {
-        SectionLabel(ProgressStrings.NextWeekRecommendations)
+        AppSectionLabel(ProgressStrings.NextWeekRecommendations, style = AppSectionLabelStyle.Title)
         recommendations.forEach { recommendation ->
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md)) {
                 Box(Modifier.size(BulletSize).background(colors.onSurface, CircleShape))

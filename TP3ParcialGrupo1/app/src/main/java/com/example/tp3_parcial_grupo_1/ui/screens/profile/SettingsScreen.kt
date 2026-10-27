@@ -36,7 +36,7 @@ import com.example.tp3_parcial_grupo_1.ui.components.AppCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
-import com.example.tp3_parcial_grupo_1.ui.components.AppSectionLabel
+import com.example.tp3_parcial_grupo_1.ui.components.AppSection
 import com.example.tp3_parcial_grupo_1.ui.strings.ProfileStrings
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
 import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
@@ -183,8 +183,7 @@ private data class SettingsRowData(val icon: AppIcons, val title: String, val su
 
 @Composable
 private fun SettingsGroup(label: String, rows: List<SettingsRowData>, onRowClick: () -> Unit) {
-    Column(verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm)) {
-        AppSectionLabel(label)
+    AppSection(label = label, spacing = MaterialTheme.spacing.sm) {
         rows.forEach { row -> SettingsRow(row, onClick = onRowClick) }
     }
 }

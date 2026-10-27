@@ -28,6 +28,8 @@ import com.example.tp3_parcial_grupo_1.ui.components.AppCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
+import com.example.tp3_parcial_grupo_1.ui.components.AppSectionLabel
+import com.example.tp3_parcial_grupo_1.ui.components.AppSectionLabelStyle
 import com.example.tp3_parcial_grupo_1.ui.strings.ProgressStrings
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
@@ -86,7 +88,7 @@ fun HealthTrendsScreen(
             StatStripCard(uiState.stats, horizontalAlignment = Alignment.Start)
             StepsTrendCard(uiState)
             VoraQuoteCard(uiState.insight)
-            SectionLabel(ProgressStrings.HabitSignals)
+            AppSectionLabel(ProgressStrings.HabitSignals, style = AppSectionLabelStyle.Title)
             uiState.signals.forEach { signal -> HabitSignalCard(signal) }
         }
     }

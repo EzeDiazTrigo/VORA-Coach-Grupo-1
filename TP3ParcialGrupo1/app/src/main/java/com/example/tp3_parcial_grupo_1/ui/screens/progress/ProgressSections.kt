@@ -27,6 +27,8 @@ import com.example.tp3_parcial_grupo_1.ui.components.AppIconButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppIconButtonDefaults
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
 import com.example.tp3_parcial_grupo_1.ui.components.AppNoticeCard
+import com.example.tp3_parcial_grupo_1.ui.components.AppSectionLabel
+import com.example.tp3_parcial_grupo_1.ui.components.AppSectionLabelStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppStat
 import com.example.tp3_parcial_grupo_1.ui.components.AppTopBar
 import com.example.tp3_parcial_grupo_1.ui.components.VoraLogo
@@ -117,11 +119,6 @@ internal fun VoraQuoteCard(text: String) {
 }
 
 @Composable
-internal fun SectionLabel(text: String, color: Color = MaterialTheme.extendedColors.textSubtle) {
-    Text(text, style = MaterialTheme.typography.titleSmall, color = color)
-}
-
-@Composable
 internal fun ProgressLink(text: String, color: Color, onClick: () -> Unit) {
     Row(
         modifier = Modifier.clickable(onClick = onClick),
@@ -144,7 +141,7 @@ private fun ProgressSectionsPreview() {
             ProgressHeader(ProgressStrings.HealthTrendsTitle, onBackClick = {}, onMoreClick = {}, subtitle = ProgressStrings.HealthTrendsSubtitle)
             StatStripCard(ProgressDemoData.healthTrends.stats)
             VoraQuoteCard(ProgressDemoData.healthTrends.insight)
-            SectionLabel(ProgressStrings.HabitSignals)
+            AppSectionLabel(ProgressStrings.HabitSignals, style = AppSectionLabelStyle.Title)
         }
     }
 }

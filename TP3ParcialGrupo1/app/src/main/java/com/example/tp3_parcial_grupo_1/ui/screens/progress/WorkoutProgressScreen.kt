@@ -34,6 +34,8 @@ import com.example.tp3_parcial_grupo_1.ui.components.AppCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
+import com.example.tp3_parcial_grupo_1.ui.components.AppSectionLabel
+import com.example.tp3_parcial_grupo_1.ui.components.AppSectionLabelStyle
 import com.example.tp3_parcial_grupo_1.ui.strings.ProgressStrings
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
 import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
@@ -93,7 +95,7 @@ fun WorkoutProgressScreen(
             TrainingVolumeCard(progress)
             PersonalBestCard(progress.personalBest)
             VoraQuoteCard(progress.insight)
-            SectionLabel(ProgressStrings.ExerciseProgress)
+            AppSectionLabel(ProgressStrings.ExerciseProgress, style = AppSectionLabelStyle.Title)
             progress.exercises.forEach { exercise -> ExerciseCard(exercise) }
         }
     }

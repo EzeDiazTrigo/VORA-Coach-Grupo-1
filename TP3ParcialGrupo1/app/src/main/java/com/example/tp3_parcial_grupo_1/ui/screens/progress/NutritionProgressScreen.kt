@@ -35,6 +35,8 @@ import com.example.tp3_parcial_grupo_1.data.demo.ProgressDemoData
 import com.example.tp3_parcial_grupo_1.ui.components.AppCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppCardStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
+import com.example.tp3_parcial_grupo_1.ui.components.AppSectionLabel
+import com.example.tp3_parcial_grupo_1.ui.components.AppSectionLabelStyle
 import com.example.tp3_parcial_grupo_1.ui.strings.ProgressStrings
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
@@ -92,7 +94,7 @@ fun NutritionProgressScreen(
             StatStripCard(uiState.progress.stats)
             MacroComplianceCard(uiState.macro, uiState.target, onMacroSelect)
             AnalysisCard(uiState.progress.analysis)
-            SectionLabel(ProgressStrings.FoodHabits)
+            AppSectionLabel(ProgressStrings.FoodHabits, style = AppSectionLabelStyle.Title)
             uiState.progress.habits.chunked(2).forEach { pair ->
                 Row(
                     modifier = Modifier.fillMaxWidth().height(IntrinsicSize.Min),

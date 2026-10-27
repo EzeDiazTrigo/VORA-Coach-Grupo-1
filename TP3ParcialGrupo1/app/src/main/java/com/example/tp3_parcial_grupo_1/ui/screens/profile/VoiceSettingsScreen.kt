@@ -41,7 +41,7 @@ import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
 import com.example.tp3_parcial_grupo_1.ui.components.AppOptionCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
-import com.example.tp3_parcial_grupo_1.ui.components.AppSectionLabel
+import com.example.tp3_parcial_grupo_1.ui.components.AppSection
 import com.example.tp3_parcial_grupo_1.ui.components.AppSwitchRow
 import com.example.tp3_parcial_grupo_1.ui.strings.ProfileStrings
 import com.example.tp3_parcial_grupo_1.ui.strings.description
@@ -121,7 +121,7 @@ fun VoiceSettingsScreen(
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
-            VoiceSection(ProfileStrings.CoachingStyleLabel) {
+            AppSection(ProfileStrings.CoachingStyleLabel) {
                 FlowRow(
                     horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm),
                     verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm)
@@ -136,7 +136,7 @@ fun VoiceSettingsScreen(
                     }
                 }
             }
-            VoiceSection(ProfileStrings.ActiveVoiceLabel) {
+            AppSection(ProfileStrings.ActiveVoiceLabel) {
                 AppCard {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -170,7 +170,7 @@ fun VoiceSettingsScreen(
                     }
                 }
             }
-            VoiceSection(ProfileStrings.SpeakingBehaviourLabel) {
+            AppSection(ProfileStrings.SpeakingBehaviourLabel) {
                 AppCard {
                     AppSwitchRow(
                         title = ProfileStrings.SpeakResponsesAloud,
@@ -192,7 +192,7 @@ fun VoiceSettingsScreen(
                     )
                 }
             }
-            VoiceSection(ProfileStrings.ResponseStyleLabel) {
+            AppSection(ProfileStrings.ResponseStyleLabel) {
                 ResponseStyle.entries.forEach { style ->
                     AppOptionCard(
                         title = style.title(),
@@ -233,14 +233,6 @@ fun VoiceSettingsScreen(
                 )
             }
         }
-    }
-}
-
-@Composable
-private fun VoiceSection(label: String, content: @Composable () -> Unit) {
-    Column(verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md)) {
-        AppSectionLabel(label)
-        content()
     }
 }
 
