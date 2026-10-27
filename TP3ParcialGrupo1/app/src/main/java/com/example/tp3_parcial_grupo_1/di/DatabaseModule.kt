@@ -59,16 +59,29 @@ object DatabaseModule {
     // onCreate corre solo cuando se crea el archivo de la base: borrar comidas no vuelve a sembrar la demo.
     // Una versión nueva con migración destructiva recrea la base sin pasar por onCreate, así que también se siembra ahí.
     private object DemoMealsCallback : RoomDatabase.Callback() {
-        override fun onCreate(db: SupportSQLiteDatabase) = seedDemoMeals(db)
+        override fun onCreate(db: SupportSQLiteDatabase) {
+            seedDemoMeals(db)
+        }
 
-        override fun onDestructiveMigration(db: SupportSQLiteDatabase) = seedDemoMeals(db)
+        override fun onOpen(db: SupportSQLiteDatabase) {
+            super.onOpen(db)
+            try {
+                db.query("SELECT COUNT(*) FROM meals").use { cursor ->
+                    if (cursor.moveToFirst() && cursor.getInt(0) == 0) {
+                        seedDemoMeals(db)
+                    }
+                }
+            } catch (_: Exception) {
+                // Table might not exist yet if opened before table creation
+            }
+        }
 
         private fun seedDemoMeals(db: SupportSQLiteDatabase) {
             val today = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
             NutritionDemoData.meals(today).map(MealEntity::fromDomain).forEach { meal ->
                 db.insert(
                     "meals",
-                    OnConflictStrategy.NONE,
+                    OnConflictStrategy.IGNORE,
                     contentValuesOf(
                         "name" to meal.name,
                         "date" to meal.date,

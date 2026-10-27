@@ -270,12 +270,14 @@ fun ReviewIngredientCard(name: String, quantity: String, calories: String, onDem
 private fun QuantityStepButton(symbol: String, description: String, onClick: () -> Unit) {
     Box(
         modifier = Modifier
-            .minimumInteractiveComponentSize()
+            .size(32.dp)
+            .clip(RoundedCornerShape(8.dp))
+            .background(MaterialTheme.colorScheme.surfaceVariant)
             .clickable(role = Role.Button, onClick = onClick)
             .semantics { contentDescription = description },
         contentAlignment = Alignment.Center
     ) {
-        Text(text = symbol, fontSize = 12.sp, fontWeight = FontWeight.Bold)
+        Text(text = symbol, fontSize = 16.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)
     }
 }
 

@@ -98,4 +98,11 @@ class MealsViewModel @Inject constructor(
             mealRepository.deleteMeal(id)
         }
     }
+
+    fun duplicateMeal(id: Long, onDuplicated: () -> Unit = {}) {
+        viewModelScope.launch {
+            mealRepository.duplicateMeal(id)
+            onDuplicated()
+        }
+    }
 }

@@ -40,30 +40,6 @@ fun MealDetailScreen(
     val uiState by viewModel.uiState.collectAsState()
     val meal = uiState.currentMealDetail ?: uiState.meals.firstOrNull() ?: Meal(name = "Lunch", date = "", type = com.example.tp3_parcial_grupo_1.model.MealType.LUNCH, calories = 520, protein = 38, carbs = 54, fat = 14, itemsSummary = "Chicken - rice - vegetables")
 
-    var showDeleteDialog by remember { mutableStateOf(false) }
-
-    if (showDeleteDialog) {
-        AlertDialog(
-            onDismissRequest = { showDeleteDialog = false },
-            title = { Text("Delete Meal") },
-            text = { Text("Are you sure you want to delete ${meal.name}?") },
-            confirmButton = {
-                TextButton(onClick = {
-                    viewModel.deleteMeal(meal.id)
-                    showDeleteDialog = false
-                    onDeleteSuccess()
-                }) {
-                    Text("Delete", color = MaterialTheme.colorScheme.error)
-                }
-            },
-            dismissButton = {
-                TextButton(onClick = { showDeleteDialog = false }) {
-                    Text("Cancel")
-                }
-            }
-        )
-    }
-
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
     val showDemoNotice: () -> Unit = { scope.launch { snackbarHostState.showSnackbar(Strings.DemoMode) } }
@@ -228,11 +204,15 @@ fun MealDetailScreen(
             Spacer(modifier = Modifier.height(12.dp))
 
             AppButton(
-                text = "Delete Meal",
-                onClick = { showDeleteDialog = true },
-                style = AppButtonStyle.Primary,
-                containerColor = MaterialTheme.colorScheme.error,
-                textColor = MaterialTheme.colorScheme.onError,
+                text = "Duplicate Meal",
+                onClick = {
+                    viewModel.duplicateMeal(meal.id) {
+                        onBackClick()
+                    }
+                },
+                style = AppButtonStyle.Outlined,
+                textColor = MaterialTheme.colorScheme.onBackground,
+                containerColor = MaterialTheme.colorScheme.surface,
                 minHeight = AppButtonDefaults.MediumHeight,
                 textStyle = AppButtonDefaults.BoldTextStyle
             )

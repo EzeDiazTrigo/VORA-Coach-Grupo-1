@@ -73,4 +73,18 @@ class MealsViewModelTest {
         assertEquals(5L, viewModel.uiState.value.currentMealDetail?.id)
         assertEquals("Lunch", viewModel.uiState.value.currentMealDetail?.name)
     }
+
+    @Test
+    fun `given an existing meal, when duplicateMeal is called, then a copy is inserted`() = runTest {
+        val testEntity = MealEntity(id = 1L, name = "Breakfast", date = "2026-10-26", type = "BREAKFAST", calories = 400, protein = 20, carbs = 30, fat = 10, itemsSummary = "")
+        fakeDao.meals.add(testEntity)
+        savedStateHandle = SavedStateHandle()
+
+        val viewModel = MealsViewModel(mealRepository, savedStateHandle)
+        viewModel.duplicateMeal(1L)
+        testScheduler.advanceUntilIdle()
+
+        assertEquals(2, fakeDao.meals.size)
+        assertEquals("Breakfast", fakeDao.meals.last().name)
+    }
 }

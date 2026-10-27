@@ -77,12 +77,12 @@ fun AddFoodScreen(
                                 color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f)
                             )
                         )
-                        Box(modifier = Modifier.width(200.dp)) {
+                        Box(modifier = Modifier.fillMaxWidth()) {
                             AppButton(
                                 text = NutritionStrings.startVoiceLogging,
                                 onClick = onNavigateToVoice,
                                 style = AppButtonStyle.Accent,
-                                isCompact = true
+                                leadingIcon = AppIcons.Mic
                             )
                         }
                     }
