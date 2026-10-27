@@ -25,7 +25,6 @@ import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 
 @Composable
 fun AddFoodScreen(
-    onNavigate: (String) -> Unit,
     onBackClick: () -> Unit,
     onNavigateToVoice: () -> Unit,
     onNavigateToPhoto: () -> Unit,

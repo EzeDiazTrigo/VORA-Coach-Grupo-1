@@ -24,7 +24,6 @@ import java.util.*
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ManualLogScreen(
-    onNavigate: (String) -> Unit,
     onBackClick: () -> Unit,
     onSaveMeal: (Meal) -> Unit
 ) {

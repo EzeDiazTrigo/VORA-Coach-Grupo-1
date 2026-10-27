@@ -24,7 +24,6 @@ import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 @Composable
 fun TodaysMealsScreen(
     uiState: MealUiState,
-    onNavigate: (String) -> Unit,
     onBackClick: () -> Unit,
     onAddDinner: () -> Unit
 ) {

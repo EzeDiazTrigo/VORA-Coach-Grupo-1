@@ -33,7 +33,6 @@ import java.util.*
 
 @Composable
 fun ReviewMealScreen(
-    onNavigate: (String) -> Unit,
     onBackClick: () -> Unit,
     onSaveMeal: (Meal) -> Unit
 ) {

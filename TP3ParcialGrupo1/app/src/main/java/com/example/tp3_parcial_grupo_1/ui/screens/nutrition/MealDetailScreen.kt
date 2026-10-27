@@ -26,7 +26,6 @@ import kotlinx.coroutines.launch
 @Composable
 fun MealDetailScreen(
     viewModel: MealsViewModel,
-    onNavigate: (String) -> Unit,
     onBackClick: () -> Unit,
     onDeleteSuccess: () -> Unit
 ) {

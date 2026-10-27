@@ -30,7 +30,6 @@ fun NavGraphBuilder.nutritionGraph(navController: NavController) {
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
             NutritionDashboardScreen(
                 uiState = uiState,
-                onNavigate = { route -> navController.navigate(route) { popUpTo(route) { inclusive = true } } },
                 onNavigateToAddFood = { navController.navigate(AppDestination.AddFood.route) },
                 onNavigateToHistory = { navController.navigate(AppDestination.TodaysMeals.route) },
                 onNavigateToDetail = { mealId -> navController.navigate(AppDestination.MealDetails.createRoute(mealId)) },
@@ -45,14 +44,12 @@ fun NavGraphBuilder.nutritionGraph(navController: NavController) {
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
             TodaysMealsScreen(
                 uiState = uiState,
-                onNavigate = { route -> navController.navigate(route) { popUpTo(route) { inclusive = true } } },
                 onBackClick = { navController.popBackStack() },
                 onAddDinner = { navController.navigate(AppDestination.AddFood.route) }
             )
         }
         composable(AppDestination.AddFood.route) {
             AddFoodScreen(
-                onNavigate = { route -> navController.navigate(route) { popUpTo(route) { inclusive = true } } },
                 onBackClick = { navController.popBackStack() },
                 onNavigateToVoice = { navController.navigate(AppDestination.VoiceFoodLogging.route) },
                 onNavigateToPhoto = { navController.navigate(AppDestination.PhotoAnalysis.route) },
@@ -63,7 +60,6 @@ fun NavGraphBuilder.nutritionGraph(navController: NavController) {
         composable(AppDestination.ManualLog.route) {
             val viewModel: MealsViewModel = hiltViewModel()
             ManualLogScreen(
-                onNavigate = { route -> navController.navigate(route) { popUpTo(route) { inclusive = true } } },
                 onBackClick = { navController.popBackStack() },
                 onSaveMeal = { meal ->
                     viewModel.addMeal(meal)
@@ -97,7 +93,6 @@ fun NavGraphBuilder.nutritionGraph(navController: NavController) {
         }
         composable(AppDestination.PhotoAnalysis.route) {
             AnalyseMealPhotoScreen(
-                onNavigate = { route -> navController.navigate(route) { popUpTo(route) { inclusive = true } } },
                 onBackClick = { navController.popBackStack() },
                 onReviewAndAdd = { navController.navigate(AppDestination.FoodConfirmation.route) }
             )
@@ -105,7 +100,6 @@ fun NavGraphBuilder.nutritionGraph(navController: NavController) {
         composable(AppDestination.FoodConfirmation.route) {
             val viewModel: MealsViewModel = hiltViewModel()
             ReviewMealScreen(
-                onNavigate = { route -> navController.navigate(route) { popUpTo(route) { inclusive = true } } },
                 onBackClick = { navController.popBackStack() },
                 onSaveMeal = { meal ->
                     viewModel.addMeal(meal)
@@ -120,7 +114,6 @@ fun NavGraphBuilder.nutritionGraph(navController: NavController) {
             val viewModel: MealsViewModel = hiltViewModel()
             MealDetailScreen(
                 viewModel = viewModel,
-                onNavigate = { route -> navController.navigate(route) { popUpTo(route) { inclusive = true } } },
                 onBackClick = { navController.popBackStack() },
                 onDeleteSuccess = { navController.popBackStack() }
             )

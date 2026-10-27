@@ -23,7 +23,6 @@ import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
 
 @Composable
 fun AnalyseMealPhotoScreen(
-    onNavigate: (String) -> Unit,
     onBackClick: () -> Unit,
     onReviewAndAdd: () -> Unit
 ) {

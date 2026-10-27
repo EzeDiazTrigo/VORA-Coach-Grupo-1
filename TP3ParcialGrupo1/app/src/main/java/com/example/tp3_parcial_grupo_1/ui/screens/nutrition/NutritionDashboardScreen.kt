@@ -40,7 +40,6 @@ import java.util.*
 @Composable
 fun NutritionDashboardScreen(
     uiState: MealUiState,
-    onNavigate: (String) -> Unit,
     onNavigateToAddFood: () -> Unit,
     onNavigateToHistory: () -> Unit,
     onNavigateToDetail: (Long) -> Unit,
