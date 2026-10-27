@@ -67,24 +67,14 @@ fun NutritionDashboardScreen(
         )
     }
 
-    if (mealToDelete != null) {
-        AlertDialog(
-            onDismissRequest = { mealToDelete = null },
-            title = { Text(NutritionStrings.title) },
-            text = { Text(NutritionStrings.deleteMealConfirm(mealToDelete?.name)) },
-            confirmButton = {
-                TextButton(onClick = {
-                    mealToDelete?.let { onDeleteMeal(it.id) }
-                    mealToDelete = null
-                }) {
-                    Text(NutritionStrings.delete, color = MaterialTheme.colorScheme.error)
-                }
+    mealToDelete?.let { meal ->
+        DeleteMealDialog(
+            meal = meal,
+            onConfirm = {
+                onDeleteMeal(meal.id)
+                mealToDelete = null
             },
-            dismissButton = {
-                TextButton(onClick = { mealToDelete = null }) {
-                    Text(NutritionStrings.cancel)
-                }
-            }
+            onDismiss = { mealToDelete = null }
         )
     }
 
@@ -270,7 +260,8 @@ fun NutritionDashboardScreen(
                     title = meal.name,
                     subtitle = meal.itemsSummary.ifBlank { meal.type.displayName() },
                     calories = "${meal.calories} kcal",
-                    onClick = { onNavigateToDetail(meal.id) }
+                    onClick = { onNavigateToDetail(meal.id) },
+                    onLongClick = { mealToDelete = meal }
                 )
             }
 
@@ -348,8 +339,8 @@ fun NutritionDashboardScreen(
 }
 
 @Composable
-fun MealRowCard(title: String, subtitle: String, calories: String, onClick: () -> Unit) {
-    AppCard(onClick = onClick) {
+fun MealRowCard(title: String, subtitle: String, calories: String, onClick: () -> Unit, onLongClick: (() -> Unit)? = null) {
+    AppCard(onClick = onClick, onLongClick = onLongClick, onLongClickLabel = NutritionStrings.deleteMealAction) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,

@@ -128,7 +128,7 @@ fun WorkoutDetailScreen(
                     ) {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Text(
-                                text = WorkoutStrings.ErrorGeneric,
+                                text = if (uiState.isUnavailableOffline) WorkoutStrings.NotAvailableOffline else WorkoutStrings.ErrorGeneric,
                                 style = MaterialTheme.typography.bodyLarge,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )

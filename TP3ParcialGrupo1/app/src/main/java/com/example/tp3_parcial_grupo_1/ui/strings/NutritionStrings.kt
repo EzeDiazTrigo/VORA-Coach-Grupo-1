@@ -66,6 +66,8 @@ object NutritionStrings {
 
     // Dashboard y Today's Meals
     val delete = "Delete"
+    val deleteMealTitle = "Delete meal"
+    val deleteMealAction = "Delete meal"
     val cancel = "Cancel"
     val calendar = "Calendar"
     val onTrackTip = "You're on track today. A protein-rich dinner would help you reach your target."

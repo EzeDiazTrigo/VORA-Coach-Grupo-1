@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.io.IOException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -46,14 +47,18 @@ class WorkoutDetailViewModel @Inject constructor(
 
     fun refreshWorkoutDetail() {
         viewModelScope.launch {
-            _uiState.update { it.copy(isLoading = true, errorMessage = null) }
+            _uiState.update { it.copy(isLoading = true, errorMessage = null, isUnavailableOffline = false) }
             val result = repository.refreshWorkoutDetails(workoutId)
             hasApiRefreshCompleted = true
             if (result.isFailure) {
+                // Sin red y sin copia en Room: el detalle nunca se descargó, así que no está disponible sin conexión.
+                val unavailableOffline = result.exceptionOrNull() is IOException && _uiState.value.workout == null
                 _uiState.update {
                     it.copy(
                         isLoading = false,
-                        errorMessage = WorkoutStrings.ErrorGeneric
+                        // La pantalla ya lo explica con su propio mensaje: no hace falta un aviso aparte.
+                        errorMessage = if (unavailableOffline) null else WorkoutStrings.ErrorGeneric,
+                        isUnavailableOffline = unavailableOffline
                     )
                 }
             } else {

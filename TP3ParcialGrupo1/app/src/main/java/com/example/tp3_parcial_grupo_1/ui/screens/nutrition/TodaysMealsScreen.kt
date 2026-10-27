@@ -6,6 +6,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -26,8 +30,22 @@ import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 fun TodaysMealsScreen(
     uiState: MealUiState,
     onBackClick: () -> Unit,
-    onAddDinner: () -> Unit
+    onAddDinner: () -> Unit,
+    onMealClick: (Long) -> Unit = {},
+    onDeleteMeal: (Long) -> Unit = {}
 ) {
+    var mealToDelete by remember { mutableStateOf<Meal?>(null) }
+    mealToDelete?.let { meal ->
+        DeleteMealDialog(
+            meal = meal,
+            onConfirm = {
+                onDeleteMeal(meal.id)
+                mealToDelete = null
+            },
+            onDismiss = { mealToDelete = null }
+        )
+    }
+
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background
     ) { paddingValues ->
@@ -66,7 +84,9 @@ fun TodaysMealsScreen(
                 DetailedMealCard(
                     mealTitle = meal.name,
                     totalCalories = "${meal.calories} kcal",
-                    items = meal.ingredientRows()
+                    items = meal.ingredientRows(),
+                    onClick = { onMealClick(meal.id) },
+                    onLongClick = { mealToDelete = meal }
                 )
             }
 
@@ -104,8 +124,14 @@ fun TodaysMealsScreen(
 }
 
 @Composable
-fun DetailedMealCard(mealTitle: String, totalCalories: String, items: List<Triple<String, String, String>>) {
-    AppCard {
+fun DetailedMealCard(
+    mealTitle: String,
+    totalCalories: String,
+    items: List<Triple<String, String, String>>,
+    onClick: (() -> Unit)? = null,
+    onLongClick: (() -> Unit)? = null
+) {
+    AppCard(onClick = onClick, onLongClick = onLongClick, onLongClickLabel = NutritionStrings.deleteMealAction) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
