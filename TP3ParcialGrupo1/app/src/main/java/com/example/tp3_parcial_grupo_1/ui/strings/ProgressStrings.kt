@@ -1,6 +1,7 @@
 package com.example.tp3_parcial_grupo_1.ui.strings
 
 object ProgressStrings {
+    const val StreakFlame = "🔥"
     const val TodaysOverviewTitle = "Today's Overview"
     const val DailyCompletion = "DAILY COMPLETION"
     const val VoraAdvice = "VORA ADVICE"

@@ -3,6 +3,7 @@ package com.example.tp3_parcial_grupo_1.ui.screens.profile
 import com.example.tp3_parcial_grupo_1.data.repository.ProfileRepository
 import com.example.tp3_parcial_grupo_1.model.DietaryPreference
 import com.example.tp3_parcial_grupo_1.ui.strings.ProfileStrings
+import com.example.tp3_parcial_grupo_1.model.NutritionPriority
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
@@ -78,5 +79,20 @@ class NutritionPreferencesViewModelTest {
         assertTrue(viewModel.uiState.value.isSaved)
         assertEquals(DietaryPreference.Vegan, repository.nutritionPreferences.value.diet)
         assertEquals("4 meals", repository.nutritionPreferences.value.mealsPerDay)
+    }
+
+    @Test
+    fun `toggling a priority alternates it and never leaves the list empty`() {
+        val both = setOf(NutritionPriority.HitProteinTargets, NutritionPriority.EatMoreConsistently)
+        assertEquals(both, viewModel.uiState.value.priorities)
+
+        viewModel.onPriorityToggled(NutritionPriority.HitProteinTargets)
+        assertEquals(setOf(NutritionPriority.EatMoreConsistently), viewModel.uiState.value.priorities)
+
+        viewModel.onPriorityToggled(NutritionPriority.EatMoreConsistently)
+        assertEquals(setOf(NutritionPriority.EatMoreConsistently), viewModel.uiState.value.priorities)
+
+        viewModel.onPriorityToggled(NutritionPriority.HitProteinTargets)
+        assertEquals(both, viewModel.uiState.value.priorities)
     }
 }

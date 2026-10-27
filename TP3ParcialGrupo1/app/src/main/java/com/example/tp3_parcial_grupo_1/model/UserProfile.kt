@@ -9,7 +9,7 @@ data class UserProfile(
     val weightKg: Int,
     val gender: String,
     val tagline: String,
-    val goal: PrimaryGoal,
+    val goals: Set<PrimaryGoal>,
     val experience: String,
     val trainingDaysPerWeek: Int,
     val preferredWorkout: WorkoutPreference,

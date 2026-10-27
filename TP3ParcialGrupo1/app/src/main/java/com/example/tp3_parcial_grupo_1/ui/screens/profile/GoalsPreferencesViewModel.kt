@@ -20,7 +20,11 @@ class GoalsPreferencesViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(repository.profile.value.toGoalsUiState())
     val uiState: StateFlow<GoalsPreferencesUiState> = _uiState.asStateFlow()
 
-    fun onGoalSelected(goal: PrimaryGoal) = _uiState.update { it.copy(goal = goal) }
+    // Las metas se alternan, pero siempre queda al menos una elegida.
+    fun onGoalToggled(goal: PrimaryGoal) = _uiState.update { state ->
+        val goals = if (goal in state.goals) state.goals - goal else state.goals + goal
+        if (goals.isEmpty()) state else state.copy(goals = goals)
+    }
 
     fun onTrainingDaysSelected(days: Int) = _uiState.update { it.copy(trainingDays = days) }
 
@@ -33,7 +37,7 @@ class GoalsPreferencesViewModel @Inject constructor(
         val state = _uiState.value
         repository.update {
             it.copy(
-                goal = state.goal,
+                goals = state.goals,
                 trainingDaysPerWeek = state.trainingDays,
                 preferredWorkout = state.workoutPreference,
                 coachingStyle = state.coachingStyle

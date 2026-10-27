@@ -101,7 +101,7 @@ private fun StepsTrendCard(uiState: HealthTrendsUiState) {
             Text(ProgressStrings.WeeklyStepsTrend, style = MaterialTheme.typography.titleSmall, modifier = Modifier.weight(1f))
             Text(ProgressStrings.stepsGoal(uiState.stepsGoal), style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.extendedColors.mint)
         }
-        ProgressBarChart(bars = uiState.bars, modifier = Modifier.padding(top = MaterialTheme.spacing.sm))
+        ProgressBarChart(bars = uiState.bars, modifier = Modifier.padding(top = MaterialTheme.spacing.sm), barWidth = HealthBarWidth)
     }
 }
 

@@ -15,6 +15,17 @@ fun PrimaryGoal.title(): String = when (this) {
     PrimaryGoal.BuildHealthyHabits -> "Build healthy habits"
 }
 
+// «Build strength & improve fitness»: la primera meta con su mayúscula y las demás en minúscula, unidas con coma y «&».
+fun Set<PrimaryGoal>.summary(): String {
+    val titles = sortedBy { it.ordinal }.mapIndexed { index, goal ->
+        if (index == 0) goal.title() else goal.title().replaceFirstChar { it.lowercase() }
+    }
+    return when (titles.size) {
+        0, 1 -> titles.firstOrNull().orEmpty()
+        else -> titles.dropLast(1).joinToString(", ") + " & " + titles.last()
+    }
+}
+
 fun PrimaryGoal.description(): String? = when (this) {
     PrimaryGoal.BuildStrength -> "Focus on weight training & mechanical load"
     PrimaryGoal.ImproveFitness -> "Condition cardiovascular & energy systems"

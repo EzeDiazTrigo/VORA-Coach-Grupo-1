@@ -33,7 +33,10 @@ fun NavGraphBuilder.profileGraph(navController: NavController) {
             NutritionPreferencesRoute(onBackClick = { navController.popBackStack() })
         }
         composable(AppDestination.VoiceAiSettings.route) {
-            VoiceSettingsRoute(onBackClick = { navController.popBackStack() })
+            VoiceSettingsRoute(
+                onBackClick = { navController.popBackStack() },
+                onPrivacyClick = { navController.navigate(AppDestination.Settings.route) }
+            )
         }
         composable(AppDestination.Settings.route) {
             SettingsRoute(

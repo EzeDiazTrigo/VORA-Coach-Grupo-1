@@ -12,3 +12,6 @@
 -keep,allowobfuscation,allowshrinking interface com.example.tp3_parcial_grupo_1.data.remote.api.**
 -keep,allowobfuscation,allowshrinking class kotlin.coroutines.Continuation
 -keep,allowobfuscation,allowshrinking class retrofit2.Response
+
+# El perfil y las preferencias se guardan como JSON con Gson: hay que conservar los modelos y sus enums.
+-keep class com.example.tp3_parcial_grupo_1.model.** { *; }

@@ -65,6 +65,7 @@ No commitear ese cambio: la entrega usa el servidor publicado. La app solo pide 
 | Hilt | 2.60.1 |
 | Retrofit / OkHttp | 3.0.0 / 5.5.0 |
 | Room | 2.8.5 |
+| DataStore (Preferences) | 1.1.1 |
 | SDK | min 24 · target 37 |
 
 ## Arquitectura
@@ -96,6 +97,8 @@ com.example.tp3_parcial_grupo_1
 **Migraciones.** Solo las versiones 1 y 2 (de desarrollo, nunca publicadas) se recrean desde cero. Desde la 3 en adelante, un cambio de esquema exige subir `version`, escribir una `Migration` y dejar el JSON nuevo en `app/schemas/`; si falta, Room falla en lugar de borrar las comidas, el historial del Asistente y los workouts guardados. Los datos de demostración de comidas se siembran una sola vez por base (una marca en el encabezado de SQLite), así que borrar todas las comidas no las vuelve a traer.
 
 **Módulos de Hilt.** `NetworkModule` provee OkHttp, Retrofit y `WorkoutApi`; `DatabaseModule`, la base y los DAOs; `RepositoryModule` vincula `WorkoutRepository` con su implementación.
+
+**Perfil y preferencias (DataStore).** `ProfileRepository` expone el perfil, las preferencias de nutrición y los ajustes de voz como `StateFlow` y guarda cada cambio con DataStore (JSON con Gson, una clave por sección: `profile_v1`, `nutrition_preferences_v1` y `voice_settings_v1`). Arrancan con los datos de `data/demo/ProfileDemoData`, cargan lo guardado al abrir la app y, si un dato guardado no se puede leer, lo ignoran. Las metas y las prioridades de nutrición admiten varias opciones (`Set`), con al menos una.
 
 ### Hilt e inyección de dependencias (RF08)
 
@@ -159,12 +162,12 @@ Cada pantalla de Figma, su destino en la app y su estado: **funcional** (datos r
 | Progress / 04 — Nutrition Progress | `progress/nutrition` | demostración |
 | Progress / 05 — Health Trends | `progress/health_trends` | demostración |
 | Progress / 06 — Weekly Review | `progress/weekly_review` | demostración |
-| Profile / 01 — Dashboard | `profile/dashboard` | demostración |
-| Profile / 02 — Edit Profile | `profile/edit` | demostración |
-| Profile / 03 — Goals & Preferences | `profile/goals` | demostración |
-| Profile / 04 — Nutrition Preferences | `profile/nutrition_preferences` | demostración |
-| Profile / 05 — Voice & AI Settings | `profile/voice_ai` | demostración |
-| Profile / 06 — Settings | `profile/settings` | demostración |
+| Profile / 01 — Dashboard | `profile/dashboard` | funcional (local, DataStore) |
+| Profile / 02 — Edit Profile | `profile/edit` | funcional (local, DataStore) |
+| Profile / 03 — Goals & Preferences | `profile/goals` | funcional (local, DataStore) |
+| Profile / 04 — Nutrition Preferences | `profile/nutrition_preferences` | funcional (local, DataStore) |
+| Profile / 05 — Voice & AI Settings | `profile/voice_ai` | funcional (local, DataStore) |
+| Profile / 06 — Settings | `profile/settings` | funcional (local, DataStore) |
 
 Pantallas propias sin frame en Figma: el formulario de carga manual de comidas (`nutrition/manual_log`, funcional en Room), que se abre desde «Log Manually» en Add Food.
 
@@ -192,7 +195,7 @@ Pantallas propias sin frame en Figma: el formulario de carga manual de comidas (
 | Entrenamiento | 7 | **Funcional:** catálogo y detalle con Retrofit y caché en Room · Weekly Plan, Pre Workout, Active Workout, Exercise Details y Workout Complete leen el workout de la caché (las estadísticas de la semana y el volumen son de demostración) |
 | Nutrición | 8 | **Funcional:** carga manual, listado por fecha, eliminación con confirmación desde el Dashboard, duplicado desde el detalle y total diario en Room · voz, foto y búsqueda simuladas |
 | Progreso | 6 | Demostración: datos de ejemplo identificados |
-| Perfil | 6 | Demostración: perfil local en memoria, editable entre pantallas; sin servidor |
+| Perfil | 6 | **Funcional (local):** perfil, metas (varias), preferencias de nutrición y ajustes de voz editables entre pantallas y guardados en el dispositivo con DataStore · sin servidor |
 
 El detalle por pantalla (nombre en Figma, ruta, barra inferior y estado) está en el [inventario](docs/INVENTORY.md).
 

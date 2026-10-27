@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -42,14 +43,15 @@ fun AppNoticeCard(
     contentPadding: Dp = MaterialTheme.spacing.md,
     spacing: Dp = MaterialTheme.spacing.md,
     textStyle: TextStyle = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium),
-    textColor: Color = MaterialTheme.colorScheme.primary
+    textColor: Color = MaterialTheme.colorScheme.primary,
+    footer: (@Composable ColumnScope.() -> Unit)? = null
 ) {
     val container = Modifier
         .fillMaxWidth()
         .background(MaterialTheme.extendedColors.mintSoft, shape)
         .then(if (borderColor != null) Modifier.border(HairlineWidth, borderColor, shape) else Modifier)
         .padding(contentPadding)
-    if (title == null) {
+    if (title == null && footer == null) {
         Row(
             modifier = modifier.then(container),
             verticalAlignment = Alignment.CenterVertically,
@@ -60,16 +62,19 @@ fun AppNoticeCard(
         }
     } else {
         Column(modifier = modifier.then(container)) {
-            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(spacing)) {
-                leading?.invoke()
-                Text(
-                    text = title,
-                    style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
-                    color = MaterialTheme.colorScheme.primary
-                )
+            if (title != null) {
+                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(spacing)) {
+                    leading?.invoke()
+                    Text(
+                        text = title,
+                        style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+                Spacer(Modifier.height(MaterialTheme.spacing.xs))
             }
-            Spacer(Modifier.height(MaterialTheme.spacing.xs))
             Text(text, style = textStyle, color = textColor)
+            footer?.invoke(this)
         }
     }
 }

@@ -51,7 +51,7 @@ fun GoalsPreferencesRoute(
     GoalsPreferencesScreen(
         uiState = uiState,
         onBackClick = onBackClick,
-        onGoalSelected = viewModel::onGoalSelected,
+        onGoalToggled = viewModel::onGoalToggled,
         onTrainingDaysSelected = viewModel::onTrainingDaysSelected,
         onWorkoutPreferenceSelected = viewModel::onWorkoutPreferenceSelected,
         onCoachingStyleSelected = viewModel::onCoachingStyleSelected,
@@ -65,7 +65,7 @@ fun GoalsPreferencesRoute(
 fun GoalsPreferencesScreen(
     uiState: GoalsPreferencesUiState,
     onBackClick: () -> Unit,
-    onGoalSelected: (PrimaryGoal) -> Unit,
+    onGoalToggled: (PrimaryGoal) -> Unit,
     onTrainingDaysSelected: (Int) -> Unit,
     onWorkoutPreferenceSelected: (WorkoutPreference) -> Unit,
     onCoachingStyleSelected: (CoachingStyle) -> Unit,
@@ -94,8 +94,9 @@ fun GoalsPreferencesScreen(
                     AppOptionCard(
                         title = goal.title(),
                         description = goal.description(),
-                        selected = goal == uiState.goal,
-                        onClick = { onGoalSelected(goal) }
+                        selected = goal in uiState.goals,
+                        onClick = { onGoalToggled(goal) },
+                        multiSelect = true
                     )
                 }
             }
@@ -109,7 +110,8 @@ fun GoalsPreferencesScreen(
                             text = trainingDaysLabel(days),
                             selected = days == uiState.trainingDays,
                             onClick = { onTrainingDaysSelected(days) },
-                            style = AppChipStyle.Dark
+                            style = AppChipStyle.Dark,
+                            shape = MaterialTheme.shapes.small
                         )
                     }
                 }
@@ -149,7 +151,7 @@ private fun GoalsPreferencesScreenPreview() {
     AppTheme {
         GoalsPreferencesScreen(
             uiState = ProfileDemoData.profile.toGoalsUiState(),
-            onBackClick = {}, onGoalSelected = {}, onTrainingDaysSelected = {},
+            onBackClick = {}, onGoalToggled = {}, onTrainingDaysSelected = {},
             onWorkoutPreferenceSelected = {}, onCoachingStyleSelected = {}, onSaveClick = {}
         )
     }

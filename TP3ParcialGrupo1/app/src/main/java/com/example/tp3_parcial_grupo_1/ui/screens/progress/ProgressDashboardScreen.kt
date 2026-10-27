@@ -126,7 +126,7 @@ private fun StatTile(stat: SummaryStat, modifier: Modifier = Modifier) {
         valueStyle = MaterialTheme.typography.titleLarge
     ) {
         if (stat.isStreak) {
-            AppIcon(AppIcons.Flame, contentDescription = null, tint = MaterialTheme.colorScheme.error, size = ProgressSmallIconSize)
+            Text(ProgressStrings.StreakFlame, style = MaterialTheme.typography.labelSmall)
         }
         stat.trend?.let {
             Text(it, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.extendedColors.mint)

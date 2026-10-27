@@ -64,13 +64,4 @@ class VoiceSettingsViewModelTest {
         viewModel.onMessageShown()
         assertNull(viewModel.uiState.value.message)
     }
-
-    @Test
-    fun `privacy shows the demo message`() = runTest {
-        backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) { viewModel.uiState.collect {} }
-
-        viewModel.onPrivacyClick()
-
-        assertEquals(Strings.DemoMode, viewModel.uiState.value.message)
-    }
 }
