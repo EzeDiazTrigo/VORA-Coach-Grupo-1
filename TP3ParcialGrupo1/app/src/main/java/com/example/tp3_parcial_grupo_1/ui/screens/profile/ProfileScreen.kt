@@ -3,7 +3,6 @@ package com.example.tp3_parcial_grupo_1.ui.screens.profile
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -34,10 +33,11 @@ import com.example.tp3_parcial_grupo_1.R
 import com.example.tp3_parcial_grupo_1.data.demo.ProfileDemoData
 import com.example.tp3_parcial_grupo_1.ui.components.AppCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppCardStyle
-import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
 import com.example.tp3_parcial_grupo_1.ui.components.AppIconButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppIconButtonDefaults
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
+import com.example.tp3_parcial_grupo_1.ui.components.AppListRow
+import com.example.tp3_parcial_grupo_1.ui.components.AppListRowDefaults
 import com.example.tp3_parcial_grupo_1.ui.components.AppPillButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppPillStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
@@ -53,8 +53,6 @@ import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 private val BorderWidth = 1.dp
 private val AvatarSize = 72.dp
 private val OrbSize = 40.dp
-private val LinkIconBoxSize = 40.dp
-private val LinkIconSize = 20.dp
 
 @Composable
 fun ProfileRoute(
@@ -120,26 +118,28 @@ fun ProfileScreen(
             HeroCard(uiState, onEditProfileClick)
             SnapshotCard(uiState)
             PersonalisationPanel(onReviewPreferencesClick = onVoiceAiClick)
-            ProfileLink(
+            AppListRow(
                 icon = AppIcons.Target,
                 title = ProfileStrings.YourGoals,
                 subtitle = uiState.goal,
                 onClick = onGoalsClick
             )
-            ProfileLink(
+            AppListRow(
                 icon = AppIcons.Sliders,
                 title = ProfileStrings.YourPreferences,
                 subtitle = ProfileStrings.YourPreferencesSubtitle,
                 onClick = onPreferencesClick
             )
-            ProfileLink(
+            AppListRow(
                 icon = AppIcons.Activity,
                 title = ProfileStrings.ConnectedData,
                 subtitle = ProfileStrings.ConnectedDataSubtitle,
-                onClick = onConnectedDataClick,
-                badge = if (uiState.isDataSynced) ProfileStrings.Synced else null
-            )
-            ProfileLink(
+                onClick = onConnectedDataClick
+            ) {
+                if (uiState.isDataSynced) SyncedBadge()
+                AppListRowDefaults.Chevron()
+            }
+            AppListRow(
                 icon = AppIcons.Lock,
                 title = ProfileStrings.Account,
                 subtitle = ProfileStrings.AccountSubtitle,
@@ -248,54 +248,16 @@ private fun PersonalisationPanel(onReviewPreferencesClick: () -> Unit) {
 }
 
 @Composable
-private fun ProfileLink(
-    icon: AppIcons,
-    title: String,
-    subtitle: String,
-    onClick: () -> Unit,
-    badge: String? = null
-) {
-    AppCard(onClick = onClick) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md)
-        ) {
-            Box(
-                modifier = Modifier.size(LinkIconBoxSize).background(MaterialTheme.colorScheme.background, CircleShape),
-                contentAlignment = Alignment.Center
-            ) {
-                AppIcon(
-                    icon,
-                    contentDescription = null,
-                    size = LinkIconSize,
-                    tint = MaterialTheme.colorScheme.primary
-                )
-            }
-            Column(
-                modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xxs)
-            ) {
-                Text(title, style = MaterialTheme.typography.labelLarge)
-                Text(subtitle, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
-            }
-            if (badge != null) {
-                Text(
-                    badge,
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onPrimary,
-                    modifier = Modifier
-                        .background(MaterialTheme.colorScheme.primary, PillShape)
-                        .padding(horizontal = MaterialTheme.spacing.md, vertical = MaterialTheme.spacing.xs)
-                )
-            }
-            AppIcon(
-                AppIcons.ChevronRight,
-                contentDescription = null,
-                tint = MaterialTheme.extendedColors.textSubtle
-            )
-        }
-    }
+private fun SyncedBadge() {
+    Text(
+        ProfileStrings.Synced,
+        style = MaterialTheme.typography.labelSmall,
+        color = MaterialTheme.colorScheme.onPrimary,
+        modifier = Modifier
+            .padding(end = MaterialTheme.spacing.md)
+            .background(MaterialTheme.colorScheme.primary, PillShape)
+            .padding(horizontal = MaterialTheme.spacing.md, vertical = MaterialTheme.spacing.xs)
+    )
 }
 
 @Preview(showBackground = true, widthDp = 390, heightDp = 1000)

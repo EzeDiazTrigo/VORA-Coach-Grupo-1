@@ -3,7 +3,6 @@ package com.example.tp3_parcial_grupo_1.ui.screens.progress
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -28,12 +26,14 @@ import com.example.tp3_parcial_grupo_1.ui.components.AppCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppCardStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
+import com.example.tp3_parcial_grupo_1.ui.components.AppListRow
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
 import com.example.tp3_parcial_grupo_1.ui.components.AppStat
 import com.example.tp3_parcial_grupo_1.ui.strings.ProgressStrings
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
 import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
+import com.example.tp3_parcial_grupo_1.ui.theme.iconSizes
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 
 private val CategoryIconContainerSize = 44.dp
@@ -80,7 +80,19 @@ fun ProgressDashboardScreen(
             OverviewCard(uiState.progress)
             InsightCard(uiState.progress, onSeeWeeklyReviewClick)
             uiState.progress.categories.forEach { summary ->
-                CategoryCard(summary, onClick = { onCategoryClick(summary.category) })
+                AppListRow(
+                    icon = summary.category.icon(),
+                    title = summary.title,
+                    subtitle = summary.subtitle,
+                    onClick = { onCategoryClick(summary.category) },
+                    iconSize = MaterialTheme.iconSizes.xxl,
+                    iconBoxSize = CategoryIconContainerSize,
+                    titleStyle = MaterialTheme.typography.titleSmall,
+                    subtitleStyle = MaterialTheme.typography.bodySmall
+                ) {
+                    Text(ProgressStrings.View, style = MaterialTheme.typography.labelMedium)
+                    AppIcon(AppIcons.ChevronRight, contentDescription = null, size = ProgressSmallIconSize)
+                }
             }
             ActiveGoalCard(uiState.activeGoal)
         }
@@ -142,31 +154,6 @@ private fun InsightCard(progress: PeriodProgress, onSeeWeeklyReviewClick: () -> 
         }
         Text(ProgressStrings.quoted(progress.insight), style = MaterialTheme.typography.bodyLarge)
         ProgressLink(ProgressStrings.SeeWeeklyReview, colors.tertiary, onSeeWeeklyReviewClick)
-    }
-}
-
-@Composable
-private fun CategoryCard(summary: CategorySummary, onClick: () -> Unit) {
-    AppCard(onClick = onClick) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Box(
-                modifier = Modifier
-                    .size(CategoryIconContainerSize)
-                    .background(MaterialTheme.colorScheme.background, CircleShape),
-                contentAlignment = Alignment.Center
-            ) {
-                AppIcon(summary.category.icon(), contentDescription = null, tint = MaterialTheme.colorScheme.primary)
-            }
-            Column(
-                modifier = Modifier.weight(1f).padding(start = MaterialTheme.spacing.md),
-                verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xxs)
-            ) {
-                Text(summary.title, style = MaterialTheme.typography.titleSmall)
-                Text(summary.subtitle, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-            }
-            Text(ProgressStrings.View, style = MaterialTheme.typography.labelMedium)
-            AppIcon(AppIcons.ChevronRight, contentDescription = null, size = ProgressSmallIconSize)
-        }
     }
 }
 
