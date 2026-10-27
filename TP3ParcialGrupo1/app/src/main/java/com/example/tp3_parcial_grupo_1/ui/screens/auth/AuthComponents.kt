@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -31,24 +32,40 @@ import com.example.tp3_parcial_grupo_1.ui.strings.AuthStrings
 import com.example.tp3_parcial_grupo_1.ui.strings.Strings
 import com.example.tp3_parcial_grupo_1.ui.theme.HairlineWidth
 import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
+import com.example.tp3_parcial_grupo_1.ui.theme.chip
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
 import com.example.tp3_parcial_grupo_1.ui.theme.iconSizes
+import com.example.tp3_parcial_grupo_1.ui.theme.message
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 
+/**
+ * Logo, nombre y eslogan de Acceso. Login usa título de 24 sp, eslogan de 12 sp y subtítulo;
+ * Registro, título de 28 sp y eslogan de 11 sp, sin subtítulo.
+ */
 @Composable
-fun AuthHeader(modifier: Modifier = Modifier, markStyle: VoraBrandMarkStyle = VoraBrandMarkStyle.SignIn) {
+fun AuthHeader(
+    modifier: Modifier = Modifier,
+    markStyle: VoraBrandMarkStyle = VoraBrandMarkStyle.SignIn,
+    titleStyle: TextStyle = MaterialTheme.typography.headlineMedium,
+    taglineStyle: TextStyle = MaterialTheme.typography.chip.copy(fontWeight = FontWeight.SemiBold),
+    subtitle: String? = null
+) {
     Column(
         modifier = modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xxs)
     ) {
         VoraBrandMark(style = markStyle)
-        Text(Strings.AppName, style = MaterialTheme.typography.headlineSmall, color = MaterialTheme.colorScheme.primary)
-        Text(
-            AuthStrings.Tagline,
-            style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.primary
-        )
+        Text(Strings.AppName, style = titleStyle, color = MaterialTheme.colorScheme.primary)
+        Text(AuthStrings.Tagline, style = taglineStyle, color = MaterialTheme.colorScheme.primary)
+        subtitle?.let {
+            Text(
+                it,
+                style = MaterialTheme.typography.message,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                textAlign = TextAlign.Center
+            )
+        }
     }
 }
 
@@ -126,8 +143,8 @@ fun BiometricNote(modifier: Modifier = Modifier) {
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xs)
     ) {
-        AppIcon(AppIcons.ShieldCheck, contentDescription = null, size = MaterialTheme.iconSizes.md, tint = MaterialTheme.colorScheme.primary)
-        Text(AuthStrings.BiometricSignIn, style = MaterialTheme.typography.bodyMedium)
+        AppIcon(AppIcons.ShieldCheck, contentDescription = null, size = MaterialTheme.iconSizes.md, tint = MaterialTheme.extendedColors.brand.shield)
+        Text(AuthStrings.BiometricSignIn, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
     }
 }
 

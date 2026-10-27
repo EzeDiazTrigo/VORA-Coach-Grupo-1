@@ -94,7 +94,7 @@ fun LoginScreen(
                 .padding(horizontal = MaterialTheme.spacing.screen, vertical = MaterialTheme.spacing.xl),
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xl)
         ) {
-            AuthHeader()
+            AuthHeader(subtitle = AuthStrings.Subtitle)
             AppCard {
                 AppTextField(
                     value = uiState.email,

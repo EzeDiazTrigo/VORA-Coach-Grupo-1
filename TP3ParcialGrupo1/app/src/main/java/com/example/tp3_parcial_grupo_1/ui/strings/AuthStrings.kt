@@ -3,6 +3,7 @@ package com.example.tp3_parcial_grupo_1.ui.strings
 // Textos de Acceso. Todos en el idioma del diseño de Figma.
 object AuthStrings {
     const val Tagline = "ADAPTIVE INTELLIGENCE"
+    const val Subtitle = "Your strength, nutrition, and progress plan in one place."
     const val Language = "EN"
     const val LanguageSelector = "Language: English"
     const val FullName = "Full Name"

@@ -30,6 +30,7 @@ private val BrandLime = Color(0xFFCCE65E)
 private val BrandShadow = Color(0xFF064E3B)
 private val BrandBiometricContainer = Color(0xFFECFDF5)
 private val BrandBiometricBorder = Color(0xFFA7F3D0)
+private val BrandShield = Color(0xFF059669)
 
 val AppColorScheme = lightColorScheme(
     primary = Green,
@@ -72,7 +73,8 @@ data class BrandColors(
     val lime: Color = BrandLime,
     val shadow: Color = BrandShadow,
     val biometricContainer: Color = BrandBiometricContainer,
-    val biometricBorder: Color = BrandBiometricBorder
+    val biometricBorder: Color = BrandBiometricBorder,
+    val shield: Color = BrandShield
 )
 
 val LocalExtendedColors = staticCompositionLocalOf { ExtendedColors() }

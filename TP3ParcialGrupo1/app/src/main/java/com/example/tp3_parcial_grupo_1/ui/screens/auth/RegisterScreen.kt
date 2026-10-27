@@ -104,7 +104,11 @@ fun RegisterScreen(
                 .padding(horizontal = MaterialTheme.spacing.screen, vertical = MaterialTheme.spacing.lg),
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.xl)
         ) {
-            AuthHeader(markStyle = VoraBrandMarkStyle.SignUp)
+            AuthHeader(
+                markStyle = VoraBrandMarkStyle.SignUp,
+                titleStyle = MaterialTheme.typography.headlineLarge,
+                taglineStyle = MaterialTheme.typography.labelSmall
+            )
             AppCard {
                 AppTextField(
                     value = uiState.fullName,
