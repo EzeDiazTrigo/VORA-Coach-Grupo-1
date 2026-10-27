@@ -9,12 +9,13 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -24,6 +25,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -34,15 +36,16 @@ import com.example.tp3_parcial_grupo_1.model.ResponseStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppCard
-import com.example.tp3_parcial_grupo_1.ui.components.AppCardStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppChip
 import com.example.tp3_parcial_grupo_1.ui.components.AppChipStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
+import com.example.tp3_parcial_grupo_1.ui.components.AppNoticeCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppOptionCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
 import com.example.tp3_parcial_grupo_1.ui.components.AppSection
 import com.example.tp3_parcial_grupo_1.ui.components.AppSwitchRow
+import com.example.tp3_parcial_grupo_1.ui.components.AppTextLink
 import com.example.tp3_parcial_grupo_1.ui.strings.ProfileStrings
 import com.example.tp3_parcial_grupo_1.ui.strings.description
 import com.example.tp3_parcial_grupo_1.ui.strings.title
@@ -56,6 +59,7 @@ private val VoiceIconSize = 20.dp
 @Composable
 fun VoiceSettingsRoute(
     onBackClick: () -> Unit,
+    onPrivacyClick: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: VoiceSettingsViewModel = hiltViewModel()
 ) {
@@ -81,7 +85,7 @@ fun VoiceSettingsRoute(
         onResponseStyleSelected = viewModel::onResponseStyleSelected,
         onVoiceFeedbackChange = viewModel::onVoiceFeedbackChange,
         onHapticFeedbackChange = viewModel::onHapticFeedbackChange,
-        onPrivacyClick = viewModel::onPrivacyClick,
+        onPrivacyClick = onPrivacyClick,
         modifier = modifier
     )
 }
@@ -131,7 +135,8 @@ fun VoiceSettingsScreen(
                             text = style.title(),
                             selected = style == uiState.coachingStyle,
                             onClick = { onCoachingStyleSelected(style) },
-                            style = AppChipStyle.Dark
+                            style = AppChipStyle.Dark,
+                            shape = MaterialTheme.shapes.small
                         )
                     }
                 }
@@ -177,13 +182,11 @@ fun VoiceSettingsScreen(
                         checked = uiState.speakResponses,
                         onCheckedChange = onSpeakResponsesChange
                     )
-                    HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
                     AppSwitchRow(
                         title = ProfileStrings.AutoPlayCoaching,
                         checked = uiState.autoPlayCoaching,
                         onCheckedChange = onAutoPlayChange
                     )
-                    HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
                     AppSwitchRow(
                         title = ProfileStrings.AllowInterruptions,
                         subtitle = ProfileStrings.AllowInterruptionsHint,
@@ -208,30 +211,28 @@ fun VoiceSettingsScreen(
                     checked = uiState.voiceFeedback,
                     onCheckedChange = onVoiceFeedbackChange
                 )
-                HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
                 AppSwitchRow(
                     title = ProfileStrings.HapticFeedback,
                     checked = uiState.hapticFeedback,
                     onCheckedChange = onHapticFeedbackChange
                 )
             }
-            AppCard(style = AppCardStyle.Panel) {
-                Text(
-                    ProfileStrings.ControlTitle,
-                    style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.extendedColors.mint
-                )
-                Text(
-                    ProfileStrings.ControlBody,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.7f)
-                )
-                AppButton(
-                    text = ProfileStrings.PrivacyAndPermissions,
-                    onClick = onPrivacyClick,
-                    style = AppButtonStyle.Accent
-                )
-            }
+            AppNoticeCard(
+                text = ProfileStrings.ControlBody,
+                title = ProfileStrings.ControlTitle,
+                shape = MaterialTheme.shapes.large,
+                contentPadding = MaterialTheme.spacing.lg,
+                spacing = MaterialTheme.spacing.xs,
+                footer = {
+                    Spacer(Modifier.height(MaterialTheme.spacing.md))
+                    AppTextLink(
+                        text = ProfileStrings.PrivacyAndPermissions,
+                        onClick = onPrivacyClick,
+                        style = MaterialTheme.typography.labelMedium,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            )
         }
     }
 }
