@@ -65,6 +65,7 @@ No commitear ese cambio: la entrega usa el servidor publicado. La app solo pide 
 | Hilt | 2.60.1 |
 | Retrofit / OkHttp | 3.0.0 / 5.5.0 |
 | Room | 2.8.5 |
+| DataStore (Preferences) | 1.1.1 |
 | SDK | min 24 · target 37 |
 
 ## Arquitectura
@@ -90,6 +91,8 @@ com.example.tp3_parcial_grupo_1
 `WorkoutRepositoryImpl` separa lectura y actualización: las pantallas observan Room como `Flow` (`getWorkouts()`, `getWorkoutById()`), y `refreshWorkouts()` / `refreshWorkoutDetails()` piden los datos al servidor y actualizan la caché en una transacción. Si la red falla, devuelven `Result.failure` y la caché queda como estaba, así que lo ya descargado se sigue viendo sin conexión (RF02) y la pantalla avisa el error (con opción de reintentar cuando todavía no hay nada guardado).
 
 **Nutrición (Room).** `MealRepository` trabaja sobre `MealDao`: observa las comidas de una fecha como `Flow`, agrega y elimina. `MealEntity` se convierte en `Meal` con `toDomain()` / `fromDomain()`. El total del día lo calcula `MealsViewModel` a partir de la lista observada, así que cambia al agregar o eliminar una comida.
+
+**Perfil y preferencias (DataStore).** `ProfileRepository` expone el perfil, las preferencias de nutrición y los ajustes de voz como `StateFlow` y guarda cada cambio con DataStore (JSON con Gson, una clave por sección: `profile_v1`, `nutrition_preferences_v1` y `voice_settings_v1`). Arrancan con los datos de `data/demo/ProfileDemoData`, cargan lo guardado al abrir la app y, si un dato guardado no se puede leer, lo ignoran. Las metas y las prioridades de nutrición admiten varias opciones (`Set`), con al menos una.
 
 **Base de datos.** `AppDatabase` (`vora_database`, versión 1) reúne `WorkoutEntity`, `ExerciseEntity` y `MealEntity`.
 
@@ -157,12 +160,12 @@ Cada pantalla de Figma, su destino en la app y su estado: **funcional** (datos r
 | Progress / 04 — Nutrition Progress | `progress/nutrition` | demostración |
 | Progress / 05 — Health Trends | `progress/health_trends` | demostración |
 | Progress / 06 — Weekly Review | `progress/weekly_review` | demostración |
-| Profile / 01 — Dashboard | `profile/dashboard` | demostración |
-| Profile / 02 — Edit Profile | `profile/edit` | demostración |
-| Profile / 03 — Goals & Preferences | `profile/goals` | demostración |
-| Profile / 04 — Nutrition Preferences | `profile/nutrition_preferences` | demostración |
-| Profile / 05 — Voice & AI Settings | `profile/voice_ai` | demostración |
-| Profile / 06 — Settings | `profile/settings` | demostración |
+| Profile / 01 — Dashboard | `profile/dashboard` | funcional (local, DataStore) |
+| Profile / 02 — Edit Profile | `profile/edit` | funcional (local, DataStore) |
+| Profile / 03 — Goals & Preferences | `profile/goals` | funcional (local, DataStore) |
+| Profile / 04 — Nutrition Preferences | `profile/nutrition_preferences` | funcional (local, DataStore) |
+| Profile / 05 — Voice & AI Settings | `profile/voice_ai` | funcional (local, DataStore) |
+| Profile / 06 — Settings | `profile/settings` | funcional (local, DataStore) |
 
 Pantallas propias sin frame en Figma: el formulario de carga manual de comidas (`nutrition/manual_log`, funcional en Room), que se abre desde «Log Manually» en Add Food.
 
@@ -189,7 +192,7 @@ Pantallas propias sin frame en Figma: el formulario de carga manual de comidas (
 | Entrenamiento | 7 | **Funcional:** catálogo y detalle con Retrofit y caché en Room · Weekly Plan, Pre Workout, Active Workout, Exercise Details y Workout Complete: pendientes (placeholder) |
 | Nutrición | 8 | **Funcional:** carga manual, listado por fecha, eliminación con confirmación y total diario en Room · voz, foto y búsqueda simuladas |
 | Progreso | 6 | Demostración: datos de ejemplo identificados |
-| Perfil | 6 | Demostración: perfil local en memoria, editable entre pantallas; sin servidor |
+| Perfil | 6 | **Funcional (local):** perfil, metas (varias), preferencias de nutrición y ajustes de voz editables entre pantallas y guardados en el dispositivo con DataStore · sin servidor |
 
 El detalle por pantalla (nombre en Figma, ruta, barra inferior y estado) está en el [inventario](docs/INVENTORY.md).
 
