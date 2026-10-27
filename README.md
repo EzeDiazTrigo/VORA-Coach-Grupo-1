@@ -249,5 +249,3 @@ Se usaron tres herramientas de IA generativa como apoyo de desarrollo: Claude Co
 - El diseño es el de Figma del docente; la IA no lo modificó.
 - Las decisiones de producto y arquitectura las tomó el equipo. El código se revisó, se probó en el emulador y se integró mediante pull requests.
 - Los datos de demostración son de ejemplo y se identifican como tales (`data/demo/`); la API de entrenamientos es la del servidor del docente.
-
-Cada integrante debe poder explicar el código que entregó.
