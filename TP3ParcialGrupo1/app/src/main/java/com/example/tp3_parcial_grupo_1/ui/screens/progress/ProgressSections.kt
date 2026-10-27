@@ -1,7 +1,5 @@
 package com.example.tp3_parcial_grupo_1.ui.screens.progress
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -28,6 +26,7 @@ import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
 import com.example.tp3_parcial_grupo_1.ui.components.AppIconButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppIconButtonDefaults
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
+import com.example.tp3_parcial_grupo_1.ui.components.AppNoticeCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppTopBar
 import com.example.tp3_parcial_grupo_1.ui.components.VoraLogo
 import com.example.tp3_parcial_grupo_1.ui.components.VoraLogoStyle
@@ -105,19 +104,14 @@ internal fun ProgressOrb(size: Dp = InsightOrbSize) {
 
 @Composable
 internal fun VoraQuoteCard(text: String) {
-    val extended = MaterialTheme.extendedColors
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(extended.mintSoft, MaterialTheme.shapes.medium)
-            .border(ProgressBorderWidth, extended.mint, MaterialTheme.shapes.medium)
-            .padding(MaterialTheme.spacing.lg),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md)
-    ) {
-        ProgressOrb()
-        Text(ProgressStrings.quoted(text), style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.primary)
-    }
+    AppNoticeCard(
+        text = ProgressStrings.quoted(text),
+        leading = { ProgressOrb() },
+        shape = MaterialTheme.shapes.medium,
+        borderColor = MaterialTheme.extendedColors.mint,
+        contentPadding = MaterialTheme.spacing.lg,
+        textStyle = MaterialTheme.typography.bodyLarge
+    )
 }
 
 @Composable

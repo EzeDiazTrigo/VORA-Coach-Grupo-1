@@ -38,12 +38,12 @@ import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppCardStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppIconButtonDefaults
+import com.example.tp3_parcial_grupo_1.ui.components.AppNoticeCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
 import com.example.tp3_parcial_grupo_1.ui.components.AppTopBar
 import com.example.tp3_parcial_grupo_1.ui.components.VoraLogo
 import com.example.tp3_parcial_grupo_1.ui.strings.WorkoutStrings
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
-import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
 import com.example.tp3_parcial_grupo_1.ui.theme.iconSizes
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 
@@ -199,32 +199,17 @@ fun WorkoutDetailScreen(
 
                             // Coach Note Box
                             item {
-                                Box(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .clip(MaterialTheme.shapes.large)
-                                        .background(MaterialTheme.extendedColors.mintSoft)
-                                        .padding(MaterialTheme.spacing.lg)
-                                ) {
-                                    Column {
-                                        Row(verticalAlignment = Alignment.CenterVertically) {
-                                            VoraLogo(size = 16.dp)
-                                            Spacer(modifier = Modifier.width(MaterialTheme.spacing.xs))
-                                            Text(
-                                                text = "VORA COACH NOTE",
-                                                style = MaterialTheme.typography.labelSmall,
-                                                fontWeight = FontWeight.Bold,
-                                                color = MaterialTheme.colorScheme.primary
-                                            )
-                                        }
-                                        Spacer(modifier = Modifier.height(MaterialTheme.spacing.xs))
-                                        Text(
-                                            text = "Based on your last session, VORA suggests keeping the same weights and focusing on controlled repetitions today.",
-                                            style = MaterialTheme.typography.bodyMedium,
-                                            color = MaterialTheme.colorScheme.onSurface
-                                        )
-                                    }
-                                }
+                                AppNoticeCard(
+                                    text = "Based on your last session, VORA suggests keeping the same weights and focusing on controlled repetitions today.",
+                                    title = "VORA COACH NOTE",
+                                    leading = { VoraLogo(size = 16.dp) },
+                                    shape = MaterialTheme.shapes.large,
+                                    borderColor = null,
+                                    contentPadding = MaterialTheme.spacing.lg,
+                                    spacing = MaterialTheme.spacing.xs,
+                                    textStyle = MaterialTheme.typography.bodyMedium,
+                                    textColor = MaterialTheme.colorScheme.onSurface
+                                )
                             }
 
                             itemsIndexed(workout.exercises, key = { _, e -> e.id }) { index, exercise ->

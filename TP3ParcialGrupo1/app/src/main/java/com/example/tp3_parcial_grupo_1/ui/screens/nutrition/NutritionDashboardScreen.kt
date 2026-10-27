@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -24,11 +23,13 @@ import com.example.tp3_parcial_grupo_1.ui.components.AppCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppCardStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
+import com.example.tp3_parcial_grupo_1.ui.components.AppNoticeCard
 import com.example.tp3_parcial_grupo_1.ui.components.MacroProgressBar
 import com.example.tp3_parcial_grupo_1.ui.components.ProgressRing
 import com.example.tp3_parcial_grupo_1.ui.components.VoraLogo
 import com.example.tp3_parcial_grupo_1.ui.strings.NutritionStrings
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
+import com.example.tp3_parcial_grupo_1.ui.theme.iconSizes
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
 import java.text.SimpleDateFormat
 import java.util.*
@@ -224,31 +225,12 @@ fun NutritionDashboardScreen(
 
             item {
                 // Advice Banner
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clip(RoundedCornerShape(12.dp))
-                        .background(MaterialTheme.extendedColors.mintSoft)
-                        .border(1.dp, MaterialTheme.colorScheme.secondary, RoundedCornerShape(12.dp))
-                        .padding(MaterialTheme.spacing.md)
-                ) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        AppIcon(
-                            AppIcons.Sparkles,
-                            contentDescription = "Advice",
-                            tint = MaterialTheme.colorScheme.primary,
-                            size = 20.dp
-                        )
-                        Spacer(modifier = Modifier.width(MaterialTheme.spacing.md))
-                        Text(
-                            text = "You're on track today. A protein-rich dinner would help you reach your target.",
-                            style = MaterialTheme.typography.bodyMedium.copy(
-                                color = MaterialTheme.colorScheme.primary,
-                                fontWeight = FontWeight.Medium
-                            )
-                        )
+                AppNoticeCard(
+                    text = "You're on track today. A protein-rich dinner would help you reach your target.",
+                    leading = {
+                        AppIcon(AppIcons.Sparkles, contentDescription = null, size = MaterialTheme.iconSizes.xl, tint = MaterialTheme.colorScheme.primary)
                     }
-                }
+                )
             }
 
             item {

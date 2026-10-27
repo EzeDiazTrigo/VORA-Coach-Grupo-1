@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
@@ -39,6 +38,7 @@ import com.example.tp3_parcial_grupo_1.ui.components.AppCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppCardStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
+import com.example.tp3_parcial_grupo_1.ui.components.AppNoticeCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
 import com.example.tp3_parcial_grupo_1.ui.components.VoraLogo
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
@@ -182,32 +182,17 @@ fun WorkoutCompleteScreen(
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.md))
 
             // VORA INSIGHT Card
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(MaterialTheme.shapes.large)
-                    .background(MaterialTheme.extendedColors.mintSoft)
-                    .padding(MaterialTheme.spacing.lg)
-            ) {
-                Column {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        VoraLogo(size = 16.dp)
-                        Spacer(modifier = Modifier.width(MaterialTheme.spacing.xs))
-                        Text(
-                            text = "VORA INSIGHT",
-                            style = MaterialTheme.typography.labelSmall,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.primary
-                        )
-                    }
-                    Spacer(modifier = Modifier.height(MaterialTheme.spacing.xs))
-                    Text(
-                        text = "You increased your Seated Cable Row volume by 8% compared with your previous session. Keep this controlled tempo next time.",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
-                }
-            }
+            AppNoticeCard(
+                text = "You increased your Seated Cable Row volume by 8% compared with your previous session. Keep this controlled tempo next time.",
+                title = "VORA INSIGHT",
+                leading = { VoraLogo(size = 16.dp) },
+                shape = MaterialTheme.shapes.large,
+                borderColor = null,
+                contentPadding = MaterialTheme.spacing.lg,
+                spacing = MaterialTheme.spacing.xs,
+                textStyle = MaterialTheme.typography.bodyMedium,
+                textColor = MaterialTheme.colorScheme.onSurface
+            )
 
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.lg))
 

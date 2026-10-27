@@ -47,6 +47,7 @@ import com.example.tp3_parcial_grupo_1.ui.components.AppCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppCardStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
+import com.example.tp3_parcial_grupo_1.ui.components.AppNoticeCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
 import com.example.tp3_parcial_grupo_1.ui.components.VoraLogo
 import com.example.tp3_parcial_grupo_1.ui.strings.WorkoutStrings
@@ -248,32 +249,17 @@ fun WorkoutListScreen(
             }
 
             // Card 2: VORA RECOMMENDS
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(MaterialTheme.shapes.large)
-                    .background(MaterialTheme.extendedColors.mintSoft)
-                    .padding(MaterialTheme.spacing.lg)
-            ) {
-                Column {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        VoraLogo(size = 20.dp)
-                        Spacer(modifier = Modifier.width(MaterialTheme.spacing.xs))
-                        Text(
-                            text = "VORA RECOMMENDS",
-                            style = MaterialTheme.typography.labelSmall,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.primary
-                        )
-                    }
-                    Spacer(modifier = Modifier.height(MaterialTheme.spacing.xs))
-                    Text(
-                        text = "Your last upper-body session was 4 days ago. Today is a great opportunity to hit your strength volume targets.",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
-                }
-            }
+            AppNoticeCard(
+                text = "Your last upper-body session was 4 days ago. Today is a great opportunity to hit your strength volume targets.",
+                title = "VORA RECOMMENDS",
+                leading = { VoraLogo(size = 20.dp) },
+                shape = MaterialTheme.shapes.large,
+                borderColor = null,
+                contentPadding = MaterialTheme.spacing.lg,
+                spacing = MaterialTheme.spacing.xs,
+                textStyle = MaterialTheme.typography.bodyMedium,
+                textColor = MaterialTheme.colorScheme.onSurface
+            )
 
             // Card 3: This Week's Activity (Clicking navigates to Weekly Plan)
             AppCard(

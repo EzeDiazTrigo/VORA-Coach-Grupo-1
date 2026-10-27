@@ -1,7 +1,6 @@
 package com.example.tp3_parcial_grupo_1.ui.screens.profile
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -36,6 +35,7 @@ import com.example.tp3_parcial_grupo_1.ui.components.AppButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppDropdownField
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
+import com.example.tp3_parcial_grupo_1.ui.components.AppNoticeCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
 import com.example.tp3_parcial_grupo_1.ui.components.AppTextField
 import com.example.tp3_parcial_grupo_1.ui.strings.ProfileStrings
@@ -205,25 +205,16 @@ private fun GenderField(selected: String, onSelected: (String) -> Unit) {
             options = ProfileStrings.GenderOptions,
             onSelected = onSelected
         )
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(MaterialTheme.extendedColors.mintSoft, MaterialTheme.shapes.small)
-                .padding(MaterialTheme.spacing.md),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm)
-        ) {
-            AppIcon(
-                AppIcons.Info,
-                contentDescription = null,
-                size = HintIconSize,
-                tint = MaterialTheme.colorScheme.primary
-            )
-            Text(
-                ProfileStrings.GenderHint,
-                style = MaterialTheme.typography.bodyMedium
-            )
-        }
+        AppNoticeCard(
+            text = ProfileStrings.GenderHint,
+            leading = {
+                AppIcon(AppIcons.Info, contentDescription = null, size = HintIconSize, tint = MaterialTheme.colorScheme.primary)
+            },
+            borderColor = null,
+            spacing = MaterialTheme.spacing.sm,
+            textStyle = MaterialTheme.typography.bodyMedium,
+            textColor = MaterialTheme.colorScheme.onSurface
+        )
     }
 }
 

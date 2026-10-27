@@ -1,9 +1,7 @@
 package com.example.tp3_parcial_grupo_1.ui.screens.home
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -48,6 +46,7 @@ import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
 import com.example.tp3_parcial_grupo_1.ui.components.AppIconButton
 import com.example.tp3_parcial_grupo_1.ui.components.AppIconButtonDefaults
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
+import com.example.tp3_parcial_grupo_1.ui.components.AppNoticeCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
 import com.example.tp3_parcial_grupo_1.ui.components.GoalValueText
 import com.example.tp3_parcial_grupo_1.ui.components.MacroProgressBar
@@ -55,7 +54,6 @@ import com.example.tp3_parcial_grupo_1.ui.components.ProgressRing
 import com.example.tp3_parcial_grupo_1.ui.components.VoraLogo
 import com.example.tp3_parcial_grupo_1.ui.strings.HomeStrings
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
-import com.example.tp3_parcial_grupo_1.ui.theme.HairlineWidth
 import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
@@ -207,18 +205,13 @@ private fun PanelChip(text: String, onClick: () -> Unit) {
 
 @Composable
 private fun TipCard(tip: String) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(MaterialTheme.extendedColors.mintSoft, MaterialTheme.shapes.small)
-            .border(BorderStroke(HairlineWidth, MaterialTheme.extendedColors.mint.copy(alpha = 0.5f)), MaterialTheme.shapes.small)
-            .padding(MaterialTheme.spacing.lg),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md)
-    ) {
-        AppIcon(AppIcons.Sparkles, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
-        Text(tip, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.primary)
-    }
+    AppNoticeCard(
+        text = tip,
+        leading = { AppIcon(AppIcons.Sparkles, contentDescription = null, tint = MaterialTheme.colorScheme.primary) },
+        borderColor = MaterialTheme.extendedColors.mint.copy(alpha = 0.5f),
+        contentPadding = MaterialTheme.spacing.lg,
+        textStyle = MaterialTheme.typography.bodyMedium
+    )
 }
 
 @Composable
