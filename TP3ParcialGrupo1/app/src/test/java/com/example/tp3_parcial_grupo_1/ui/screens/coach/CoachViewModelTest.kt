@@ -268,4 +268,22 @@ class CoachViewModelTest {
         advanceUntilIdle()
         assertTrue(viewModel.uiState.value is CoachUiState.Idle)
     }
+
+    @Test
+    fun opensTheChatWithThePromptReadyToSend() {
+        val handle = androidx.lifecycle.SavedStateHandle(mapOf("prompt" to "How do I improve my Bench Press form?"))
+
+        val state = CoachViewModel(CoachRepository(api, dao), handle).uiState.value
+
+        val conversation = state as CoachUiState.Conversation
+        assertEquals("How do I improve my Bench Press form?", conversation.draft)
+        assertTrue(conversation.canSend)
+    }
+
+    @Test
+    fun startsIdleWhenThePromptIsBlank() {
+        val handle = androidx.lifecycle.SavedStateHandle(mapOf("prompt" to " "))
+
+        assertTrue(CoachViewModel(CoachRepository(api, dao), handle).uiState.value is CoachUiState.Idle)
+    }
 }

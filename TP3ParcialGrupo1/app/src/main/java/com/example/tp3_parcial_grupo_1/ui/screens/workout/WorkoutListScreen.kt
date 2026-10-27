@@ -15,14 +15,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -34,7 +30,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -46,19 +41,35 @@ import com.example.tp3_parcial_grupo_1.ui.components.AppButtonStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppCardStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcon
+import com.example.tp3_parcial_grupo_1.ui.components.AppIconButton
+import com.example.tp3_parcial_grupo_1.ui.components.AppIconButtonDefaults
 import com.example.tp3_parcial_grupo_1.ui.components.AppIcons
 import com.example.tp3_parcial_grupo_1.ui.components.AppNoticeCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
 import com.example.tp3_parcial_grupo_1.ui.components.AppStat
+import com.example.tp3_parcial_grupo_1.ui.components.EmptyState
+import com.example.tp3_parcial_grupo_1.ui.components.ErrorState
 import com.example.tp3_parcial_grupo_1.ui.components.VoraLogo
 import com.example.tp3_parcial_grupo_1.ui.strings.WorkoutStrings
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
 import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
+import java.time.LocalDate
 
-private val SmallIconSize = 16.dp
 private val MediumIconSize = 20.dp
+private val CalendarButtonSize = 44.dp
+private val CalendarIconSize = 22.dp
+private val ActionHeight = 43.dp
+private val DayCircleSize = 36.dp
+private val LogoSize = 20.dp
+private const val OnPanelAlpha = 0.15f
+private const val OnPanelBorderAlpha = 0.6f
+
+private enum class DayStatus { Done, Fit, Rest }
+
+// Estado de ejemplo de la semana de Figma, de lunes a domingo.
+private val DayStatuses = listOf(DayStatus.Done, DayStatus.Done, DayStatus.Rest, DayStatus.Done, DayStatus.Fit, DayStatus.Rest, DayStatus.Rest)
 
 @Composable
 fun WorkoutListRoute(
@@ -66,7 +77,7 @@ fun WorkoutListRoute(
     onBackClick: (() -> Unit)? = null,
     onWorkoutClick: (String) -> Unit,
     onStartWorkoutClick: (String) -> Unit = {},
-    onWeeklyPlanClick: () -> Unit = {},
+    onWeeklyPlanClick: (String) -> Unit = {},
     onViewProgressClick: () -> Unit = {},
     viewModel: WorkoutListViewModel = hiltViewModel()
 ) {
@@ -88,7 +99,6 @@ fun WorkoutListRoute(
         onStartWorkoutClick = onStartWorkoutClick,
         onWeeklyPlanClick = onWeeklyPlanClick,
         onViewProgressClick = onViewProgressClick,
-        onFilterSelect = viewModel::setFilter,
         onRetryClick = viewModel::refreshWorkouts,
         modifier = modifier
     )
@@ -102,493 +112,344 @@ fun WorkoutListScreen(
     onBackClick: (() -> Unit)? = null,
     onWorkoutClick: (String) -> Unit,
     onStartWorkoutClick: (String) -> Unit,
-    onWeeklyPlanClick: () -> Unit,
+    onWeeklyPlanClick: (String) -> Unit,
     onViewProgressClick: () -> Unit,
-    onFilterSelect: (LevelFilter) -> Unit,
     onRetryClick: () -> Unit
 ) {
-    val recommendedWorkout = uiState.workouts.firstOrNull()
-    val filteredWorkouts = remember(uiState.workouts, uiState.selectedFilter) {
-        uiState.workouts.filter { uiState.selectedFilter.matches(it.level) }
-    }
+    val today = remember { LocalDate.now() }
+    val week = remember(today) { weekOf(today) }
 
     AppScaffold(
         onBack = onBackClick,
         snackbarHostState = snackbarHostState,
         modifier = modifier
     ) { padding ->
-        Column(
+        Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .padding(horizontal = MaterialTheme.spacing.screen)
-                .verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md)
         ) {
-            // Dashboard Header
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Column {
-                    Text(
-                        text = "Workout Goal",
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                    Text(
-                        text = "Workouts",
-                        style = MaterialTheme.typography.headlineLarge,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onBackground
+            when {
+                uiState.isLoading && uiState.workouts.isEmpty() -> {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator(
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                }
+                uiState.errorMessage != null && uiState.workouts.isEmpty() -> {
+                    ErrorState(
+                        message = uiState.errorMessage,
+                        onRetry = onRetryClick,
+                        modifier = Modifier.fillMaxSize()
                     )
                 }
-
-                IconButton(
-                    onClick = onWeeklyPlanClick,
-                    colors = IconButtonDefaults.iconButtonColors(
-                        containerColor = MaterialTheme.colorScheme.surface
-                    ),
-                    modifier = Modifier.size(44.dp)
-                ) {
-                    AppIcon(
-                        AppIcons.Calendar,
-                        contentDescription = "Weekly Plan",
-                        tint = MaterialTheme.colorScheme.onSurface,
-                        size = 22.dp
+                uiState.workouts.isEmpty() -> {
+                    EmptyState(
+                        title = WorkoutStrings.NoWorkoutsFound,
+                        message = WorkoutStrings.ErrorGeneric,
+                        actionLabel = WorkoutStrings.Retry,
+                        onAction = onRetryClick,
+                        modifier = Modifier.fillMaxSize()
                     )
                 }
-            }
+                else -> {
+                    val recommendedWorkout = uiState.workouts.first()
 
-            Spacer(modifier = Modifier.height(MaterialTheme.spacing.xs))
-
-            // Card 1: READY FOR TODAY? (Dark Green Panel)
-            if (recommendedWorkout != null) {
-                val workout = recommendedWorkout
-                AppCard(style = AppCardStyle.Panel) {
-                    Column(modifier = Modifier.fillMaxWidth()) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(horizontal = MaterialTheme.spacing.screen)
+                            .verticalScroll(rememberScrollState()),
+                        verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md)
+                    ) {
+                        // Dashboard Header
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Text(
-                                text = "READY FOR TODAY?",
-                                style = MaterialTheme.typography.labelSmall,
-                                fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.extendedColors.mint
-                            )
-
-                            Box(
-                                modifier = Modifier
-                                    .clip(PillShape)
-                                    .background(MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.15f))
-                                    .padding(horizontal = MaterialTheme.spacing.sm, vertical = MaterialTheme.spacing.xxs)
-                            ) {
+                            Column {
                                 Text(
-                                    text = workout.level.uppercase(),
-                                    style = MaterialTheme.typography.labelSmall,
-                                    color = MaterialTheme.colorScheme.onPrimary,
-                                    fontWeight = FontWeight.Bold
-                                )
-                            }
-                        }
-
-                        Spacer(modifier = Modifier.height(MaterialTheme.spacing.sm))
-
-                        Text(
-                            text = workout.name,
-                            style = MaterialTheme.typography.headlineMedium,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.onPrimary
-                        )
-
-                        Spacer(modifier = Modifier.height(MaterialTheme.spacing.xxs))
-
-                        Text(
-                            text = listOfNotNull(
-                                WorkoutStrings.minutesCount(workout.durationMinutes),
-                                WorkoutStrings.exercisesCount(workout.exerciseCount),
-                                workout.description
-                            ).joinToString(" • "),
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.85f)
-                        )
-
-                        Spacer(modifier = Modifier.height(MaterialTheme.spacing.lg))
-
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(43.dp),
-                            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            AppButton(
-                                text = "Start Workout",
-                                onClick = { onStartWorkoutClick(workout.id) },
-                                style = AppButtonStyle.Accent,
-                                fullWidth = false,
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .height(43.dp)
-                            )
-
-                            AppButton(
-                                text = "Details",
-                                onClick = { onWorkoutClick(workout.id) },
-                                style = AppButtonStyle.Outlined,
-                                fullWidth = false,
-                                textColor = Color.White,
-                                borderColor = Color.White.copy(alpha = 0.6f),
-                                modifier = Modifier.height(43.dp)
-                            )
-                        }
-                    }
-                }
-            }
-
-            // Card 2: VORA RECOMMENDS
-            AppNoticeCard(
-                text = "Your last upper-body session was 4 days ago. Today is a great opportunity to hit your strength volume targets.",
-                title = "VORA RECOMMENDS",
-                leading = { VoraLogo(size = 20.dp) },
-                shape = MaterialTheme.shapes.large,
-                borderColor = null,
-                contentPadding = MaterialTheme.spacing.lg,
-                spacing = MaterialTheme.spacing.xs,
-                textStyle = MaterialTheme.typography.bodyMedium,
-                textColor = MaterialTheme.colorScheme.onSurface
-            )
-
-            // Card 3: This Week's Activity (Clicking navigates to Weekly Plan)
-            AppCard(
-                style = AppCardStyle.Surface,
-                onClick = onWeeklyPlanClick
-            ) {
-                Column(modifier = Modifier.fillMaxWidth()) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = "This Week's Activity",
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.onSurface
-                        )
-
-                        AppIcon(
-                            AppIcons.ChevronRight,
-                            contentDescription = "View Weekly Plan",
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                            size = MediumIconSize
-                        )
-                    }
-
-                    Spacer(modifier = Modifier.height(MaterialTheme.spacing.md))
-
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        val activityDays = listOf(
-                            Pair("M", "filled"),
-                            Pair("T", "filled"),
-                            Pair("W", "zzz"),
-                            Pair("T", "filled"),
-                            Pair("F", "fit"),
-                            Pair("S", "zzz"),
-                            Pair("S", "zzz")
-                        )
-
-                        activityDays.forEach { (day, status) ->
-                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                Text(
-                                    text = day,
+                                    text = WorkoutStrings.WorkoutGoal,
                                     style = MaterialTheme.typography.labelSmall,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
-                                Spacer(modifier = Modifier.height(6.dp))
-                                when (status) {
-                                    "filled" -> Box(
-                                        modifier = Modifier
-                                            .size(36.dp)
-                                            .clip(CircleShape)
-                                            .background(MaterialTheme.extendedColors.mint)
+                                Text(
+                                    text = WorkoutStrings.Title,
+                                    style = MaterialTheme.typography.headlineLarge,
+                                    fontWeight = FontWeight.Bold,
+                                    color = MaterialTheme.colorScheme.onBackground
+                                )
+                            }
+
+                            AppIconButton(
+                                AppIcons.Calendar,
+                                contentDescription = WorkoutStrings.WeeklyPlan,
+                                onClick = { onWeeklyPlanClick(today.toString()) },
+                                size = CalendarButtonSize,
+                                iconSize = CalendarIconSize,
+                                colors = AppIconButtonDefaults.surface()
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.height(MaterialTheme.spacing.xs))
+
+                        // Card 1: READY FOR TODAY? (Dark Green Panel)
+                        AppCard(style = AppCardStyle.Panel) {
+                            Column(modifier = Modifier.fillMaxWidth()) {
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Text(
+                                        text = WorkoutStrings.ReadyForToday,
+                                        style = MaterialTheme.typography.labelSmall,
+                                        fontWeight = FontWeight.Bold,
+                                        color = MaterialTheme.extendedColors.mint
                                     )
-                                    "fit" -> Box(
+
+                                    Box(
                                         modifier = Modifier
-                                            .size(36.dp)
-                                            .clip(CircleShape)
-                                            .background(MaterialTheme.colorScheme.primary),
-                                        contentAlignment = Alignment.Center
+                                            .clip(PillShape)
+                                            .background(MaterialTheme.colorScheme.onPrimary.copy(alpha = OnPanelAlpha))
+                                            .padding(horizontal = MaterialTheme.spacing.sm, vertical = MaterialTheme.spacing.xxs)
                                     ) {
                                         Text(
-                                            text = "FIT",
+                                            text = recommendedWorkout.level.uppercase(),
                                             style = MaterialTheme.typography.labelSmall,
-                                            fontWeight = FontWeight.Bold,
-                                            color = MaterialTheme.colorScheme.tertiary
+                                            color = MaterialTheme.colorScheme.onPrimary,
+                                            fontWeight = FontWeight.Bold
                                         )
                                     }
-                                    else -> Box(
+                                }
+
+                                Spacer(modifier = Modifier.height(MaterialTheme.spacing.sm))
+
+                                Text(
+                                    text = recommendedWorkout.name,
+                                    style = MaterialTheme.typography.headlineMedium,
+                                    fontWeight = FontWeight.Bold,
+                                    color = MaterialTheme.colorScheme.onPrimary
+                                )
+
+                                Spacer(modifier = Modifier.height(MaterialTheme.spacing.xxs))
+
+                                Text(
+                                    text = "${WorkoutStrings.durationAndExercises(recommendedWorkout.durationMinutes, recommendedWorkout.exerciseCount)} • ${recommendedWorkout.description ?: WorkoutStrings.DefaultFocus}",
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.85f)
+                                )
+
+                                Spacer(modifier = Modifier.height(MaterialTheme.spacing.lg))
+
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(ActionHeight),
+                                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    AppButton(
+                                        text = WorkoutStrings.StartWorkout,
+                                        onClick = { onStartWorkoutClick(recommendedWorkout.id) },
+                                        style = AppButtonStyle.Accent,
+                                        fullWidth = false,
                                         modifier = Modifier
-                                            .size(36.dp)
-                                            .clip(CircleShape)
-                                            .background(MaterialTheme.colorScheme.surfaceVariant),
-                                        contentAlignment = Alignment.Center
-                                    ) {
-                                        Text(
-                                            text = "Zzz",
-                                            style = MaterialTheme.typography.labelSmall,
-                                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                                        )
+                                            .weight(1f)
+                                            .height(ActionHeight)
+                                    )
+
+                                    AppButton(
+                                        text = WorkoutStrings.Details,
+                                        onClick = { onWorkoutClick(recommendedWorkout.id) },
+                                        style = AppButtonStyle.Outlined,
+                                        fullWidth = false,
+                                        textColor = MaterialTheme.colorScheme.onPrimary,
+                                        borderColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = OnPanelBorderAlpha),
+                                        modifier = Modifier.height(ActionHeight)
+                                    )
+                                }
+                            }
+                        }
+
+                        // Card 2: VORA RECOMMENDS
+                        AppNoticeCard(
+                            text = WorkoutStrings.RecommendsText,
+                            title = WorkoutStrings.RecommendsTitle,
+                            leading = { VoraLogo(size = LogoSize) },
+                            shape = MaterialTheme.shapes.large,
+                            borderColor = null,
+                            contentPadding = MaterialTheme.spacing.lg,
+                            spacing = MaterialTheme.spacing.xs,
+                            textStyle = MaterialTheme.typography.bodyMedium,
+                            textColor = MaterialTheme.colorScheme.onSurface
+                        )
+
+                        // Card 3: This Week's Activity (cada día abre el Weekly Plan en esa fecha)
+                        AppCard(
+                            style = AppCardStyle.Surface,
+                            onClick = { onWeeklyPlanClick(today.toString()) }
+                        ) {
+                            Column(modifier = Modifier.fillMaxWidth()) {
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Text(
+                                        text = WorkoutStrings.ThisWeeksActivity,
+                                        style = MaterialTheme.typography.titleMedium,
+                                        fontWeight = FontWeight.Bold,
+                                        color = MaterialTheme.colorScheme.onSurface
+                                    )
+
+                                    AppIcon(
+                                        AppIcons.ChevronRight,
+                                        contentDescription = WorkoutStrings.ViewWeeklyPlan,
+                                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                                        size = MediumIconSize
+                                    )
+                                }
+
+                                Spacer(modifier = Modifier.height(MaterialTheme.spacing.md))
+
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    week.forEachIndexed { index, day ->
+                                        val status = DayStatuses[index]
+                                        Column(
+                                            horizontalAlignment = Alignment.CenterHorizontally,
+                                            modifier = Modifier.clickable { onWeeklyPlanClick(day.date.toString()) }
+                                        ) {
+                                            Text(
+                                                text = day.initial,
+                                                style = MaterialTheme.typography.labelSmall,
+                                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                                            )
+                                            Spacer(modifier = Modifier.height(MaterialTheme.spacing.xs))
+                                            DayCircle(status)
+                                        }
                                     }
                                 }
                             }
                         }
+
+                        // Card 4: Your Progress
+                        AppCard(style = AppCardStyle.Surface) {
+                            Column(modifier = Modifier.fillMaxWidth()) {
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Text(
+                                        text = WorkoutStrings.YourProgress,
+                                        style = MaterialTheme.typography.titleMedium,
+                                        fontWeight = FontWeight.Bold,
+                                        color = MaterialTheme.colorScheme.onSurface
+                                    )
+
+                                    Text(
+                                        text = WorkoutStrings.ViewProgress,
+                                        style = MaterialTheme.typography.labelMedium,
+                                        color = MaterialTheme.colorScheme.primary,
+                                        modifier = Modifier.clickable { onViewProgressClick() }
+                                    )
+                                }
+
+                                Spacer(modifier = Modifier.height(MaterialTheme.spacing.md))
+
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(IntrinsicSize.Min),
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    verticalAlignment = Alignment.Top
+                                ) {
+                                    AppStat(
+                                        label = WorkoutStrings.Streak,
+                                        value = WorkoutStrings.StreakValue,
+                                        modifier = Modifier.weight(0.9f),
+                                        valueStyle = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                                        valueColor = MaterialTheme.colorScheme.onSurface
+                                    )
+
+                                    VerticalDivider(
+                                        modifier = Modifier
+                                            .fillMaxHeight()
+                                            .padding(horizontal = MaterialTheme.spacing.xs),
+                                        color = MaterialTheme.colorScheme.outlineVariant
+                                    )
+
+                                    AppStat(
+                                        label = WorkoutStrings.WorkoutsLabel,
+                                        value = WorkoutStrings.WorkoutsValue,
+                                        modifier = Modifier.weight(1.3f),
+                                        valueStyle = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
+                                        valueColor = MaterialTheme.colorScheme.onSurface
+                                    )
+
+                                    VerticalDivider(
+                                        modifier = Modifier
+                                            .fillMaxHeight()
+                                            .padding(horizontal = MaterialTheme.spacing.xs),
+                                        color = MaterialTheme.colorScheme.outlineVariant
+                                    )
+
+                                    AppStat(
+                                        label = WorkoutStrings.VolumeLifted,
+                                        value = WorkoutStrings.VolumeLiftedValue,
+                                        modifier = Modifier.weight(1.1f),
+                                        valueStyle = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                                        valueColor = MaterialTheme.colorScheme.onSurface
+                                    )
+                                }
+                            }
+                        }
+
+                        Spacer(modifier = Modifier.height(MaterialTheme.spacing.lg))
                     }
                 }
             }
-
-            // Card 4: Your Progress
-            AppCard(style = AppCardStyle.Surface) {
-                Column(modifier = Modifier.fillMaxWidth()) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = "Your Progress",
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.onSurface
-                        )
-
-                        Text(
-                            text = "View progress",
-                            style = MaterialTheme.typography.labelMedium,
-                            color = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.clickable { onViewProgressClick() }
-                        )
-                    }
-
-                    Spacer(modifier = Modifier.height(MaterialTheme.spacing.md))
-
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(IntrinsicSize.Min),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        AppStat(
-                            label = "STREAK",
-                            value = "4 Days",
-                            modifier = Modifier.weight(1f),
-                            valueStyle = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-                            valueColor = MaterialTheme.colorScheme.onSurface
-                        )
-
-                        VerticalDivider(
-                            modifier = Modifier
-                                .fillMaxHeight()
-                                .padding(horizontal = MaterialTheme.spacing.xs),
-                            color = MaterialTheme.colorScheme.outlineVariant
-                        )
-
-                        AppStat(
-                            label = "WORKOUTS",
-                            value = "3/5 complete",
-                            modifier = Modifier.weight(1.1f),
-                            valueStyle = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-                            valueColor = MaterialTheme.colorScheme.onSurface
-                        )
-
-                        VerticalDivider(
-                            modifier = Modifier
-                                .fillMaxHeight()
-                                .padding(horizontal = MaterialTheme.spacing.xs),
-                            color = MaterialTheme.colorScheme.outlineVariant
-                        )
-
-                        AppStat(
-                            label = "VOL. LIFTED",
-                            value = "8,420 kg",
-                            modifier = Modifier.weight(1.2f),
-                            valueStyle = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-                            valueColor = MaterialTheme.colorScheme.onSurface
-                        )
-                    }
-                }
-            }
-
-            // Catalog: every workout returned by the API, filtered by level
-            Text(
-                text = WorkoutStrings.Title,
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onBackground
-            )
-
-            LazyRow(
-                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm),
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                items(LevelFilter.entries) { filter ->
-                    val isSelected = filter == uiState.selectedFilter
-                    Box(
-                        modifier = Modifier
-                            .clip(PillShape)
-                            .background(
-                                if (isSelected) MaterialTheme.colorScheme.tertiary
-                                else MaterialTheme.extendedColors.mintSoft
-                            )
-                            .clickable { onFilterSelect(filter) }
-                            .padding(horizontal = MaterialTheme.spacing.lg, vertical = MaterialTheme.spacing.sm)
-                    ) {
-                        Text(
-                            text = filter.label,
-                            style = MaterialTheme.typography.labelLarge,
-                            color = if (isSelected) MaterialTheme.colorScheme.onTertiary
-                                    else MaterialTheme.colorScheme.primary
-                        )
-                    }
-                }
-            }
-
-            when {
-                uiState.isLoading && uiState.workouts.isEmpty() -> {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = MaterialTheme.spacing.lg),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
-                    }
-                }
-                filteredWorkouts.isEmpty() -> {
-                    Column(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md)
-                    ) {
-                        Text(
-                            text = WorkoutStrings.NoWorkoutsFound,
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                        AppButton(
-                            text = WorkoutStrings.Retry,
-                            onClick = onRetryClick,
-                            style = AppButtonStyle.Outlined
-                        )
-                    }
-                }
-                else -> filteredWorkouts.forEach { workout ->
-                    WorkoutCardItem(
-                        workout = workout,
-                        onClick = { onWorkoutClick(workout.id) }
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(MaterialTheme.spacing.lg))
         }
     }
 }
 
 @Composable
-private fun WorkoutCardItem(
-    workout: Workout,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    AppCard(
-        onClick = onClick,
-        style = AppCardStyle.Surface,
-        modifier = modifier
+private fun DayCircle(status: DayStatus) {
+    val container = when (status) {
+        DayStatus.Done -> MaterialTheme.extendedColors.mint
+        DayStatus.Fit -> MaterialTheme.colorScheme.primary
+        DayStatus.Rest -> MaterialTheme.colorScheme.surfaceVariant
+    }
+    Box(
+        modifier = Modifier
+            .size(DayCircleSize)
+            .clip(CircleShape)
+            .background(container),
+        contentAlignment = Alignment.Center
     ) {
-        Column(modifier = Modifier.fillMaxWidth()) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Box(
-                    modifier = Modifier
-                        .clip(PillShape)
-                        .background(MaterialTheme.extendedColors.mintSoft)
-                        .padding(horizontal = MaterialTheme.spacing.sm, vertical = MaterialTheme.spacing.xxs)
-                ) {
-                    Text(
-                        text = workout.level.uppercase(),
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.primary
-                    )
-                }
-
-                AppIcon(
-                    AppIcons.ArrowForward,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    size = MediumIconSize
-                )
-            }
-
-            Spacer(modifier = Modifier.height(MaterialTheme.spacing.sm))
-
-            Text(
-                text = workout.name,
-                style = MaterialTheme.typography.titleLarge,
+        when (status) {
+            DayStatus.Fit -> Text(
+                text = WorkoutStrings.DayFit,
+                style = MaterialTheme.typography.labelSmall,
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onSurface
+                color = MaterialTheme.colorScheme.tertiary
             )
-
-            Spacer(modifier = Modifier.height(MaterialTheme.spacing.xxs))
-
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                AppIcon(
-                    AppIcons.Clock,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    size = SmallIconSize
-                )
-                Spacer(modifier = Modifier.width(MaterialTheme.spacing.xxs))
-                Text(
-                    text = WorkoutStrings.minutesCount(workout.durationMinutes),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-                Spacer(modifier = Modifier.width(MaterialTheme.spacing.lg))
-                AppIcon(
-                    AppIcons.Dumbbell,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    size = SmallIconSize
-                )
-                Spacer(modifier = Modifier.width(MaterialTheme.spacing.xxs))
-                Text(
-                    text = WorkoutStrings.exercisesCount(workout.exerciseCount),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
-
-            workout.description?.let { desc ->
-                Spacer(modifier = Modifier.height(MaterialTheme.spacing.sm))
-                Text(
-                    text = desc,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    maxLines = 2
-                )
-            }
+            DayStatus.Rest -> Text(
+                text = WorkoutStrings.DayRest,
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            DayStatus.Done -> Unit
         }
     }
 }
@@ -616,7 +477,6 @@ private fun WorkoutListScreenPreview() {
             onStartWorkoutClick = {},
             onWeeklyPlanClick = {},
             onViewProgressClick = {},
-            onFilterSelect = {},
             onRetryClick = {}
         )
     }

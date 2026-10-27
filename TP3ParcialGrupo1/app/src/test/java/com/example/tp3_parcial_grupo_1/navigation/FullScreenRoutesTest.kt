@@ -19,4 +19,9 @@ class FullScreenRoutesTest {
         assertFalse(drawsBehindSystemBars(AppDestination.WorkoutDetail.route))
         assertFalse(drawsBehindSystemBars(null))
     }
+
+    @Test
+    fun `given the coach opened with a prompt, when resolving the insets, then it still draws behind the system bars`() {
+        assertTrue(drawsBehindSystemBars(AppDestination.Coach.pattern))
+    }
 }

@@ -50,4 +50,14 @@ class TopLevelDestinationTest {
         assertEquals(AppDestination.ProgressGraph.route, TopLevelDestination.Progress.graphRoute)
         assertEquals(AppDestination.ProfileGraph.route, TopLevelDestination.Profile.graphRoute)
     }
+
+    @Test
+    fun `given the weekly plan with a date, when resolving the bottom bar, then workout is selected`() {
+        assertEquals(TopLevelDestination.Workout, bottomBarSelection(AppDestination.WeeklyPlan.pattern))
+    }
+
+    @Test
+    fun `given the coach with a prompt, when resolving the bottom bar, then it is hidden`() {
+        assertNull(bottomBarSelection(AppDestination.Coach.pattern))
+    }
 }

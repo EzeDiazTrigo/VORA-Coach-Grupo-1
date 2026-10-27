@@ -1,6 +1,7 @@
 package com.example.tp3_parcial_grupo_1.data.remote.api
 
 import com.example.tp3_parcial_grupo_1.data.remote.dto.DataResponse
+import com.example.tp3_parcial_grupo_1.data.remote.dto.WeeklyPlanDto
 import com.example.tp3_parcial_grupo_1.data.remote.dto.WorkoutDto
 import com.example.tp3_parcial_grupo_1.data.remote.dto.WorkoutSummaryDto
 import retrofit2.Response
@@ -15,4 +16,7 @@ interface WorkoutApi {
     suspend fun getWorkoutById(
         @Path("id") id: String
     ): Response<DataResponse<WorkoutDto>>
+
+    @GET("v1/plans/weekly")
+    suspend fun getWeeklyPlan(): Response<DataResponse<WeeklyPlanDto>>
 }

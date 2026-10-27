@@ -68,4 +68,4 @@ private val fullScreenRoutes = setOf(
     AppDestination.FoodAnalysis.route
 )
 
-internal fun drawsBehindSystemBars(route: String?): Boolean = route in fullScreenRoutes
+internal fun drawsBehindSystemBars(route: String?): Boolean = route?.withoutQuery() in fullScreenRoutes

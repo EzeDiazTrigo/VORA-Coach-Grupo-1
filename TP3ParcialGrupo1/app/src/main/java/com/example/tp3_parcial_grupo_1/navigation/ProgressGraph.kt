@@ -44,7 +44,7 @@ fun NavGraphBuilder.progressGraph(navController: NavController) {
             WeeklyReviewRoute(
                 onBackClick = { navController.popBackStack() },
                 onDoneClick = { navController.popBackStack() },
-                onAskVoraClick = { navController.navigate(AppDestination.Coach.route) },
+                onAskVoraClick = { navController.navigate(AppDestination.Coach.createRoute()) },
                 onDinnerIdeasClick = { navController.navigateInTab(AppDestination.Nutrition.route) },
                 onNextWeekPlanClick = { navController.navigateInTab(AppDestination.WeeklyPlan.route) }
             )

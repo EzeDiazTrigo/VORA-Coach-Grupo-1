@@ -7,17 +7,17 @@ import com.google.gson.annotations.SerializedName
 
 data class WorkoutSummaryDto(
     @SerializedName("id")
-    val id: String,
+    val id: String? = null,
     @SerializedName("name")
-    val name: String,
+    val name: String? = null,
     @SerializedName("level")
-    val level: String,
-    @SerializedName("durationMinutes")
-    val durationMinutes: Int,
-    @SerializedName("exerciseCount")
-    val exerciseCount: Int,
+    val level: String? = null,
+    @SerializedName("durationMinutes", alternate = ["duration_minutes", "duration"])
+    val durationMinutes: Int? = null,
+    @SerializedName("exerciseCount", alternate = ["exercise_count", "exercises_count"])
+    val exerciseCount: Int? = null,
     @SerializedName("description")
-    val description: String?
+    val description: String? = null
 ) {
-    fun toDomain(): Workout = toEntity().toDomain()
+    fun toDomain(): Workout? = toEntity()?.toDomain()
 }

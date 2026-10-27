@@ -1,25 +1,22 @@
 package com.example.tp3_parcial_grupo_1.navigation
 
-import androidx.compose.runtime.getValue
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
-import com.example.tp3_parcial_grupo_1.ui.screens.workout.ActiveWorkoutScreen
-import com.example.tp3_parcial_grupo_1.ui.screens.workout.ExerciseDetailsScreen
-import com.example.tp3_parcial_grupo_1.ui.screens.workout.PreWorkoutScreen
-import com.example.tp3_parcial_grupo_1.ui.screens.workout.WeeklyPlanScreen
-import com.example.tp3_parcial_grupo_1.ui.screens.workout.WorkoutCompleteScreen
+import com.example.tp3_parcial_grupo_1.ui.screens.workout.ActiveWorkoutRoute
+import com.example.tp3_parcial_grupo_1.ui.screens.workout.ExerciseDetailsRoute
+import com.example.tp3_parcial_grupo_1.ui.screens.workout.PreWorkoutRoute
+import com.example.tp3_parcial_grupo_1.ui.screens.workout.WeeklyPlanRoute
+import com.example.tp3_parcial_grupo_1.ui.screens.workout.WorkoutCompleteRoute
 import com.example.tp3_parcial_grupo_1.ui.screens.workout.WorkoutDetailRoute
-import com.example.tp3_parcial_grupo_1.ui.screens.workout.WorkoutDetailViewModel
 import com.example.tp3_parcial_grupo_1.ui.screens.workout.WorkoutListRoute
 
 private val workoutIdArgument = navArgument(NavArg.WorkoutId) { type = NavType.StringType }
 private val exerciseIdArgument = navArgument(NavArg.ExerciseId) { type = NavType.StringType }
+private val dateArgument = navArgument(NavArg.Date) { type = NavType.StringType; nullable = true; defaultValue = null }
 
 fun NavGraphBuilder.workoutGraph(navController: NavController) {
     navigation(
@@ -35,8 +32,8 @@ fun NavGraphBuilder.workoutGraph(navController: NavController) {
                 onStartWorkoutClick = { workoutId ->
                     navController.navigate(AppDestination.PreWorkout.createRoute(workoutId))
                 },
-                onWeeklyPlanClick = {
-                    navController.navigate(AppDestination.WeeklyPlan.route)
+                onWeeklyPlanClick = { date ->
+                    navController.navigate(AppDestination.WeeklyPlan.createRoute(date))
                 },
                 onViewProgressClick = {
                     navController.navigateInTab(AppDestination.WorkoutProgress.route)
@@ -44,8 +41,12 @@ fun NavGraphBuilder.workoutGraph(navController: NavController) {
             )
         }
 
-        composable(AppDestination.WeeklyPlan.route) {
-            WeeklyPlanScreen(
+        composable(
+            route = AppDestination.WeeklyPlan.pattern,
+            arguments = listOf(dateArgument)
+        ) { entry ->
+            WeeklyPlanRoute(
+                initialDate = entry.arguments?.getString(NavArg.Date),
                 onBackClick = { navController.popBackStack() },
                 onWorkoutSelect = { workoutId ->
                     navController.navigate(AppDestination.WorkoutDetail.createRoute(workoutId))
@@ -72,15 +73,15 @@ fun NavGraphBuilder.workoutGraph(navController: NavController) {
         composable(
             route = AppDestination.PreWorkout.route,
             arguments = listOf(workoutIdArgument)
-        ) {
-            val viewModel = hiltViewModel<WorkoutDetailViewModel>()
-            val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-            PreWorkoutScreen(
-                workout = uiState.workout,
-                workoutId = viewModel.workoutId,
+        ) { entry ->
+            val workoutId = entry.arguments?.getString(NavArg.WorkoutId).orEmpty()
+            PreWorkoutRoute(
                 onBackClick = { navController.popBackStack() },
                 onBeginClick = {
-                    navController.navigate(AppDestination.ActiveWorkout.createRoute(viewModel.workoutId))
+                    navController.navigate(AppDestination.ActiveWorkout.createRoute(workoutId))
+                },
+                onMicClick = {
+                    navController.navigate(AppDestination.Coach.createRoute())
                 }
             )
         }
@@ -88,18 +89,15 @@ fun NavGraphBuilder.workoutGraph(navController: NavController) {
         composable(
             route = AppDestination.ActiveWorkout.route,
             arguments = listOf(workoutIdArgument)
-        ) {
-            val viewModel = hiltViewModel<WorkoutDetailViewModel>()
-            val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-            ActiveWorkoutScreen(
-                workout = uiState.workout,
-                workoutId = viewModel.workoutId,
+        ) { entry ->
+            val workoutId = entry.arguments?.getString(NavArg.WorkoutId).orEmpty()
+            ActiveWorkoutRoute(
                 onBackClick = { navController.popBackStack() },
                 onExerciseClick = { exerciseId ->
-                    navController.navigate(AppDestination.ExerciseDetails.createRoute(viewModel.workoutId, exerciseId))
+                    navController.navigate(AppDestination.ExerciseDetails.createRoute(workoutId, exerciseId))
                 },
                 onFinishWorkoutClick = {
-                    navController.navigate(AppDestination.WorkoutComplete.createRoute(viewModel.workoutId))
+                    navController.navigate(AppDestination.WorkoutComplete.createRoute(workoutId))
                 }
             )
         }
@@ -107,15 +105,12 @@ fun NavGraphBuilder.workoutGraph(navController: NavController) {
         composable(
             route = AppDestination.ExerciseDetails.route,
             arguments = listOf(workoutIdArgument, exerciseIdArgument)
-        ) { entry ->
-            val exerciseId = entry.arguments?.getString(NavArg.ExerciseId).orEmpty()
-            val viewModel = hiltViewModel<WorkoutDetailViewModel>()
-            val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-            val exercise = uiState.workout?.exercises?.find { it.id == exerciseId }
-            ExerciseDetailsScreen(
-                exercise = exercise,
-                exerciseId = exerciseId,
-                onBackClick = { navController.popBackStack() }
+        ) {
+            ExerciseDetailsRoute(
+                onBackClick = { navController.popBackStack() },
+                onAskVoraClick = { prompt ->
+                    navController.navigate(AppDestination.Coach.createRoute(prompt))
+                }
             )
         }
 
@@ -123,11 +118,7 @@ fun NavGraphBuilder.workoutGraph(navController: NavController) {
             route = AppDestination.WorkoutComplete.route,
             arguments = listOf(workoutIdArgument)
         ) {
-            val viewModel = hiltViewModel<WorkoutDetailViewModel>()
-            val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-            WorkoutCompleteScreen(
-                workout = uiState.workout,
-                workoutId = viewModel.workoutId,
+            WorkoutCompleteRoute(
                 onBackToWorkoutsClick = {
                     navController.popBackStack(AppDestination.Workout.route, inclusive = false)
                 }

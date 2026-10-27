@@ -50,14 +50,15 @@ class WorkoutRepositoryImpl @Inject constructor(
             val response = workoutApi.getWorkouts()
             if (response.isSuccessful) {
                 val summaries = response.body()?.data.orEmpty()
-                val serverIds = summaries.map { it.id }.toSet()
+                val validEntities = summaries.mapNotNull { it.toEntity() }
+                val serverIds = validEntities.map { it.id }.toSet()
                 runInTransaction {
                     val currentEntities = workoutDao.getAllWorkouts().first()
                     currentEntities.filter { it.id !in serverIds }.forEach {
                         workoutDao.delete(it.id)
                     }
-                    summaries.forEach { summaryDto ->
-                        workoutDao.insert(summaryDto.toEntity())
+                    validEntities.forEach { workoutEntity ->
+                        workoutDao.insert(workoutEntity)
                     }
                 }
                 Result.success(Unit)
@@ -75,10 +76,11 @@ class WorkoutRepositoryImpl @Inject constructor(
             val response = workoutApi.getWorkoutById(id)
             if (response.isSuccessful) {
                 val workoutDto = response.body()?.data ?: throw Exception("Empty response body")
+                val workoutEntity = workoutDto.toEntity(overrideId = id) ?: throw Exception("Invalid workout data")
                 runInTransaction {
-                    workoutDao.insert(workoutDto.toEntity())
+                    workoutDao.insert(workoutEntity)
                     exerciseDao.deleteExercisesByWorkout(id)
-                    val exerciseEntities = workoutDto.exercises.orEmpty().map { it.toEntity(id) }
+                    val exerciseEntities = workoutDto.exercises.orEmpty().mapIndexedNotNull { idx, dto -> dto.toEntity(id, idx) }
                     if (exerciseEntities.isNotEmpty()) {
                         exerciseDao.insertExercises(exerciseEntities)
                     }

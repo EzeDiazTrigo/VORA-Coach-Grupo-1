@@ -13,320 +13,350 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.tp3_parcial_grupo_1.model.Workout
 import com.example.tp3_parcial_grupo_1.ui.components.AppCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppCardStyle
+import com.example.tp3_parcial_grupo_1.ui.components.AppPillButton
+import com.example.tp3_parcial_grupo_1.ui.components.AppPillStyle
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
+import com.example.tp3_parcial_grupo_1.ui.components.EmptyState
 import com.example.tp3_parcial_grupo_1.ui.components.VoraLogo
+import com.example.tp3_parcial_grupo_1.ui.strings.Strings
+import com.example.tp3_parcial_grupo_1.ui.strings.WorkoutStrings
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
 import com.example.tp3_parcial_grupo_1.ui.theme.PillShape
 import com.example.tp3_parcial_grupo_1.ui.theme.extendedColors
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
+import java.time.LocalDate
+import java.time.format.TextStyle
+import java.util.Locale
+import kotlinx.coroutines.launch
 
-data class DayItem(
-    val dayName: String,
-    val dayNumber: String
-)
+private val SelectedCardBorder = 1.5.dp
+private val PlanLogoSize = 20.dp
+
+@Composable
+fun WeeklyPlanRoute(
+    initialDate: String?,
+    onBackClick: () -> Unit,
+    onWorkoutSelect: (String) -> Unit,
+    modifier: Modifier = Modifier,
+    viewModel: WorkoutListViewModel = hiltViewModel()
+) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val today = remember { LocalDate.now() }
+
+    WeeklyPlanScreen(
+        initialDate = parsePlanDate(initialDate, today),
+        today = today,
+        workouts = uiState.workouts,
+        isLoading = uiState.isLoading,
+        onBackClick = onBackClick,
+        onWorkoutSelect = onWorkoutSelect,
+        onRetryClick = viewModel::refreshWorkouts,
+        modifier = modifier
+    )
+}
 
 @Composable
 fun WeeklyPlanScreen(
+    initialDate: LocalDate,
+    today: LocalDate,
+    workouts: List<Workout>,
     onBackClick: () -> Unit,
     onWorkoutSelect: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    isLoading: Boolean = false,
+    onRetryClick: () -> Unit = {}
 ) {
-    var selectedDayNumber by remember { mutableStateOf("8") }
+    val week = remember(initialDate) { weekOf(initialDate) }
+    var selectedIso by rememberSaveable(initialDate) { mutableStateOf(initialDate.toString()) }
+    val selectedDate = parsePlanDate(selectedIso, initialDate)
 
-    val days = listOf(
-        DayItem("MON", "7"),
-        DayItem("TUE", "8"),
-        DayItem("WED", "9"),
-        DayItem("THU", "10"),
-        DayItem("FRI", "11"),
-        DayItem("SAT", "12"),
-        DayItem("SUN", "13")
-    )
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
+    val showDemoNotice: () -> Unit = { scope.launch { snackbarHostState.showSnackbar(Strings.DemoMode) } }
 
     AppScaffold(
         onBack = onBackClick,
+        snackbarHostState = snackbarHostState,
         modifier = modifier
     ) { padding ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)
-                .padding(horizontal = MaterialTheme.spacing.screen)
-                .verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md)
-        ) {
-            Text(
-                text = "Your Plan",
-                style = MaterialTheme.typography.headlineLarge,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onBackground
-            )
-
-            Text(
-                text = "Designed around your goals and recovery.",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-
-            Spacer(modifier = Modifier.height(MaterialTheme.spacing.xs))
-
-            // Days Carousel
-            LazyRow(
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                items(days) { day ->
-                    val isSelected = day.dayNumber == selectedDayNumber
-                    Box(
-                        modifier = Modifier
-                            .clip(PillShape)
-                            .background(
-                                if (isSelected) MaterialTheme.colorScheme.primary
-                                else MaterialTheme.colorScheme.surface
-                            )
-                            .clickable { selectedDayNumber = day.dayNumber }
-                            .padding(horizontal = MaterialTheme.spacing.sm, vertical = MaterialTheme.spacing.md),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Text(
-                                text = day.dayName,
-                                style = MaterialTheme.typography.labelSmall,
-                                fontWeight = FontWeight.Bold,
-                                color = if (isSelected) MaterialTheme.colorScheme.tertiary
-                                        else MaterialTheme.colorScheme.onSurfaceVariant
-                            )
-                            Spacer(modifier = Modifier.height(4.dp))
-                            Text(
-                                text = day.dayNumber,
-                                style = MaterialTheme.typography.titleMedium,
-                                fontWeight = FontWeight.Bold,
-                                color = if (isSelected) MaterialTheme.colorScheme.onPrimary
-                                        else MaterialTheme.colorScheme.onSurface
-                            )
-                        }
-                    }
-                }
-            }
-
-            Spacer(modifier = Modifier.height(MaterialTheme.spacing.sm))
-
-            // Card 1: TODAY'S WORKOUT (With Black / Dark Green Border)
-            Box(
+        when {
+            isLoading && workouts.isEmpty() -> Box(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(MaterialTheme.shapes.medium)
-                    .border(1.5.dp, MaterialTheme.colorScheme.primary, MaterialTheme.shapes.medium)
+                    .fillMaxSize()
+                    .padding(padding),
+                contentAlignment = Alignment.Center
             ) {
-                AppCard(
-                    style = AppCardStyle.Surface,
-                    onClick = { onWorkoutSelect("w01") }
+                CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
+            }
+            workouts.isEmpty() -> EmptyState(
+                title = WorkoutStrings.NoWorkoutsFound,
+                message = WorkoutStrings.ErrorGeneric,
+                actionLabel = WorkoutStrings.Retry,
+                onAction = onRetryClick,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(padding)
+            )
+            else -> Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(padding)
+                    .padding(horizontal = MaterialTheme.spacing.screen)
+                    .verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md)
+            ) {
+                Text(
+                    text = WorkoutStrings.YourPlan,
+                    style = MaterialTheme.typography.headlineLarge,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onBackground
+                )
+                Text(
+                    text = WorkoutStrings.PlanSubtitle,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+
+                Spacer(modifier = Modifier.height(MaterialTheme.spacing.xs))
+
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier.fillMaxWidth()
                 ) {
-                    Column(modifier = Modifier.fillMaxWidth()) {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(
-                                text = "TODAY'S WORKOUT",
-                                style = MaterialTheme.typography.labelSmall,
-                                fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.primary
-                            )
-
-                            Box(
-                                modifier = Modifier
-                                    .clip(PillShape)
-                                    .background(MaterialTheme.extendedColors.mint)
-                                    .padding(horizontal = MaterialTheme.spacing.sm, vertical = 2.dp)
-                            ) {
-                                Text(
-                                    text = "READY",
-                                    style = MaterialTheme.typography.labelSmall,
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.primary
-                                )
-                            }
-                        }
-
-                        Spacer(modifier = Modifier.height(MaterialTheme.spacing.sm))
-
-                        Text(
-                            text = "Upper Body Strength",
-                            style = MaterialTheme.typography.titleLarge,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.onSurface
-                        )
-
-                        Spacer(modifier = Modifier.height(4.dp))
-
-                        Text(
-                            text = "42 min • 5 exercises • Intermediate",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                    week.forEach { day ->
+                        DayChip(
+                            day = day,
+                            isSelected = day.date == selectedDate,
+                            onClick = { selectedIso = day.date.toString() }
                         )
                     }
                 }
-            }
 
-            // Card 2: WEDNESDAY
-            AppCard(
-                style = AppCardStyle.Surface,
-                onClick = { onWorkoutSelect("w02") }
-            ) {
-                Column(modifier = Modifier.fillMaxWidth()) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = "WEDNESDAY",
-                            style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
+                Spacer(modifier = Modifier.height(MaterialTheme.spacing.sm))
 
-                        VoraLogo(size = 24.dp)
-                    }
+                // Cada día del plan rota por el catálogo; el resto de los workouts queda debajo, también tocable.
+                val dayWorkout = workouts[selectedDate.dayOfWeek.ordinal % workouts.size]
+                PlanWorkoutCard(
+                    label = if (selectedDate == today) WorkoutStrings.TodaysWorkout else WorkoutStrings.dayWorkout(dayName(selectedDate)),
+                    workout = dayWorkout,
+                    highlighted = true,
+                    onClick = { onWorkoutSelect(dayWorkout.id) }
+                )
 
-                    Spacer(modifier = Modifier.height(MaterialTheme.spacing.sm))
-
+                val others = workouts.filter { it.id != dayWorkout.id }
+                if (others.isNotEmpty()) {
                     Text(
-                        text = "Active Recovery",
-                        style = MaterialTheme.typography.titleLarge,
+                        text = WorkoutStrings.MoreWorkouts,
+                        style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurface
+                        color = MaterialTheme.colorScheme.onBackground
                     )
-
-                    Spacer(modifier = Modifier.height(4.dp))
-
-                    Text(
-                        text = "25 min • Mobility + Walk",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-            }
-
-            // Card 3: THURSDAY
-            AppCard(
-                style = AppCardStyle.Surface,
-                onClick = { onWorkoutSelect("w03") }
-            ) {
-                Column(modifier = Modifier.fillMaxWidth()) {
-                    Text(
-                        text = "THURSDAY",
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-
-                    Spacer(modifier = Modifier.height(MaterialTheme.spacing.sm))
-
-                    Text(
-                        text = "Lower Body Strength",
-                        style = MaterialTheme.typography.titleLarge,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
-
-                    Spacer(modifier = Modifier.height(4.dp))
-
-                    Text(
-                        text = "45 min • 6 exercises",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-            }
-
-            // Card 4: NEED TO ADJUST YOUR WEEK?
-            AppCard(style = AppCardStyle.Panel) {
-                Column(modifier = Modifier.fillMaxWidth()) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        VoraLogo(size = 20.dp)
-                        Spacer(modifier = Modifier.width(MaterialTheme.spacing.xs))
-                        Text(
-                            text = "NEED TO ADJUST YOUR WEEK?",
-                            style = MaterialTheme.typography.labelSmall,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.extendedColors.mint
+                    others.forEach { workout ->
+                        PlanWorkoutCard(
+                            label = workout.level.uppercase(),
+                            workout = workout,
+                            highlighted = false,
+                            onClick = { onWorkoutSelect(workout.id) }
                         )
                     }
-
-                    Spacer(modifier = Modifier.height(MaterialTheme.spacing.sm))
-
-                    Text(
-                        text = "Tell VORA what changed (e.g., sleep, muscle soreness, or schedule cuts) and your coach will realign the week dynamically.",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.85f)
-                    )
-
-                    Spacer(modifier = Modifier.height(MaterialTheme.spacing.md))
-
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm),
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .clip(PillShape)
-                                .background(MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.15f))
-                                .clickable { }
-                                .padding(horizontal = MaterialTheme.spacing.md, vertical = MaterialTheme.spacing.sm)
-                        ) {
-                            Text(
-                                text = "I'm tired today",
-                                style = MaterialTheme.typography.labelSmall,
-                                color = MaterialTheme.colorScheme.onPrimary
-                            )
-                        }
-
-                        Box(
-                            modifier = Modifier
-                                .clip(PillShape)
-                                .background(MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.15f))
-                                .clickable { }
-                                .padding(horizontal = MaterialTheme.spacing.md, vertical = MaterialTheme.spacing.sm)
-                        ) {
-                            Text(
-                                text = "Move Wed workout to Fri",
-                                style = MaterialTheme.typography.labelSmall,
-                                color = MaterialTheme.colorScheme.onPrimary
-                            )
-                        }
-                    }
                 }
-            }
 
-            Spacer(modifier = Modifier.height(MaterialTheme.spacing.lg))
+                AdjustWeekCard(onSuggestionClick = showDemoNotice)
+
+                Spacer(modifier = Modifier.height(MaterialTheme.spacing.lg))
+            }
         }
     }
 }
 
+@Composable
+private fun DayChip(day: WeekDay, isSelected: Boolean, onClick: () -> Unit) {
+    Box(
+        modifier = Modifier
+            .clip(PillShape)
+            .background(
+                if (isSelected) MaterialTheme.colorScheme.primary
+                else MaterialTheme.colorScheme.surface
+            )
+            .clickable(onClick = onClick)
+            .padding(horizontal = MaterialTheme.spacing.sm, vertical = MaterialTheme.spacing.md),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Text(
+                text = day.name,
+                style = MaterialTheme.typography.labelSmall,
+                fontWeight = FontWeight.Bold,
+                color = if (isSelected) MaterialTheme.colorScheme.tertiary
+                else MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.xxs))
+            Text(
+                text = day.number,
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+                color = if (isSelected) MaterialTheme.colorScheme.onPrimary
+                else MaterialTheme.colorScheme.onSurface
+            )
+        }
+    }
+}
+
+@Composable
+private fun PlanWorkoutCard(label: String, workout: Workout, highlighted: Boolean, onClick: () -> Unit) {
+    val borderModifier = if (highlighted) {
+        Modifier.border(SelectedCardBorder, MaterialTheme.colorScheme.primary, MaterialTheme.shapes.medium)
+    } else {
+        Modifier
+    }
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(MaterialTheme.shapes.medium)
+            .then(borderModifier)
+    ) {
+        AppCard(style = AppCardStyle.Surface, onClick = onClick) {
+            Column(modifier = Modifier.fillMaxWidth()) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = label,
+                        style = MaterialTheme.typography.labelSmall,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                    if (highlighted) {
+                        Box(
+                            modifier = Modifier
+                                .clip(PillShape)
+                                .background(MaterialTheme.extendedColors.mint)
+                                .padding(horizontal = MaterialTheme.spacing.sm, vertical = MaterialTheme.spacing.xxs)
+                        ) {
+                            Text(
+                                text = workout.level.uppercase(),
+                                style = MaterialTheme.typography.labelSmall,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.primary
+                            )
+                        }
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(MaterialTheme.spacing.sm))
+
+                Text(
+                    text = workout.name,
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+
+                Spacer(modifier = Modifier.height(MaterialTheme.spacing.xxs))
+
+                Text(
+                    text = WorkoutStrings.planCardSummary(
+                        minutes = workout.durationMinutes,
+                        count = workout.exerciseCount,
+                        level = workout.level
+                    ),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun AdjustWeekCard(onSuggestionClick: () -> Unit) {
+    AppCard(style = AppCardStyle.Panel) {
+        Column(modifier = Modifier.fillMaxWidth()) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                VoraLogo(size = PlanLogoSize)
+                Spacer(modifier = Modifier.width(MaterialTheme.spacing.xs))
+                Text(
+                    text = WorkoutStrings.AdjustWeekTitle,
+                    style = MaterialTheme.typography.labelSmall,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.extendedColors.mint
+                )
+            }
+
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.sm))
+
+            Text(
+                text = WorkoutStrings.AdjustWeekText,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.85f)
+            )
+
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.md))
+
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.sm),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                AppPillButton(
+                    text = WorkoutStrings.ImTiredToday,
+                    onClick = onSuggestionClick,
+                    style = AppPillStyle.OnDark,
+                    textStyle = MaterialTheme.typography.labelSmall
+                )
+                AppPillButton(
+                    text = WorkoutStrings.MoveWorkout,
+                    onClick = onSuggestionClick,
+                    style = AppPillStyle.OnDark,
+                    textStyle = MaterialTheme.typography.labelSmall
+                )
+            }
+        }
+    }
+}
+
+private fun dayName(date: LocalDate) = date.dayOfWeek.getDisplayName(TextStyle.FULL, Locale.ENGLISH).uppercase()
+
 @Preview(showBackground = true, widthDp = 390, heightDp = 707)
 @Composable
 private fun WeeklyPlanScreenPreview() {
+    val today = LocalDate.of(2026, 10, 27)
     AppTheme {
-        WeeklyPlanScreen(onBackClick = {}, onWorkoutSelect = {})
+        WeeklyPlanScreen(
+            initialDate = today,
+            today = today,
+            workouts = listOf(
+                Workout("w01", "Upper Body Strength", "Intermediate", 42, 5),
+                Workout("w02", "Lower Body Strength", "Intermediate", 45, 6),
+                Workout("w03", "Active Recovery", "Beginner", 30, 4)
+            ),
+            onBackClick = {},
+            onWorkoutSelect = {}
+        )
     }
 }

@@ -4,7 +4,12 @@ object NavArg {
     const val WorkoutId = "workoutId"
     const val ExerciseId = "exerciseId"
     const val MealId = "mealId"
+    const val Date = "date"
+    const val Prompt = "prompt"
 }
+
+// Las rutas con argumentos opcionales se registran con `pattern`; el resto del código navega con `createRoute`.
+private fun queryEncode(value: String) = java.net.URLEncoder.encode(value, "UTF-8").replace("+", "%20")
 
 sealed class AppDestination(val route: String) {
 
@@ -16,11 +21,17 @@ sealed class AppDestination(val route: String) {
     data object Home : AppDestination("home/dashboard")
     data object Notifications : AppDestination("home/notifications")
 
-    data object Coach : AppDestination("coach")
+    data object Coach : AppDestination("coach") {
+        const val pattern = "coach?${NavArg.Prompt}={${NavArg.Prompt}}"
+        fun createRoute(prompt: String? = null) = if (prompt.isNullOrBlank()) route else "$route?${NavArg.Prompt}=${queryEncode(prompt)}"
+    }
 
     data object WorkoutGraph : AppDestination("workout_graph")
     data object Workout : AppDestination("workout/dashboard")
-    data object WeeklyPlan : AppDestination("workout/weekly_plan")
+    data object WeeklyPlan : AppDestination("workout/weekly_plan") {
+        const val pattern = "workout/weekly_plan?${NavArg.Date}={${NavArg.Date}}"
+        fun createRoute(date: String? = null) = if (date.isNullOrBlank()) route else "$route?${NavArg.Date}=$date"
+    }
     data object WorkoutDetail : AppDestination("workout/detail/{${NavArg.WorkoutId}}") {
         fun createRoute(workoutId: String) = "workout/detail/$workoutId"
     }

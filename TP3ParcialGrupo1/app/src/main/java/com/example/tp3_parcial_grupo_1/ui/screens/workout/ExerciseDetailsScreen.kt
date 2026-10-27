@@ -3,6 +3,7 @@ package com.example.tp3_parcial_grupo_1.ui.screens.workout
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,9 +18,13 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
@@ -27,6 +32,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.tp3_parcial_grupo_1.R
 import com.example.tp3_parcial_grupo_1.model.Exercise
 import com.example.tp3_parcial_grupo_1.ui.components.AppBackButton
@@ -39,12 +46,15 @@ import com.example.tp3_parcial_grupo_1.ui.components.AppNoticeCard
 import com.example.tp3_parcial_grupo_1.ui.components.AppScaffold
 import com.example.tp3_parcial_grupo_1.ui.components.AppTopBar
 import com.example.tp3_parcial_grupo_1.ui.components.VoraLogo
+import com.example.tp3_parcial_grupo_1.ui.strings.Strings
+import com.example.tp3_parcial_grupo_1.ui.strings.WorkoutStrings
 import com.example.tp3_parcial_grupo_1.ui.theme.AppTheme
 import com.example.tp3_parcial_grupo_1.ui.theme.iconSizes
 import com.example.tp3_parcial_grupo_1.ui.theme.spacing
+import kotlinx.coroutines.launch
 
-// Botones circulares del encabezado (volver y ayuda).
 private val HeaderButtonSize = 40.dp
+private val TextGap = 2.dp
 
 data class ExerciseGuideData(
     val title: String,
@@ -125,13 +135,34 @@ private fun getExerciseGuideData(exerciseId: String): ExerciseGuideData {
 }
 
 @Composable
+fun ExerciseDetailsRoute(
+    onBackClick: () -> Unit,
+    onAskVoraClick: (String) -> Unit = {},
+    modifier: Modifier = Modifier,
+    viewModel: ExerciseDetailsViewModel = hiltViewModel()
+) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    ExerciseDetailsScreen(
+        exercise = uiState.exercise,
+        exerciseId = viewModel.exerciseId,
+        onBackClick = onBackClick,
+        onAskVoraClick = onAskVoraClick,
+        modifier = modifier
+    )
+}
+
+@Composable
 fun ExerciseDetailsScreen(
     exercise: Exercise? = null,
     exerciseId: String = "e01",
     onBackClick: () -> Unit,
+    onAskVoraClick: (String) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val fallbackGuide = remember(exerciseId) { getExerciseGuideData(exerciseId) }
+    val snackbarHostState = remember { SnackbarHostState() }
+    val coroutineScope = rememberCoroutineScope()
 
     val title = exercise?.name ?: fallbackGuide.title
     val target = if (!exercise?.muscleGroup.isNullOrBlank()) "Target: ${exercise.muscleGroup}" else fallbackGuide.target
@@ -143,8 +174,12 @@ fun ExerciseDetailsScreen(
         }
     }
     val proCues = if (!exercise?.tip.isNullOrBlank()) "• ${exercise.tip}" else fallbackGuide.proCues
+    // La pregunta de la tarjeta «Ask Vora» es la que se carga en el chat del Asistente.
+    val voraQuestion = exercise?.name?.let(WorkoutStrings::askVoraQuestion)
+        ?: fallbackGuide.voraPrompt.substringAfter('"').substringBeforeLast('"')
 
     AppScaffold(
+        snackbarHostState = snackbarHostState,
         modifier = modifier
     ) { padding ->
         Column(
@@ -157,7 +192,7 @@ fun ExerciseDetailsScreen(
         ) {
             // Centered Top Header Bar
             AppTopBar(
-                title = "Exercise Guide",
+                title = WorkoutStrings.ExerciseGuide,
                 modifier = Modifier.padding(vertical = MaterialTheme.spacing.xs),
                 titleStyle = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                 titleColor = MaterialTheme.colorScheme.onSurface,
@@ -174,8 +209,12 @@ fun ExerciseDetailsScreen(
             ) {
                 AppIconButton(
                     AppIcons.HelpCircle,
-                    contentDescription = "Help",
-                    onClick = { },
+                    contentDescription = WorkoutStrings.Help,
+                    onClick = {
+                        coroutineScope.launch {
+                            snackbarHostState.showSnackbar(Strings.DemoMode)
+                        }
+                    },
                     size = HeaderButtonSize,
                     iconSize = MaterialTheme.iconSizes.xl,
                     colors = AppIconButtonDefaults.surface()
@@ -190,7 +229,7 @@ fun ExerciseDetailsScreen(
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onBackground
                 )
-                Spacer(modifier = Modifier.height(2.dp))
+                Spacer(modifier = Modifier.height(TextGap))
                 Text(
                     text = target,
                     style = MaterialTheme.typography.bodyMedium,
@@ -211,7 +250,7 @@ fun ExerciseDetailsScreen(
 
             // Performance Steps Header
             Text(
-                text = "Performance Steps",
+                text = WorkoutStrings.PerformanceSteps,
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onSurface
@@ -244,7 +283,7 @@ fun ExerciseDetailsScreen(
             ) {
                 Column {
                     Text(
-                        text = "PRO FORM CUES",
+                        text = WorkoutStrings.ProFormCues,
                         style = MaterialTheme.typography.labelSmall,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.primary
@@ -258,20 +297,21 @@ fun ExerciseDetailsScreen(
                 }
             }
 
-            // Ask Vora Card
+            // Ask Vora Card (Navigates to Coach AI)
             AppNoticeCard(
-                text = fallbackGuide.voraPrompt,
+                text = WorkoutStrings.askVora(voraQuestion),
                 leading = { VoraLogo(size = 24.dp) },
                 shape = MaterialTheme.shapes.medium,
                 borderColor = null,
-                spacing = MaterialTheme.spacing.sm
+                spacing = MaterialTheme.spacing.sm,
+                modifier = Modifier.clickable { onAskVoraClick(voraQuestion) }
             )
 
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.sm))
 
             // Bottom Back Button
             AppButton(
-                text = "Back to Workout",
+                text = WorkoutStrings.BackToWorkout,
                 onClick = onBackClick,
                 style = AppButtonStyle.Primary
             )
